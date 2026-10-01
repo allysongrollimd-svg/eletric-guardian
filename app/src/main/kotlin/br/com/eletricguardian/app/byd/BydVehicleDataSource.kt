@@ -32,9 +32,14 @@ import java.util.concurrent.ConcurrentHashMap
 class BydVehicleDataSource(context: Context) : VehicleDataSource {
     override val name = "byd-sdk"
 
+    private val appContext = context.applicationContext
     private val failures = ConcurrentHashMap<String, String>()
     private val denied = ConcurrentHashMap.newKeySet<String>()
     private val events = BydEventBus(context)
+
+    // Leitura extra opcional (plugada por fora): preenche os campos protegidos
+    // parado quando a classe OverdriveReader existe no projeto. Ver ExtraCarReader.
+    private val extra = ExtraCarReaders.load()
 
     // Leitura pelo provider com.byd.car.server (ICarPropertyService), como o
     // Overdrive: pega velocidade, marcha, odômetro, 12V e temperatura externa
@@ -95,7 +100,8 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
             "provider ${if (provider.isAvailable()) "✓" else "✗"} rota=${provider.route} (${provider.resolved.size}): ${provider.diagnostics()}"
         }
         return "$loaded\nlisteners: ${events.registeredSummary().ifEmpty { "nenhum" }}\n" +
-            "eventos (${codes.size}): $raw\n$prov"
+            "eventos (${codes.size}): $raw\n$prov\n" +
+            "leitura extra: ${ExtraCarReaders.describe(extra)}"
     }
 
     private fun fmt(v: Double) = if (v == Math.floor(v) && Math.abs(v) < 1e9) v.toLong().toString() else "%.3f".format(v)
@@ -103,7 +109,14 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     /** Valor mais recente de um código de evento "deviceType|eventType". */
     private fun ev(code: String): Double? = events.latest[code]?.value
 
-    override fun read(nowMs: Long): VehicleSnapshot = VehicleSnapshot(
+    override fun read(nowMs: Long): VehicleSnapshot {
+        val base = readBase(nowMs)
+        // Se a leitura extra estiver plugada, deixa ela preencher os campos
+        // protegidos; qualquer falha dela não derruba a leitura comum.
+        return extra?.let { runCatching { it.fill(appContext, base) }.getOrDefault(base) } ?: base
+    }
+
+    private fun readBase(nowMs: Long): VehicleSnapshot = VehicleSnapshot(
         timestampMs = nowMs,
         powerState = body.int("getPowerLevel")?.let(::mapPower),
         speedKmh = speed.number("getCurrentSpeed"),
