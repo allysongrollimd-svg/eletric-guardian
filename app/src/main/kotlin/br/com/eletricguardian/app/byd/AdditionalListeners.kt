@@ -13,16 +13,6 @@ import java.lang.reflect.Proxy
 object AdditionalListeners {
     private const val TAG = "EG-AdditionalListeners"
 
-    fun registerCollectDataListener(device: Any?, callback: (String, Array<out Any?>) -> Unit): Boolean {
-        if (device == null) return false
-        return register(
-            device = device,
-            listenerClass = "android.hardware.bydauto.collectdata.AbsBYDAutoCollectDataListener",
-            callback = callback,
-            name = "CollectData"
-        )
-    }
-
     fun registerTyreListener(device: Any?, callback: (String, Array<out Any?>) -> Unit): Boolean {
         if (device == null) return false
         return register(

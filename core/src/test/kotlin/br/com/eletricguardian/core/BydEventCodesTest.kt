@@ -44,6 +44,20 @@ class BydEventCodesTest {
     }
 
     @Test
+    fun `diagnostico da 0_1_32 com o carro parado`() {
+        val parked: (String) -> Double? = mapOf(
+            "1009|44400018" to 0.3999939,
+            "1014|44a00020" to 5003.0,
+            "1014|44600010" to 3327.0,
+        )::get
+        assertEquals(500.3, BydEventCodes.packVoltageV(parked)!!, 1e-9)
+        assertEquals(3.327, BydEventCodes.cellVoltageMinV(parked)!!, 1e-9)
+        // Sem tensão de carga e com 0,4 A: não está carregando.
+        assertEquals(false, BydEventCodes.charging(parked)!!.charging)
+        assertNull(BydEventCodes.packVoltageV { 50.0 })
+    }
+
+    @Test
     fun `saude e temperatura da bateria`() {
         val ev: (String) -> Double? = mapOf("1014|44400028" to 100.0, "1014|44700020" to 76.0)::get
         assertEquals(100.0, BydEventCodes.sohPct(ev))

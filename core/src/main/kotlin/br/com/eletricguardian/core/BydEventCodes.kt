@@ -54,10 +54,20 @@ object BydEventCodes {
     /** Overdrive: STATISTIC_HIGHEST_BATTERY_VOLTAGE. Dolphin GS: 3384..3391 (mV). */
     const val CELL_VOLTAGE_MAX = "1014|44600030"
 
+    /**
+     * Tensão do pack em décimos de V. Dolphin GS: 5003 parado (500,3 V). Não está
+     * na tabela de IDs do Overdrive, mas o código dele trata este evento assim:
+     * aceita 200..900 V e divide por 3,2 V (LFP) para estimar o nº de células.
+     */
+    const val PACK_VOLTAGE_DECIV = "1014|44a00020"
+
     /** Dolphin GS: 351 (V) carregando. O Connect Pulse usava este código como autonomia. */
     const val CHARGE_VOLTAGE = "1009|44400008"
 
-    /** Dolphin GS: -16,8 (A, negativo = entrando na bateria). O Connect Pulse usava como velocidade. */
+    /**
+     * Dolphin GS: -16,8 (A, negativo = entrando na bateria) carregando; 0,4 parado
+     * fora da tomada. O Connect Pulse usava como velocidade.
+     */
     const val CHARGE_CURRENT = "1009|44400018"
 
     /** Overdrive: CHARGING_CHARGE_CAPACITY. Dolphin GS: 16,0 → 17,5 subindo durante a carga (kWh). */
@@ -91,6 +101,9 @@ object BydEventCodes {
     private const val BATTERY_TEMP_OFFSET = 40.0
 
     fun rangeKm(ev: (String) -> Double?): Int? = ev(RANGE)?.toInt()
+
+    fun packVoltageV(ev: (String) -> Double?): Double? =
+        ev(PACK_VOLTAGE_DECIV)?.let { it / 10 }?.takeIf { it in 200.0..900.0 }
 
     fun cellVoltageMinV(ev: (String) -> Double?): Double? = ev(CELL_VOLTAGE_MIN)?.let { it / 1000 }
 

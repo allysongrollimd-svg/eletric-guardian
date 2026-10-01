@@ -35,6 +35,7 @@ object SnapshotJson {
             put("soh", num(s.battery.sohPct))
             put("range_km", s.battery.rangeKm ?: JSONObject.NULL)
             put("temp_c", num(s.battery.cellTempMaxC))
+            put("pack_v", num(s.battery.packVoltageV))
             put("cell_min_v", num(s.battery.cellVoltageMinV))
             put("cell_max_v", num(s.battery.cellVoltageMaxV))
             put("v12", num(s.battery.voltage12V))
