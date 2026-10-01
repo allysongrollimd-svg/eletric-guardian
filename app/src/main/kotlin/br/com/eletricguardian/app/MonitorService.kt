@@ -35,6 +35,7 @@ class MonitorService : Service() {
     private var loop: Job? = null
     private lateinit var location: LocationSource
     private var source: VehicleDataSource? = null
+    private lateinit var candidates: List<VehicleDataSource>
     private val trips = TripTracker()
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -43,6 +44,11 @@ class MonitorService : Service() {
         super.onCreate()
         startForeground(NOTIFICATION_ID, buildNotification())
         location = LocationSource(this)
+        // Criadas aqui, no thread principal: os devices da BYD podem criar Handlers.
+        candidates = buildList {
+            add(BydVehicleDataSource(applicationContext))
+            if (BuildConfig.DEBUG) add(MockVehicleDataSource(System.currentTimeMillis()))
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -60,10 +66,6 @@ class MonitorService : Service() {
     }
 
     private suspend fun CoroutineScope.runLoop() {
-        val candidates = buildList<VehicleDataSource> {
-            add(BydVehicleDataSource(applicationContext))
-            if (BuildConfig.DEBUG) add(MockVehicleDataSource(System.currentTimeMillis()))
-        }
         val picked = pickDataSource(candidates)
         source = picked
         Telemetry.update { it.copy(sourceName = picked?.name) }
@@ -72,6 +74,7 @@ class MonitorService : Service() {
             return
         }
 
+        var ticks = 0L
         while (isActive) {
             val now = System.currentTimeMillis()
             val snapshot = runCatching { picked.read(now) }
@@ -79,10 +82,13 @@ class MonitorService : Service() {
                 .getOrNull()
                 ?.copy(location = location.last)
             if (snapshot != null) {
+                if (ticks++ % LOG_EVERY == 0L) Log.i(TAG, "leitura: $snapshot")
                 val finished = trips.onSnapshot(snapshot)
+                val diag = (picked as? BydVehicleDataSource)?.diagnostics()
                 Telemetry.update {
                     it.copy(
                         snapshot = snapshot,
+                        diagnostics = diag,
                         tripInProgress = trips.inProgress,
                         lastTrip = finished ?: it.lastTrip,
                     )
@@ -119,10 +125,11 @@ class MonitorService : Service() {
     }
 
     companion object {
-        private const val TAG = "MonitorService"
+        private const val TAG = "EG-Monitor"
         private const val CHANNEL_ID = "monitor"
         private const val NOTIFICATION_ID = 1
         private const val POLL_MS = 1000L
+        private const val LOG_EVERY = 30L
 
         fun start(context: Context) {
             val intent = Intent(context, MonitorService::class.java)

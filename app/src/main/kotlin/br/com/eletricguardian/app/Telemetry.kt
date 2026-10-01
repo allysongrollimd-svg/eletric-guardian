@@ -12,6 +12,8 @@ object Telemetry {
         val snapshot: VehicleSnapshot? = null,
         val tripInProgress: Boolean = false,
         val lastTrip: TripSummary? = null,
+        /** O que a fonte conseguiu carregar e o que falhou. */
+        val diagnostics: String? = null,
     )
 
     private val _state = MutableStateFlow(State())

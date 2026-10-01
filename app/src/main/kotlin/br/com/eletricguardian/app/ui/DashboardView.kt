@@ -24,6 +24,7 @@ class DashboardView(context: Context) : ScrollView(context) {
     private val header = text(16f, Color.parseColor("#9AA4B2"))
     private val grid = GridLayout(context).apply { columnCount = 3 }
     private val trip = text(16f, Color.WHITE)
+    private val diagnostics = text(13f, Color.parseColor("#6B7480"))
     private val tiles = LinkedHashMap<String, TextView>()
 
     init {
@@ -39,6 +40,7 @@ class DashboardView(context: Context) : ScrollView(context) {
         column.addView(header)
         column.addView(grid)
         column.addView(trip)
+        column.addView(diagnostics)
         addView(column)
 
         for (label in LABELS) tiles[label] = addTile(label)
@@ -79,6 +81,8 @@ class DashboardView(context: Context) : ScrollView(context) {
         set("Travas", s?.body?.locked?.let { if (it) "Travado" else "Destravado" })
         set("Temp. externa", s?.climate?.outsideTempC?.let { "%.0f °C".format(it) })
         set("Localização", s?.location?.let { "%.5f, %.5f".format(it.latitude, it.longitude) })
+
+        diagnostics.text = state.diagnostics?.let { "Diagnóstico: $it" } ?: ""
 
         val last = state.lastTrip
         trip.text = buildString {
