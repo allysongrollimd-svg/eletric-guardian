@@ -103,7 +103,10 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
             recentConsumptionKwhPer100Km = statistic.number("getLastElecConPHMValue")?.let { it / 10.0 },
             averageConsumptionKwhPer100Km = statistic.number("getTotalElecConPHMValue")?.let { it / 10.0 },
         ),
-        charging = readCharging() ?: BydEventCodes.charging(::ev),
+        // Eventos primeiro: no Dolphin GS getChargerState responde mesmo sem
+        // permissão, com um valor que não reflete a carga (dava "Desconectado"
+        // carregando a 16 A).
+        charging = BydEventCodes.charging(::ev) ?: readCharging(),
         climate = ac?.let {
             ClimateState(
                 acOn = ac.int("getAcStartState")?.let { it == 1 },
