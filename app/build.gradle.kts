@@ -3,6 +3,11 @@ plugins {
     kotlin("android")
 }
 
+// O APK sai como eletric-guardian-v0.1.N-debug.apk, inclusive dentro do zip do build.
+base {
+    archivesName.set("eletric-guardian-v0.1.${System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0}")
+}
+
 android {
     namespace = "br.com.eletricguardian.app"
     compileSdk = 34

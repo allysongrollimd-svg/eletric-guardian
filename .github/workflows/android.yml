@@ -36,8 +36,9 @@ jobs:
           REF_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
           version="0.1.$GITHUB_RUN_NUMBER"
-          cp app/build/outputs/apk/debug/app-debug.apk eletric-guardian.apk
-          cp app/build/outputs/apk/debug/app-debug.apk "eletric-guardian-v$version.apk"
+          apk=$(ls app/build/outputs/apk/debug/*.apk)
+          cp "$apk" eletric-guardian.apk
+          cp "$apk" "eletric-guardian-v$version.apk"
           notes="Versão $version, gerada a partir de $REF_NAME (commit ${GITHUB_SHA::7}) em $(date -u '+%d/%m/%Y %H:%M') UTC."
           if gh release view teste >/dev/null 2>&1; then
             gh release edit teste --notes "$notes"
