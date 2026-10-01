@@ -19,9 +19,17 @@ class LocationSource(private val context: Context) {
     var last: GeoPoint? = null
         private set
 
+    @Volatile
+    private var lastSpeed: Pair<Double, Long>? = null
+
+    /** Velocidade do GPS (km/h), se a posição tiver chegado nos últimos 5 s. */
+    fun speedKmh(nowMs: Long = System.currentTimeMillis()): Double? =
+        lastSpeed?.takeIf { nowMs - it.second < 5000 }?.first
+
     private val listener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             last = location.toGeoPoint()
+            if (location.hasSpeed()) lastSpeed = location.speed * 3.6 to System.currentTimeMillis()
         }
 
         @Deprecated("Exigido em APIs antigas")

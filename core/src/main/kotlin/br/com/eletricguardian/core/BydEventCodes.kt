@@ -23,7 +23,7 @@ object BydEventCodes {
     // Nomes abaixo marcados "Overdrive" vêm da tabela de IDs do app Overdrive
     // (STATISTIC_*); escala ainda a confirmar no Dolphin GS.
 
-    /** Overdrive: STATISTIC_TOTAL_MILEAGE. */
+    /** Overdrive: STATISTIC_TOTAL_MILEAGE. Dolphin GS: 346562 = 34.656,2 km (décimos de km). */
     const val ODOMETER = "1014|4a502010"
 
     /**
@@ -64,12 +64,16 @@ object BydEventCodes {
      */
     const val UNKNOWN_44A00020 = "1014|44a00020"
 
-    /** Dolphin GS: 351 (V) carregando. O Connect Pulse usava este código como autonomia. */
+    /**
+     * Tensão do pack (V). Dolphin GS: 351 carregando e 343..347 andando, então
+     * chega sempre, não só na carga. O Connect Pulse usava como autonomia.
+     */
     const val CHARGE_VOLTAGE = "1009|44400008"
 
     /**
-     * Dolphin GS: -16,8 (A, negativo = entrando na bateria) carregando; 0,4 parado
-     * fora da tomada. O Connect Pulse usava como velocidade.
+     * Corrente do pack (A). Dolphin GS: -16,8 carregando (negativo = entrando na
+     * bateria), positiva andando (saindo), 0,4 parado. O Connect Pulse usava como
+     * velocidade.
      */
     const val CHARGE_CURRENT = "1009|44400018"
 
@@ -82,7 +86,7 @@ object BydEventCodes {
      */
     const val CHARGE_REMAINING_MIN = "1009|44500020"
 
-    /** Corrente abaixo disso (A, em módulo) conta como "não carregando". */
+    /** Corrente de entrada abaixo disso (A) conta como "não carregando". */
     private const val CHARGING_CURRENT_MIN_A = 0.5
 
     /** Tensão de carga mínima (V) para a corrente contar como carga. */
@@ -105,10 +109,19 @@ object BydEventCodes {
 
     fun rangeKm(ev: (String) -> Double?): Int? = ev(RANGE)?.toInt()
 
+    fun odometerKm(ev: (String) -> Double?): Double? = ev(ODOMETER)?.let { it / 10 }
+
     /**
-     * Tensão do pack (V). O Dolphin GS só manda a tensão real (1009|44400008) pelo
-     * módulo de carga; parado e fora da tomada fica nulo em vez de um valor errado.
+     * Potência do pack (kW) = tensão × corrente: positiva consumindo (andando),
+     * negativa entrando (regeneração ou carga).
      */
+    fun packPowerKw(ev: (String) -> Double?): Double? {
+        val volts = ev(CHARGE_VOLTAGE)?.takeIf { it > CHARGING_VOLTAGE_MIN_V } ?: return null
+        val amps = ev(CHARGE_CURRENT) ?: return null
+        return volts * amps / 1000
+    }
+
+    /** Tensão do pack (V), pelo 1009|44400008. */
     fun packVoltageV(ev: (String) -> Double?): Double? =
         ev(CHARGE_VOLTAGE)?.takeIf { it in 200.0..900.0 }
 
@@ -122,9 +135,10 @@ object BydEventCodes {
         val amps = ev(CHARGE_CURRENT)
         val energy = ev(CHARGE_ENERGY)
         if (volts == null && amps == null && energy == null) return null
-        // Conta a corrente em módulo, exigindo tensão de carga. O tempo restante
-        // não decide: ele para de chegar quando a carga termina e ficaria velho.
-        val charging = amps != null && abs(amps) > CHARGING_CURRENT_MIN_A && (volts ?: 0.0) > CHARGING_VOLTAGE_MIN_V
+        // Carregando só com corrente entrando na bateria (negativa) e tensão
+        // presente. Andando, a corrente é positiva: aquilo é consumo, não carga.
+        // O tempo restante não decide: ele para de chegar quando a carga termina.
+        val charging = amps != null && amps < -CHARGING_CURRENT_MIN_A && (volts ?: 0.0) > CHARGING_VOLTAGE_MIN_V
         // Calculada aqui porque getChargingPower exige permissão da BYD.
         val power = if (charging) volts!! * abs(amps!!) / 1000 else null
         return ChargingState(

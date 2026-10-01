@@ -30,13 +30,16 @@ class BydEventCodesTest {
         assertEquals(3.380, BydEventCodes.cellVoltageMinV(ev)!!, 1e-9)
         assertEquals(3.387, BydEventCodes.cellVoltageMaxV(ev)!!, 1e-9)
         assertEquals(351.0, BydEventCodes.packVoltageV(ev)!!, 1e-9)
+        assertEquals(34656.2, BydEventCodes.odometerKm { if (it == "1014|4a502010") 346562.0 else null }!!, 1e-9)
     }
 
     @Test
-    fun `carga com corrente positiva e fim de carga`() {
-        val positive = BydEventCodes.charging(mapOf("1009|44400008" to 351.0, "1009|44400018" to 16.2)::get)!!
-        assertEquals(true, positive.charging)
-        assertEquals(5.6862, positive.powerKw!!, 1e-9)
+    fun `andando nao e carga e fim de carga`() {
+        // Volta de 01/10: 344 V e corrente positiva andando. É consumo, não carga.
+        val driving = mapOf("1009|44400008" to 344.0, "1009|44400018" to 18.8)::get
+        assertEquals(false, BydEventCodes.charging(driving)!!.charging)
+        assertEquals(6.4672, BydEventCodes.packPowerKw(driving)!!, 1e-9)
+        assertEquals(-5.8968, BydEventCodes.packPowerKw(mapOf("1009|44400008" to 351.0, "1009|44400018" to -16.8)::get)!!, 1e-9)
         val ended = BydEventCodes.charging(mapOf("1009|44400008" to 357.0, "1009|44400018" to 0.4, "1009|44500020" to 1.0)::get)!!
         assertEquals(false, ended.charging)
         assertNull(ended.remainingMinutes)

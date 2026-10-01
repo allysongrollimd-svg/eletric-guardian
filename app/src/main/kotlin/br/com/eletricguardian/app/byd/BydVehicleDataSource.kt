@@ -189,7 +189,8 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private fun readBase(nowMs: Long): VehicleSnapshot = VehicleSnapshot(
         timestampMs = nowMs,
         // Fallback pelo provider (não depende de andar para ter o valor atual).
-        odometerKm = ev(BydEventCodes.ODOMETER) ?: provider.readD("Statistic.STATISTIC_TOTAL_MILEAGE"),
+        odometerKm = BydEventCodes.odometerKm(::ev) ?: provider.readD("Statistic.STATISTIC_TOTAL_MILEAGE"),
+        powerKw = BydEventCodes.packPowerKw(::ev),
         battery = BatteryState(
             socPct = BydEventCodes.socPct(::ev),
             sohPct = BydEventCodes.sohPct(::ev),
