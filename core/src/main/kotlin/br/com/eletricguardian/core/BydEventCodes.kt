@@ -1,5 +1,7 @@
 package br.com.eletricguardian.core
 
+import kotlin.math.abs
+
 /**
  * Tradução dos códigos de evento do SDK da BYD ("deviceType|eventType") para
  * os campos do [VehicleSnapshot].
@@ -67,6 +69,9 @@ object BydEventCodes {
     /** Corrente abaixo disso (A, em módulo) conta como "não carregando". */
     private const val CHARGING_CURRENT_MIN_A = 0.5
 
+    /** Tensão de carga mínima (V) para a corrente contar como carga. */
+    private const val CHARGING_VOLTAGE_MIN_V = 50.0
+
     fun socPct(ev: (String) -> Double?): Double? =
         ev(SOC_TENTHS)?.let { it / 10 }?.takeIf { it in 0.0..100.0 } ?: ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
 
@@ -87,15 +92,20 @@ object BydEventCodes {
         val amps = ev(CHARGE_CURRENT)
         val energy = ev(CHARGE_ENERGY)
         if (volts == null && amps == null && energy == null) return null
-        val charging = amps != null && amps < -CHARGING_CURRENT_MIN_A
+        val remaining = ev(CHARGE_REMAINING_MIN)?.toInt()?.takeIf { it in 1..6000 }
+        // O sinal da corrente não é confiável entre leituras (a 0.1.13/0.1.14 mostravam
+        // "Desconectado" carregando a 16 A): conta o módulo, exigindo tensão de carga,
+        // ou o tempo restante de carga.
+        val flowing = amps != null && abs(amps) > CHARGING_CURRENT_MIN_A && (volts ?: 0.0) > CHARGING_VOLTAGE_MIN_V
+        val charging = flowing || remaining != null
         // Calculada aqui porque getChargingPower exige permissão da BYD.
-        val power = if (charging && volts != null) volts * -amps!! / 1000 else null
+        val power = if (flowing) volts!! * abs(amps!!) / 1000 else null
         return ChargingState(
             charging = charging,
             plugConnected = if (charging) true else null,
             powerKw = power,
             energyAddedKwh = energy,
-            remainingMinutes = if (charging) ev(CHARGE_REMAINING_MIN)?.toInt() else null,
+            remainingMinutes = if (charging) remaining else null,
         )
     }
 }

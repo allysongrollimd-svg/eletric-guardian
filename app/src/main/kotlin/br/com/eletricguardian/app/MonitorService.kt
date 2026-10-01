@@ -85,7 +85,10 @@ class MonitorService : Service() {
                 .getOrNull()
                 ?.copy(location = location.last)
             if (snapshot != null) {
-                if (ticks++ % LOG_EVERY == 0L) Log.i(TAG, "leitura: $snapshot")
+                if (ticks++ % LOG_EVERY == 0L) {
+                    Log.i(TAG, "leitura: $snapshot")
+                    (picked as? BydVehicleDataSource)?.let { Log.i(TAG, "diagnóstico: ${it.diagnostics()}") }
+                }
                 val finished = trips.onSnapshot(snapshot)
                 val diag = (picked as? BydVehicleDataSource)?.diagnostics()
                 Telemetry.update {
