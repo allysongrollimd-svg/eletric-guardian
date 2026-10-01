@@ -20,9 +20,11 @@ import java.util.concurrent.ConcurrentHashMap
  * na central multimídia. Usa reflexão para compilar sem o SDK e para que cada
  * método ausente num modelo vire apenas um campo nulo.
  *
- * Não depende das permissões BYDAUTO_* (que são de assinatura): o Electro lê
- * esses mesmos devices sem elas no Dolphin GS. Criar no thread principal, pois
- * os devices podem criar Handlers no construtor.
+ * No Dolphin GS os getters exigem as permissões BYDAUTO_* (de assinatura da
+ * BYD) e falham; os dados chegam pelos eventos que o serviço empurra para quem
+ * registra listener ([BydEventBus]). Os getters ficam como alternativa para
+ * modelos em que funcionem. Criar no thread principal, pois os devices podem
+ * criar Handlers no construtor.
  *
  * Toda falha é registrada uma vez no logcat com a tag EG-BYD.
  */
@@ -30,6 +32,8 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     override val name = "byd-sdk"
 
     private val failures = ConcurrentHashMap<String, String>()
+    private val denied = ConcurrentHashMap.newKeySet<String>()
+    private val events = BydEventBus()
 
     init {
         HiddenApi.exemptAll()
@@ -40,17 +44,42 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private val charging = device(context, "charging.BYDAutoChargingDevice")
     private val ac = device(context, "ac.BYDAutoAcDevice")
     private val body = device(context, "bodywork.BYDAutoBodyworkDevice")
+    private val gearbox = device(context, "gearbox.BYDAutoGearboxDevice")
+    private val instrument = device(context, "instrument.BYDAutoInstrumentDevice")
 
-    override fun isAvailable() = listOf(statistic, speed, charging, body).any { it != null }
+    init {
+        events.register(
+            mapOf(
+                "charging" to charging, "statistic" to statistic, "bodywork" to body, "gearbox" to gearbox,
+                "instrument" to instrument, "speed" to speed, "ac" to ac,
+            ),
+        )
+        events.startLogReader()
+    }
+
+    override fun isAvailable() = listOf(statistic, speed, charging, body, gearbox, instrument).any { it != null }
+
+    override fun close() = events.stop()
 
     /** Resumo do que carregou e do que falhou, para a tela de diagnóstico. */
     fun diagnostics(): String {
         val loaded = listOf(
             "statistic" to statistic, "speed" to speed, "charging" to charging, "ac" to ac, "body" to body,
         ).joinToString(" ") { (n, d) -> if (d != null) "$n✓" else "$n✗" }
-        val errors = failures.entries.take(4).joinToString("\n") { "${it.key}: ${it.value}" }
-        return if (errors.isEmpty()) loaded else "$loaded\n$errors"
+        val codes = events.latest.values.sortedBy { it.code }
+        val raw = if (codes.isEmpty()) {
+            "nenhum evento recebido ainda"
+        } else {
+            codes.joinToString("  ") { "${it.code}=${fmt(it.value)}" }
+        }
+        return "$loaded\nlisteners: ${events.registeredSummary().ifEmpty { "nenhum" }}\n" +
+            "eventos (${codes.size}): $raw"
     }
+
+    private fun fmt(v: Double) = if (v == Math.floor(v) && Math.abs(v) < 1e9) v.toLong().toString() else "%.3f".format(v)
+
+    /** Valor mais recente de um código de evento "deviceType|eventType". */
+    private fun ev(code: String): Double? = events.latest[code]?.value
 
     override fun read(nowMs: Long): VehicleSnapshot = VehicleSnapshot(
         timestampMs = nowMs,
@@ -58,10 +87,11 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         speedKmh = speed.number("getCurrentSpeed"),
         acceleratorPct = speed.int("getAccelerateDeepness"),
         brakePct = speed.int("getBrakeDeepness"),
-        odometerKm = statistic.number("getTotalMileageValue"),
+        // Códigos de evento do Connect Pulse; confirmar no Dolphin GS com a amostra.
+        odometerKm = ev(Codes.ODOMETER) ?: statistic.number("getTotalMileageValue"),
         battery = BatteryState(
-            socPct = statistic.number("getElecPercentageValue"),
-            rangeKm = statistic.int("getElecDrivingRangeValue"),
+            socPct = ev(Codes.SOC_FINE) ?: ev(Codes.SOC) ?: statistic.number("getElecPercentageValue"),
+            rangeKm = ev(Codes.RANGE)?.toInt() ?: statistic.int("getElecDrivingRangeValue"),
         ),
         energy = EnergyCounters(
             totalConsumedKwh = statistic.number("getTotalElecConValue"),
@@ -136,6 +166,7 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private fun Any?.call(method: String, vararg args: Int): Any? {
         if (this == null) return null
         val key = "${javaClass.simpleName}.$method"
+        if (key in denied) return null
         return try {
             val types = Array<Class<*>>(args.size) { Int::class.javaPrimitiveType!! }
             javaClass.getMethod(method, *types).invoke(this, *args.toTypedArray())
@@ -147,6 +178,8 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
 
     private fun fail(key: String, t: Throwable) {
         val cause = (t as? InvocationTargetException)?.targetException ?: t
+        // Sem permissão não adianta tentar de novo a cada segundo.
+        if (cause is SecurityException) denied += key
         val msg = "${cause.javaClass.simpleName}: ${cause.message}"
         if (failures.putIfAbsent(key, msg) == null) Log.e(TAG, "falha em $key", cause)
     }
@@ -156,6 +189,13 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private fun Any?.number(method: String): Double? = (call(method) as? Number)?.toDouble()
 
     private fun Any?.string(method: String): String? = (call(method) as? String)?.takeIf { it.isNotBlank() }
+
+    private object Codes {
+        const val SOC = "1014|44400030"
+        const val SOC_FINE = "1014|4a505038"
+        const val ODOMETER = "1014|4a502010"
+        const val RANGE = "1009|44400008"
+    }
 
     private companion object {
         const val TAG = "EG-BYD"

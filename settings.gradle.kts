@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "eletric-guardian"
-include(":core", ":app")
+include(":core", ":bydstub", ":app")
