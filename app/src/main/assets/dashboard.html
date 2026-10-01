@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eletric Guardian</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root{
+    --bg:#0e1116; --card:#161b22; --muted:#9aa4b2; --faint:#6b7480;
+    --green:#2ed29a; --orange:#f5a623; --white:#f2f5f8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--white);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+  #map{height:42vh;width:100%;background:var(--card)}
+  .wrap{padding:12px;max-width:760px;margin:0 auto}
+  header{display:flex;align-items:center;gap:10px;padding:14px 14px 6px}
+  header .name{font-size:20px;font-weight:700}
+  header .ver{font-size:12px;color:var(--faint)}
+  header .model{margin-left:auto;color:var(--muted);font-size:13px;text-align:right}
+  .dot{width:12px;height:12px;border-radius:50%;background:#394150;flex:0 0 auto}
+  .dot.on{background:var(--green)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 24px}
+  .card{background:var(--card);border-radius:16px;padding:16px;min-height:120px}
+  .card.full{grid-column:1 / -1}
+  .card.charging{background:#17352b}
+  .title{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .title.bat{color:var(--green)} .title.spd{color:var(--orange)}
+  .title.chg{color:var(--green)} .title.rng{color:var(--green)}
+  .value{font-size:40px;font-weight:700;line-height:1.1;margin-top:8px}
+  .value .u{font-size:16px;color:var(--muted);font-weight:400;margin-left:6px}
+  .subs{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:12px}
+  .sub{min-width:40%}
+  .sub .l{font-size:10px;letter-spacing:.05em;color:var(--faint);text-transform:uppercase}
+  .sub .v{font-size:15px}
+  .hidden{display:none}
+  .stale{opacity:.5}
+  footer{color:var(--faint);font-size:11px;text-align:center;padding:0 12px 20px}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<header>
+  <div>
+    <div class="name">Eletric Guardian</div>
+    <div class="ver" id="ver">—</div>
+  </div>
+  <div class="model" id="model"></div>
+  <div class="dot" id="dot"></div>
+</header>
+
+<div class="grid">
+  <div class="card">
+    <div class="title bat">Bateria</div>
+    <div class="value"><span id="soc">—</span><span class="u">%</span></div>
+    <div class="subs">
+      <div class="sub"><div class="l">Temp</div><div class="v" id="btemp">—</div></div>
+      <div class="sub"><div class="l">Células</div><div class="v" id="bcell">—</div></div>
+      <div class="sub"><div class="l">Saúde</div><div class="v" id="bsoh">—</div></div>
+      <div class="sub"><div class="l">12V</div><div class="v" id="b12v">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title spd">Velocidade</div>
+    <div class="value"><span id="speed">—</span><span class="u">km/h</span></div>
+    <div class="subs">
+      <div class="sub"><div class="l">Modo</div><div class="v" id="gear">—</div></div>
+      <div class="sub"><div class="l">Odômetro</div><div class="v" id="odo">—</div></div>
+      <div class="sub"><div class="l">Altitude</div><div class="v" id="alt">—</div></div>
+    </div>
+  </div>
+
+  <div class="card charging hidden" id="chgcard">
+    <div class="title chg">Carregando</div>
+    <div class="value"><span id="chgpower">—</span><span class="u">kW</span></div>
+    <div class="subs">
+      <div class="sub"><div class="l">Faltam</div><div class="v" id="chgrem">—</div></div>
+      <div class="sub"><div class="l">Modo</div><div class="v" id="chgmode">—</div></div>
+      <div class="sub"><div class="l">Adicionado</div><div class="v" id="chgadd">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="title rng">Autonomia</div>
+    <div class="value"><span id="range">—</span><span class="u">km</span></div>
+  </div>
+
+  <div class="card">
+    <div class="title">Potência</div>
+    <div class="value"><span id="power">—</span><span class="u">kW</span></div>
+  </div>
+</div>
+
+<footer id="foot"></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  var map = L.map('map',{zoomControl:false,attributionControl:false}).setView([-15.6,-56.1],15);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
+  var marker=null, hasFix=false;
+
+  function n(x){ return (x===null||x===undefined||(typeof x==='number'&&isNaN(x))); }
+  function fmt(x,d){ return n(x) ? '—' : Number(x).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+  function set(id,v){ document.getElementById(id).textContent = v; }
+
+  function render(s){
+    set('ver', 'Versão ' + (s.source||'—'));
+    set('model', (s.vehicle && (s.vehicle.model||s.vehicle.brand)) || '');
+    var fresh = s.ts && (Date.now()-s.ts) < 10000;
+    document.getElementById('dot').className = 'dot' + (fresh?' on':'');
+
+    var b=s.battery||{};
+    set('soc', n(b.soc)?'—':fmt(b.soc,0));
+    set('btemp', n(b.temp_c)?'—':fmt(b.temp_c,0)+' °C');
+    set('bcell', (n(b.cell_min_v)&&n(b.cell_max_v))?'—':fmt(b.cell_min_v,3)+'/'+fmt(b.cell_max_v,3)+' V');
+    set('bsoh', n(b.soh)?'—':fmt(b.soh,0)+' %');
+    set('b12v', n(b.v12)?'—':fmt(b.v12,1)+' V');
+
+    set('speed', n(s.speed_kmh)?'—':fmt(s.speed_kmh,0));
+    set('gear', s.gear||'—');
+    set('odo', n(s.odometer_km)?'—':fmt(s.odometer_km,1)+' km');
+
+    set('range', n(b.range_km)?'—':fmt(b.range_km,0));
+    set('power', n(s.power_kw)?'—':fmt(s.power_kw,1));
+
+    var c=s.charging;
+    var plugged = c && (c.active || c.plugged);
+    document.getElementById('chgcard').className = 'card charging' + (plugged?'':' hidden');
+    if(plugged){
+      set('chgpower', n(c.power_kw)?'—':fmt(c.power_kw,1));
+      set('chgrem', n(c.remaining_min)?'—':c.remaining_min+' min');
+      set('chgmode', c.mode || (c.active?'carregando':'plugado'));
+      set('chgadd', n(c.added_kwh)?'—':'+'+fmt(c.added_kwh,1)+' kWh');
+    }
+
+    var loc=s.location;
+    if(loc && !n(loc.lat)){
+      set('alt', n(loc.alt_m)?'—':fmt(loc.alt_m,0)+' m');
+      var ll=[loc.lat,loc.lon];
+      if(marker){ marker.setLatLng(ll); } else { marker=L.marker(ll).addTo(map); }
+      if(!hasFix){ map.setView(ll,16); hasFix=true; }
+    }
+    document.body.classList.toggle('stale', !fresh);
+    set('foot', fresh ? '' : 'sem dados recentes do carro');
+  }
+
+  function poll(){
+    fetch('/api/snapshot',{cache:'no-store'})
+      .then(function(r){return r.json();})
+      .then(render)
+      .catch(function(){ set('foot','sem conexão com o coletor'); });
+  }
+  poll(); setInterval(poll,1000);
+</script>
+</body>
+</html>

@@ -14,6 +14,8 @@ object Telemetry {
         val lastTrip: TripSummary? = null,
         /** O que a fonte conseguiu carregar e o que falhou. */
         val diagnostics: String? = null,
+        /** Endereço do webapp (painel) servido pelo próprio app. */
+        val webUrl: String? = null,
     )
 
     private val _state = MutableStateFlow(State())

@@ -29,6 +29,7 @@ class DashboardView(context: Context) : ScrollView(context) {
     private val title = text(24f, Color.WHITE, Typeface.BOLD)
     private val model = text(14f, MUTED)
     private val version = text(12f, FAINT)
+    private val webUrl = text(14f, 0xFF2ED29A.toInt())
     private val source = text(12f, FAINT)
 
     private val map = WebView(context)
@@ -83,6 +84,7 @@ class DashboardView(context: Context) : ScrollView(context) {
         title.text = "Eletric Guardian"
         column.addView(version)
         version.text = "Versão ${BuildConfig.VERSION_NAME} (${BuildConfig.COMMIT})"
+        column.addView(webUrl)
         column.addView(source)
 
         // Mapa no topo
@@ -118,6 +120,7 @@ class DashboardView(context: Context) : ScrollView(context) {
 
     fun render(state: Telemetry.State) {
         val s = state.snapshot
+        webUrl.text = state.webUrl?.let { "Painel no celular: $it" } ?: ""
         model.text = s?.vehicle?.model ?: s?.vehicle?.brand ?: ""
         source.text = when (state.sourceName) {
             null -> "Procurando fonte de dados…"
