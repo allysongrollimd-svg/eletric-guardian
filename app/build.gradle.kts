@@ -15,8 +15,13 @@ android {
         // serviço em segundo plano e a exigência de tipo de serviço das APIs novas.
         //noinspection ExpiredTargetSdkVersion
         targetSdk = 25
-        versionCode = 1
-        versionName = "0.1.0"
+        // No GitHub Actions cada build ganha um número novo (GITHUB_RUN_NUMBER), que
+        // aparece no painel e no nome do APK; localmente fica 0.
+        val build = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 0
+        val commit = System.getenv("GITHUB_SHA")?.take(7) ?: "local"
+        versionCode = build + 1
+        versionName = "0.1.$build"
+        buildConfigField("String", "COMMIT", "\"$commit\"")
     }
 
     signingConfigs {

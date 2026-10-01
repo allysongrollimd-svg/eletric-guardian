@@ -66,6 +66,7 @@ class MonitorService : Service() {
     }
 
     private suspend fun CoroutineScope.runLoop() {
+        Log.i(TAG, "Eletric Guardian ${BuildConfig.VERSION_NAME} (${BuildConfig.COMMIT})")
         val picked = pickDataSource(candidates)
         source = picked
         Telemetry.update { it.copy(sourceName = picked?.name) }

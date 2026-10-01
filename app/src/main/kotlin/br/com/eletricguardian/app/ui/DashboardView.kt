@@ -8,6 +8,7 @@ import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import br.com.eletricguardian.app.BuildConfig
 import br.com.eletricguardian.app.Telemetry
 import br.com.eletricguardian.core.ChargingMode
 import br.com.eletricguardian.core.PowerState
@@ -36,6 +37,9 @@ class DashboardView(context: Context) : ScrollView(context) {
         column.addView(text(28f, Color.WHITE).apply {
             text = "Eletric Guardian"
             setTypeface(typeface, Typeface.BOLD)
+        })
+        column.addView(text(14f, Color.parseColor("#6B7480")).apply {
+            text = "Versão ${BuildConfig.VERSION_NAME} (${BuildConfig.COMMIT})"
         })
         column.addView(header)
         column.addView(grid)

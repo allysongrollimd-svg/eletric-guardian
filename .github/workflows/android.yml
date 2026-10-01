@@ -26,19 +26,23 @@ jobs:
         with:
           name: eletric-guardian-debug
           path: app/build/outputs/apk/debug/*.apk
-      # Link fixo para baixar o .apk direto, sem zip:
+      # Link fixo para baixar o .apk direto, sem zip (sempre a versão mais nova):
       # https://github.com/<dono>/<repo>/releases/download/teste/eletric-guardian.apk
+      # Cada versão também fica guardada como eletric-guardian-v0.1.N.apk.
       - name: Publicar APK na versão de teste
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         env:
           GH_TOKEN: ${{ github.token }}
           REF_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
+          version="0.1.$GITHUB_RUN_NUMBER"
           cp app/build/outputs/apk/debug/app-debug.apk eletric-guardian.apk
-          notes="Gerado automaticamente a partir de $REF_NAME (commit ${GITHUB_SHA::7}) em $(date -u '+%d/%m/%Y %H:%M') UTC."
+          cp app/build/outputs/apk/debug/app-debug.apk "eletric-guardian-v$version.apk"
+          notes="Versão $version, gerada a partir de $REF_NAME (commit ${GITHUB_SHA::7}) em $(date -u '+%d/%m/%Y %H:%M') UTC."
           if gh release view teste >/dev/null 2>&1; then
             gh release edit teste --notes "$notes"
           else
             gh release create teste --prerelease --title "Versão de teste" --notes "$notes"
           fi
-          gh release upload teste eletric-guardian.apk --clobber
+          gh release edit teste --title "Versão de teste $version"
+          gh release upload teste eletric-guardian.apk "eletric-guardian-v$version.apk" --clobber
