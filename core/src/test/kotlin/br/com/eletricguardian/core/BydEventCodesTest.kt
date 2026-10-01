@@ -16,6 +16,7 @@ class BydEventCodesTest {
         "1014|4a50203e" to 364.0,
         "1014|44600010" to 3380.0,
         "1014|44600030" to 3387.0,
+        "1014|44700028" to 894.0,
     )
 
     private val ev: (String) -> Double? = { dolphinCharging[it] }
@@ -23,7 +24,8 @@ class BydEventCodesTest {
     @Test
     fun `bateria do Dolphin GS`() {
         // 1009|44500020 = 50 não é o SoC (o app da BYD mostrava 90%).
-        assertNull(BydEventCodes.socPct(ev))
+        assertEquals(89.4, BydEventCodes.socPct(ev)!!, 1e-9)
+        assertNull(BydEventCodes.socPct { if (it == "1009|44500020") 50.0 else null })
         assertEquals(364.0, BydEventCodes.packVoltageV(ev))
         assertEquals(3.380, BydEventCodes.cellVoltageMinV(ev)!!, 1e-9)
         assertEquals(3.387, BydEventCodes.cellVoltageMaxV(ev)!!, 1e-9)

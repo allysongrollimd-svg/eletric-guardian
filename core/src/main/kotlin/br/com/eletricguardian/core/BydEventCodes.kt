@@ -11,6 +11,12 @@ package br.com.eletricguardian.core
 object BydEventCodes {
     // 1009|44500020 veio com 50 enquanto o app da BYD mostrava 90%: não é o SoC.
 
+    /**
+     * Dolphin GS, candidato: 894 (décimos de %) carregando, pouco antes de o
+     * Electro mostrar 90,6%. Confirmar comparando com o Electro.
+     */
+    const val SOC_TENTHS = "1014|44700028"
+
     /** Connect Pulse. */
     const val SOC_ALT = "1014|44400030"
 
@@ -41,7 +47,8 @@ object BydEventCodes {
     /** Corrente abaixo disso (A, em módulo) conta como "não carregando". */
     private const val CHARGING_CURRENT_MIN_A = 0.5
 
-    fun socPct(ev: (String) -> Double?): Double? = ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
+    fun socPct(ev: (String) -> Double?): Double? =
+        ev(SOC_TENTHS)?.let { it / 10 }?.takeIf { it in 0.0..100.0 } ?: ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
 
     fun packVoltageV(ev: (String) -> Double?): Double? = ev(PACK_VOLTAGE)
 
