@@ -1,0 +1,9 @@
+# Servidor na nuvem (pasta server/) no Render, plano grátis.
+services:
+  - type: web
+    name: eletric-guardian
+    runtime: docker
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health

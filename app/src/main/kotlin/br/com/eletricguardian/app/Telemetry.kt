@@ -16,6 +16,10 @@ object Telemetry {
         val diagnostics: String? = null,
         /** Endereço do webapp (painel) servido pelo próprio app. */
         val webUrl: String? = null,
+        /** Link do painel na nuvem para este carro. */
+        val cloudUrl: String? = null,
+        /** Situação do envio para a nuvem, em texto para a tela. */
+        val cloudStatus: String? = null,
     )
 
     private val _state = MutableStateFlow(State())

@@ -27,6 +27,10 @@ android {
         versionCode = build + 1
         versionName = "0.1.$build"
         buildConfigField("String", "COMMIT", "\"$commit\"")
+        // Endereço do servidor na nuvem (pasta server/). No GitHub vem da variável
+        // EG_CLOUD_URL do repositório; vazio desliga o envio.
+        val cloudUrl = System.getenv("EG_CLOUD_URL").orEmpty()
+        buildConfigField("String", "CLOUD_URL", "\"$cloudUrl\"")
     }
 
     signingConfigs {

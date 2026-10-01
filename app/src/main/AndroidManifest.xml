@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Pedir a rede celular (4G) para o envio à nuvem. Permissões normais. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <!-- Liberável por ADB (pm grant); permite ler o log completo se o do próprio processo não bastar. -->
     <uses-permission android:name="android.permission.READ_LOGS" />
 

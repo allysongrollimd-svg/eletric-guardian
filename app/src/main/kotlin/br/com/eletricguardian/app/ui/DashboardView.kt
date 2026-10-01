@@ -120,7 +120,11 @@ class DashboardView(context: Context) : ScrollView(context) {
 
     fun render(state: Telemetry.State) {
         val s = state.snapshot
-        webUrl.text = state.webUrl?.let { "Painel no celular: $it" } ?: ""
+        webUrl.text = listOfNotNull(
+            state.webUrl?.let { "Painel no celular: $it" },
+            state.cloudUrl?.let { "Painel na nuvem: $it" },
+            state.cloudStatus?.let { "Nuvem: $it" },
+        ).joinToString("\n")
         model.text = s?.vehicle?.model ?: s?.vehicle?.brand ?: ""
         source.text = when (state.sourceName) {
             null -> "Procurando fonte de dados…"

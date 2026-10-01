@@ -200,8 +200,20 @@
     setInterval(poll, 1000);
   }
 
-  // Inicia conexão WebSocket
-  connectWebSocket();
+  // Na nuvem (servidor da pasta server/) o painel abre em /car/<id>?k=<chave>
+  // e recebe os dados por EventSource; no carro, pelo WebSocket local.
+  function connectCloud(){
+    var id = location.pathname.split('/')[2];
+    var key = new URLSearchParams(location.search).get('k') || '';
+    var es = new EventSource('/api/car/' + encodeURIComponent(id) + '/stream?k=' + encodeURIComponent(key));
+    set('foot', 'conectando...');
+    es.onmessage = function(event){
+      try { render(JSON.parse(event.data)); } catch(e) { console.error('Erro ao processar dados:', e); }
+    };
+    es.onerror = function(){ set('foot', 'reconectando à nuvem...'); };
+  }
+
+  if (location.pathname.indexOf('/car/') === 0) connectCloud(); else connectWebSocket();
 </script>
 </body>
 </html>

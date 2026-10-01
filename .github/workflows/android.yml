@@ -20,7 +20,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Testes do núcleo
         run: ./gradlew :core:test
+      - name: Teste do servidor na nuvem
+        run: node server/test.js
       - name: Gerar APK de teste
+        env:
+          EG_CLOUD_URL: ${{ vars.EG_CLOUD_URL }}
         run: ./gradlew :app:assembleDebug
       - uses: actions/upload-artifact@v4
         with:
