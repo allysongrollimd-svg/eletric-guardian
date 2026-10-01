@@ -1,5 +1,6 @@
 package br.com.eletricguardian.app.byd
 
+import android.hardware.bydauto.BYDAutoEventValue
 import android.hardware.bydauto.ac.AbsBYDAutoAcListener
 import android.hardware.bydauto.bodywork.AbsBYDAutoBodyworkListener
 import android.hardware.bydauto.charging.AbsBYDAutoChargingListener
@@ -116,14 +117,31 @@ class BydEventBus {
         if (previous == null) Log.i(TAG, "novo código ${e.code} = ${e.value}")
     }
 
+    // Cada listener sobrescreve onDataChanged sem chamar super: a versão da BYD
+    // chama getters protegidos por permissão (ex.: getChargingPower) e derruba o
+    // app com SecurityException. O valor do evento já chega pelo log.
     private fun newListener(name: String): Any? = when (name) {
-        "charging" -> object : AbsBYDAutoChargingListener() {}
-        "bodywork" -> object : AbsBYDAutoBodyworkListener() {}
-        "gearbox" -> object : AbsBYDAutoGearboxListener() {}
-        "instrument" -> object : AbsBYDAutoInstrumentListener() {}
-        "statistic" -> object : AbsBYDAutoStatisticListener() {}
-        "speed" -> object : AbsBYDAutoSpeedListener() {}
-        "ac" -> object : AbsBYDAutoAcListener() {}
+        "charging" -> object : AbsBYDAutoChargingListener() {
+            override fun onDataChanged(eventType: Int, value: BYDAutoEventValue?) {}
+        }
+        "bodywork" -> object : AbsBYDAutoBodyworkListener() {
+            override fun onDataChanged(eventType: Int, value: BYDAutoEventValue?) {}
+        }
+        "gearbox" -> object : AbsBYDAutoGearboxListener() {
+            override fun onDataChanged(eventType: Int, value: BYDAutoEventValue?) {}
+        }
+        "instrument" -> object : AbsBYDAutoInstrumentListener() {
+            override fun onDataChanged(eventType: Int, value: BYDAutoEventValue?) {}
+        }
+        "statistic" -> object : AbsBYDAutoStatisticListener() {
+            override fun onDataChanged(eventType: Int, value: BYDAutoEventValue?) {}
+        }
+        "speed" -> object : AbsBYDAutoSpeedListener() {
+            override fun onDataChanged(eventType: Int, value: BYDAutoEventValue?) {}
+        }
+        "ac" -> object : AbsBYDAutoAcListener() {
+            override fun onDataChanged(eventType: Int, value: BYDAutoEventValue?) {}
+        }
         else -> null
     }
 

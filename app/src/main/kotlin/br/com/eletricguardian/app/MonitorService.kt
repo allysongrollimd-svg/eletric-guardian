@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import br.com.eletricguardian.app.byd.BydVehicleDataSource
+import br.com.eletricguardian.app.byd.MainLooperGuard
 import br.com.eletricguardian.app.location.LocationSource
 import br.com.eletricguardian.core.MockVehicleDataSource
 import br.com.eletricguardian.core.TripTracker
@@ -42,6 +43,7 @@ class MonitorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        MainLooperGuard.install()
         startForeground(NOTIFICATION_ID, buildNotification())
         location = LocationSource(this)
         // Criadas aqui, no thread principal: os devices da BYD podem criar Handlers.

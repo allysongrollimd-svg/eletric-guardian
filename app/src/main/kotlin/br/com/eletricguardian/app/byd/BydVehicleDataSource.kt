@@ -92,6 +92,9 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         battery = BatteryState(
             socPct = ev(Codes.SOC_FINE) ?: ev(Codes.SOC) ?: statistic.number("getElecPercentageValue"),
             rangeKm = ev(Codes.RANGE)?.toInt() ?: statistic.int("getElecDrivingRangeValue"),
+            // Vistos no Dolphin GS carregando: 3377 e 3384, em mV.
+            cellVoltageMinV = ev(Codes.CELL_VOLTAGE_MIN)?.let { it / 1000 },
+            cellVoltageMaxV = ev(Codes.CELL_VOLTAGE_MAX)?.let { it / 1000 },
         ),
         energy = EnergyCounters(
             totalConsumedKwh = statistic.number("getTotalElecConValue"),
@@ -195,6 +198,8 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         const val SOC_FINE = "1014|4a505038"
         const val ODOMETER = "1014|4a502010"
         const val RANGE = "1009|44400008"
+        const val CELL_VOLTAGE_MIN = "1014|44600010"
+        const val CELL_VOLTAGE_MAX = "1014|44600030"
     }
 
     private companion object {

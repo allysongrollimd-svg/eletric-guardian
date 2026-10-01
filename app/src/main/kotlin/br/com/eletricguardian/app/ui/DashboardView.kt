@@ -84,6 +84,10 @@ class DashboardView(context: Context) : ScrollView(context) {
         })
         set("Travas", s?.body?.locked?.let { if (it) "Travado" else "Destravado" })
         set("Temp. externa", s?.climate?.outsideTempC?.let { "%.0f °C".format(it) })
+        set("Células (mín/máx)", s?.battery?.let { b ->
+            if (b.cellVoltageMinV == null && b.cellVoltageMaxV == null) null
+            else "%.3f / %.3f V".format(b.cellVoltageMinV ?: Double.NaN, b.cellVoltageMaxV ?: Double.NaN)
+        })
         set("Localização", s?.location?.let { "%.5f, %.5f".format(it.latitude, it.longitude) })
 
         diagnostics.text = state.diagnostics?.let { "Diagnóstico: $it" } ?: ""
@@ -135,7 +139,8 @@ class DashboardView(context: Context) : ScrollView(context) {
             "Bateria", "Autonomia", "Saúde (SoH)",
             "Velocidade", "Potência", "Odômetro",
             "Consumo médio", "Carga", "Ignição",
-            "Travas", "Temp. externa", "Localização",
+            "Travas", "Temp. externa", "Células (mín/máx)",
+            "Localização",
         )
         val TIME = SimpleDateFormat("dd/MM HH:mm", Locale("pt", "BR"))
     }
