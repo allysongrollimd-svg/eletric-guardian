@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import br.com.eletricguardian.core.BatteryState
 import br.com.eletricguardian.core.BodyState
+import br.com.eletricguardian.core.BydEventCodes
 import br.com.eletricguardian.core.ChargingMode
 import br.com.eletricguardian.core.ChargingState
 import br.com.eletricguardian.core.ClimateState
@@ -87,21 +88,21 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         speedKmh = speed.number("getCurrentSpeed"),
         acceleratorPct = speed.int("getAccelerateDeepness"),
         brakePct = speed.int("getBrakeDeepness"),
-        // Códigos de evento do Connect Pulse; confirmar no Dolphin GS com a amostra.
-        odometerKm = ev(Codes.ODOMETER) ?: statistic.number("getTotalMileageValue"),
+        // Os eventos (BydEventCodes) vêm primeiro: no Dolphin GS os getters exigem permissão.
+        odometerKm = ev(BydEventCodes.ODOMETER) ?: statistic.number("getTotalMileageValue"),
         battery = BatteryState(
-            socPct = ev(Codes.SOC_FINE) ?: ev(Codes.SOC) ?: statistic.number("getElecPercentageValue"),
-            rangeKm = ev(Codes.RANGE)?.toInt() ?: statistic.int("getElecDrivingRangeValue"),
-            // Vistos no Dolphin GS carregando: 3377 e 3384, em mV.
-            cellVoltageMinV = ev(Codes.CELL_VOLTAGE_MIN)?.let { it / 1000 },
-            cellVoltageMaxV = ev(Codes.CELL_VOLTAGE_MAX)?.let { it / 1000 },
+            socPct = BydEventCodes.socPct(::ev) ?: statistic.number("getElecPercentageValue"),
+            rangeKm = statistic.int("getElecDrivingRangeValue"),
+            packVoltageV = BydEventCodes.packVoltageV(::ev),
+            cellVoltageMinV = BydEventCodes.cellVoltageMinV(::ev),
+            cellVoltageMaxV = BydEventCodes.cellVoltageMaxV(::ev),
         ),
         energy = EnergyCounters(
             totalConsumedKwh = statistic.number("getTotalElecConValue"),
             recentConsumptionKwhPer100Km = statistic.number("getLastElecConPHMValue")?.let { it / 10.0 },
             averageConsumptionKwhPer100Km = statistic.number("getTotalElecConPHMValue")?.let { it / 10.0 },
         ),
-        charging = readCharging(),
+        charging = readCharging() ?: BydEventCodes.charging(::ev),
         climate = ac?.let {
             ClimateState(
                 acOn = ac.int("getAcStartState")?.let { it == 1 },
@@ -192,15 +193,6 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private fun Any?.number(method: String): Double? = (call(method) as? Number)?.toDouble()
 
     private fun Any?.string(method: String): String? = (call(method) as? String)?.takeIf { it.isNotBlank() }
-
-    private object Codes {
-        const val SOC = "1014|44400030"
-        const val SOC_FINE = "1014|4a505038"
-        const val ODOMETER = "1014|4a502010"
-        const val RANGE = "1009|44400008"
-        const val CELL_VOLTAGE_MIN = "1014|44600010"
-        const val CELL_VOLTAGE_MAX = "1014|44600030"
-    }
 
     private companion object {
         const val TAG = "EG-BYD"

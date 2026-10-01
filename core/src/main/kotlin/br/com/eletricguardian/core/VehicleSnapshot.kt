@@ -55,6 +55,8 @@ data class ChargingState(
     val mode: ChargingMode = ChargingMode.UNKNOWN,
     val remainingMinutes: Int? = null,
     val targetSocPct: Int? = null,
+    /** Energia acumulada na sessão de carga atual, em kWh. */
+    val energyAddedKwh: Double? = null,
 )
 
 enum class ChargingMode { AC, DC, UNKNOWN }
