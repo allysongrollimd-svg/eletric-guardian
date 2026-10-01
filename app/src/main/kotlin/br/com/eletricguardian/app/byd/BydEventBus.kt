@@ -8,6 +8,7 @@ import android.hardware.bydauto.gearbox.AbsBYDAutoGearboxListener
 import android.hardware.bydauto.instrument.AbsBYDAutoInstrumentListener
 import android.hardware.bydauto.speed.AbsBYDAutoSpeedListener
 import android.hardware.bydauto.statistic.AbsBYDAutoStatisticListener
+import android.content.Context
 import android.os.Process
 import android.util.Log
 import br.com.eletricguardian.core.BydLogParser
@@ -23,13 +24,30 @@ import java.util.concurrent.ConcurrentHashMap
  * lê o carro). O SDK registra cada evento no logcat do próprio processo
  * ("postEvent ... device_type=… event_type=… value=…"), e um app sempre pode ler
  * o próprio log; daí extraímos device_type, event_type e valor.
+ *
+ * O carro só manda um evento quando o valor muda (com a bateria cheia, SoC e
+ * autonomia param de chegar). Por isso os valores de bateria/estatística
+ * (device 1014) ficam salvos e são recarregados quando o app abre. Os de carga
+ * (1009) não, para não mostrar uma carga que já terminou.
  */
-class BydEventBus {
+class BydEventBus(context: Context) {
 
     data class Event(val code: String, val value: Double, val timestampMs: Long)
 
     /** Último valor de cada código "deviceType|eventType" (event_type em hex minúsculo). */
     val latest = ConcurrentHashMap<String, Event>()
+
+    private val saved = context.getSharedPreferences("byd-eventos", Context.MODE_PRIVATE)
+
+    init {
+        for ((code, raw) in saved.all) {
+            val parts = (raw as? String)?.split(';') ?: continue
+            val value = parts.getOrNull(0)?.toDoubleOrNull() ?: continue
+            val ts = parts.getOrNull(1)?.toLongOrNull() ?: 0L
+            latest[code] = Event(code, value, ts)
+        }
+        if (latest.isNotEmpty()) Log.i(TAG, "recarregados ${latest.size} valores salvos")
+    }
 
     private val registered = ConcurrentHashMap.newKeySet<String>()
     private val listeners = mutableListOf<Pair<Any, Any>>()
@@ -115,6 +133,9 @@ class BydEventBus {
         val previous = latest.put(e.code, e)
         // Cada código novo vai para o log, para mapearmos o que é cada um.
         if (previous == null) Log.i(TAG, "novo código ${e.code} = ${e.value}")
+        if (e.code.startsWith(PERSISTED_DEVICE) && previous?.value != e.value) {
+            saved.edit().putString(e.code, "${e.value};${e.timestampMs}").apply()
+        }
     }
 
     // Cada listener sobrescreve onDataChanged sem chamar super: a versão da BYD
@@ -147,5 +168,6 @@ class BydEventBus {
 
     private companion object {
         const val TAG = "EG-BYD"
+        const val PERSISTED_DEVICE = "1014|"
     }
 }

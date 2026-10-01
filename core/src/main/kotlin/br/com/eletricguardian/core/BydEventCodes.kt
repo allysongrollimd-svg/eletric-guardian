@@ -77,8 +77,15 @@ object BydEventCodes {
 
     fun sohPct(ev: (String) -> Double?): Double? = ev(SOH)?.takeIf { it in 1.0..100.0 }
 
-    /** Temperatura da bateria (°C): média, ou a máxima se a média não veio. */
-    fun batteryTempC(ev: (String) -> Double?): Double? = ev(BATTERY_TEMP_AVG) ?: ev(BATTERY_TEMP_MAX)
+    /**
+     * Temperatura da bateria (°C): média, ou máxima, ou mínima. O Dolphin GS mandou
+     * 72 na mínima com a bateria perto de 36 °C no Electro: tratamos como °C + 40,
+     * o deslocamento usual do CAN. Confirmar.
+     */
+    fun batteryTempC(ev: (String) -> Double?): Double? =
+        (ev(BATTERY_TEMP_AVG) ?: ev(BATTERY_TEMP_MAX) ?: ev(BATTERY_TEMP_MIN))?.let { it - BATTERY_TEMP_OFFSET }
+
+    private const val BATTERY_TEMP_OFFSET = 40.0
 
     fun rangeKm(ev: (String) -> Double?): Int? = ev(RANGE)?.toInt()
 
@@ -92,20 +99,17 @@ object BydEventCodes {
         val amps = ev(CHARGE_CURRENT)
         val energy = ev(CHARGE_ENERGY)
         if (volts == null && amps == null && energy == null) return null
-        val remaining = ev(CHARGE_REMAINING_MIN)?.toInt()?.takeIf { it in 1..6000 }
-        // O sinal da corrente não é confiável entre leituras (a 0.1.13/0.1.14 mostravam
-        // "Desconectado" carregando a 16 A): conta o módulo, exigindo tensão de carga,
-        // ou o tempo restante de carga.
-        val flowing = amps != null && abs(amps) > CHARGING_CURRENT_MIN_A && (volts ?: 0.0) > CHARGING_VOLTAGE_MIN_V
-        val charging = flowing || remaining != null
+        // Conta a corrente em módulo, exigindo tensão de carga. O tempo restante
+        // não decide: ele para de chegar quando a carga termina e ficaria velho.
+        val charging = amps != null && abs(amps) > CHARGING_CURRENT_MIN_A && (volts ?: 0.0) > CHARGING_VOLTAGE_MIN_V
         // Calculada aqui porque getChargingPower exige permissão da BYD.
-        val power = if (flowing) volts!! * abs(amps!!) / 1000 else null
+        val power = if (charging) volts!! * abs(amps!!) / 1000 else null
         return ChargingState(
             charging = charging,
             plugConnected = if (charging) true else null,
             powerKw = power,
             energyAddedKwh = energy,
-            remainingMinutes = if (charging) remaining else null,
+            remainingMinutes = if (charging) ev(CHARGE_REMAINING_MIN)?.toInt()?.takeIf { it in 1..6000 } else null,
         )
     }
 }

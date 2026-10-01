@@ -87,7 +87,7 @@ class MonitorService : Service() {
             if (snapshot != null) {
                 if (ticks++ % LOG_EVERY == 0L) {
                     Log.i(TAG, "leitura: $snapshot")
-                    (picked as? BydVehicleDataSource)?.let { Log.i(TAG, "diagnóstico: ${it.diagnostics()}") }
+                    (picked as? BydVehicleDataSource)?.let { Log.i(TAG, "diagnóstico: ${it.diagnostics().replace("\n", " | ")}") }
                 }
                 val finished = trips.onSnapshot(snapshot)
                 val diag = (picked as? BydVehicleDataSource)?.diagnostics()

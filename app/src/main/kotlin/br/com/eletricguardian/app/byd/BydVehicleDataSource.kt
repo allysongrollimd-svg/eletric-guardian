@@ -34,7 +34,7 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
 
     private val failures = ConcurrentHashMap<String, String>()
     private val denied = ConcurrentHashMap.newKeySet<String>()
-    private val events = BydEventBus()
+    private val events = BydEventBus(context)
 
     init {
         HiddenApi.exemptAll()

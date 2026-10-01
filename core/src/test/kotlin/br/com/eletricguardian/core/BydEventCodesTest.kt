@@ -32,20 +32,20 @@ class BydEventCodesTest {
     }
 
     @Test
-    fun `carga com corrente positiva ou so tempo restante`() {
+    fun `carga com corrente positiva e fim de carga`() {
         val positive = BydEventCodes.charging(mapOf("1009|44400008" to 351.0, "1009|44400018" to 16.2)::get)!!
         assertEquals(true, positive.charging)
         assertEquals(5.6862, positive.powerKw!!, 1e-9)
-        val onlyRemaining = BydEventCodes.charging(mapOf("1009|27c00018" to 18.6, "1009|44500020" to 30.0)::get)!!
-        assertEquals(true, onlyRemaining.charging)
-        assertEquals(30, onlyRemaining.remainingMinutes)
+        val ended = BydEventCodes.charging(mapOf("1009|44400008" to 357.0, "1009|44400018" to 0.4, "1009|44500020" to 1.0)::get)!!
+        assertEquals(false, ended.charging)
+        assertNull(ended.remainingMinutes)
         val idle = BydEventCodes.charging(mapOf("1009|44400008" to 0.0, "1009|44400018" to 0.0)::get)!!
         assertEquals(false, idle.charging)
     }
 
     @Test
     fun `saude e temperatura da bateria`() {
-        val ev: (String) -> Double? = mapOf("1014|44400028" to 100.0, "1014|44700020" to 36.0)::get
+        val ev: (String) -> Double? = mapOf("1014|44400028" to 100.0, "1014|44700020" to 76.0)::get
         assertEquals(100.0, BydEventCodes.sohPct(ev))
         assertEquals(36.0, BydEventCodes.batteryTempC(ev))
         assertNull(BydEventCodes.sohPct { 0.0 })
