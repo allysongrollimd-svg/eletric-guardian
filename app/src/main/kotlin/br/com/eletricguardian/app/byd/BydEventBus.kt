@@ -60,6 +60,29 @@ class BydEventBus(context: Context) {
 
     fun registeredSummary(): String = registered.sorted().joinToString(" ")
 
+    /**
+     * Segundo registro, com a lista de IDs que interessam. O SDK da BYD costuma
+     * reemitir o valor atual de cada ID no momento em que você registra com
+     * essa lista (é como o Overdrive mostra tudo com o carro parado, sem chamar
+     * getter nem permissão). Se não houver a sobrecarga de dois parâmetros ou os
+     * IDs não baterem, o registro simples acima continua recebendo as mudanças.
+     */
+    private fun requestCurrent(name: String, device: Any) {
+        val ids = CURRENT_VALUE_IDS[name] ?: return
+        val listener = newListener(name) ?: return
+        try {
+            val method = device.javaClass.methods.firstOrNull {
+                it.name == "registerListener" && it.parameterTypes.size == 2 &&
+                    it.parameterTypes[0].isInstance(listener) && it.parameterTypes[1] == IntArray::class.java
+            } ?: return
+            method.invoke(device, listener, ids)
+            listeners += device to listener
+            Log.i(TAG, "pedido de valores atuais em $name (${ids.size} IDs)")
+        } catch (t: Throwable) {
+            Log.i(TAG, "sem pedido de valores atuais em $name: ${t.message}")
+        }
+    }
+
     /** Registra um listener vazio em cada device carregado, só para receber os eventos. */
     fun register(devices: Map<String, Any?>) {
         for ((name, device) in devices) {
@@ -79,6 +102,7 @@ class BydEventBus(context: Context) {
                 listeners += device to listener
                 registered += name
                 Log.i(TAG, "listener registrado em $name")
+                requestCurrent(name, device)
             } catch (t: Throwable) {
                 Log.e(TAG, "falha ao registrar listener em $name", (t as? java.lang.reflect.InvocationTargetException)?.targetException ?: t)
             }
@@ -169,5 +193,18 @@ class BydEventBus(context: Context) {
     private companion object {
         const val TAG = "EG-BYD"
         const val PERSISTED_DEVICE = "1014|"
+
+        // IDs (event_type) para pedir o valor atual ao registrar. São os que já
+        // vimos chegar do Dolphin GS mais os equivalentes da tabela do Overdrive.
+        val CURRENT_VALUE_IDS = mapOf(
+            "statistic" to intArrayOf(
+                0x44700028, 0x4a50203e, 0x3d904010, 0x44600010, 0x44600030,
+                0x44700010, 0x44700020, 0x44700038, 0x44400028, 0x44400030,
+                0x4a505038, 0x4a502010, 0x44a00020, 0x34500018,
+            ),
+            "charging" to intArrayOf(
+                0x44400008, 0x44400018, 0x27c00018, 0x44500020,
+            ),
+        )
     }
 }
