@@ -37,6 +37,10 @@ class BydEventBus(context: Context) {
     /** Último valor de cada código "deviceType|eventType" (event_type em hex minúsculo). */
     val latest = ConcurrentHashMap<String, Event>()
 
+    init {
+        current = latest
+    }
+
     private val saved = context.getSharedPreferences("byd-eventos", Context.MODE_PRIVATE)
 
     init {
@@ -190,13 +194,18 @@ class BydEventBus(context: Context) {
         else -> null
     }
 
-    private companion object {
-        const val TAG = "EG-BYD"
-        const val PERSISTED_DEVICE = "1014|"
+    companion object {
+        /** Últimos valores do bus ativo, para o JSON do painel mostrar os códigos crus. */
+        @Volatile
+        var current: Map<String, Event>? = null
+            private set
+
+        private const val TAG = "EG-BYD"
+        private const val PERSISTED_DEVICE = "1014|"
 
         // IDs (event_type) para pedir o valor atual ao registrar. São os que já
         // vimos chegar do Dolphin GS mais os equivalentes da tabela do Overdrive.
-        val CURRENT_VALUE_IDS = mapOf(
+        private val CURRENT_VALUE_IDS = mapOf(
             "statistic" to intArrayOf(
                 0x44700028, 0x4a50203e, 0x3d904010, 0x44600010, 0x44600030,
                 0x44700010, 0x44700020, 0x44700038, 0x44400028, 0x44400030, 0x43a00028,
