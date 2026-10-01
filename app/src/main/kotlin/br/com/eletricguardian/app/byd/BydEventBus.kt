@@ -199,7 +199,7 @@ class BydEventBus(context: Context) {
         val CURRENT_VALUE_IDS = mapOf(
             "statistic" to intArrayOf(
                 0x44700028, 0x4a50203e, 0x3d904010, 0x44600010, 0x44600030,
-                0x44700010, 0x44700020, 0x44700038, 0x44400028, 0x44400030,
+                0x44700010, 0x44700020, 0x44700038, 0x44400028, 0x44400030, 0x43a00028,
                 0x4a505038, 0x4a502010, 0x44a00020, 0x34500018,
             ),
             "charging" to intArrayOf(

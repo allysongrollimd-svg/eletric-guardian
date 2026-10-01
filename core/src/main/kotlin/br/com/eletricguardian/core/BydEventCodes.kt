@@ -26,8 +26,11 @@ object BydEventCodes {
     /** Overdrive: STATISTIC_TOTAL_MILEAGE. */
     const val ODOMETER = "1014|4a502010"
 
+    /** Dolphin GS: 99 (%) com o carro parado (Electro mostrava 100%). */
+    const val SOH = "1014|43a00028"
+
     /** Overdrive: STATISTIC_BATTERY_HEALTHY_INDEX. */
-    const val SOH = "1014|44400028"
+    const val SOH_ALT = "1014|44400028"
 
     /** Overdrive: STATISTIC_LOWEST_BATTERY_TEMP. */
     const val BATTERY_TEMP_MIN = "1014|44700010"
@@ -75,7 +78,7 @@ object BydEventCodes {
     fun socPct(ev: (String) -> Double?): Double? =
         ev(SOC_TENTHS)?.let { it / 10 }?.takeIf { it in 0.0..100.0 } ?: ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
 
-    fun sohPct(ev: (String) -> Double?): Double? = ev(SOH)?.takeIf { it in 1.0..100.0 }
+    fun sohPct(ev: (String) -> Double?): Double? = (ev(SOH) ?: ev(SOH_ALT))?.takeIf { it in 1.0..100.0 }
 
     /**
      * Temperatura da bateria (°C): média, ou máxima, ou mínima. O Dolphin GS mandou
