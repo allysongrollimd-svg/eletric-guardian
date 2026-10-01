@@ -146,13 +146,62 @@
     set('foot', fresh ? '' : 'sem dados recentes do carro');
   }
 
-  function poll(){
-    fetch('/api/snapshot',{cache:'no-store'})
-      .then(function(r){return r.json();})
-      .then(render)
-      .catch(function(){ set('foot','sem conexão com o coletor'); });
+  // WebSocket para dados em tempo real
+  var ws = null;
+  var reconnectDelay = 1000;
+
+  function connectWebSocket(){
+    var wsUrl = 'ws://' + window.location.host + '/ws';
+    set('foot', 'conectando...');
+
+    try {
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = function(){
+        set('foot', '');
+        reconnectDelay = 1000;
+      };
+
+      ws.onmessage = function(event){
+        try {
+          var data = JSON.parse(event.data);
+          render(data);
+        } catch(e) {
+          console.error('Erro ao processar dados:', e);
+        }
+      };
+
+      ws.onerror = function(){
+        set('foot', 'erro na conexão');
+      };
+
+      ws.onclose = function(){
+        set('foot', 'reconectando...');
+        ws = null;
+        // Reconexão exponencial com limite
+        setTimeout(connectWebSocket, Math.min(reconnectDelay, 30000));
+        reconnectDelay *= 1.5;
+      };
+    } catch(e) {
+      set('foot', 'WebSocket não suportado');
+      // Fallback para polling se WebSocket falhar
+      fallbackToPolling();
+    }
   }
-  poll(); setInterval(poll,1000);
+
+  function fallbackToPolling(){
+    function poll(){
+      fetch('/api/snapshot',{cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(render)
+        .catch(function(){ set('foot','sem conexão com o coletor'); });
+    }
+    poll();
+    setInterval(poll, 1000);
+  }
+
+  // Inicia conexão WebSocket
+  connectWebSocket();
 </script>
 </body>
 </html>

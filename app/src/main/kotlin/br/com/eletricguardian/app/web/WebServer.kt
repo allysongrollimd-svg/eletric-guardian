@@ -27,18 +27,41 @@ class WebServer(context: Context, private val port: Int = 8731) {
     @Volatile
     private var thread: Thread? = null
 
+    @Volatile
+    private var broadcasterThread: Thread? = null
+
     /** URL pra abrir no celular (IP da rede local do carro). */
     fun url(): String = "http://${localIp() ?: "127.0.0.1"}:$port"
 
     fun start() {
         if (thread != null) return
         thread = Thread({ loop() }, "EG-Web").apply { isDaemon = true; start() }
+        startBroadcaster()
     }
 
     fun stop() {
         thread = null
+        broadcasterThread = null
         runCatching { server?.close() }
         server = null
+    }
+
+    private fun startBroadcaster() {
+        if (broadcasterThread != null) return
+        broadcasterThread = Thread({
+            Log.i(TAG, "WebSocket broadcaster iniciado")
+            while (broadcasterThread != null) {
+                try {
+                    if (WebSocketHandler.clientCount() > 0) {
+                        val json = SnapshotJson.of(Telemetry.state.value)
+                        WebSocketHandler.broadcast(json)
+                    }
+                    Thread.sleep(500) // Broadcast a cada 500ms
+                } catch (t: Throwable) {
+                    if (broadcasterThread == null) break
+                }
+            }
+        }, "EG-WS-Broadcast").apply { isDaemon = true; start() }
     }
 
     private fun loop() {
@@ -64,13 +87,29 @@ class WebServer(context: Context, private val port: Int = 8731) {
         socket.use { sock ->
             val reader = BufferedReader(InputStreamReader(sock.getInputStream()))
             val requestLine = reader.readLine() ?: return
-            // Consome o resto dos cabeçalhos.
+
+            // Lê os cabeçalhos HTTP
+            val headers = mutableMapOf<String, String>()
             while (true) {
                 val line = reader.readLine() ?: break
                 if (line.isEmpty()) break
+                val colonIndex = line.indexOf(':')
+                if (colonIndex > 0) {
+                    val key = line.substring(0, colonIndex).trim().lowercase()
+                    val value = line.substring(colonIndex + 1).trim()
+                    headers[key] = value
+                }
             }
+
             val path = requestLine.split(' ').getOrNull(1)?.substringBefore('?') ?: "/"
             val out = sock.getOutputStream()
+
+            // Verifica se é um WebSocket upgrade
+            if (path == "/ws" && headers["upgrade"]?.lowercase() == "websocket") {
+                WebSocketHandler.handleUpgrade(socket, reader, headers)
+                return@use // Socket será gerenciado pelo WebSocketHandler
+            }
+
             when (path) {
                 "/", "/index.html" -> respondAsset(out, "dashboard.html", "text/html; charset=utf-8")
                 "/api/snapshot" -> respond(out, "200 OK", "application/json; charset=utf-8", SnapshotJson.of(Telemetry.state.value).toByteArray())
