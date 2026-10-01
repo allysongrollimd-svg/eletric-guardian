@@ -9,7 +9,10 @@ import br.com.eletricguardian.core.ChargingMode
 import br.com.eletricguardian.core.ChargingState
 import br.com.eletricguardian.core.ClimateState
 import br.com.eletricguardian.core.EnergyCounters
+import br.com.eletricguardian.core.EnergyModeState
+import br.com.eletricguardian.core.MotorTelemetry
 import br.com.eletricguardian.core.PowerState
+import br.com.eletricguardian.core.TyreState
 import br.com.eletricguardian.core.VehicleDataSource
 import br.com.eletricguardian.core.VehicleIdentity
 import br.com.eletricguardian.core.VehicleSnapshot
@@ -67,6 +70,11 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private val engine = device(context, "engine.BYDAutoEngineDevice")
     private val energy = device(context, "energy.BYDAutoEnergyDevice")
 
+    // Armazenamento dos dados capturados pelos listeners adicionais
+    private val motorData = ConcurrentHashMap<String, Int>()
+    private val tyreData = ConcurrentHashMap<String, Number>()
+    private val energyModeData = ConcurrentHashMap<String, Int>()
+
     init {
         events.register(
             mapOf(
@@ -92,31 +100,83 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         // CollectData: telemetria dos motores (tensão, corrente, temperatura, RPM, torque)
         AdditionalListeners.registerCollectDataListener(collectData) { name, args ->
             Log.d(TAG, "CollectData: $name ${args.contentToString()}")
-            // TODO: armazenar valores para leitura
+            when (name) {
+                "onMotorMCUGeneratrixVolt" -> {
+                    motorData["frontVoltage"] = args.getOrNull(0) as? Int ?: return@registerCollectDataListener
+                    motorData["rearVoltage"] = args.getOrNull(1) as? Int ?: return@registerCollectDataListener
+                }
+                "onMotorMCUGeneratrixCurrent" -> {
+                    motorData["frontCurrent"] = args.getOrNull(0) as? Int ?: return@registerCollectDataListener
+                    motorData["rearCurrent"] = args.getOrNull(1) as? Int ?: return@registerCollectDataListener
+                }
+                "onDriverMotorTemperature" -> {
+                    motorData["frontTemp"] = args.getOrNull(0) as? Int ?: return@registerCollectDataListener
+                    motorData["rearTemp"] = args.getOrNull(1) as? Int ?: return@registerCollectDataListener
+                }
+                "onDriverMotorSpeed" -> {
+                    motorData["frontRpm"] = args.getOrNull(0) as? Int ?: return@registerCollectDataListener
+                    motorData["rearRpm"] = args.getOrNull(1) as? Int ?: return@registerCollectDataListener
+                }
+                "onDriverMotorTorque" -> {
+                    motorData["frontTorque"] = args.getOrNull(0) as? Int ?: return@registerCollectDataListener
+                    motorData["rearTorque"] = args.getOrNull(1) as? Int ?: return@registerCollectDataListener
+                }
+            }
         }
 
-        // Tyre: pressão e temperatura dos pneus
+        // Tyre: pressão e temperatura dos pneus (wheel: 0=FL, 1=FR, 2=RL, 3=RR)
         AdditionalListeners.registerTyreListener(tyre) { name, args ->
             Log.d(TAG, "Tyre: $name ${args.contentToString()}")
-            // TODO: armazenar valores para leitura
+            val wheel = args.getOrNull(0) as? Int ?: return@registerTyreListener
+            val wheelKey = when (wheel) {
+                0 -> "FL"
+                1 -> "FR"
+                2 -> "RL"
+                3 -> "RR"
+                else -> return@registerTyreListener
+            }
+            when (name) {
+                "onTyrePressureValueByTypeChanged" -> {
+                    val pressure = args.getOrNull(1) as? Number ?: return@registerTyreListener
+                    tyreData["pressure$wheelKey"] = pressure
+                }
+                "onTyreTemperatureValueChanged" -> {
+                    val temp = args.getOrNull(1) as? Int ?: return@registerTyreListener
+                    tyreData["temp$wheelKey"] = temp
+                }
+            }
         }
 
         // Engine: motor ICE (para PHEVs)
         AdditionalListeners.registerEngineListener(engine) { name, args ->
             Log.d(TAG, "Engine: $name ${args.contentToString()}")
-            // TODO: armazenar valores para leitura
         }
 
         // Energy: modos de energia e operação
         AdditionalListeners.registerEnergyListener(energy) { name, args ->
             Log.d(TAG, "Energy: $name ${args.contentToString()}")
-            // TODO: armazenar valores para leitura
+            val value = args.getOrNull(0) as? Int ?: return@registerEnergyListener
+            when (name) {
+                "onEnergyModeChanged" -> energyModeData["energyMode"] = value
+                "onOperationModeChanged" -> energyModeData["operationMode"] = value
+                "onRoadSurfaceChanged" -> energyModeData["roadSurface"] = value
+                "oniTACModeChanged" -> energyModeData["iTacMode"] = value
+            }
         }
 
-        // Instrument: potência de carga externa, temperatura externa
+        // Instrument: potência de carga externa, temperatura externa, modo sport
         AdditionalListeners.registerInstrumentListener(instrument) { name, args ->
             Log.d(TAG, "Instrument adicional: $name ${args.contentToString()}")
-            // TODO: armazenar valores para leitura
+            when (name) {
+                "onSportModeStateChanged" -> {
+                    val state = args.getOrNull(0) as? Int ?: return@registerInstrumentListener
+                    energyModeData["sportMode"] = state
+                }
+                "onOutCarTemperatureChanged" -> {
+                    val tempC = args.getOrNull(0) as? Int ?: return@registerInstrumentListener
+                    tyreData["outsideTempC"] = tempC
+                }
+            }
         }
     }
 
@@ -192,6 +252,7 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
             ClimateState(
                 acOn = ac.int("getAcStartState")?.let { it == 1 },
                 cabinTempC = ac.int("getTemprature", 0)?.let { it / 2.0 },
+                outsideTempC = tyreData["outsideTempC"]?.toDouble(),
             )
         },
         body = body?.let {
@@ -202,6 +263,9 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
                 alarmArmed = body.int("getAlarmState")?.let { it == 1 },
             )
         },
+        tyres = readTyres(),
+        motors = readMotors(),
+        energyMode = readEnergyMode(),
         vehicle = VehicleIdentity(
             brand = "BYD",
             model = body.string("getAutoModelName"),
@@ -232,6 +296,47 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         val states = (0..3).map { body.int("getDoorLockStatus", it) ?: return null }
         // Convenção do Connect Pulse: 0 = porta travada. Confirmar no Dolphin GS.
         return states.all { it == 0 }
+    }
+
+    private fun readTyres(): TyreState? {
+        if (tyreData.isEmpty()) return null
+        return TyreState(
+            pressureFrontLeft = tyreData["pressureFL"]?.toDouble(),
+            pressureFrontRight = tyreData["pressureFR"]?.toDouble(),
+            pressureRearLeft = tyreData["pressureRL"]?.toDouble(),
+            pressureRearRight = tyreData["pressureRR"]?.toDouble(),
+            tempFrontLeft = tyreData["tempFL"]?.toInt(),
+            tempFrontRight = tyreData["tempFR"]?.toInt(),
+            tempRearLeft = tyreData["tempRL"]?.toInt(),
+            tempRearRight = tyreData["tempRR"]?.toInt(),
+        )
+    }
+
+    private fun readMotors(): MotorTelemetry? {
+        if (motorData.isEmpty()) return null
+        return MotorTelemetry(
+            frontMotorVoltageV = motorData["frontVoltage"],
+            rearMotorVoltageV = motorData["rearVoltage"],
+            frontMotorCurrentA = motorData["frontCurrent"],
+            rearMotorCurrentA = motorData["rearCurrent"],
+            frontMotorTempC = motorData["frontTemp"],
+            rearMotorTempC = motorData["rearTemp"],
+            frontMotorRpm = motorData["frontRpm"],
+            rearMotorRpm = motorData["rearRpm"],
+            frontMotorTorqueNm = motorData["frontTorque"],
+            rearMotorTorqueNm = motorData["rearTorque"],
+        )
+    }
+
+    private fun readEnergyMode(): EnergyModeState? {
+        if (energyModeData.isEmpty()) return null
+        return EnergyModeState(
+            energyMode = energyModeData["energyMode"],
+            operationMode = energyModeData["operationMode"],
+            roadSurface = energyModeData["roadSurface"],
+            iTacMode = energyModeData["iTacMode"],
+            sportMode = energyModeData["sportMode"],
+        )
     }
 
     private fun mapPower(v: Int) = when (v) {

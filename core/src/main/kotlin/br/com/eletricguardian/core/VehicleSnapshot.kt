@@ -20,6 +20,8 @@ data class VehicleSnapshot(
     val climate: ClimateState? = null,
     val body: BodyState? = null,
     val tyres: TyreState? = null,
+    val motors: MotorTelemetry? = null,
+    val energyMode: EnergyModeState? = null,
     val location: GeoPoint? = null,
     val vehicle: VehicleIdentity? = null,
 )
@@ -78,6 +80,31 @@ data class TyreState(
     val pressureFrontRight: Double? = null,
     val pressureRearLeft: Double? = null,
     val pressureRearRight: Double? = null,
+    val tempFrontLeft: Int? = null,
+    val tempFrontRight: Int? = null,
+    val tempRearLeft: Int? = null,
+    val tempRearRight: Int? = null,
+)
+
+data class MotorTelemetry(
+    val frontMotorVoltageV: Int? = null,
+    val rearMotorVoltageV: Int? = null,
+    val frontMotorCurrentA: Int? = null,
+    val rearMotorCurrentA: Int? = null,
+    val frontMotorTempC: Int? = null,
+    val rearMotorTempC: Int? = null,
+    val frontMotorRpm: Int? = null,
+    val rearMotorRpm: Int? = null,
+    val frontMotorTorqueNm: Int? = null,
+    val rearMotorTorqueNm: Int? = null,
+)
+
+data class EnergyModeState(
+    val energyMode: Int? = null,
+    val operationMode: Int? = null,
+    val roadSurface: Int? = null,
+    val iTacMode: Int? = null,
+    val sportMode: Int? = null,
 )
 
 data class GeoPoint(
