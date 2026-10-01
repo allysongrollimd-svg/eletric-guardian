@@ -9,12 +9,7 @@ package br.com.eletricguardian.core
  * app de referência e ainda não apareceram no Dolphin GS.
  */
 object BydEventCodes {
-    // 1009|44500020 veio com 50 enquanto o app da BYD mostrava 90%: não é o SoC.
-
-    /**
-     * Dolphin GS, candidato: 894 (décimos de %) carregando, pouco antes de o
-     * Electro mostrar 90,6%. Confirmar comparando com o Electro.
-     */
+    /** Dolphin GS: 894 → 913 (décimos de %) carregando; o app da BYD mostrava 90%. */
     const val SOC_TENTHS = "1014|44700028"
 
     /** Connect Pulse. */
@@ -26,8 +21,11 @@ object BydEventCodes {
     /** Connect Pulse. */
     const val ODOMETER = "1014|4a502010"
 
-    /** Dolphin GS: 364 (V). O código 1014|3d904010 trouxe o mesmo valor. */
-    const val PACK_VOLTAGE = "1014|4a50203e"
+    /**
+     * Dolphin GS: 364 → 372 (km) subindo com a carga; o app da BYD mostrava 367.
+     * O código 1014|3d904010 traz o mesmo valor.
+     */
+    const val RANGE = "1014|4a50203e"
 
     /** Dolphin GS: 3377..3380 (mV). */
     const val CELL_VOLTAGE_MIN = "1014|44600010"
@@ -41,8 +39,14 @@ object BydEventCodes {
     /** Dolphin GS: -16,8 (A, negativo = entrando na bateria). O Connect Pulse usava como velocidade. */
     const val CHARGE_CURRENT = "1009|44400018"
 
-    /** Dolphin GS: 16,0 → 17,1 subindo durante a carga (kWh). */
+    /** Dolphin GS: 16,0 → 17,5 subindo durante a carga (kWh). */
     const val CHARGE_ENERGY = "1009|27c00018"
+
+    /**
+     * Dolphin GS, candidato: 50 → 43 → 41 caindo durante a carga, quando o app
+     * da BYD mostrava 47 min e o Electro 44 min restantes.
+     */
+    const val CHARGE_REMAINING_MIN = "1009|44500020"
 
     /** Corrente abaixo disso (A, em módulo) conta como "não carregando". */
     private const val CHARGING_CURRENT_MIN_A = 0.5
@@ -50,7 +54,7 @@ object BydEventCodes {
     fun socPct(ev: (String) -> Double?): Double? =
         ev(SOC_TENTHS)?.let { it / 10 }?.takeIf { it in 0.0..100.0 } ?: ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
 
-    fun packVoltageV(ev: (String) -> Double?): Double? = ev(PACK_VOLTAGE)
+    fun rangeKm(ev: (String) -> Double?): Int? = ev(RANGE)?.toInt()
 
     fun cellVoltageMinV(ev: (String) -> Double?): Double? = ev(CELL_VOLTAGE_MIN)?.let { it / 1000 }
 
@@ -70,6 +74,7 @@ object BydEventCodes {
             plugConnected = if (charging) true else null,
             powerKw = power,
             energyAddedKwh = energy,
+            remainingMinutes = if (charging) ev(CHARGE_REMAINING_MIN)?.toInt() else null,
         )
     }
 }

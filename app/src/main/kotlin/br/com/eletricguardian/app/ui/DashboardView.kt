@@ -70,7 +70,8 @@ class DashboardView(context: Context) : ScrollView(context) {
                 c.charging -> "Carregando" +
                     (if (c.mode != ChargingMode.UNKNOWN) " ${c.mode}" else "") +
                     (c.powerKw?.let { " · %.1f kW".format(it) } ?: "") +
-                    (c.energyAddedKwh?.let { " · +%.1f kWh".format(it) } ?: "")
+                    (c.energyAddedKwh?.let { " · +%.1f kWh".format(it) } ?: "") +
+                    (c.remainingMinutes?.let { " · faltam $it min" } ?: "")
                 c.plugConnected == true -> "Plugado"
                 else -> "Desconectado"
             }
@@ -85,7 +86,6 @@ class DashboardView(context: Context) : ScrollView(context) {
         })
         set("Travas", s?.body?.locked?.let { if (it) "Travado" else "Destravado" })
         set("Temp. externa", s?.climate?.outsideTempC?.let { "%.0f °C".format(it) })
-        set("Tensão do pack", s?.battery?.packVoltageV?.let { "%.0f V".format(it) })
         set("Células (mín/máx)", s?.battery?.let { b ->
             if (b.cellVoltageMinV == null && b.cellVoltageMaxV == null) null
             else "%.3f / %.3f V".format(b.cellVoltageMinV ?: Double.NaN, b.cellVoltageMaxV ?: Double.NaN)
@@ -141,7 +141,7 @@ class DashboardView(context: Context) : ScrollView(context) {
             "Bateria", "Autonomia", "Saúde (SoH)",
             "Velocidade", "Potência", "Odômetro",
             "Consumo médio", "Carga", "Ignição",
-            "Travas", "Temp. externa", "Tensão do pack",
+            "Travas", "Temp. externa",
             "Células (mín/máx)", "Localização",
         )
         val TIME = SimpleDateFormat("dd/MM HH:mm", Locale("pt", "BR"))

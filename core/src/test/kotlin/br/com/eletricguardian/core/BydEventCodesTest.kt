@@ -23,10 +23,10 @@ class BydEventCodesTest {
 
     @Test
     fun `bateria do Dolphin GS`() {
-        // 1009|44500020 = 50 não é o SoC (o app da BYD mostrava 90%).
+        // 1009|44500020 = 50 não é o SoC (o app da BYD mostrava 90%); é o tempo restante de carga.
         assertEquals(89.4, BydEventCodes.socPct(ev)!!, 1e-9)
         assertNull(BydEventCodes.socPct { if (it == "1009|44500020") 50.0 else null })
-        assertEquals(364.0, BydEventCodes.packVoltageV(ev))
+        assertEquals(364, BydEventCodes.rangeKm(ev))
         assertEquals(3.380, BydEventCodes.cellVoltageMinV(ev)!!, 1e-9)
         assertEquals(3.387, BydEventCodes.cellVoltageMaxV(ev)!!, 1e-9)
     }
@@ -38,6 +38,7 @@ class BydEventCodesTest {
         assertEquals(true, c.charging)
         assertEquals(5.8968, c.powerKw!!, 1e-9)
         assertEquals(17.096, c.energyAddedKwh)
+        assertEquals(50, c.remainingMinutes)
     }
 
     @Test
