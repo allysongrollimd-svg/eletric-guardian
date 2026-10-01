@@ -15,22 +15,38 @@ object BydEventCodes {
     /** Connect Pulse. */
     const val SOC_ALT = "1014|44400030"
 
-    /** Connect Pulse. */
+    /** Connect Pulse; Overdrive: STATISTIC_ELEC_PERCENTAGE. */
     const val SOC_FINE_ALT = "1014|4a505038"
 
-    /** Connect Pulse. */
+    // Nomes abaixo marcados "Overdrive" vêm da tabela de IDs do app Overdrive
+    // (STATISTIC_*); escala ainda a confirmar no Dolphin GS.
+
+    /** Overdrive: STATISTIC_TOTAL_MILEAGE. */
     const val ODOMETER = "1014|4a502010"
 
+    /** Overdrive: STATISTIC_BATTERY_HEALTHY_INDEX. */
+    const val SOH = "1014|44400028"
+
+    /** Overdrive: STATISTIC_LOWEST_BATTERY_TEMP. */
+    const val BATTERY_TEMP_MIN = "1014|44700010"
+
+    /** Overdrive: STATISTIC_HIGHEST_BATTERY_TEMP. */
+    const val BATTERY_TEMP_MAX = "1014|44700020"
+
+    /** Overdrive: STATISTIC_AVERAGE_BATTERY_TEMP. */
+    const val BATTERY_TEMP_AVG = "1014|44700038"
+
     /**
-     * Dolphin GS: 364 → 372 (km) subindo com a carga; o app da BYD mostrava 367.
+     * Overdrive: STATISTIC_ELEC_DRIVING_RANGE. Dolphin GS: 364 → 372 (km)
+     * subindo com a carga; o app da BYD mostrava 367.
      * O código 1014|3d904010 traz o mesmo valor.
      */
     const val RANGE = "1014|4a50203e"
 
-    /** Dolphin GS: 3377..3380 (mV). */
+    /** Overdrive: STATISTIC_LOWEST_BATTERY_VOLTAGE. Dolphin GS: 3377..3382 (mV). */
     const val CELL_VOLTAGE_MIN = "1014|44600010"
 
-    /** Dolphin GS: 3384..3387 (mV). */
+    /** Overdrive: STATISTIC_HIGHEST_BATTERY_VOLTAGE. Dolphin GS: 3384..3391 (mV). */
     const val CELL_VOLTAGE_MAX = "1014|44600030"
 
     /** Dolphin GS: 351 (V) carregando. O Connect Pulse usava este código como autonomia. */
@@ -39,7 +55,7 @@ object BydEventCodes {
     /** Dolphin GS: -16,8 (A, negativo = entrando na bateria). O Connect Pulse usava como velocidade. */
     const val CHARGE_CURRENT = "1009|44400018"
 
-    /** Dolphin GS: 16,0 → 17,5 subindo durante a carga (kWh). */
+    /** Overdrive: CHARGING_CHARGE_CAPACITY. Dolphin GS: 16,0 → 17,5 subindo durante a carga (kWh). */
     const val CHARGE_ENERGY = "1009|27c00018"
 
     /**
@@ -53,6 +69,11 @@ object BydEventCodes {
 
     fun socPct(ev: (String) -> Double?): Double? =
         ev(SOC_TENTHS)?.let { it / 10 }?.takeIf { it in 0.0..100.0 } ?: ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
+
+    fun sohPct(ev: (String) -> Double?): Double? = ev(SOH)?.takeIf { it in 1.0..100.0 }
+
+    /** Temperatura da bateria (°C): média, ou a máxima se a média não veio. */
+    fun batteryTempC(ev: (String) -> Double?): Double? = ev(BATTERY_TEMP_AVG) ?: ev(BATTERY_TEMP_MAX)
 
     fun rangeKm(ev: (String) -> Double?): Int? = ev(RANGE)?.toInt()
 

@@ -90,6 +90,7 @@ class DashboardView(context: Context) : ScrollView(context) {
             if (b.cellVoltageMinV == null && b.cellVoltageMaxV == null) null
             else "%.3f / %.3f V".format(b.cellVoltageMinV ?: Double.NaN, b.cellVoltageMaxV ?: Double.NaN)
         })
+        set("Temp. bateria", s?.battery?.cellTempMaxC?.let { "%.0f °C".format(it) })
         set("Localização", s?.location?.let { "%.5f, %.5f".format(it.latitude, it.longitude) })
 
         diagnostics.text = state.diagnostics?.let { "Diagnóstico: $it" } ?: ""
@@ -141,7 +142,7 @@ class DashboardView(context: Context) : ScrollView(context) {
             "Bateria", "Autonomia", "Saúde (SoH)",
             "Velocidade", "Potência", "Odômetro",
             "Consumo médio", "Carga", "Ignição",
-            "Travas", "Temp. externa",
+            "Travas", "Temp. externa", "Temp. bateria",
             "Células (mín/máx)", "Localização",
         )
         val TIME = SimpleDateFormat("dd/MM HH:mm", Locale("pt", "BR"))

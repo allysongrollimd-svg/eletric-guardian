@@ -32,6 +32,14 @@ class BydEventCodesTest {
     }
 
     @Test
+    fun `saude e temperatura da bateria`() {
+        val ev: (String) -> Double? = mapOf("1014|44400028" to 100.0, "1014|44700020" to 36.0)::get
+        assertEquals(100.0, BydEventCodes.sohPct(ev))
+        assertEquals(36.0, BydEventCodes.batteryTempC(ev))
+        assertNull(BydEventCodes.sohPct { 0.0 })
+    }
+
+    @Test
     fun `carga calcula potencia por tensao vezes corrente`() {
         val c = BydEventCodes.charging(ev)
         assertNotNull(c)

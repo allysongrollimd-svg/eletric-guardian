@@ -92,6 +92,8 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         odometerKm = ev(BydEventCodes.ODOMETER) ?: statistic.number("getTotalMileageValue"),
         battery = BatteryState(
             socPct = BydEventCodes.socPct(::ev) ?: statistic.number("getElecPercentageValue"),
+            sohPct = BydEventCodes.sohPct(::ev),
+            cellTempMaxC = BydEventCodes.batteryTempC(::ev),
             rangeKm = BydEventCodes.rangeKm(::ev) ?: statistic.int("getElecDrivingRangeValue"),
             cellVoltageMinV = BydEventCodes.cellVoltageMinV(::ev),
             cellVoltageMaxV = BydEventCodes.cellVoltageMaxV(::ev),
