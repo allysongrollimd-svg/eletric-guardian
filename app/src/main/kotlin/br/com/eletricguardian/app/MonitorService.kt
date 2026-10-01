@@ -12,6 +12,7 @@ import android.os.IBinder
 import android.util.Log
 import br.com.eletricguardian.app.byd.BydVehicleDataSource
 import br.com.eletricguardian.app.byd.MainLooperGuard
+import br.com.eletricguardian.app.cloud.CloudUploader
 import br.com.eletricguardian.app.location.LocationSource
 import br.com.eletricguardian.app.web.WebServer
 import br.com.eletricguardian.core.MockVehicleDataSource
@@ -40,6 +41,7 @@ class MonitorService : Service() {
     private lateinit var candidates: List<VehicleDataSource>
     private val trips = TripTracker()
     private lateinit var web: WebServer
+    private lateinit var cloud: CloudUploader
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -56,6 +58,8 @@ class MonitorService : Service() {
         web = WebServer(applicationContext)
         web.start()
         Telemetry.update { it.copy(webUrl = web.url()) }
+        cloud = CloudUploader(applicationContext)
+        cloud.start(scope)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -67,6 +71,7 @@ class MonitorService : Service() {
     override fun onDestroy() {
         scope.cancel()
         web.stop()
+        cloud.stop()
         location.stop()
         trips.flush()?.let { trip -> Telemetry.update { it.copy(lastTrip = trip, tripInProgress = false) } }
         source?.close()
