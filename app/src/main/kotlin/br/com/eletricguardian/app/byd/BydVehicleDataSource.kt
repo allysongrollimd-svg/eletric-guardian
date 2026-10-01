@@ -36,6 +36,14 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private val denied = ConcurrentHashMap.newKeySet<String>()
     private val events = BydEventBus(context)
 
+    // Leitura pelo provider com.byd.car.server (ICarPropertyService), como o
+    // Overdrive: pega velocidade, marcha, odômetro, 12V e temperatura externa
+    // que os getters do SDK barram por permissão de assinatura.
+    private val provider = ProviderReader(context)
+
+    @Volatile
+    private var providerSwept = false
+
     init {
         HiddenApi.exemptAll()
     }
@@ -56,9 +64,17 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
             ),
         )
         events.startLogReader()
+        // Varredura de descoberta do provider, uma vez, em segundo plano: não
+        // pode rodar no thread principal (IPC) nem segurar o construtor.
+        Thread({
+            runCatching { provider.sweep(BydProperties.ALL) }
+                .onFailure { Log.w(TAG, "varredura do provider falhou", it) }
+            providerSwept = true
+        }, "EG-ProviderSweep").apply { isDaemon = true; start() }
     }
 
-    override fun isAvailable() = listOf(statistic, speed, charging, body, gearbox, instrument).any { it != null }
+    override fun isAvailable() =
+        listOf(statistic, speed, charging, body, gearbox, instrument).any { it != null } || provider.isAvailable()
 
     override fun close() = events.stop()
 
@@ -73,8 +89,13 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         } else {
             codes.joinToString("  ") { "${it.code}=${fmt(it.value)}" }
         }
+        val prov = if (!providerSwept) {
+            "provider: varrendo…"
+        } else {
+            "provider ${if (provider.isAvailable()) "✓" else "✗"} (${provider.resolved.size}): ${provider.diagnostics()}"
+        }
         return "$loaded\nlisteners: ${events.registeredSummary().ifEmpty { "nenhum" }}\n" +
-            "eventos (${codes.size}): $raw"
+            "eventos (${codes.size}): $raw\n$prov"
     }
 
     private fun fmt(v: Double) = if (v == Math.floor(v) && Math.abs(v) < 1e9) v.toLong().toString() else "%.3f".format(v)
@@ -89,7 +110,10 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         acceleratorPct = speed.int("getAccelerateDeepness"),
         brakePct = speed.int("getBrakeDeepness"),
         // Os eventos (BydEventCodes) vêm primeiro: no Dolphin GS os getters exigem permissão.
-        odometerKm = ev(BydEventCodes.ODOMETER) ?: statistic.number("getTotalMileageValue"),
+        // Fallback pelo provider (não depende de andar para ter o valor atual).
+        odometerKm = ev(BydEventCodes.ODOMETER)
+            ?: provider.readD("Statistic.STATISTIC_TOTAL_MILEAGE")
+            ?: statistic.number("getTotalMileageValue"),
         battery = BatteryState(
             socPct = BydEventCodes.socPct(::ev) ?: statistic.number("getElecPercentageValue"),
             sohPct = BydEventCodes.sohPct(::ev),
