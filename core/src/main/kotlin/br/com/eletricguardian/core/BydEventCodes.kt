@@ -55,11 +55,11 @@ object BydEventCodes {
     const val CELL_VOLTAGE_MAX = "1014|44600030"
 
     /**
-     * Tensão do pack em décimos de V. Dolphin GS: 5003 parado (500,3 V). Não está
-     * na tabela de IDs do Overdrive, mas o código dele trata este evento assim:
-     * aceita 200..900 V e divide por 3,2 V (LFP) para estimar o nº de células.
+     * Fica em 5002..5006 tanto parado quanto carregando, enquanto a tensão real do
+     * pack (1009|44400008) marcou 351 V na carga. Não é a tensão do pack; o
+     * significado ainda é desconhecido, então não aparece no painel.
      */
-    const val PACK_VOLTAGE_DECIV = "1014|44a00020"
+    const val UNKNOWN_44A00020 = "1014|44a00020"
 
     /** Dolphin GS: 351 (V) carregando. O Connect Pulse usava este código como autonomia. */
     const val CHARGE_VOLTAGE = "1009|44400008"
@@ -102,8 +102,12 @@ object BydEventCodes {
 
     fun rangeKm(ev: (String) -> Double?): Int? = ev(RANGE)?.toInt()
 
+    /**
+     * Tensão do pack (V). O Dolphin GS só manda a tensão real (1009|44400008) pelo
+     * módulo de carga; parado e fora da tomada fica nulo em vez de um valor errado.
+     */
     fun packVoltageV(ev: (String) -> Double?): Double? =
-        ev(PACK_VOLTAGE_DECIV)?.let { it / 10 }?.takeIf { it in 200.0..900.0 }
+        ev(CHARGE_VOLTAGE)?.takeIf { it in 200.0..900.0 }
 
     fun cellVoltageMinV(ev: (String) -> Double?): Double? = ev(CELL_VOLTAGE_MIN)?.let { it / 1000 }
 

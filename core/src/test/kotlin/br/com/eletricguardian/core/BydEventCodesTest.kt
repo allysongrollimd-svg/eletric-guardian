@@ -29,6 +29,7 @@ class BydEventCodesTest {
         assertEquals(364, BydEventCodes.rangeKm(ev))
         assertEquals(3.380, BydEventCodes.cellVoltageMinV(ev)!!, 1e-9)
         assertEquals(3.387, BydEventCodes.cellVoltageMaxV(ev)!!, 1e-9)
+        assertEquals(351.0, BydEventCodes.packVoltageV(ev)!!, 1e-9)
     }
 
     @Test
@@ -50,7 +51,8 @@ class BydEventCodesTest {
             "1014|44a00020" to 5003.0,
             "1014|44600010" to 3327.0,
         )::get
-        assertEquals(500.3, BydEventCodes.packVoltageV(parked)!!, 1e-9)
+        // 44a00020 = 5003 não é a tensão do pack (ver BydEventCodes.UNKNOWN_44A00020).
+        assertNull(BydEventCodes.packVoltageV(parked))
         assertEquals(3.327, BydEventCodes.cellVoltageMinV(parked)!!, 1e-9)
         // Sem tensão de carga e com 0,4 A: não está carregando.
         assertEquals(false, BydEventCodes.charging(parked)!!.charging)
