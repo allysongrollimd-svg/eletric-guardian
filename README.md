@@ -27,4 +27,5 @@ grava as câmeras e avisa o dono no celular.
 ./gradlew :app:assembleDebug  # APK em app/build/outputs/apk/debug/
 ```
 
-O GitHub Actions roda os dois a cada push e publica o APK como artefato.
+O GitHub Actions roda os dois a cada atualização e publica o APK, sem zip, em
+https://github.com/allysongrollimd-svg/eletric-guardian/releases/download/teste/eletric-guardian.apk
