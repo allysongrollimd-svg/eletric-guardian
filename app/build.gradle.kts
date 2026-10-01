@@ -19,6 +19,17 @@ android {
         versionName = "0.1.0"
     }
 
+    signingConfigs {
+        // Chave de debug fixa no repositório: assim todo APK de teste (local ou do
+        // GitHub) atualiza por cima do anterior, sem desinstalar e perder dados.
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
