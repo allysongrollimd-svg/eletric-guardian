@@ -92,7 +92,7 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         val prov = if (!providerSwept) {
             "provider: varrendo…"
         } else {
-            "provider ${if (provider.isAvailable()) "✓" else "✗"} (${provider.resolved.size}): ${provider.diagnostics()}"
+            "provider ${if (provider.isAvailable()) "✓" else "✗"} rota=${provider.route} (${provider.resolved.size}): ${provider.diagnostics()}"
         }
         return "$loaded\nlisteners: ${events.registeredSummary().ifEmpty { "nenhum" }}\n" +
             "eventos (${codes.size}): $raw\n$prov"
