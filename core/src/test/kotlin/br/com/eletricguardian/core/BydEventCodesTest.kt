@@ -65,6 +65,8 @@ class BydEventCodesTest {
         assertEquals(100.0, BydEventCodes.sohPct(ev))
         assertEquals(36.0, BydEventCodes.batteryTempC(ev))
         assertNull(BydEventCodes.sohPct { 0.0 })
+        // 43a00028 = 81 não é a saúde.
+        assertNull(BydEventCodes.sohPct(mapOf("1014|43a00028" to 81.0)::get))
     }
 
     @Test
