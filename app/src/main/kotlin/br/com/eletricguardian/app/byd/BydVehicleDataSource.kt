@@ -61,6 +61,12 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     private val gearbox = device(context, "gearbox.BYDAutoGearboxDevice")
     private val instrument = device(context, "instrument.BYDAutoInstrumentDevice")
 
+    // Dispositivos adicionais para capturar todos os dados que o Overdrive lê
+    private val collectData = device(context, "collectdata.BYDAutoCollectDataDevice")
+    private val tyre = device(context, "tyre.BYDAutoTyreDevice")
+    private val engine = device(context, "engine.BYDAutoEngineDevice")
+    private val energy = device(context, "energy.BYDAutoEnergyDevice")
+
     init {
         events.register(
             mapOf(
@@ -69,6 +75,10 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
             ),
         )
         events.startLogReader()
+
+        // Registra listeners adicionais para capturar todos os dados que o Overdrive lê
+        registerAdditionalListeners()
+
         // Varredura de descoberta do provider, uma vez, em segundo plano: não
         // pode rodar no thread principal (IPC) nem segurar o construtor.
         Thread({
@@ -78,8 +88,41 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
         }, "EG-ProviderSweep").apply { isDaemon = true; start() }
     }
 
+    private fun registerAdditionalListeners() {
+        // CollectData: telemetria dos motores (tensão, corrente, temperatura, RPM, torque)
+        AdditionalListeners.registerCollectDataListener(collectData) { name, args ->
+            Log.d(TAG, "CollectData: $name ${args.contentToString()}")
+            // TODO: armazenar valores para leitura
+        }
+
+        // Tyre: pressão e temperatura dos pneus
+        AdditionalListeners.registerTyreListener(tyre) { name, args ->
+            Log.d(TAG, "Tyre: $name ${args.contentToString()}")
+            // TODO: armazenar valores para leitura
+        }
+
+        // Engine: motor ICE (para PHEVs)
+        AdditionalListeners.registerEngineListener(engine) { name, args ->
+            Log.d(TAG, "Engine: $name ${args.contentToString()}")
+            // TODO: armazenar valores para leitura
+        }
+
+        // Energy: modos de energia e operação
+        AdditionalListeners.registerEnergyListener(energy) { name, args ->
+            Log.d(TAG, "Energy: $name ${args.contentToString()}")
+            // TODO: armazenar valores para leitura
+        }
+
+        // Instrument: potência de carga externa, temperatura externa
+        AdditionalListeners.registerInstrumentListener(instrument) { name, args ->
+            Log.d(TAG, "Instrument adicional: $name ${args.contentToString()}")
+            // TODO: armazenar valores para leitura
+        }
+    }
+
     override fun isAvailable() =
-        listOf(statistic, speed, charging, body, gearbox, instrument).any { it != null } || provider.isAvailable()
+        listOf(statistic, speed, charging, body, gearbox, instrument, collectData, tyre, engine, energy)
+            .any { it != null } || provider.isAvailable()
 
     override fun close() = events.stop()
 
@@ -87,6 +130,7 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
     fun diagnostics(): String {
         val loaded = listOf(
             "statistic" to statistic, "speed" to speed, "charging" to charging, "ac" to ac, "body" to body,
+            "collectData" to collectData, "tyre" to tyre, "engine" to engine, "energy" to energy,
         ).joinToString(" ") { (n, d) -> if (d != null) "$n✓" else "$n✗" }
         val codes = events.latest.values.sortedBy { it.code }
         val raw = if (codes.isEmpty()) {
