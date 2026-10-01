@@ -156,5 +156,11 @@ class MonitorService : Service() {
                 context.startService(intent)
             }
         }
+
+        /** Recria o serviço para os módulos da BYD abrirem com as permissões novas. */
+        fun restart(context: Context) {
+            context.stopService(Intent(context, MonitorService::class.java))
+            start(context)
+        }
     }
 }
