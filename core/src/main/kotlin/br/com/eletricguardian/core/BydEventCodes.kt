@@ -5,12 +5,11 @@ package br.com.eletricguardian.core
  * os campos do [VehicleSnapshot].
  *
  * Os marcados "Dolphin GS" foram observados no carro de teste (DiLink 3.0)
- * carregando em AC, com a bateria em 50%; os marcados "Connect Pulse" vêm do
+ * carregando em AC (o app da BYD mostrava 90% e 367 km); os marcados "Connect Pulse" vêm do
  * app de referência e ainda não apareceram no Dolphin GS.
  */
 object BydEventCodes {
-    /** Dolphin GS: 50 com a bateria em 50%. */
-    const val SOC = "1009|44500020"
+    // 1009|44500020 veio com 50 enquanto o app da BYD mostrava 90%: não é o SoC.
 
     /** Connect Pulse. */
     const val SOC_ALT = "1014|44400030"
@@ -42,7 +41,7 @@ object BydEventCodes {
     /** Corrente abaixo disso (A, em módulo) conta como "não carregando". */
     private const val CHARGING_CURRENT_MIN_A = 0.5
 
-    fun socPct(ev: (String) -> Double?): Double? = ev(SOC) ?: ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
+    fun socPct(ev: (String) -> Double?): Double? = ev(SOC_FINE_ALT) ?: ev(SOC_ALT)
 
     fun packVoltageV(ev: (String) -> Double?): Double? = ev(PACK_VOLTAGE)
 

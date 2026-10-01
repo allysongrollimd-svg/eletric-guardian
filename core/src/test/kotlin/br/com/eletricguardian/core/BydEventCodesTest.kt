@@ -7,7 +7,7 @@ import kotlin.test.assertNull
 
 class BydEventCodesTest {
 
-    /** Valores observados no Dolphin GS carregando em AC com 50% de bateria. */
+    /** Valores observados no Dolphin GS carregando em AC. */
     private val dolphinCharging = mapOf(
         "1009|44500020" to 50.0,
         "1009|44400008" to 351.0,
@@ -22,7 +22,8 @@ class BydEventCodesTest {
 
     @Test
     fun `bateria do Dolphin GS`() {
-        assertEquals(50.0, BydEventCodes.socPct(ev))
+        // 1009|44500020 = 50 não é o SoC (o app da BYD mostrava 90%).
+        assertNull(BydEventCodes.socPct(ev))
         assertEquals(364.0, BydEventCodes.packVoltageV(ev))
         assertEquals(3.380, BydEventCodes.cellVoltageMinV(ev)!!, 1e-9)
         assertEquals(3.387, BydEventCodes.cellVoltageMaxV(ev)!!, 1e-9)
