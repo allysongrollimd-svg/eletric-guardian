@@ -161,7 +161,7 @@ class BydEventBus(context: Context) {
         val previous = latest.put(e.code, e)
         // Cada código novo vai para o log, para mapearmos o que é cada um.
         if (previous == null) Log.i(TAG, "novo código ${e.code} = ${e.value}")
-        if (e.code.startsWith(PERSISTED_DEVICE) && previous?.value != e.value) {
+        if ((e.code.startsWith(PERSISTED_DEVICE) || e.code == GEAR_CODE) && previous?.value != e.value) {
             saved.edit().putString(e.code, "${e.value};${e.timestampMs}").apply()
         }
     }
@@ -203,6 +203,9 @@ class BydEventBus(context: Context) {
         private const val TAG = "EG-BYD"
         private const val PERSISTED_DEVICE = "1014|"
 
+        // A marcha só chega quando muda; salva para o app reabrir já com ela.
+        private const val GEAR_CODE = "1011|21200038"
+
         // IDs (event_type) para pedir o valor atual ao registrar. São os que já
         // vimos chegar do Dolphin GS mais os equivalentes da tabela do Overdrive.
         private val CURRENT_VALUE_IDS = mapOf(
@@ -214,6 +217,7 @@ class BydEventBus(context: Context) {
             "charging" to intArrayOf(
                 0x44400008, 0x44400018, 0x27c00018, 0x44500020,
             ),
+            "gearbox" to intArrayOf(0x21200038),
         )
     }
 }
