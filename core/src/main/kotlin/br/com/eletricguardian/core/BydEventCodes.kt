@@ -109,6 +109,18 @@ object BydEventCodes {
 
     fun rangeKm(ev: (String) -> Double?): Int? = ev(RANGE)?.toInt()
 
+    /** Dolphin GS: 1 = P, 2 = R, 3 = N, 4 = D (teste R → D → N → P em 01/10). */
+    const val GEAR = "1011|21200038"
+
+    fun gear(ev: (String) -> Double?): Gear? = when (ev(GEAR)?.toInt()) {
+        1 -> Gear.P
+        2 -> Gear.R
+        3 -> Gear.N
+        4 -> Gear.D
+        null -> null
+        else -> Gear.UNKNOWN
+    }
+
     fun odometerKm(ev: (String) -> Double?): Double? = ev(ODOMETER)?.let { it / 10 }
 
     /**

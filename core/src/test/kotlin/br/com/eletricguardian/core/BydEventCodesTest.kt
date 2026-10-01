@@ -63,6 +63,13 @@ class BydEventCodesTest {
     }
 
     @Test
+    fun `marcha do Dolphin GS`() {
+        val seq = listOf(2.0, 4.0, 3.0, 1.0).map { v -> BydEventCodes.gear { if (it == "1011|21200038") v else null } }
+        assertEquals(listOf(Gear.R, Gear.D, Gear.N, Gear.P), seq)
+        assertNull(BydEventCodes.gear { null })
+    }
+
+    @Test
     fun `saude e temperatura da bateria`() {
         val ev: (String) -> Double? = mapOf("1014|44400028" to 100.0, "1014|44700020" to 76.0)::get
         assertEquals(100.0, BydEventCodes.sohPct(ev))
