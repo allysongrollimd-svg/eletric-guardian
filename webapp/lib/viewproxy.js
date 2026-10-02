@@ -14,6 +14,10 @@ const EMBED_CSS = '<style id="eg-embed">#app-shell-mount,.sidebar,.sidebar-overl
   '#bydThemePicker{display:none!important}' +
   // Sentinela: "Ativar" comes first, before the operating mode (as in the reference app)
   '.card:has(#survEnabled)>.card-body{display:flex;flex-direction:column}.setting-row:has(#survEnabled){order:-1}</style>';
+// The factory (OEM) dashcam is not part of the product: it must stay OFF (no dvr_*.mp4 clips, no extra storage, nothing to explain to
+// customers). Enforced from the car's recording-settings page whenever it is opened inside our app.
+const OEM_FOLLOW_JS = '<script id="eg-oem-sync">(function(){fetch("/api/oem-dashcam/config").then(function(r){return r.json()}).then(function(c){' +
+  'if(c&&c.success&&(c.recordingMode!=="off"||c.surveillanceMode!=="off")){fetch("/api/oem-dashcam/config",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({recordingMode:"off",surveillanceMode:"off"})})}}).catch(function(){})})();</script>';
 // Advanced options hidden from customers (the admin sees everything). The car's pages tag every option with the i18n key of
 // its label, so rows are hidden by key (CSS :has) instead of by position: a layout change in the car app cannot hide the wrong thing.
 const hideRows = (keys) => keys.map((k) => `.setting-row:has([data-i18n="${k}"])`);
@@ -113,7 +117,7 @@ export function createViewProxy({ hub, authorize, frameAncestors = null, isAdmin
         pres.on('data', (c) => chunks.push(c));
         pres.on('end', () => {
           let html = Buffer.concat(chunks).toString('utf8');
-          const css = EMBED_CSS + (isAdmin(who.userId) ? '' : (CUSTOMER_CSS[pathOnly] || ''));
+          const css = EMBED_CSS + (isAdmin(who.userId) ? '' : (CUSTOMER_CSS[pathOnly] || '')) + (pathOnly === '/recording.html' ? OEM_FOLLOW_JS : '');
           html = /<\/head>/i.test(html) ? html.replace(/<\/head>/i, `${css}</head>`) : css + html;
           delete headers['content-length']; headers['content-length'] = Buffer.byteLength(html);
           res.writeHead(200, pres.statusMessage, headers); res.end(html);

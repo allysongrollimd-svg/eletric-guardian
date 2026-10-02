@@ -151,6 +151,8 @@ test('product flow: signup -> car pairs -> claim by VIN -> telemetry -> cameras 
     // inside an iframe the car's own shell is hidden (single navigation); as a normal page it is untouched
     const emb = await viewer.get('/live-view.html', { headers: { 'sec-fetch-dest': 'iframe' } });
     assert.match(emb.text, /id="eg-embed"/); assert.doesNotMatch(page.text, /eg-embed/);
+    const recp = await viewer.get('/recording.html', { headers: { 'sec-fetch-dest': 'iframe' } });
+    assert.match(recp.text, /eg-oem-sync/); assert.match(recp.text, /recordingMode:"off"/); assert.doesNotMatch((await viewer.get('/surveillance.html', { headers: { 'sec-fetch-dest': 'iframe' } })).text, /eg-oem-sync/);   // the OEM dashcam always follows the main mode
     const cust = await viewer.get('/surveillance.html', { headers: { 'sec-fetch-dest': 'iframe' } });
     assert.match(cust.text, /eg-customer/); assert.match(cust.text, /setting-row:has/);                  // a customer does not get the advanced blocks
     assert.equal((await viewer.get('/events.html', { headers: { 'sec-fetch-dest': 'document' } })).text.includes('eg-embed'), false);  // opened as a normal page: untouched

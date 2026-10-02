@@ -86,8 +86,12 @@ async function loadPage(reset) {
     if (r.warming) { setState('Organizando as gravações do carro…', `${r.progress?.done ?? 0} de ${r.progress?.total ?? '?'}`); setTimeout(() => loadPage(true), 2500); return; }
     state.pages = r.totalPages || 1;
     if (!r.recordings?.length && state.page === 1) { setState('Nenhuma gravação neste dia'); return; }
-    r.recordings.forEach((rec) => { state.items.push(rec); $('list').append(clipRow(rec)); });
+    // the factory dashcam (dvr_*.mp4, four tall strips) is not part of the product: never listed
+    const shown = r.recordings.filter((rec) => !/^dvr_/i.test(rec.filename || ''));
+    shown.forEach((rec) => { state.items.push(rec); $('list').append(clipRow(rec)); });
     $('more').hidden = state.page >= state.pages;
+    if (!shown.length && state.page < state.pages) { state.page++; state.loading = false; return loadPage(false); }       // a page of only factory clips: go on to the next
+    if (!state.items.length) { setState('Nenhuma gravação neste dia'); return; }
   } catch (e) { setState(e.auth ? 'Sessão expirada' : 'Não foi possível carregar', e.message, e.auth ? null : () => loadPage(true)); }
   finally { state.loading = false; }
 }

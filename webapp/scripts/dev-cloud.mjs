@@ -50,7 +50,7 @@ const isoDay = (d) => new Date(Date.now() - d * 86400000).toISOString().slice(0,
 const REC = [];
 for (let d = 0; d < 2; d++) for (let i = 0; i < 7; i++) {
   const sentry = i % 2 === 0, h = 8 + i * 2, m = (i * 13) % 60;
-  REC.push({ id: `r${d}${i}`, type: sentry ? 'sentry' : 'normal', date: isoDay(d), time: `${h}:${m}`, timeFormatted: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String((i * 7) % 60).padStart(2, '0')}`, dateFormatted: isoDay(d), size: 20e6, sizeFormatted: `${15 + i} MB`,
+  REC.push({ id: `r${d}${i}`, filename: `${sentry ? 'event' : i === 3 ? 'dvr' : 'cam'}_${d}${i}.mp4`, type: sentry ? 'sentry' : 'normal', date: isoDay(d), time: `${h}:${m}`, timeFormatted: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String((i * 7) % 60).padStart(2, '0')}`, dateFormatted: isoDay(d), size: 20e6, sizeFormatted: `${15 + i} MB`,
     peakSeverity: sentry ? ['INFO', 'ALERT', 'CRITICAL', 'INFO'][i % 4] : undefined, personCount: sentry && i % 4 === 2 ? 2 : 0, vehicleCount: sentry && i % 4 === 0 ? 1 : 0,
     place: { short: 'Rua Pe. Estevão', displayName: 'Rua Padre Estevão, São Paulo' }, thumbnailUrl: `/thumb/id/r${d}${i}`, videoUrl: `/video/id/r${d}${i}` });
 }
