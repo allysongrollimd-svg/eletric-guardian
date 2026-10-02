@@ -30,3 +30,12 @@
 - Referência (Electro): Sentinela = Gravações (lista + navegação por dia) e Configurações enxuta: Ativar, Armazenamento (tipo + limite + tempo estimado), Resolução (HD/Full HD/Original), Modo de operação, Layout.
 - Hoje: Configurações = página do carro embutida; clientes não veem as abas Detecção/OEM/Estacionamento (Sentinela) nem Status (Dashcam).
 - Falta cortar **dentro** das abas Geral/Gravação/Armazenamento (experimentais, energia estacionado, locais seguros, dissuasão…). O corte limpo é um "modo cliente" no APK (decisão: depois do webapp pronto).
+
+## Sentinela: o que o cliente vê (decidido)
+- **Geral:** modo de operação, ativar, modo de ativação, modo com carro desligado, USB energizado, dados móveis acordados, programação, dissuasão na tela (aviso e duração), marcação de local.
+- **Detecção:** locais seguros, predefinição de ambiente, sensibilidade, objetos detectados.
+- **Gravação:** qualidade, layout, telemetria nos vídeos (liga/desliga), correção de olho de peixe.
+- **Armazenamento:** local, uso, limite, limpeza automática da dashcam BYD (liga/desliga).
+- Escondido do cliente (admin vê tudo): experimental/DI5, economia de energia e corte por bateria, ajustes finos de detecção, desenvolvedor, áreas de detecção, Parking Intelligence, dissuasão em nuvem, mensagem/imagem personalizada, resolvedor online/URL, buffers, codec, FPS, duração do clipe, câmera do para-brisa, campos de telemetria, ajustes finos da limpeza, aba Dashcam OEM.
+- Implementação: `webapp/lib/viewproxy.js` (`SURVEILLANCE_HIDE`), por chave de tradução (`data-i18n`).
+- **Pendente:** repetir a conversa para a página de Gravações (Dashcam).

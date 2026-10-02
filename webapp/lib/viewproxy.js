@@ -8,10 +8,33 @@ const STRIP_COOKIES = /^(eg_session|eg_view|eg_ctl)$/;
 // the shell is hidden so there is a single navigation. Detected from the browser's Sec-Fetch-Dest header.
 const EMBED_CSS = '<style id="eg-embed">#app-shell-mount,.sidebar,.sidebar-overlay,.mobile-header,.page-header{display:none!important}' +
   '.app-layout{display:block!important}.main-content{margin:0!important;max-width:100%!important;width:100%!important}body{padding:0!important}</style>';
-// Advanced blocks hidden from customers (the admin sees everything). The car's pages tag every block with data-tab.
+// Advanced options hidden from customers (the admin sees everything). The car's pages tag every option with the i18n key of
+// its label, so rows are hidden by key (CSS :has) instead of by position: a layout change in the car app cannot hide the wrong thing.
+const hideRows = (keys) => keys.map((k) => `.setting-row:has([data-i18n="${k}"])`);
+const hideCards = (keys) => keys.map((k) => `.card:has([data-i18n="${k}"])`);
+const hideSelf = (keys) => keys.map((k) => `[data-i18n^="${k}"]`);
+const SURVEILLANCE_HIDE = [
+  // Geral: experimental, power tuning
+  ...hideRows(['surveillance.di5_cloud_keepalive', 'surveillance.di5_parked_keepalive', 'surveillance.low_power_mode', 'surveillance.low_soc_cutoff']),
+  ...hideSelf(['surveillance.di5_cloud_keepalive_requires_cloud']),
+  // Detecção: fine tuning (kept: safe locations, preset, sensitivity, detected objects)
+  ...hideRows(['surveillance.det_zone', 'surveillance.loitering_time', 'surveillance.approach_trigger', 'surveillance.shadow_filter', 'surveillance.motion_salience',
+    'surveillance.discard_empty_motion', 'surveillance.discard_empty_motion_night', 'surveillance.camera_controls', 'surveillance.camera_front', 'surveillance.camera_right', 'surveillance.camera_left', 'surveillance.camera_rear', 'surveillance.sidecam_boost', 'surveillance.sidecam_sens', 'surveillance.sidecam_zone']),
+  ...hideSelf(['surveillance.zone_hint', 'surveillance.shadow_hint', 'surveillance.approach_trigger_hint', 'surveillance.discard_empty_motion_hint', 'surveillance.discard_empty_motion_night_hint', 'surveillance.camera_controls_hint']),
+  ...hideCards(['surveillance.developer', 'surveillance.detection_zones_title', 'surveillance.deterrent_title', 'parking.settings_title']),
+  // Dissuasão na tela: custom message/image/themes; Marcação de local: online resolver and custom URL
+  'div:has(> [data-i18n="surveillance.screen_deterrent_content_heading"])',
+  ...hideRows(['surveillance.geocoding_online_name', 'surveillance.geocoding_custom_url_name']),
+  // Gravação: buffers, codec, fps, clip length, windshield camera, telemetry fields
+  ...hideRows(['recording.pre_event_buffer', 'recording.post_event_buffer', 'recording.codec', 'surveillance.camera_fps', 'recording.clip_duration', 'recording.layout_use_windshield_label', 'recording.telemetry_fields_label']),
+  '.timeline-visual', '.info-row:has([data-i18n="recording.fps_actual"])',
+  // Armazenamento: fine tuning of the BYD dashcam cleanup
+  ...hideRows(['recording.cdr_reserved', 'recording.cdr_protect_recent', 'recording.cdr_min_keep']),
+  '[data-tab="oem"]', '[data-tab-target="oem"]', '#parking',
+];
 const CUSTOMER_CSS = {
-  '/surveillance.html': '<style id="eg-customer">[data-tab="detection"],[data-tab="oem"],#parking{display:none!important}</style>',
-  '/recording.html': '<style id="eg-customer">[data-tab="status"]{display:none!important}</style>',
+  '/surveillance.html': `<style id="eg-customer">${SURVEILLANCE_HIDE.join(',')}{display:none!important}</style>`,
+  '/recording.html': '<style id="eg-customer">[data-tab="status"],[data-tab-target="status"]{display:none!important}</style>',
 };
 const STRIP_RES = /^(connection|keep-alive|transfer-encoding|proxy-.*|x-frame-options|content-security-policy)$/i;
 

@@ -40,7 +40,7 @@ await new Promise((r) => server.listen(PORT, '127.0.0.1', r));
 // demo account + paired car
 const CAR = { deviceId: 'dddddddd-0000-4000-8000-000000000001', deviceKey: 'demo-device-key-'.padEnd(44, 'k') };
 const VIN = 'LGXC16DG2R0123456';
-const user = await accounts.signup({ email: 'demo@example.com', password: 'demo-password-123', name: 'Demo', role: 'admin' });
+const user = await accounts.signup({ email: 'demo@example.com', password: 'demo-password-123', name: 'Demo', role: process.env.DEV_CUSTOMER === '1' ? 'user' : 'admin' });
 accounts.claim(user.id, { vin: VIN, code: accounts.registerDevice({ ...CAR, vin: VIN }).code, name: 'Dolphin GS (demo)' });
 
 // the car's "local web UI" served through the tunnel
