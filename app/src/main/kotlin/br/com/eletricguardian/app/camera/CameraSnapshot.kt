@@ -1,14 +1,8 @@
 package br.com.eletricguardian.app.camera
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.ImageFormat
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CaptureRequest
-import android.media.ImageReader
+import android.graphics.SurfaceTexture
+import android.hardware.Camera
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
@@ -16,80 +10,57 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 /**
- * Tira uma foto JPEG de uma câmera do Camera2. Primeiro passo da dashcam: ver
- * qual câmera física o DiLink entrega para apps (no Dolphin GS só aparece a id 0).
+ * Tira uma foto JPEG de uma câmera. Primeiro passo da dashcam: ver qual câmera
+ * física o DiLink entrega para apps (no Dolphin GS só aparece a id 0).
+ *
+ * Usa a API antiga (android.hardware.Camera): no DiLink 3.0 a câmera é "legacy"
+ * e o Camera2 quebra já ao ler as características ("Supported FPS ranges cannot
+ * be null").
  */
+@Suppress("DEPRECATION")
 object CameraSnapshot {
     private const val TAG = "EG-Camera"
 
-    fun cameraIds(context: Context): List<String> =
-        runCatching { (context.getSystemService(Context.CAMERA_SERVICE) as CameraManager).cameraIdList.toList() }
-            .getOrDefault(emptyList())
+    fun cameraIds(): List<Int> = (0 until Camera.getNumberOfCameras()).toList()
 
-    @SuppressLint("MissingPermission")
-    fun take(context: Context, id: String = "0", timeoutMs: Long = 8000): ByteArray? {
-        val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    fun take(@Suppress("UNUSED_PARAMETER") context: Context, id: Int = 0, timeoutMs: Long = 10000): ByteArray? {
+        // A câmera manda os callbacks para o Looper do thread que a abriu.
         val thread = HandlerThread("EG-Camera").apply { start() }
-        val handler = Handler(thread.looper)
         val done = CountDownLatch(1)
         var jpeg: ByteArray? = null
-        var device: CameraDevice? = null
-        var reader: ImageReader? = null
-        try {
-            val sizes = manager.getCameraCharacteristics(id)
-                .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                ?.getOutputSizes(ImageFormat.JPEG)
-            val size = sizes?.maxByOrNull { it.width * it.height } ?: return null
-            Log.i(TAG, "câmera $id: ${size.width}x${size.height}")
-            reader = ImageReader.newInstance(size.width, size.height, ImageFormat.JPEG, 2).apply {
-                setOnImageAvailableListener({ r ->
-                    r.acquireLatestImage()?.use { img ->
-                        val buf = img.planes[0].buffer
-                        jpeg = ByteArray(buf.remaining()).also { buf.get(it) }
-                    }
-                    done.countDown()
-                }, handler)
-            }
-            manager.openCamera(id, object : CameraDevice.StateCallback() {
-                override fun onOpened(camera: CameraDevice) {
-                    device = camera
-                    @Suppress("DEPRECATION")
-                    camera.createCaptureSession(listOf(reader.surface), object : CameraCaptureSession.StateCallback() {
-                        override fun onConfigured(session: CameraCaptureSession) {
-                            // Alguns frames de preview para a exposição assentar antes da foto.
-                            val preview = camera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW).apply { addTarget(reader.surface) }
-                            val still = camera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE).apply {
-                                addTarget(reader.surface)
-                                set(CaptureRequest.JPEG_QUALITY, 85.toByte())
-                            }
-                            handler.postDelayed({ runCatching { session.capture(still.build(), null, handler) } }, 1500)
-                            runCatching { session.setRepeatingRequest(preview.build(), null, handler) }
-                        }
-
-                        override fun onConfigureFailed(session: CameraCaptureSession) {
-                            Log.w(TAG, "sessão da câmera $id falhou")
+        var camera: Camera? = null
+        Handler(thread.looper).post {
+            try {
+                val cam = Camera.open(id).also { camera = it }
+                val params = cam.parameters
+                params.supportedPictureSizes?.maxByOrNull { it.width * it.height }?.let { params.setPictureSize(it.width, it.height) }
+                params.jpegQuality = 85
+                runCatching { cam.parameters = params }
+                Log.i(TAG, "câmera $id: foto ${cam.parameters.pictureSize.width}x${cam.parameters.pictureSize.height}, " +
+                    "prévia ${cam.parameters.previewSize.width}x${cam.parameters.previewSize.height}")
+                cam.setPreviewTexture(SurfaceTexture(10))
+                cam.startPreview()
+                // Deixa a exposição assentar antes da foto.
+                Handler(thread.looper).postDelayed({
+                    runCatching {
+                        cam.takePicture(null, null) { data, _ ->
+                            jpeg = data
                             done.countDown()
                         }
-                    }, handler)
-                }
-
-                override fun onDisconnected(camera: CameraDevice) {
-                    camera.close()
-                    done.countDown()
-                }
-
-                override fun onError(camera: CameraDevice, error: Int) {
-                    Log.w(TAG, "erro $error na câmera $id")
-                    camera.close()
-                    done.countDown()
-                }
-            }, handler)
-            done.await(timeoutMs, TimeUnit.MILLISECONDS)
-        } catch (t: Throwable) {
-            Log.w(TAG, "foto da câmera $id falhou", t)
-        } finally {
-            runCatching { device?.close() }
-            runCatching { reader?.close() }
+                    }.onFailure {
+                        Log.w(TAG, "takePicture falhou na câmera $id", it)
+                        done.countDown()
+                    }
+                }, 1500)
+            } catch (t: Throwable) {
+                Log.w(TAG, "foto da câmera $id falhou", t)
+                done.countDown()
+            }
+        }
+        done.await(timeoutMs, TimeUnit.MILLISECONDS)
+        Handler(thread.looper).post {
+            runCatching { camera?.stopPreview() }
+            runCatching { camera?.release() }
             thread.quitSafely()
         }
         return jpeg

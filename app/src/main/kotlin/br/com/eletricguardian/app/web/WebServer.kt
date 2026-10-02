@@ -117,11 +117,11 @@ class WebServer(context: Context, private val port: Int = 8731) {
                 "/api/snapshot" -> respond(out, "200 OK", "application/json; charset=utf-8", SnapshotJson.of(Telemetry.state.value).toByteArray())
             // Foto de uma câmera (?id=0): primeiro passo da dashcam.
             "/api/camera.jpg" -> {
-                val id = Regex("[?&]id=([0-9]+)").find(requestLine)?.groupValues?.get(1) ?: "0"
+                val id = Regex("[?&]id=([0-9]+)").find(requestLine)?.groupValues?.get(1)?.toInt() ?: 0
                 val jpeg = CameraSnapshot.take(appContext, id)
                 if (jpeg != null) respond(out, "200 OK", "image/jpeg", jpeg)
                 else respond(out, "503 Service Unavailable", "text/plain; charset=utf-8",
-                    "sem foto da câmera $id (câmeras: ${CameraSnapshot.cameraIds(appContext)})".toByteArray())
+                    "sem foto da câmera $id (câmeras: ${CameraSnapshot.cameraIds()})".toByteArray())
             }
                 else -> respond(out, "404 Not Found", "text/plain; charset=utf-8", "nao encontrado".toByteArray())
             }
