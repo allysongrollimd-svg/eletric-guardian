@@ -153,7 +153,7 @@ test('product flow: signup -> car pairs -> claim by VIN -> telemetry -> cameras 
     assert.match(emb.text, /id="eg-embed"/); assert.doesNotMatch(page.text, /eg-embed/);
     const cust = await viewer.get('/surveillance.html', { headers: { 'sec-fetch-dest': 'iframe' } });
     assert.match(cust.text, /eg-customer/); assert.match(cust.text, /data-tab="detection"/);                  // a customer does not get the advanced blocks
-    assert.equal((await viewer.get('/events.html', { headers: { 'sec-fetch-dest': 'iframe' } })).text.includes('eg-embed'), false);   // only the whitelisted pages
+    assert.equal((await viewer.get('/events.html', { headers: { 'sec-fetch-dest': 'document' } })).text.includes('eg-embed'), false);  // opened as a normal page: untouched
     assert.equal(s.seen.at(-1).cookie, undefined);                                             // our cookies never reach the car
     // a forged/stolen-looking cookie from another account does not work
     const bad = s.view(); bad.jar.eg_view = 'eyJ1IjoieCJ9.deadbeef'; assert.equal((await bad.get('/')).status, 401);

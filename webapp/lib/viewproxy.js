@@ -6,7 +6,6 @@ const STRIP_REQ = /^(x-forwarded-.*|forwarded|via|x-real-ip|true-client-ip|cf-.*
 const STRIP_COOKIES = /^(eg_session|eg_view|eg_ctl)$/;
 // The car's own pages carry their app shell (sidebar, header). When one is shown inside our phone screens (an iframe),
 // the shell is hidden so there is a single navigation. Detected from the browser's Sec-Fetch-Dest header.
-const EMBED_PAGES = new Set(['/recording.html', '/surveillance.html', '/live-view.html']);
 const EMBED_CSS = '<style id="eg-embed">#app-shell-mount,.sidebar,.sidebar-overlay,.mobile-header,.page-header{display:none!important}' +
   '.app-layout{display:block!important}.main-content{margin:0!important;max-width:100%!important;width:100%!important}body{padding:0!important}</style>';
 // Advanced blocks hidden from customers (the admin sees everything). The car's pages tag every block with data-tab.
@@ -60,7 +59,7 @@ export function createViewProxy({ hub, authorize, frameAncestors = null, isAdmin
     if (!stream) { res.writeHead(503, { 'Content-Type': 'text/html; charset=utf-8', 'Retry-After': '5' }); return res.end(offlinePage(who.name)); }
 
     const pathOnly = req.url.split('?')[0];
-    const embed = req.method === 'GET' && String(req.headers['sec-fetch-dest'] || '') === 'iframe' && EMBED_PAGES.has(pathOnly);
+    const embed = req.method === 'GET' && String(req.headers['sec-fetch-dest'] || '') === 'iframe';   // any page of the car shown inside our screens
     const fh = forwardHeaders(req, { upgrade: false });
     if (embed) fh['accept-encoding'] = 'identity';                 // we rewrite the HTML, so ask the car for it uncompressed
     const upstream = http.request({ createConnection: () => stream, method: req.method, path: req.url, headers: fh }, (pres) => {

@@ -240,7 +240,7 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
       let buf = await readFile(join(VIEW_DIR, name));
       if (isPage) buf = Buffer.from(buf.toString('utf8').replaceAll('{{APP_URL}}', cloud.appHost ? `${cfg.publicScheme || 'https'}://${cloud.appHost}` : ''));
       res.writeHead(200, {
-        'Content-Type': VIEW_ASSETS[ext], 'Cache-Control': isPage ? 'no-store' : 'public, max-age=300', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer',
+        'Content-Type': VIEW_ASSETS[ext], 'Cache-Control': isPage ? 'no-store' : 'no-cache', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer',
         ...(isPage ? { 'Content-Security-Policy': "default-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" } : {}),
       });
       res.end(req.method === 'HEAD' ? undefined : buf);

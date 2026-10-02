@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, normalize, extname } from 'node:path';
@@ -186,7 +187,10 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
       if (!file.startsWith(PUBLIC_DIR) || !TYPES[extname(file)]) return json(res, 404, { error: 'not found' });
       try {
         const buf = await readFile(file);
-        res.writeHead(200, { 'Content-Type': TYPES[extname(file)], 'Cache-Control': extname(file) === '.html' ? 'no-cache' : 'public, max-age=3600', ...SECURITY_HEADERS });
+        // Revalidate on every load (cheap 304): a deploy must never leave a new page running old scripts.
+        const etag = `W/"${buf.length.toString(16)}-${createHash('sha1').update(buf).digest('base64url').slice(0, 12)}"`;
+        if (req.headers['if-none-match'] === etag) { res.writeHead(304, { ETag: etag, 'Cache-Control': 'no-cache', ...SECURITY_HEADERS }); return res.end(); }
+        res.writeHead(200, { 'Content-Type': TYPES[extname(file)], 'Cache-Control': 'no-cache', ETag: etag, ...SECURITY_HEADERS });
         res.end(req.method === 'HEAD' ? undefined : buf);
       } catch { json(res, 404, { error: 'not found' }); }
     } catch (e) {

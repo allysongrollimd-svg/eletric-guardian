@@ -70,13 +70,11 @@ export function initCloud({ getCars, getCurrent, onAuthChanged, onCarsChanged })
     const r = await post(`/api/cars/${encodeURIComponent(car.device)}/view`, { page });
     const b = await r.json().catch(() => ({}));
     if (!r.ok) { $('camStatus').textContent = b.error || `Erro ${r.status}`; frame.hidden = true; return; }
-    lastUrl = b.url; frame.hidden = false; frame.src = b.url; $('camStatus').textContent = `${car.name || 'Carro'} — conectado`;
+    lastUrl = b.url; frame.hidden = false; frame.src = b.url; $('camStatus').textContent = '';
   }
-  $('camFull').addEventListener('click', async () => { const car = getCurrent(); if (!car) return; const r = await post(`/api/cars/${encodeURIComponent(car.device)}/view`, { page: '/live-view.html' }); if (r.ok) window.open((await r.json()).url, '_blank', 'noopener'); });
   function renderCams() {
     const car = getCurrent();
-    $('camStatus').textContent = !car ? '' : car.tunnel ? `${car.name || 'Carro'} — conectado à nuvem` : `${car.name || 'Carro'} — sem conexão de câmeras. O carro precisa estar ligado, com internet e com o app aberto.`;
-    document.querySelectorAll('#camButtons button').forEach((b) => (b.disabled = !car?.tunnel));
+    $('camStatus').textContent = !car ? '' : car.tunnel ? '' : `${car.name || 'Carro'} — sem conexão de câmeras. O carro precisa estar ligado, com internet e com o app aberto.`;
     if (!car?.tunnel) { frame.hidden = true; frame.removeAttribute('src'); }
     else if (!$('cams').hidden && !frame.getAttribute('src')) openPage('/live-view.html');      // the Live tab is just the live view
   }

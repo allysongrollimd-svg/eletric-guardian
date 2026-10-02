@@ -123,3 +123,8 @@ input,select{font-size:16px}                       /* 16px stops iOS from zoomin
 .invrow:last-child{border:0}.invrow small{display:block;color:var(--muted)}
 .invrow a{color:var(--primary)}
 a.drawer-item{display:flex;align-items:center;text-decoration:none;color:var(--text)}
+
+/* Live tab: the car's live view fills the whole tab (no extra card, no second menu) */
+#cams{padding:0;gap:0}
+.cam-note{padding:14px 16px;margin:0}.cam-note:empty{display:none}
+.cam-frame{display:block;width:100%;height:calc(100dvh - var(--top) - env(safe-area-inset-top));min-height:0;border:0;border-radius:0}
