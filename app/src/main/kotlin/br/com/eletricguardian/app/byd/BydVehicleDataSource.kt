@@ -202,7 +202,8 @@ class BydVehicleDataSource(context: Context) : VehicleDataSource {
             cellTempMaxC = BydEventCodes.batteryTempC(::ev),
         ),
         charging = BydEventCodes.charging(::ev),
-        climate = tyreData["outsideTempC"]?.let { ClimateState(outsideTempC = it.toDouble()) },
+        climate = (BydEventCodes.outsideTempC(::ev) ?: tyreData["outsideTempC"]?.toDouble())
+            ?.let { ClimateState(outsideTempC = it) },
         tyres = readTyres(),
         energyMode = readEnergyMode(),
         vehicle = VehicleIdentity(brand = "BYD"),

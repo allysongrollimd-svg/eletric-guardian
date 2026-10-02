@@ -121,6 +121,16 @@ object BydEventCodes {
         else -> Gear.UNKNOWN
     }
 
+    /**
+     * Temperatura externa (°C). Dolphin GS: 23 no ar-condicionado (1000) e no
+     * painel (1007) ao mesmo tempo, à noite em 01/10. Confirmar com o painel do carro.
+     */
+    const val OUTSIDE_TEMP = "1000|40400038"
+    const val OUTSIDE_TEMP_ALT = "1007|4a503040"
+
+    fun outsideTempC(ev: (String) -> Double?): Double? =
+        (ev(OUTSIDE_TEMP) ?: ev(OUTSIDE_TEMP_ALT))?.takeIf { it in -40.0..70.0 }
+
     fun odometerKm(ev: (String) -> Double?): Double? = ev(ODOMETER)?.let { it / 10 }
 
     /**

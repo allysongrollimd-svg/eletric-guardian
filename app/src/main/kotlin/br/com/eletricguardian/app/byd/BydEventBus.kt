@@ -161,7 +161,7 @@ class BydEventBus(context: Context) {
         val previous = latest.put(e.code, e)
         // Cada código novo vai para o log, para mapearmos o que é cada um.
         if (previous == null) Log.i(TAG, "novo código ${e.code} = ${e.value}")
-        if ((e.code.startsWith(PERSISTED_DEVICE) || e.code == GEAR_CODE) && previous?.value != e.value) {
+        if ((e.code.startsWith(PERSISTED_DEVICE) || e.code in PERSISTED_CODES) && previous?.value != e.value) {
             saved.edit().putString(e.code, "${e.value};${e.timestampMs}").apply()
         }
     }
@@ -204,7 +204,8 @@ class BydEventBus(context: Context) {
         private const val PERSISTED_DEVICE = "1014|"
 
         // A marcha só chega quando muda; salva para o app reabrir já com ela.
-        private const val GEAR_CODE = "1011|21200038"
+        // O mesmo para a temperatura externa.
+        private val PERSISTED_CODES = setOf("1011|21200038", "1000|40400038", "1007|4a503040")
 
         // IDs (event_type) para pedir o valor atual ao registrar. São os que já
         // vimos chegar do Dolphin GS mais os equivalentes da tabela do Overdrive.
