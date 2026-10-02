@@ -7,7 +7,9 @@ const STRIP_COOKIES = /^(eg_session|eg_view|eg_ctl)$/;
 // The car's own pages carry their app shell (sidebar, header). When one is shown inside our phone screens (an iframe),
 // the shell is hidden so there is a single navigation. Detected from the browser's Sec-Fetch-Dest header.
 const EMBED_CSS = '<style id="eg-embed">#app-shell-mount,.sidebar,.sidebar-overlay,.mobile-header,.page-header{display:none!important}' +
-  '.app-layout{display:block!important}.main-content{margin:0!important;max-width:100%!important;width:100%!important}body{padding:0!important}</style>';
+  '.app-layout{display:block!important}.main-content{margin:0!important;max-width:100%!important;width:100%!important}body{padding:0!important}' +
+  // Sentinela: "Ativar" comes first, before the operating mode (as in the reference app)
+  '.card:has(#survEnabled)>.card-body{display:flex;flex-direction:column}.setting-row:has(#survEnabled){order:-1}</style>';
 // Advanced options hidden from customers (the admin sees everything). The car's pages tag every option with the i18n key of
 // its label, so rows are hidden by key (CSS :has) instead of by position: a layout change in the car app cannot hide the wrong thing.
 const hideRows = (keys) => keys.map((k) => `.setting-row:has([data-i18n="${k}"])`);
