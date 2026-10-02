@@ -293,6 +293,14 @@ tasks.register("extractWebAssets") {
 
 android {
     signingConfigs {
+        // Fixed, NON-secret key for debug/test builds so every CI build has the same signature and can be
+        // installed over the previous one (adb install -r) without wiping the app's data. Never use for releases.
+        create("egdebug") {
+            storeFile = file("eg-debug.keystore")
+            storePassword = "android"
+            keyAlias = "eg-debug"
+            keyPassword = "android"
+        }
         create("release") {
             storeFile = file(System.getenv("KEYSTORE_FILE") ?: "release.jks")
             storePassword = System.getenv("KEYSTORE_PASSWORD") ?: ""
@@ -410,6 +418,7 @@ android {
             buildConfigField("String", "UPDATE_CHANNEL", "\"alpha\"")
         }
         debug {
+            signingConfig = signingConfigs.getByName("egdebug")
             isMinifyEnabled = false
 
             // Debug builds match the active braveheart channel
