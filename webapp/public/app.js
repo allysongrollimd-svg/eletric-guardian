@@ -123,7 +123,7 @@ function showTab(name) {
   if (name === 'cams') cloud?.renderCams();
 }
 document.querySelectorAll('.tab[data-open]').forEach((b) => b.addEventListener('click', () => { setDrawer(false); cloud?.goPage(b.dataset.open); }));
-const TITLES = { dash: 'Painel', controls: 'Controles', cams: 'Câmeras' };
+const TITLES = { dash: 'Painel', controls: 'Controles', cams: 'Ao vivo' };
 function setDrawer(open) { $('drawer').classList.toggle('open', open); $('drawer').setAttribute('aria-hidden', String(!open)); $('scrim').hidden = !open; $('menuBtn').setAttribute('aria-expanded', String(open)); }
 $('menuBtn').addEventListener('click', () => setDrawer(!$('drawer').classList.contains('open')));
 $('scrim').addEventListener('click', () => setDrawer(false));

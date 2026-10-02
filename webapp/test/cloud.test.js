@@ -147,7 +147,11 @@ test('product flow: signup -> car pairs -> claim by VIN -> telemetry -> cameras 
     const e2 = await s.view().get(new URL(t2).pathname + new URL(t2).search); assert.equal(e2.headers.location, '/recording.html');
     assert.equal((await s.view().get(new URL(t3).pathname + new URL(t3).search + '&next=//evil.example')).headers.location, '/');
     const page = await viewer.get('/live-view.html'); assert.equal(page.status, 200); assert.match(page.text, /live-view \/live-view.html/);
-    assert.equal(page.headers['x-frame-options'], undefined); assert.match(page.headers['content-security-policy'], /frame-ancestors http:\/\/app\.test/);
+    assert.equal(page.headers['x-frame-options'], undefined); assert.match(page.headers['content-security-policy'], /frame-ancestors 'self' http:\/\/app\.test/);   // our own phone screens (same host) and the dashboard may frame it
+    // inside an iframe the car's own shell is hidden (single navigation); as a normal page it is untouched
+    const emb = await viewer.get('/live-view.html', { headers: { 'sec-fetch-dest': 'iframe' } });
+    assert.match(emb.text, /id="eg-embed"/); assert.doesNotMatch(page.text, /eg-embed/);
+    assert.equal((await viewer.get('/events.html', { headers: { 'sec-fetch-dest': 'iframe' } })).text.includes('eg-embed'), false);   // only the whitelisted pages
     assert.equal(s.seen.at(-1).cookie, undefined);                                             // our cookies never reach the car
     // a forged/stolen-looking cookie from another account does not work
     const bad = s.view(); bad.jar.eg_view = 'eyJ1IjoieCJ9.deadbeef'; assert.equal((await bad.get('/')).status, 401);

@@ -3,7 +3,9 @@
 //   npm run dev:cloud   ->  http://localhost:8790   login: demo@example.com / demo-password-123
 import net from 'node:net';
 import http from 'node:http';
-import { rmSync } from 'node:fs';
+import { rmSync, readFileSync, existsSync, statSync } from 'node:fs';
+import { join, extname, normalize } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import mqtt from 'mqtt';
 import WebSocket, { WebSocketServer } from 'ws';
 import { loadConfig } from '../lib/config.js';
@@ -53,8 +55,15 @@ for (let d = 0; d < 2; d++) for (let i = 0; i < 7; i++) {
     place: { short: 'Rua Pe. Estevão', displayName: 'Rua Padre Estevão, São Paulo' }, thumbnailUrl: `/thumb/id/r${d}${i}`, videoUrl: `/video/id/r${d}${i}` });
 }
 const mosaic = (id) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 100"><rect width="160" height="100" fill="#222"/>${[0, 1, 2, 3].map((q) => `<rect x="${(q % 2) * 80 + 2}" y="${Math.floor(q / 2) * 50 + 2}" width="76" height="46" fill="hsl(${(id.charCodeAt(2) * 37 + q * 50) % 360} 25% 30%)"/>`).join('')}</svg>`;
+// the car's real web pages (from the app's assets), so the embedded settings can be seen as they will be on a phone
+const CAR_WEB = join(fileURLToPath(new URL('.', import.meta.url)), '../../app/src/main/assets/web');
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png', '.woff2': 'font/woff2' };
 const local = http.createServer((req, res) => {
   const p = req.url.split('?')[0];
+  if (/^\/(shared|i18n)\//.test(p) || ['/recording.html', '/surveillance.html'].includes(p)) {
+    const f = p.startsWith('/shared') || p.startsWith('/i18n') ? join(CAR_WEB, normalize(p)) : join(CAR_WEB, 'local', p);
+    if (f.startsWith(CAR_WEB) && existsSync(f) && statSync(f).isFile()) { res.writeHead(200, { 'content-type': MIME[extname(f)] || 'application/octet-stream' }); return res.end(readFileSync(f)); }
+  }
   const sendJson = (o) => { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(o)); };
   if (p === '/api/recording/mode') { let b = ''; req.on('data', (c) => { b += c; }); return req.on('end', () => { if (req.method === 'POST') globalThis.__mode = JSON.parse(b).mode; sendJson({ status: 'ok', mode: globalThis.__mode || 'CONTINUOUS' }); }); }
   if (p === '/api/settings/unified') { req.resume(); return sendJson({ success: true }); }

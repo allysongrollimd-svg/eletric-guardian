@@ -204,6 +204,13 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('play
 document.querySelectorAll('#quads button').forEach((b) => b.addEventListener('click', () => applyQuad(curQuad === b.dataset.q && b.dataset.q !== 'all' ? 'all' : b.dataset.q)));
 document.querySelectorAll('#filters button').forEach((b) => b.addEventListener('click', () => { state.filter = b.dataset.f; document.querySelectorAll('#filters button').forEach((x) => x.classList.toggle('on', x === b)); loadPage(true); }));
 if (TYPE !== 'sentry') $('filters').hidden = true;
+// Configurações: the car's own settings page for this feature, embedded (its sidebar/header are hidden by the proxy).
+document.querySelectorAll('#bottomNav button').forEach((b) => b.addEventListener('click', () => {
+  const set = b.dataset.v === 'set';
+  document.querySelectorAll('#bottomNav button').forEach((x) => x.classList.toggle('on', x === b));
+  $('settings').hidden = !set; $('recView').hidden = set;
+  const f = $('setFrame'); if (set && !f.getAttribute('src')) f.src = f.dataset.src;
+}));
 
 (async () => {
   try { await loadDates(); renderDay(); await loadPage(true); }

@@ -27,7 +27,7 @@
   <nav class="tabs" id="tabs" hidden>
     <button class="tab on" data-tab="dash">Painel</button>
     <button class="tab" data-tab="controls">Controles</button>
-    <button class="tab" data-tab="cams" id="camsTab" hidden>Câmeras</button>
+    <button class="tab" data-tab="cams" id="camsTab" hidden>Ao vivo</button>
     <button class="tab" id="sentryLink" data-open="/_eg/sentinela.html" hidden>Sentinela</button>
     <button class="tab" id="dashcamLink" data-open="/_eg/dashcam.html" hidden>Dashcam</button>
   </nav>
@@ -46,12 +46,7 @@
   <div class="card cam-bar">
     <div id="camStatus" class="sub"></div>
     <div class="seg" id="camButtons">
-      <button class="act" data-page="/live-view.html">Ao vivo</button>
-      <button class="act" data-page="/recording.html">Ajustes de gravação</button>
-      <button class="act" data-page="/surveillance.html">Ajustes da sentinela</button>
-      <button class="act" data-page="/parking.html">Estacionamento</button>
-      <button class="act" data-page="/events.html">Eventos</button>
-      <button class="ghost" id="camFull">Abrir em tela cheia</button>
+      <button class="ghost" id="camFull">Tela cheia</button>
     </div>
   </div>
   <iframe id="camFrame" class="cam-frame" title="Câmeras do carro" allow="fullscreen; autoplay; microphone" hidden></iframe>

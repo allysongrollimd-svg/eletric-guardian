@@ -13,8 +13,8 @@
 <header class="top">
   <a class="ibtn" href="{{APP_URL}}/" aria-label="Voltar ao painel"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
   <h1>Sentinela</h1>
-  <a class="ibtn" href="/surveillance.html" aria-label="Ajustes da sentinela" title="Ajustes da sentinela"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a>
 </header>
+<div id="recView">
 <div class="days">
   <button id="prev" aria-label="Dia anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <div class="cur"><b id="dayMain">—</b><small id="daySub"></small></div>
@@ -25,6 +25,9 @@
 </div>
 <main id="list" class="list"><div class="state"><b>Carregando…</b></div></main>
 <button id="more" class="more" hidden>Carregar mais</button>
+</div>
+<section id="settings" class="settings" hidden><iframe id="setFrame" title="Configurações" data-src="/surveillance.html"></iframe></section>
+<nav class="bottomnav" id="bottomNav" aria-label="Seções"><button data-v="rec" class="on">Gravações</button><button data-v="set">Configurações</button></nav>
 <section id="player" class="player" hidden aria-label="Reprodução">
   <header><button id="pClose" class="ibtn" aria-label="Fechar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div><b id="pTitle"></b><small id="pSub"></small></div></header>
   <div class="vbox" id="vbox"><video id="video" playsinline preload="auto"></video><div class="vload" id="vload" role="status" aria-live="polite"><i class="spin"></i><b id="vloadTxt">Carregando…</b><span id="vloadSub"></span><div class="vbar"><i id="vloadBar"></i></div></div></div>

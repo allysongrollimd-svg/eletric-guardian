@@ -4,6 +4,11 @@ import http from 'node:http';
 // (it then demands its own JWT login) or that leak the viewer's identity/session to the car.
 const STRIP_REQ = /^(x-forwarded-.*|forwarded|via|x-real-ip|true-client-ip|cf-.*|x-envoy-.*|x-request-id|proxy-.*|keep-alive|te|trailer|upgrade-insecure-requests)$/i;
 const STRIP_COOKIES = /^(eg_session|eg_view|eg_ctl)$/;
+// The car's own pages carry their app shell (sidebar, header). When one is shown inside our phone screens (an iframe),
+// the shell is hidden so there is a single navigation. Detected from the browser's Sec-Fetch-Dest header.
+const EMBED_PAGES = new Set(['/recording.html', '/surveillance.html', '/live-view.html']);
+const EMBED_CSS = '<style id="eg-embed">#app-shell-mount,.sidebar,.sidebar-overlay,.mobile-header,.page-header{display:none!important}' +
+  '.app-layout{display:block!important}.main-content{margin:0!important;max-width:100%!important;width:100%!important}body{padding:0!important}</style>';
 const STRIP_RES = /^(connection|keep-alive|transfer-encoding|proxy-.*|x-frame-options|content-security-policy)$/i;
 
 function cleanCookie(header) {
@@ -49,11 +54,29 @@ export function createViewProxy({ hub, authorize, frameAncestors = null }) {
     try { stream = hub.openStream(who.deviceId); } catch { res.writeHead(503, { 'Retry-After': '2' }); return res.end('Muitas conexões abertas com este carro.'); }
     if (!stream) { res.writeHead(503, { 'Content-Type': 'text/html; charset=utf-8', 'Retry-After': '5' }); return res.end(offlinePage(who.name)); }
 
-    const upstream = http.request({ createConnection: () => stream, method: req.method, path: req.url, headers: forwardHeaders(req, { upgrade: false }) }, (pres) => {
+    const pathOnly = req.url.split('?')[0];
+    const embed = req.method === 'GET' && String(req.headers['sec-fetch-dest'] || '') === 'iframe' && EMBED_PAGES.has(pathOnly);
+    const fh = forwardHeaders(req, { upgrade: false });
+    if (embed) fh['accept-encoding'] = 'identity';                 // we rewrite the HTML, so ask the car for it uncompressed
+    const upstream = http.request({ createConnection: () => stream, method: req.method, path: req.url, headers: fh }, (pres) => {
       const headers = {};
       for (const [k, v] of Object.entries(pres.headers)) if (!STRIP_RES.test(k)) headers[k] = v;
       headers['x-content-type-options'] = 'nosniff';
-      if (frameAncestors) headers['content-security-policy'] = `frame-ancestors ${frameAncestors}`;
+      // our own phone screens (same host) and the dashboard may frame the car's pages
+      if (frameAncestors) headers['content-security-policy'] = `frame-ancestors 'self' ${frameAncestors}`;
+      const isHtml = /text\/html/i.test(String(pres.headers['content-type'] || '')) && !pres.headers['content-encoding'];
+      if (embed && pres.statusCode === 200 && isHtml) {
+        const chunks = [];
+        pres.on('data', (c) => chunks.push(c));
+        pres.on('end', () => {
+          let html = Buffer.concat(chunks).toString('utf8');
+          html = /<\/head>/i.test(html) ? html.replace(/<\/head>/i, `${EMBED_CSS}</head>`) : EMBED_CSS + html;
+          delete headers['content-length']; headers['content-length'] = Buffer.byteLength(html);
+          res.writeHead(200, pres.statusMessage, headers); res.end(html);
+        });
+        pres.on('error', () => res.destroy());
+        return;
+      }
       res.writeHead(pres.statusCode, pres.statusMessage, headers);
       pres.pipe(res);
       pres.on('error', () => res.destroy());
