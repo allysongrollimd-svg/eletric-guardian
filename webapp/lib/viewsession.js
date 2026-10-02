@@ -9,7 +9,7 @@ const COOKIE_MS = 2 * 3600_000;
  * (VIEW_HOST). The app issues a one-time ticket; the view host swaps it for a signed cookie that is
  * re-validated on EVERY request against the database (owner, account state, session version).
  */
-export function createViewSessions({ secret, accounts, now = () => Date.now() }) {
+export function createViewSessions({ secret, accounts, now = () => Date.now(), isAllowed = () => true }) {
   const tickets = new Map();                                     // ticket -> { userId, deviceId, exp }
   const sign = (body) => createHmac('sha256', secret).update(`view:${body}`).digest('base64url');
   const eq = (a, b) => { const x = Buffer.from(a), y = Buffer.from(b); return x.length === y.length && timingSafeEqual(x, y); };
@@ -27,7 +27,7 @@ export function createViewSessions({ secret, accounts, now = () => Date.now() })
     /** One-time: returns the cookie value, or null. */
     redeem(ticket) {
       const v = tickets.get(ticket); tickets.delete(ticket);
-      if (!v || v.exp <= now() || !accounts.owns(v.userId, v.deviceId)) return null;
+      if (!v || v.exp <= now() || !accounts.owns(v.userId, v.deviceId) || !isAllowed(v.deviceId)) return null;
       const body = Buffer.from(JSON.stringify({ u: v.userId, d: v.deviceId, v: accounts.sessionVersion(v.userId), e: now() + COOKIE_MS })).toString('base64url');
       return `${body}.${sign(body)}`;
     },
@@ -38,7 +38,7 @@ export function createViewSessions({ secret, accounts, now = () => Date.now() })
       const [body, sig] = raw.split('.');
       if (!body || !sig || !eq(sig, sign(body))) return null;
       let p; try { p = JSON.parse(Buffer.from(body, 'base64url').toString()); } catch { return null; }
-      if (!p || p.e <= now() || accounts.sessionVersion(p.u) !== p.v || !accounts.owns(p.u, p.d)) return null;
+      if (!p || p.e <= now() || accounts.sessionVersion(p.u) !== p.v || !accounts.owns(p.u, p.d) || !isAllowed(p.d)) return null;
       return { userId: p.u, deviceId: p.d, name: accounts.getDevice(p.d)?.name };
     },
   };

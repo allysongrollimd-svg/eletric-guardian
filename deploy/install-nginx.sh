@@ -59,7 +59,7 @@ nginx -t && systemctl reload nginx
 for i in $(seq 1 40); do curl -fs http://127.0.0.1:8787/healthz >/dev/null && break; sleep 2; done
 if [ -n "${ADMIN_EMAIL:-}" ]; then
   ADMIN_PASS="${ADMIN_PASSWORD:-$(head -c 18 /dev/urandom | base64 | tr -d '\n=/+')}"
-  $COMPOSE exec -T eg node scripts/admin.mjs create-user "$ADMIN_EMAIL" "$ADMIN_PASS" "Admin" && \
+  $COMPOSE exec -T eg node scripts/admin.mjs create-user "$ADMIN_EMAIL" "$ADMIN_PASS" "Admin" admin && \
     echo ">> usuário: $ADMIN_EMAIL  senha: $ADMIN_PASS   (troque no painel)"
 fi
 echo ">> pronto: https://$APP_HOST"

@@ -101,7 +101,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
       }
 
       if (path === '/healthz') return json(res, 200, { ok: true });
-      if (cloud && path === '/api/config' || cloud && /^\/api\/(auth|me|cars|device)(\/|$)/.test(path)) {
+      if (cloud && path === '/api/config' || cloud && /^\/api\/(auth|me|cars|device|billing|admin)(\/|$)/.test(path)) {
         if (await cloud.handleApi(req, res, { path, json, readBody, clientIp, secureCookie })) return;
       }
 
@@ -158,6 +158,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
           const device = decodeURIComponent(cmd[1]);
           const dev = canSee(me, device) ? store.get(device) : null;
           if (!dev) return json(res, 404, { error: 'unknown vehicle' });
+          if (cloud && !cloud.billing.allowed(dev.device)) return json(res, 402, { error: 'Assinatura vencida. Renove para usar os controles.' });
           const r = await control.execute(ctlToken(req), dev.device, body, clientIp(req), decorate(dev).online, me.id);
           return json(res, r.code, r.error ? { error: r.error, locked: r.locked } : { ok: true });
         }
@@ -179,7 +180,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
 
       // ---- Static dashboard (public: the login screen must load; data is behind the API) ----
       if (req.method !== 'GET' && req.method !== 'HEAD') return json(res, 405, { error: 'method not allowed' });
-      const rel = path === '/' || path === '/pair' ? 'index.html' : normalize(decodeURIComponent(path)).replace(/^([/\\])+/, '');
+      const rel = path === '/' || path === '/pair' || path === '/billing/return' ? 'index.html' : path === '/admin' ? 'admin.html' : normalize(decodeURIComponent(path)).replace(/^([/\\])+/, '');
       const file = join(PUBLIC_DIR, rel);
       if (!file.startsWith(PUBLIC_DIR) || !TYPES[extname(file)]) return json(res, 404, { error: 'not found' });
       try {
@@ -234,6 +235,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
         if (m.type === 'cmd') {
           const dev = canSee(me, String(m.device ?? '')) ? store.get(String(m.device)) : null;
           if (!dev) return reply(m.id, 404, { error: 'unknown vehicle' });
+          if (cloud && !cloud.billing.allowed(dev.device)) return reply(m.id, 402, { error: 'Assinatura vencida. Renove para usar os controles.' });
           const r = await control.execute(ws.ctl, dev.device, { key: m.key, sub: m.sub, value: m.value }, ws.ip, decorate(dev).online, me.id);
           return reply(m.id, r.code, r.error ? { error: r.error, locked: r.locked } : { ok: true });
         }

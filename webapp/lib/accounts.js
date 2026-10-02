@@ -72,7 +72,10 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
 
   const sign = (payload) => createHmac('sha256', secret).update(payload).digest('base64url');
 
+  const claimHooks = [];
   const api = {
+    db, now,
+    onClaim(fn) { claimHooks.push(fn); },
     publicUser, publicCar, normalizeVin, isValidVin,
 
     async signup({ email, password, name = '', role = 'user' }) {
@@ -117,6 +120,11 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
     async verifyPassword(userId, password) {
       const u = q.userById.get(userId);
       return !!u && !u.disabled && (await verifyHash(String(password ?? ''), u.pass_hash));
+    },
+    /** Admin: replace a user's password and sign them out everywhere. */
+    async adminSetPassword(userId, next) {
+      if (typeof next !== 'string' || next.length < 10) throw new AccountError('weak_password', 'A senha precisa ter pelo menos 10 caracteres.');
+      q.setPass.run(await hash(next), userId);
     },
     sessionVersion(userId) { return q.userById.get(userId)?.session_ver ?? 0; },
     async changePassword(userId, current, next) {
@@ -192,6 +200,7 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
       q.claimDev.run(userId, v, String(name || '').trim().slice(0, 60) || 'Meu carro', now(), d.id);
       q.pairDelDev.run(d.id);
       log('claim', { userId, deviceId: d.id, detail: { vin: v } });
+      for (const fn of claimHooks) fn({ userId, deviceId: d.id, vin: v });
       return publicCar(q.dev.get(d.id));
     },
 

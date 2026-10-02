@@ -38,9 +38,37 @@ export function openDb(file) {
       device_id  TEXT NOT NULL REFERENCES devices(id) ON DELETE CASCADE,
       expires_at INTEGER NOT NULL
     );
+    -- Billing: access follows the chassis (VIN), so reinstalling the app or re-linking never resets a trial.
+    CREATE TABLE IF NOT EXISTS settings (k TEXT PRIMARY KEY, v TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS plans (
+      id TEXT PRIMARY KEY, name TEXT NOT NULL, months INTEGER NOT NULL, price_cents INTEGER NOT NULL,
+      active INTEGER NOT NULL DEFAULT 1, sort INTEGER NOT NULL DEFAULT 0
+    );
+    CREATE TABLE IF NOT EXISTS vin_access (
+      vin TEXT PRIMARY KEY, trial_until INTEGER, paid_until INTEGER, plan_id TEXT, updated_at INTEGER NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS invoices (
+      id TEXT PRIMARY KEY,                       -- also the order_nsu sent to the payment provider
+      user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+      vin TEXT NOT NULL, device_id TEXT, car_name TEXT,
+      plan_id TEXT NOT NULL, months INTEGER NOT NULL, amount_cents INTEGER NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',    -- pending | paid | cancelled
+      source TEXT NOT NULL DEFAULT 'infinitepay',-- infinitepay | manual
+      checkout_url TEXT, created_at INTEGER NOT NULL, paid_at INTEGER,
+      transaction_nsu TEXT, invoice_slug TEXT, capture_method TEXT, paid_amount_cents INTEGER, receipt_url TEXT, note TEXT
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS invoices_txn ON invoices(transaction_nsu) WHERE transaction_nsu IS NOT NULL;
+    CREATE INDEX IF NOT EXISTS invoices_user ON invoices(user_id, created_at);
+    CREATE INDEX IF NOT EXISTS invoices_status ON invoices(status, created_at);
     CREATE TABLE IF NOT EXISTS audit (
       id INTEGER PRIMARY KEY AUTOINCREMENT, t INTEGER NOT NULL, user_id TEXT, device_id TEXT, event TEXT NOT NULL, detail TEXT
     );
   `);
+  if (!db.prepare('SELECT COUNT(*) AS n FROM plans').get().n) {
+    // Starting prices; the admin panel edits them.
+    const ins = db.prepare('INSERT INTO plans (id, name, months, price_cents, sort) VALUES (?, ?, ?, ?, ?)');
+    [['mensal', 'Mensal', 1, 2990], ['trimestral', 'Trimestral', 3, 8490], ['semestral', 'Semestral', 6, 15990], ['anual', 'Anual', 12, 29990]]
+      .forEach(([id, name, months, price], i) => ins.run(id, name, months, price, i));
+  }
   return db;
 }

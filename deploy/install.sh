@@ -31,7 +31,7 @@ for i in $(seq 1 40); do docker compose exec -T eg node -e "fetch('http://127.0.
 
 if [ -n "${ADMIN_EMAIL:-}" ]; then
   ADMIN_PASS="${ADMIN_PASSWORD:-$(head -c 18 /dev/urandom | base64 | tr -d '\n=/+')}"
-  docker compose exec -T eg node scripts/admin.mjs create-user "$ADMIN_EMAIL" "$ADMIN_PASS" "Admin" && \
+  docker compose exec -T eg node scripts/admin.mjs create-user "$ADMIN_EMAIL" "$ADMIN_PASS" "Admin" admin && \
     echo ">> usuário: $ADMIN_EMAIL  senha: $ADMIN_PASS   (troque no painel)"
 fi
 echo ">> pronto: https://$APP_HOST   | no carro, em Nuvem, use o endereço https://$APP_HOST"

@@ -24,8 +24,10 @@ if (cmd === 'create-user') {
     console.log(`${u.email} (${u.role}${u.disabled ? ', disabled' : ''})`);
     for (const c of acc.listCars(u.id)) console.log(`   ${c.name}  VIN ${c.vin}  ${c.vinVerified ? 'verified' : 'unverified'}  last seen ${c.lastSeen ? new Date(c.lastSeen).toISOString() : '-'}`);
   }
+} else if (cmd === 'make-admin') {
+  const r = db.prepare("UPDATE users SET role = 'admin' WHERE email = ?").run(String(a[0]).toLowerCase()); console.log(r.changes ? 'promoted to admin' : 'user not found');
 } else if (cmd === 'disable-user') {
   db.prepare('UPDATE users SET disabled = 1 WHERE email = ?').run(String(a[0]).toLowerCase()); console.log('disabled');
 } else {
-  console.log('commands: create-user <email> <password> [name] [role] | release-vin <VIN> | list | disable-user <email>');
+  console.log('commands: make-admin <email> | create-user <email> <password> [name] [role] | release-vin <VIN> | list | disable-user <email>');
 }
