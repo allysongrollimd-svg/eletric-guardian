@@ -60,7 +60,7 @@ const CAR_WEB = join(fileURLToPath(new URL('.', import.meta.url)), '../../app/sr
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png', '.woff2': 'font/woff2' };
 const local = http.createServer((req, res) => {
   const p = req.url.split('?')[0];
-  if (/^\/(shared|i18n)\//.test(p) || ['/recording.html', '/surveillance.html'].includes(p)) {
+  if (/^\/(shared|i18n)\//.test(p) || ['/recording.html', '/surveillance.html', '/trips.html', '/charging.html'].includes(p)) {
     const f = p.startsWith('/shared') || p.startsWith('/i18n') ? join(CAR_WEB, normalize(p)) : join(CAR_WEB, 'local', p);
     if (f.startsWith(CAR_WEB) && existsSync(f) && statSync(f).isFile()) { res.writeHead(200, { 'content-type': MIME[extname(f)] || 'application/octet-stream' }); return res.end(readFileSync(f)); }
   }

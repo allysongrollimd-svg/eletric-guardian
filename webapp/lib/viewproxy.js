@@ -52,7 +52,12 @@ const RECORDING_HIDE = [
   // Armazenamento: fine tuning of the BYD dashcam cleanup
   ...hideRows(['recording.cdr_reserved', 'recording.cdr_protect_recent', 'recording.cdr_min_keep']),
 ];
+// Deslocamentos: where trips are stored, storage limit, recovery and BYD recorder cleanup stay with the admin
+const TRIPS_HIDE = [...hideRows(['trip.settings.storage_location', 'trip.settings.storage_usage', 'trip.settings.storage_limit']),
+  ...hideCards(['trip.recover.title', 'trip.cdr.title'])];
 const CUSTOMER_CSS = {
+  '/charging.html': `<style id="eg-customer">.ch-card:has([data-i18n="charge.settings_data_title"]){display:none!important}</style>`,
+  '/trips.html': `<style id="eg-customer">${TRIPS_HIDE.join(',')}{display:none!important}</style>`,
   '/surveillance.html': `<style id="eg-customer">${SURVEILLANCE_HIDE.join(',')}{display:none!important}</style>`,
   '/recording.html': `<style id="eg-customer">${RECORDING_HIDE.join(',')}{display:none!important}</style>`,
 };

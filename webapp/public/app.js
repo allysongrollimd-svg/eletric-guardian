@@ -253,7 +253,7 @@ async function boot() {
     await api('/api/devices'); // auth probe
     $('login').hidden = true; $('auth').hidden = true; $('logout').hidden = false;
     if (state.mode === 'accounts') {
-      $('carsBtn').hidden = false; $('camsTab').hidden = false; $('billBtn').hidden = false; $('sentryLink').hidden = false; $('dashcamLink').hidden = false;
+      $('carsBtn').hidden = false; $('camsTab').hidden = false; $('billBtn').hidden = false; $('sentryLink').hidden = false; $('dashcamLink').hidden = false; $('tripsLink').hidden = false; $('chargeLink').hidden = false;
       api('/api/me').then((m) => { $('adminLink').hidden = m.user?.role !== 'admin'; }).catch(() => {});
       bill.handleReturn();
     }

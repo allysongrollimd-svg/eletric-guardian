@@ -12,7 +12,7 @@ const SESSION_COOKIE = 'eg_session';
 // Pages of the car's own web UI that the dashboard can open directly.
 const VIEW_DIR = join(dirname(fileURLToPath(import.meta.url)), '../public-view');
 const VIEW_ASSETS = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8' };
-const VIEW_PAGES = new Set(['/_eg/sentinela.html', '/_eg/dashcam.html', '/', '/live-view.html', '/recording.html', '/surveillance.html', '/parking.html', '/events.html', '/performance.html']);
+const VIEW_PAGES = new Set(['/_eg/sentinela.html', '/_eg/dashcam.html', '/_eg/viagens.html', '/_eg/recargas.html', '/trips.html', '/charging.html', '/', '/live-view.html', '/recording.html', '/surveillance.html', '/parking.html', '/events.html', '/performance.html']);
 
 /**
  * Multi-tenant ("accounts") mode: users, cars bound to a chassis (VIN), and the routes around them.
