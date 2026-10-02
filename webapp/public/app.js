@@ -119,7 +119,13 @@ function showTab(name) {
   if (name === 'controls') { ctl.refreshStatus(); ctl.render(); }
   if (name === 'cams') cloud?.renderCams();
 }
-document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+const TITLES = { dash: 'Painel', controls: 'Controles', cams: 'Câmeras' };
+function setDrawer(open) { $('drawer').classList.toggle('open', open); $('drawer').setAttribute('aria-hidden', String(!open)); $('scrim').hidden = !open; $('menuBtn').setAttribute('aria-expanded', String(open)); }
+$('menuBtn').addEventListener('click', () => setDrawer(!$('drawer').classList.contains('open')));
+$('scrim').addEventListener('click', () => setDrawer(false));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setDrawer(false); });
+['carsBtn', 'logout', 'device'].forEach((id) => $(id).addEventListener(id === 'device' ? 'change' : 'click', () => setDrawer(false)));
+document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => { showTab(b.dataset.tab); $('sectionTitle').textContent = TITLES[b.dataset.tab] || 'Painel'; setDrawer(false); }));
 // Re-render at most every 2 s while the controls tab is open so states (on/off, selected option) follow telemetry.
 setInterval(ctlRerender, 2000);
 

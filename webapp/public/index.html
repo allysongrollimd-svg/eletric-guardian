@@ -2,7 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0E1013">
 <title>Electric Guardian</title>
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -11,21 +14,27 @@
 </head>
 <body>
 <header class="top">
-  <div class="brand"><img src="/logo.svg" alt="" width="32" height="32"><span>Electric Guardian</span></div>
-  <div class="top-right">
-    <select id="device" aria-label="Veículo" hidden></select>
-    <span id="latency" class="pill off" title="Transporte e latência (ida e volta)" hidden></span>
-    <span id="status" class="pill off" role="status">Conectando…</span>
-    <button id="carsBtn" class="ghost" hidden>Carros</button>
-    <button id="logout" class="ghost" hidden>Sair</button>
-  </div>
+  <button id="menuBtn" class="icon" aria-label="Menu" aria-expanded="false" aria-controls="drawer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <div class="brand"><img src="/logo.svg" alt="" width="28" height="28"><span id="sectionTitle">Painel</span></div>
+  <span id="status" class="pill off" role="status">Conectando…</span>
 </header>
 
-<nav class="tabs" id="tabs" hidden>
-  <button class="tab on" data-tab="dash">Painel</button>
-  <button class="tab" data-tab="controls">Controles</button>
-  <button class="tab" data-tab="cams" id="camsTab" hidden>Câmeras</button>
-</nav>
+<div id="scrim" class="scrim" hidden></div>
+<aside id="drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-head"><img src="/logo.svg" alt="" width="36" height="36"><b>Electric Guardian</b></div>
+  <label class="drawer-car" for="device">Veículo</label>
+  <select id="device" aria-label="Veículo" hidden></select>
+  <nav class="tabs" id="tabs" hidden>
+    <button class="tab on" data-tab="dash">Painel</button>
+    <button class="tab" data-tab="controls">Controles</button>
+    <button class="tab" data-tab="cams" id="camsTab" hidden>Câmeras</button>
+  </nav>
+  <div class="drawer-foot">
+    <span id="latency" class="pill off" title="Transporte e latência (ida e volta)" hidden></span>
+    <button id="carsBtn" class="drawer-item" hidden>Meus carros</button>
+    <button id="logout" class="drawer-item" hidden>Sair</button>
+  </div>
+</aside>
 
 <main id="cams" hidden>
   <div class="card cam-bar">
