@@ -27,7 +27,12 @@ if (cfg.accounts) {
   const { loadSecret, saveState, loadState } = await import('./lib/persist.js');
 
   const secret = loadSecret(cfg);
-  const accounts = createAccounts(openDb(join(cfg.dataDir, 'eg.sqlite')), { secret });
+  const db = openDb(join(cfg.dataDir, 'eg.sqlite'));
+  const accounts = createAccounts(db, { secret });
+  // Daily consistent snapshot (14 kept) in DATA_DIR/backups; deploy/backup.sh copies them off the container.
+  const { backupDb } = await import('./lib/backup.js');
+  const snap = () => { try { backupDb(db, { dir: join(cfg.dataDir, 'backups'), dataDir: cfg.dataDir, keep: +process.env.BACKUP_KEEP || 14 }); } catch (e) { console.error('backup failed:', e.message); } };
+  snap(); setInterval(snap, 24 * 3600_000).unref();
   const stateFile = join(cfg.dataDir, 'state.json');
   loadState(store, stateFile);
   const hub = createTunnelHub({ accounts });

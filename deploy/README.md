@@ -75,3 +75,23 @@ entra na conta e toca em *Vincular*. O chassi é enviado pelo próprio app do ca
 - **Regras:** o teste grátis começa no primeiro vínculo do chassi e não reinicia ao desvincular/vincular. Depois de vencer há uma tolerância; passada
   a tolerância, câmeras e controles remotos ficam bloqueados (o painel segue mostrando os dados). Pagar durante o teste não perde os dias restantes.
 - **Renovação:** o checkout da InfinitePay é pagamento avulso (não cobra o cartão sozinho todo mês). Cada período é uma nova fatura que o cliente paga em *Assinatura*.
+
+## Backup e restauração
+
+O serviço guarda sozinho uma cópia consistente do banco por dia (14 mantidas) dentro do volume Docker. Isso protege contra erro, **não** contra perder a VPS.
+Para levar as cópias para fora do contêiner e agendar:
+
+```bash
+bash deploy/backup.sh                                    # copia para /var/backups/electric-guardian (30 dias)
+(crontab -l 2>/dev/null; echo "30 3 * * * bash $PWD/deploy/backup.sh >> /var/log/eg-backup.log 2>&1") | crontab -
+```
+
+Copie essa pasta também para outro lugar (outro servidor, nuvem, seu computador). O arquivo `session.secret` vai junto: ele assina as sessões e as chaves dos webhooks.
+
+**Restaurar** (serviço parado): copie o `eg-AAAAMMDD-HHMMSSZ.sqlite` escolhido para `eg.sqlite` no volume e o `session.secret` para o mesmo lugar, depois suba de novo:
+
+```bash
+docker compose -f deploy/docker-compose.nginx.yml stop eg
+docker run --rm -v deploy_eg-data:/data -v /var/backups/electric-guardian:/b alpine sh -c 'cp /b/eg-XXXX.sqlite /data/eg.sqlite && cp /b/session.secret /data/session.secret && rm -f /data/eg.sqlite-wal /data/eg.sqlite-shm && chown -R 1000:1000 /data'
+docker compose -f deploy/docker-compose.nginx.yml start eg
+```
