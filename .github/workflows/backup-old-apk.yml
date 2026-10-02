@@ -1,0 +1,36 @@
+name: Backup old APK
+
+# One-off: copies the APK built by the pre-existing "Android" workflow (run 36946123372,
+# branch claude/proxima-build @ cd6d1a5) into a permanent GitHub Release, because workflow
+# artifacts expire on 2026-12-31. Safe to delete after it succeeds.
+on:
+  push:
+    branches: [claude/upbeat-wozniak-ponvg8]
+    paths: [.github/workflows/backup-old-apk.yml]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: eletric-guardian-debug
+          run-id: 36946123372
+          repository: ${{ github.repository }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: old-apk
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls -la old-apk
+          (cd old-apk && sha256sum * | tee SHA256SUMS.txt)
+          gh release create backup-pre-rebrand-apk-2026-10-01 old-apk/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --target cd6d1a55fe20b5468f8b41c9a2a6d0a1ac7d7547 \
+            --title "Backup: APK antigo (antes do rebrand)" \
+            --notes "Debug APK gerado pelo workflow Android (run 36946123372) na branch claude/proxima-build, commit cd6d1a55fe20b5468f8b41c9a2a6d0a1ac7d7547. Copiado antes do rebrand; o artefato original expira em 2026-12-31."
