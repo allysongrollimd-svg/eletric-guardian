@@ -43,8 +43,26 @@ accounts.claim(user.id, { vin: VIN, code: accounts.registerDevice({ ...CAR, vin:
 
 // the car's "local web UI" served through the tunnel
 const page = (title, body = '') => `<!doctype html><meta charset=utf-8><title>${title}</title><body style="margin:0;background:#101418;color:#e4e8ec;font:16px system-ui"><div style="padding:16px"><h2>${title} <small style="color:#8bdc5c">(demo do carro)</small></h2>${body}</div>`;
+// demo recordings (what the car's /api/recordings would answer): two days, sentry + dashcam clips with a 2x2 mosaic thumbnail
+const isoDay = (d) => new Date(Date.now() - d * 86400000).toISOString().slice(0, 10);
+const REC = [];
+for (let d = 0; d < 2; d++) for (let i = 0; i < 7; i++) {
+  const sentry = i % 2 === 0, h = 8 + i * 2, m = (i * 13) % 60;
+  REC.push({ id: `r${d}${i}`, type: sentry ? 'sentry' : 'normal', date: isoDay(d), time: `${h}:${m}`, timeFormatted: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String((i * 7) % 60).padStart(2, '0')}`, dateFormatted: isoDay(d), size: 20e6, sizeFormatted: `${15 + i} MB`,
+    peakSeverity: sentry ? ['INFO', 'ALERT', 'CRITICAL', 'INFO'][i % 4] : undefined, personCount: sentry && i % 4 === 2 ? 2 : 0, vehicleCount: sentry && i % 4 === 0 ? 1 : 0,
+    place: { short: 'Rua Pe. Estevão', displayName: 'Rua Padre Estevão, São Paulo' }, thumbnailUrl: `/thumb/id/r${d}${i}`, videoUrl: `/video/id/r${d}${i}` });
+}
+const mosaic = (id) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 100"><rect width="160" height="100" fill="#222"/>${[0, 1, 2, 3].map((q) => `<rect x="${(q % 2) * 80 + 2}" y="${Math.floor(q / 2) * 50 + 2}" width="76" height="46" fill="hsl(${(id.charCodeAt(2) * 37 + q * 50) % 360} 25% 30%)"/>`).join('')}</svg>`;
 const local = http.createServer((req, res) => {
   const p = req.url.split('?')[0];
+  const sendJson = (o) => { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(o)); };
+  if (p === '/api/recordings/dates') return sendJson({ success: true, dates: [0, 1].map((d) => ({ date: isoDay(d), count: 7, hasSentry: true })) });
+  if (p === '/api/recordings') {
+    const q = new URL(req.url, 'http://x').searchParams; const rows = REC.filter((r) => (!q.get('type') || r.type === q.get('type')) && (!q.get('date') || r.date === q.get('date')));
+    const size = +q.get('pageSize') || 12, page = +q.get('page') || 1;
+    return sendJson({ success: true, recordings: rows.slice((page - 1) * size, page * size), totalCount: rows.length, totalPages: Math.max(1, Math.ceil(rows.length / size)), page, pageSize: size });
+  }
+  if (p.startsWith('/thumb/id/')) { res.writeHead(200, { 'content-type': 'image/svg+xml' }); return res.end(mosaic(p.slice(10))); }
   const body = p === '/live-view.html'
     ? `<canvas id=c width=640 height=360 style="width:100%;max-width:900px;background:#000;border:1px solid #333"></canvas><p id=t>conectando ao /ws…</p><script>let n=0,c=document.getElementById('c').getContext('2d');const w=new WebSocket((location.protocol=='https:'?'wss':'ws')+'://'+location.host+'/ws');w.onmessage=e=>{n++;const x=(n*7)%640;c.fillStyle='#111';c.fillRect(0,0,640,360);c.fillStyle='#8bdc5c';c.fillRect(x,150,60,60);document.getElementById('t').textContent='frames recebidos: '+n};</script>`
     : '<p>Página do carro servida pelo túnel.</p><ul><li><a href="/live-view.html">Ao vivo</a></li><li><a href="/recording.html">Gravações</a></li></ul>';

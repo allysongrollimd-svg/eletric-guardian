@@ -1,3 +1,6 @@
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 import { createLimiter, parseCookies } from './auth.js';
 import { AccountError } from './accounts.js';
 import { createViewSessions } from './viewsession.js';
@@ -7,7 +10,9 @@ import { ProviderError } from './infinitepay.js';
 
 const SESSION_COOKIE = 'eg_session';
 // Pages of the car's own web UI that the dashboard can open directly.
-const VIEW_PAGES = new Set(['/', '/live-view.html', '/recording.html', '/surveillance.html', '/parking.html', '/events.html', '/performance.html']);
+const VIEW_DIR = join(dirname(fileURLToPath(import.meta.url)), '../public-view');
+const VIEW_ASSETS = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8' };
+const VIEW_PAGES = new Set(['/_eg/sentinela.html', '/_eg/dashcam.html', '/', '/live-view.html', '/recording.html', '/surveillance.html', '/parking.html', '/events.html', '/performance.html']);
 
 /**
  * Multi-tenant ("accounts") mode: users, cars bound to a chassis (VIN), and the routes around them.
@@ -218,6 +223,28 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
       if (e instanceof AccountError) return send(e.status, { error: e.message, code: e.code }), true;
       throw e;
     }
+  };
+
+  /**
+   * Phone screens that live on VIEW_HOST (/_eg/*): they talk to the car's own API through the tunnel with the viewer's
+   * cookie. Pages need a valid view session; the static CSS/JS carry nothing private.
+   */
+  cloud.serveViewAsset = async (req, res, path) => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
+    const name = path.slice('/_eg/'.length);
+    const ext = name.slice(name.lastIndexOf('.'));
+    if (!/^[a-z0-9._-]+$/i.test(name) || !VIEW_ASSETS[ext]) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Não encontrado.'); }
+    const isPage = ext === '.html';
+    if (isPage && !view.authorize(req)) { res.writeHead(401, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Sessão expirada. Abra novamente pelo painel.'); }
+    try {
+      let buf = await readFile(join(VIEW_DIR, name));
+      if (isPage) buf = Buffer.from(buf.toString('utf8').replaceAll('{{APP_URL}}', cloud.appHost ? `${cfg.publicScheme || 'https'}://${cloud.appHost}` : ''));
+      res.writeHead(200, {
+        'Content-Type': VIEW_ASSETS[ext], 'Cache-Control': isPage ? 'no-store' : 'public, max-age=300', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer',
+        ...(isPage ? { 'Content-Security-Policy': "default-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" } : {}),
+      });
+      res.end(req.method === 'HEAD' ? undefined : buf);
+    } catch { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); res.end('Não encontrado.'); }
   };
 
   /** Request handler for VIEW_HOST: ticket exchange, then everything is proxied to the car. */

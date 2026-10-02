@@ -97,6 +97,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
       // Car UI (live view / recordings / sentry) lives on its own host and is proxied through the tunnel.
       if (viewProxy && host === cloud.viewHost) {
         if (cloud.handleViewEntry(req, res, { path, url, secureCookie })) return;
+        if (path.startsWith('/_eg/')) return cloud.serveViewAsset(req, res, path);
         return viewProxy.handle(req, res);
       }
 

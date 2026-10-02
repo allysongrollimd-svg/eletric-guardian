@@ -1,0 +1,7 @@
+/* Brand tokens of the phone screens served on the camera host. Swapping the brand kit means editing this file only. */
+:root{
+  --bg:#0d1014;--panel:#161a20;--panel2:#1d222a;--line:#ffffff1c;--text:#e8ecf0;--muted:#98a2ad;
+  --accent:#8bdc5c;--on-accent:#0c2200;--warn:#ffb870;--bad:#ff9d93;--ok:#5bd382;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;--radius:14px;
+  color-scheme:dark;
+}

@@ -98,5 +98,14 @@ export function initCloud({ getCars, getCurrent, onAuthChanged, onCarsChanged })
     };
   }
 
-  return { showAuth, maybePair, openCars, renderCams, logout, cfg: () => cfg };
+  /** Full-page navigation to a phone screen served on the camera host (Sentinela, Dashcam…). */
+  async function goPage(page) {
+    const car = getCurrent(); if (!car) return;
+    const r = await post(`/api/cars/${encodeURIComponent(car.device)}/view`, { page });
+    const b = await r.json().catch(() => ({}));
+    if (!r.ok) { const t = $('toast'); if (t) { t.textContent = b.error || `Erro ${r.status}`; t.hidden = false; setTimeout(() => { t.hidden = true; }, 3500); } return; }
+    location.href = b.url;
+  }
+
+  return { showAuth, goPage, maybePair, openCars, renderCams, logout, cfg: () => cfg };
 }

@@ -118,17 +118,18 @@ let ctlTimer = null;
 const ctlRerender = () => { if (!$('controls').hidden && !document.querySelector('dialog[open]')) ctl.render(); };
 function showTab(name) {
   $('dash').hidden = name !== 'dash' || !state.current; $('controls').hidden = name !== 'controls'; $('cams').hidden = name !== 'cams';
-  document.querySelectorAll('.tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
+  document.querySelectorAll('.tab[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
   if (name === 'controls') { ctl.refreshStatus(); ctl.render(); }
   if (name === 'cams') cloud?.renderCams();
 }
+document.querySelectorAll('.tab[data-open]').forEach((b) => b.addEventListener('click', () => { setDrawer(false); cloud?.goPage(b.dataset.open); }));
 const TITLES = { dash: 'Painel', controls: 'Controles', cams: 'Câmeras' };
 function setDrawer(open) { $('drawer').classList.toggle('open', open); $('drawer').setAttribute('aria-hidden', String(!open)); $('scrim').hidden = !open; $('menuBtn').setAttribute('aria-expanded', String(open)); }
 $('menuBtn').addEventListener('click', () => setDrawer(!$('drawer').classList.contains('open')));
 $('scrim').addEventListener('click', () => setDrawer(false));
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setDrawer(false); });
 ['carsBtn', 'logout', 'device'].forEach((id) => $(id).addEventListener(id === 'device' ? 'change' : 'click', () => setDrawer(false)));
-document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => { showTab(b.dataset.tab); $('sectionTitle').textContent = TITLES[b.dataset.tab] || 'Painel'; setDrawer(false); }));
+document.querySelectorAll('.tab[data-tab]').forEach((b) => b.addEventListener('click', () => { showTab(b.dataset.tab); $('sectionTitle').textContent = TITLES[b.dataset.tab] || 'Painel'; setDrawer(false); }));
 // Re-render at most every 2 s while the controls tab is open so states (on/off, selected option) follow telemetry.
 setInterval(ctlRerender, 2000);
 
@@ -248,7 +249,7 @@ async function boot() {
     await api('/api/devices'); // auth probe
     $('login').hidden = true; $('auth').hidden = true; $('logout').hidden = false;
     if (state.mode === 'accounts') {
-      $('carsBtn').hidden = false; $('camsTab').hidden = false; $('billBtn').hidden = false;
+      $('carsBtn').hidden = false; $('camsTab').hidden = false; $('billBtn').hidden = false; $('sentryLink').hidden = false; $('dashcamLink').hidden = false;
       api('/api/me').then((m) => { $('adminLink').hidden = m.user?.role !== 'admin'; }).catch(() => {});
       bill.handleReturn();
     }
