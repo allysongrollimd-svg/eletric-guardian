@@ -63,19 +63,3 @@ a{color:inherit}
 @keyframes slide{0%{margin-left:-40%}100%{margin-left:100%}}
 .buf{height:4px;background:var(--line);margin:0 12px}
 .buf i{display:block;height:100%;width:0;background:var(--accent);opacity:.55;transition:width .3s}
-
-.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:1fr 1fr;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.bottomnav button{padding:14px 8px;color:var(--muted);font-weight:600}
-.bottomnav button.on{color:var(--text);box-shadow:inset 0 3px 0 var(--accent)}
-body.hasnav{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
-.settings{padding:14px 12px 24px;display:grid;gap:10px}
-.settings h2{margin:10px 0 0;font-size:18px}
-.settings .sub{margin:0;color:var(--muted);font-size:14px}
-.opts{display:grid;gap:8px}
-.opt{display:grid;grid-template-columns:22px 1fr;gap:12px;text-align:left;padding:14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}
-.opt .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--muted);margin-top:2px}
-.opt.on{border-color:var(--accent)}.opt.on .dot{border-color:var(--accent);background:radial-gradient(var(--accent) 45%,transparent 50%)}
-.opt b{display:block;font-size:16px}.opt small{display:block;color:var(--muted);margin-top:3px;line-height:1.35}
-.opt .rec{font:600 11px var(--mono);color:var(--accent);margin-left:8px}
-.opt:disabled{opacity:.5}
-.setmsg{min-height:20px;margin:4px 0 0;font-size:14px;color:var(--muted)}.setmsg.bad{color:var(--bad)}.setmsg.ok{color:var(--ok)}

@@ -13,6 +13,7 @@
 <header class="top">
   <a class="ibtn" href="{{APP_URL}}/" aria-label="Voltar ao painel"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
   <h1>Dashcam</h1>
+  <a class="ibtn" href="/recording.html" aria-label="Ajustes da dashcam" title="Ajustes da dashcam"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></a>
 </header>
 <div id="recView">
 <div class="days">
@@ -26,16 +27,6 @@
 <main id="list" class="list"><div class="state"><b>Carregando…</b></div></main>
 <button id="more" class="more" hidden>Carregar mais</button>
 </div>
-<section id="settings" class="settings" hidden>
-  <h2>Quando gravar</h2>
-  <p class="sub">Escolha quando a dashcam do carro deve gravar. Vale a partir de agora; o que já foi gravado continua na lista.</p>
-  <div id="modeOpts" class="opts" role="radiogroup" aria-label="Quando gravar"></div>
-  <h2>Dashcam original do carro</h2>
-  <p class="sub">A câmera de fábrica grava as faixas com velocidade e marcha. Deixe acompanhando a gravação principal para ela também parar quando o carro estiver parado.</p>
-  <div id="oemOpts" class="opts" role="radiogroup" aria-label="Dashcam original"></div>
-  <p id="setMsg" class="setmsg" role="status"></p>
-</section>
-<nav class="bottomnav" id="bottomNav" aria-label="Seções"><button data-v="rec" class="on">Gravações</button><button data-v="set">Configurações</button></nav>
 <section id="player" class="player" hidden aria-label="Reprodução">
   <header><button id="pClose" class="ibtn" aria-label="Fechar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div><b id="pTitle"></b><small id="pSub"></small></div></header>
   <div class="vbox" id="vbox"><video id="video" playsinline preload="auto"></video><div class="vload" id="vload" role="status" aria-live="polite"><i class="spin"></i><b id="vloadTxt">Carregando…</b><span id="vloadSub"></span><div class="vbar"><i id="vloadBar"></i></div></div></div>
@@ -43,6 +34,6 @@
   <div class="ctl"><button id="pp" class="ibtn" aria-label="Reproduzir ou pausar"><svg id="ppIcon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Posição"><span id="time">0:00</span></div>
   <div class="quads" id="quads"><button data-q="all" class="on">Todas</button><button data-q="front">Frente</button><button data-q="right">Direita</button><button data-q="left">Esquerda</button><button data-q="rear">Traseira</button></div>
 </section>
-<script src="/_eg/rec.js" type="module" data-type="normal" data-settings="dashcam"></script>
+<script src="/_eg/rec.js" type="module" data-type="normal"></script>
 </body>
 </html>
