@@ -558,7 +558,7 @@ object RecordingsApiClient {
             return IncidentPackDownload(error = "Could not prepare evidence-pack storage.")
         }
 
-        val target = File(destinationDir, "OverDrive-Incident-$packId.zip")
+        val target = File(destinationDir, "ElectricGuardian-Incident-$packId.zip")
         val partial = File(destinationDir, "${target.name}.part")
         partial.delete()
         var download: java.net.HttpURLConnection? = null

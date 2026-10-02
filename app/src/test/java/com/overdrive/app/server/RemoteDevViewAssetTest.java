@@ -19,7 +19,7 @@ public class RemoteDevViewAssetTest {
         String html = read("src/main/assets/web/local/remote-dev-view.html");
 
         assertFalse(html.contains("id=\"confirmStart\""));
-        assertTrue(html.contains("Controls the real Overdrive app"));
+        assertTrue(html.contains("Controls the real Electric Guardian app"));
         assertTrue(html.contains("Use only while parked"));
         assertTrue(html.contains("id=\"startButton\" class=\"dev-button primary\""));
         assertFalse(html.contains("id=\"startButton\" class=\"dev-button primary\" disabled"));

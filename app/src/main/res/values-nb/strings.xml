@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <string name="accessibility_service_description">Holder overdrive kjøretøyovervåking aktiv i bakgrunnen. Denne tjenesten leser ikke eller samhandler med skjerminnholdet.</string>
     <string name="action_cancel">Avbryt</string>
     <string name="action_clear_plain">Tøm</string>
@@ -98,7 +98,7 @@
     <string name="camera_option_5">Kamera 5</string>
     <string name="camera_selection_hint">Auto plukker riktig kamera for trim ved hver oppstart. Kamera 1 = BYD Seal, Kamera 0 = Atto tester. Start kameraet på nytt for at innstillingene skal tre i kraft.</string>
     <string name="camera_oem_dashcam_title">OEM Dashcam kamera-ID</string>
-    <string name="camera_oem_dashcam_hint">Velg AVMamera-IDen som peker på den foroverliggende dashbordsensoren. Dashcam er OPPOSITE for pano: Kjør/han-pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. La stå på Auto for å la OverDrive-plukke.</string>
+    <string name="camera_oem_dashcam_hint">Velg AVMamera-IDen som peker på den foroverliggende dashbordsensoren. Dashcam er OPPOSITE for pano: Kjør/han-pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. La stå på Auto for å la Electric Guardian-plukke.</string>
     <string name="camera_oem_dashcam_auto_resolved">Auto — bruk av id %1$d (pano er id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Auto  pano id er %1$d, kan ikke konkludere dashcam</string>
     <string name="camera_oem_dashcam_save">Lagre</string>
@@ -117,7 +117,7 @@
     <string name="camera_mapping_summary_probing">Panoramisk stream: Bakoverkompatibel auto-detektering / probing</string>
     <string name="camera_mapping_current_format">Nåværende tilordning: %1$s</string>
     <string name="camera_mapping_current_none">Gjeldende tilordning: Auto / standard</string>
-    <string name="camera_mapping_hint">OverDrive beholder oppstarten av den eldre oppførselen som standard, men lar deg nå kalibrere den sammenslåtte panoramusstripen riktig. Forhåndsvis hvert rå sammenslåtte utsnitt, tilordne de logiske 360 rollene til utsnittet som faktisk viser front/høyre/bak/venstre på kjøretøyet og daemonen vil gjenbruke dette oppsettet til opptak, strømming, og AI etter omstart.</string>
+    <string name="camera_mapping_hint">Electric Guardian beholder oppstarten av den eldre oppførselen som standard, men lar deg nå kalibrere den sammenslåtte panoramusstripen riktig. Forhåndsvis hvert rå sammenslåtte utsnitt, tilordne de logiske 360 rollene til utsnittet som faktisk viser front/høyre/bak/venstre på kjøretøyet og daemonen vil gjenbruke dette oppsettet til opptak, strømming, og AI etter omstart.</string>
     <string name="dashboard_scan_to_connect">Skann for tilkobling</string>
     <string name="dashboard_qr_waiting">Venter på tunnel…</string>
     <string name="dashboard_daemons_running_default">0/5 Løping</string>
@@ -131,10 +131,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Velg ditt språk</string>
-    <string name="setup_language_body">Standarder for din headenhets språk. Trykk for å velge en annen for OverDrive-appen og web-tunnel.</string>
+    <string name="setup_language_body">Standarder for din headenhets språk. Trykk for å velge en annen for Electric Guardian-appen og web-tunnel.</string>
     <string name="setup_language_button">Velg språk</string>
     <string name="setup_autostart_title">Deaktiver auto start-begrensning</string>
-    <string name="setup_autostart_body">Trykk nedenfor for å åpne BYD Auto-Start. Finn OverDrive i listen og fjern avmerkingen i boksen. BYD sletter dette på hver installasjon - du vil gjenta etter oppdateringer.</string>
+    <string name="setup_autostart_body">Trykk nedenfor for å åpne BYD Auto-Start. Finn Electric Guardian i listen og fjern avmerkingen i boksen. BYD sletter dette på hver installasjon - du vil gjenta etter oppdateringer.</string>
     <string name="setup_autostart_button">Åpne BYD automatisk start</string>
     <string name="setup_overlay_title">Tillat visning av andre apper</string>
     <string name="setup_overlay_body">Aktiver denne for å vise en flytende statusindikator for opptak og reisesporing over andre programmer.</string>
@@ -417,7 +417,7 @@
     <string name="setup_overlay_already_granted">Allerede innvilget</string>
     <string name="setup_tips_header">Tips &amp; feilsøking</string>
     <string name="setup_traffic_title">Deaktiver BYD Traffic Monitor</string>
-    <string name="setup_traffic_body">BYD-trafikken blokkerer tredjepartsapper fra å nå Internett. Deaktivering av den lar OverDrive og andre apper som du installerer faktisk bruker nettverket. En hard-omstart er nødvendig etterpå.</string>
+    <string name="setup_traffic_body">BYD-trafikken blokkerer tredjepartsapper fra å nå Internett. Deaktivering av den lar Electric Guardian og andre apper som du installerer faktisk bruker nettverket. En hard-omstart er nødvendig etterpå.</string>
     <string name="setup_traffic_button">Åpne trafikkmonitor</string>
     <string name="setup_camera_fix_title">Kamera feeds svart eller feil?</string>
     <string name="setup_camera_fix_body">Kamerasonen, sett Kamera-ID til 0, trykk på Lagre, og start deretter kameraet på nytt med meddelelse Hvis tilbakemeldingene fortsatt er feil, gjenta med kamera-ID 1. La kartleggingsdelen være uberørt.</string>
@@ -435,9 +435,9 @@
     <string name="nav_page_abrp">ABRP</string>
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
-    <string name="status_overlay_notif_title">OverDrive Status</string>
+    <string name="status_overlay_notif_title">Electric Guardian Status</string>
     <string name="status_overlay_notif_text">Status overlay aktiv</string>
-    <string name="daemon_keepalive_notif_title">Overdrive aktiv</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian aktiv</string>
     <string name="daemon_keepalive_notif_text">Overvåking av kjøretøysystemer</string>
     <string name="overdrive_status_summary_title">Overkjøring</string>
     <string name="overdrive_status_summary_text">Bakgrunnstjenester kjører</string>
@@ -468,14 +468,14 @@
     <string name="cd_settings_subrail">Innstillinger underbane</string>
     <string name="settings_privacy_title">Personvern &amp; data</string>
     <string name="settings_privacy_body">Tilbakestill tømmingsindeks, hurtigbufrede legitimasjoner, tidssone og innstillinger på enheten. Handlingen kan ikke angres.</string>
-    <string name="settings_about_title">Om OverDrive</string>
+    <string name="settings_about_title">Om Electric Guardian</string>
     <string name="settings_about_version_label">Versjon</string>
     <string name="settings_about_package_label">Versjon</string>
     <string name="settings_about_check_update_value">Sjekk den nyeste GitHub versjonen og installer hvis nyere.</string>
     <string name="settings_about_support_section">Drevet av mennesker som deg</string>
     <string name="settings_about_support_share_title">Fortell en medeier</string>
     <string name="settings_about_support_share_value">Hver delte lenke hjelper en annen BYD-eier å oppdage overdrive.</string>
-    <string name="settings_about_support_share_message">Sjekk ut overdriv— åpen kildekode overvåkning &amp; dashcam for BYD: https://overdrive-5lc.pages.dev/</string>
+    <string name="settings_about_support_share_message">Sjekk ut overdriv— åpen kildekode overvåkning &amp; dashcam for BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_support_share_chooser">Del overdrive</string>
     <string name="settings_about_open_link_failed">Kunne ikke åpne lenken.</string>
     <string name="settings_about_open_link_copied">Ingen nettleser funnet. URL kopiert: %1$s</string>
@@ -485,12 +485,12 @@
     <string name="settings_about_license_title">Lisens</string>
     <string name="settings_about_license_value">MIT – åpen kildekode. Trykk for å se full tekst.</string>
     <string name="settings_about_source_title">Kildekode</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdriv-frigjøring</string>
-    <string name="settings_about_license_url">HTTPS: http://github.com/yash-srivastava/Overdrive-release/blob/main/license</string>
-    <string name="settings_about_source_url">https://github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_license_url">HTTPS: http://github.com/allysongrollimd-svg/eletric-guardian/blob/main/license</string>
+    <string name="settings_about_source_url">https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Drop en på GitHub</string>
     <string name="settings_about_star_value">Tar et sekund til. Betyr mye.</string>
-    <string name="settings_about_star_url">https://github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_star_url">https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_thanks_title">Takk</string>
     <string name="settings_about_thanks_subtitle">Laget ved hjelp av bidragsytere og tilhengere.</string>
     <string name="settings_about_contributors_title">Bidragsytere</string>
@@ -554,7 +554,7 @@
     <string name="integrations_configure_button">Konfigurer</string>
     <string name="settings_action_check_update">Se etter oppdateringer</string>
     <string name="settings_action_reset_data">Tilbakestill data…</string>
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <string name="dashboard_hero_headline">På klokken</string>
     <string name="dashboard_subtitle_all_systems">Alle systemer pålogget</string>
     <string name="dashboard_subtitle_some_offline">%1$d av %2$d tjenester online</string>
@@ -600,10 +600,10 @@
     <string name="settings_section_recording_subtitle">Pre/post buffere, kodek, lagringsgrenser.</string>
     <string name="settings_section_surveillance_subtitle">Deteksjonssoner, tidsplan, bevegelsesfølsomhet.</string>
     <string name="settings_section_daemons_subtitle">Cloudflared, Zrok, Telegram, MQTT runnere.</string>
-    <string name="settings_about_row_title">Om OverDrive</string>
+    <string name="settings_about_row_title">Om Electric Guardian</string>
     <string name="settings_about_row_subtitle">Versjon, lisens, støtte utvikling.</string>
     <string name="settings_reset_row_subtitle">Fjern opptak, hendelser eller alle cacher.</string>
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <string name="settings_appearance_subtitle">Tema, språk og visuelle innstillinger.</string>
     <string name="settings_theme_active_auto_caption">Følg systemtemaet automatisk.</string>
     <string name="settings_theme_active_light_caption">Lyst tema er alltid på.</string>
@@ -611,7 +611,7 @@
     <string name="settings_language_count_format">%1$d av %2$d språk tilgjengelig</string>
     <string name="settings_language_card_title">Vis språk</string>
     <string name="settings_privacy_stance_title">Pålogget enhet som standard</string>
-    <string name="settings_privacy_stance_body">OverDrive kjører utelukkende på hovedenheten. Ingen telemetry forlater bilen din bortsett fra gjennom tunneler og integrasjoner du uttrykkelig konfigurerer.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian kjører utelukkende på hovedenheten. Ingen telemetry forlater bilen din bortsett fra gjennom tunneler og integrasjoner du uttrykkelig konfigurerer.</string>
     <string name="settings_privacy_overline_storage">Lokal lagring</string>
     <string name="settings_privacy_overline_reset">Data tilbakestilling</string>
     <string name="settings_privacy_storage_clips_label">Klipp på disk</string>
@@ -644,12 +644,12 @@
         <item quantity="other">%1$d-klippene som er innspilt i dag</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">Overdrive online for %1$d dag, %2$d timer</item>
-        <item quantity="other">Overdrive online i %1$d dager, %2$d hr</item>
+        <item quantity="one">Electric Guardian online for %1$d dag, %2$d timer</item>
+        <item quantity="other">Electric Guardian online i %1$d dager, %2$d hr</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
-        <item quantity="one">Overdrive online for %1$d time</item>
-        <item quantity="other">Overdrive online i %1$d timer</item>
+        <item quantity="one">Electric Guardian online for %1$d time</item>
+        <item quantity="other">Electric Guardian online i %1$d timer</item>
     </plurals>
     <plurals name="dashboard_insight_minutes">
         <item quantity="one">%1$d min</item>
@@ -672,8 +672,8 @@
     <string name="roadsense_cal_partial">Bedring av kalibrering</string>
     <string name="roadsense_type_breaker">Hastighet ødelegger</string>
     <string name="roadsense_toggle_audio">Lyd</string>
-    <string name="settings_security_stance_body">Overvåkningskontroll, opptak, avskrekkende, varsler og bakgrunnstjenester fortsetter å kjøre mens appen er låst. PIN-koden gater OverDrive-grensesnittet, noe annet.</string>
-    <string name="settings_security_toggle_subtitle_off">Av – alle kan åpne OverDrive.</string>
+    <string name="settings_security_stance_body">Overvåkningskontroll, opptak, avskrekkende, varsler og bakgrunnstjenester fortsetter å kjøre mens appen er låst. PIN-koden gater Electric Guardian-grensesnittet, noe annet.</string>
+    <string name="settings_security_toggle_subtitle_off">Av – alle kan åpne Electric Guardian.</string>
     <string name="roadsense_dash_distance">—</string>
     <string name="roadsense_cd_cal_level">Rute kalibreringsnivå</string>
     <string name="settings_security_autolock_never">Aldri automatisk lås av tid</string>
@@ -714,11 +714,11 @@
     <string name="pin_lock_subtitle_wrong">Feil PIN. Prøv igjen.</string>
     <string name="settings_security_autolock_immediate">Lås umiddelbart</string>
     <string name="settings_security_title">Sikkerhet</string>
-    <string name="settings_security_toggle_subtitle_on">– PIN-kode kreves for å åpne OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_on">– PIN-kode kreves for å åpne Electric Guardian.</string>
     <string name="settings_security_stance_title">Kun UI lås</string>
     <string name="roadsense_cal_learning">Lærer kjøretøyet ditt</string>
     <string name="roadsense_sev_severe">Kraftig</string>
-    <string name="settings_security_subtitle">Lås OverDrive-appen slik at passasjerer og ventiler ikke kan åpne den uten PIN-koden.</string>
+    <string name="settings_security_subtitle">Lås Electric Guardian-appen slik at passasjerer og ventiler ikke kan åpne den uten PIN-koden.</string>
     <string name="roadsense_unit_meters">min</string>
     <string name="roadsense_confirm_reject">Ikke en fare</string>
     <string name="settings_security_autolock_1min">Etter 1 minutt</string>
@@ -736,7 +736,7 @@
     <string name="blindspot_overlay_left">VENSTRE</string>
     <string name="pin_lock_recovery_hint_prefix">Glemt din PIN? Kjør fra en tilkoblet datamaskin:\n%1$s</string>
     <string name="roadsense_confirm_prompt">Var dette en fare?</string>
-    <string name="pin_lock_subtitle_default">Lås opp OverDrive for å fortsette.</string>
+    <string name="pin_lock_subtitle_default">Lås opp Electric Guardian for å fortsette.</string>
     <string name="settings_security_error_locked_out">For mange forsøk. Prøv igjen om et øyeblikk.</string>
     <string name="settings_security_overline_lock">App lås</string>
     <string name="roadsense_sev_moderate">Moderat</string>
@@ -816,7 +816,7 @@
     <string name="onboarding_camera_dashcam_title">Finn nå kameraet fremover</string>
     <string name="onboarding_camera_dashcam_body">Gå gjennom kameraene med pilene og stopp på den som viser frontruten / foroversikt. Legg merke til tallet — du vil velge den neste.</string>
     <string name="onboarding_camera_pick_title">Velg 360 kamera</string>
-    <string name="onboarding_camera_pick_body">I det øverste kortet, velg nummeret for 360 / normalkameraet. Ikke overla det stå på AUTO og Overdrive det ut.</string>
+    <string name="onboarding_camera_pick_body">I det øverste kortet, velg nummeret for 360 / normalkameraet. Ikke overla det stå på AUTO og Electric Guardian det ut.</string>
     <string name="onboarding_camera_pick_primary">Neste</string>
     <string name="onboarding_camera_pick_dash_title">Velg ditt dashcam kamera</string>
     <string name="onboarding_camera_pick_dash_body">I dette kortet, velg dashbordnummeret du fant tidligere – eller la det stå på AUTO.</string>

@@ -100,7 +100,7 @@ public class AutomationSafetySettingsAssetTest {
         assertTrue(api.contains("\"drivingSafety\", safetyUpdate"));
         assertTrue(english.contains("\"safety_title\": \"Driving safety guards\""));
         assertTrue(english.contains(
-                "matching vehicle actions started through OverDrive's Automations, Action Groups, Key Mapping, Quick Controls, MQTT, Vehicle Controls, and saved seat positions"));
+                "matching vehicle actions started through Electric Guardian's Automations, Action Groups, Key Mapping, Quick Controls, MQTT, Vehicle Controls, and saved seat positions"));
         assertTrue(english.contains(
                 "Advanced raw shell, CAN, and diagnostic actions are outside these guards"));
         assertTrue(positionsApi.contains("target.put(\"positioningBlocked\""));

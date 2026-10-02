@@ -395,9 +395,9 @@ public class VehicleControlApiHandler {
 
     /**
      * List launchable apps for the cast picker (reuses the shared AppLauncher enum), MINUS
-     * OverDrive itself.
+     * Electric Guardian itself.
      *
-     * <p>OverDrive declares a LAUNCHER activity, so the shared enumeration includes our own
+     * <p>Electric Guardian declares a LAUNCHER activity, so the shared enumeration includes our own
      * package — but casting ourselves onto the cluster is never what the user wants and is
      * actively hazardous: {@code com.overdrive.app} also owns the head-unit UI task AND the
      * nav-map cluster task ({@code .navmap.RoadSenseClusterMapActivity}), so a self-cast makes

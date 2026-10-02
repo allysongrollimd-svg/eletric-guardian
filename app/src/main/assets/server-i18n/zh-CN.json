@@ -332,9 +332,9 @@
       "installing": ":hourglass_not_don：*安装更新…*\n\n守护进程将停止，APK 将被安装，设备将重新启动。 该机器人将静音约2分钟。当它重新上线时，将收到新的隧道网址消息。",
       "install_service_unreachable": "⚠️ 无法启动安装，因为摄像头守护进程无法访问。",
       "install_rejected": "⚠️ 安装被拒绝: {0}",
-      "install_failed": "⚠️ *Overdrive 更新失败*\n设备仍为之前的版本。\n原因：{0}",
+      "install_failed": "⚠️ *Electric Guardian 更新失败*\n设备仍为之前的版本。\n原因：{0}",
       "unknown_reason": "未知(见头部单位)",
-      "installed": "🔄 *Overdrive 已更新到 {0}*",
+      "installed": "🔄 *Electric Guardian 已更新到 {0}*",
       "installed_new_tunnel": ":countrockwise_arrows_buton: *超载已更新到 {0}*\n新隧道URL:\n{1}\n\n_每次安装后云端链接旋转. _",
       "installed_tunnel_online": ":counclockwise_arrows_buton: *超速更新到 {0}*\n回线隧道:\n{1}"
     },
@@ -347,7 +347,7 @@
       "no_data": "⚠️ 备份没有返回数据。",
       "write_failed": "⚠️ 无法写入备份文件: {0}",
       "document_settings": "💾 覆盖驱动器设置备份\n\n:警告：此文件包含凭据和设备密钥。 保持私有。将其恢复到相同的头部设备上，从设置 -> 备份和还原。",
-      "document_settings_version": "💾 Overdrive 设置备份 · {0}\n\n⚠️ 此文件包含凭据和设备密钥，请勿外传。请在同一台车机上从 设置 → 备份与恢复 进行恢复。",
+      "document_settings_version": "💾 Electric Guardian 设置备份 · {0}\n\n⚠️ 此文件包含凭据和设备密钥，请勿外传。请在同一台车机上从 设置 → 备份与恢复 进行恢复。",
       "document_with_trips": "💾 超载备份(设置 + 旅行历史: {0})\n\n:警告：此文件包含凭据、设备键和位置历史记录。 保持私有。将其恢复到相同的头部设备上，从设置 -> 备份和还原。",
       "document_with_trips_version": "💾 超载备份(设置 + 旅行历史: {0}) · {1}\n\n:警告：此文件包含凭据， 设备密钥和位置历史。 保持私有。将其恢复到相同的头部设备上，从设置 -> 备份和还原。",
       "upload_failed": "⚠️ 无法上传备份文件到 Telegram"

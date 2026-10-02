@@ -332,24 +332,24 @@
       "installing": "⏳ *正在安裝更新…*\n\n守護程式將停止，接著安裝 APK 並重新啟動裝置。此機器人約有 2 分鐘不會回應。重新上線後會傳來新的隧道 URL 訊息。",
       "install_service_unreachable": "⚠️ 無法連線相機守護程式，因此無法開始安裝。",
       "install_rejected": "⚠️ 安裝被拒絕：{0}",
-      "install_failed": "⚠️ *Overdrive 更新失敗*\n裝置仍為先前的版本。\n原因：{0}",
+      "install_failed": "⚠️ *Electric Guardian 更新失敗*\n裝置仍為先前的版本。\n原因：{0}",
       "unknown_reason": "未知（請查看車機）",
-      "installed": "🔄 *Overdrive 已更新到 {0}*",
-      "installed_new_tunnel": "🔄 *Overdrive 已更新到 {0}*\n新的隧道 URL：\n{1}\n\n_cloudflared 連結在每次安裝後都會更換。_",
-      "installed_tunnel_online": "🔄 *Overdrive 已更新到 {0}*\n隧道已恢復上線：\n{1}"
+      "installed": "🔄 *Electric Guardian 已更新到 {0}*",
+      "installed_new_tunnel": "🔄 *Electric Guardian 已更新到 {0}*\n新的隧道 URL：\n{1}\n\n_cloudflared 連結在每次安裝後都會更換。_",
+      "installed_tunnel_online": "🔄 *Electric Guardian 已更新到 {0}*\n隧道已恢復上線：\n{1}"
     },
     "backup": {
-      "restore_unavailable": "ℹ️ *無法透過 Telegram 還原。*\n\n請在車機或應用程式中開啟 Overdrive，前往 *設定 → 備份與還原* 並選擇備份檔案。備份只能在同一台裝置上還原，且需要在該裝置上確認。",
+      "restore_unavailable": "ℹ️ *無法透過 Telegram 還原。*\n\n請在車機或應用程式中開啟 Electric Guardian，前往 *設定 → 備份與還原* 並選擇備份檔案。備份只能在同一台裝置上還原，且需要在該裝置上確認。",
       "building_with_trips": "💾 正在建立含設定與行程記錄的備份…",
       "building_settings": "💾 正在建立設定備份…",
       "service_unreachable": "⚠️ 無法連線備份服務。\n\n相機守護程式可能未在執行。請嘗試 `/daemon camera start`。",
       "failed": "⚠️ 備份失敗：{0}",
       "no_data": "⚠️ 備份未傳回任何資料。",
       "write_failed": "⚠️ 無法寫入備份檔案：{0}",
-      "document_settings": "💾 Overdrive 設定備份\n\n⚠️ 此檔案含有憑證與裝置金鑰，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
-      "document_settings_version": "💾 Overdrive 設定備份 · {0}\n\n⚠️ 此檔案含有憑證與裝置金鑰，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
-      "document_with_trips": "💾 Overdrive 備份（設定 + 行程記錄：{0}）\n\n⚠️ 此檔案含有憑證、裝置金鑰與位置記錄，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
-      "document_with_trips_version": "💾 Overdrive 備份（設定 + 行程記錄：{0}）· {1}\n\n⚠️ 此檔案含有憑證、裝置金鑰與位置記錄，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
+      "document_settings": "💾 Electric Guardian 設定備份\n\n⚠️ 此檔案含有憑證與裝置金鑰，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
+      "document_settings_version": "💾 Electric Guardian 設定備份 · {0}\n\n⚠️ 此檔案含有憑證與裝置金鑰，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
+      "document_with_trips": "💾 Electric Guardian 備份（設定 + 行程記錄：{0}）\n\n⚠️ 此檔案含有憑證、裝置金鑰與位置記錄，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
+      "document_with_trips_version": "💾 Electric Guardian 備份（設定 + 行程記錄：{0}）· {1}\n\n⚠️ 此檔案含有憑證、裝置金鑰與位置記錄，請勿外流。請在同一台車機上從 設定 → 備份與還原 進行還原。",
       "upload_failed": "⚠️ 無法將備份檔案上傳至 Telegram。"
     },
     "sendlog": {

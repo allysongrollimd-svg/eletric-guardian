@@ -102,7 +102,7 @@ import java.util.List;
  *       SKIP them and rely on the task-level calls. Stricter than the reference, which
  *       drives the stack unconditionally.</li>
  *   <li>Blind-spot is a SurfaceControl LAYER (no task at all — structurally immune).</li>
- *   <li>Belt-and-braces: the cast picker itself filters OverDrive out of the app list
+ *   <li>Belt-and-braces: the cast picker itself filters Electric Guardian out of the app list
  *       ({@code VehicleControlApiHandler.handleClusterApps}), so a self-cast cannot normally be
  *       requested in the first place.</li>
  * </ul>
@@ -641,10 +641,10 @@ final class ClusterFreeformWindow {
      * <h4>Why the display filter is load-bearing, not defensive</h4>
      * A package can own SEVERAL tasks on DIFFERENT displays at once, and matching on package alone
      * returns whichever {@code getTasks} happens to list first. That is an actual hazard here, not
-     * a hypothetical: OverDrive declares a LAUNCHER activity, so {@code com.overdrive.app} itself
+     * a hypothetical: Electric Guardian declares a LAUNCHER activity, so {@code com.overdrive.app} itself
      * appears in the cast picker — and {@code ClusterMapProjector}'s nav-map
      * ({@code com.overdrive.app/.navmap.RoadSenseClusterMapActivity}) is the SAME package. Casting
-     * OverDrive while the map is projecting would otherwise let an unfiltered resolve return the
+     * Electric Guardian while the map is projecting would otherwise let an unfiltered resolve return the
      * MAP's task and hand its stack to the resize ladder — dragging the nav map instead of the cast
      * app. Filtering to the cluster display makes the cast app's own task the only candidate. The
      * reference scopes by display for exactly this reason ({@code queryTaskLocationsForPackage}

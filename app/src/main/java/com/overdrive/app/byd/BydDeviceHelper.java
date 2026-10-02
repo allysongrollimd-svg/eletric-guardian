@@ -252,7 +252,7 @@ public final class BydDeviceHelper {
      *
      * <p>Some OEM SDK clients use a custom {@code Application}: BYD device
      * {@code getInstance(Context)} methods enforce signature permissions directly on the supplied
-     * Context before they create their singleton. OverDrive is not platform-signed, so a raw app
+     * Context before they create their singleton. Electric Guardian is not platform-signed, so a raw app
      * context fails before any Binder/HAL call is attempted. The wrapper is opt-in and grants only
      * {@code android.permission.BYD*}; every unrelated Android permission still delegates to the
      * real context. Returning the wrapper from {@link Context#getApplicationContext()} prevents

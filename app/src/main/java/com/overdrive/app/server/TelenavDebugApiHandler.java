@@ -66,7 +66,7 @@ public final class TelenavDebugApiHandler {
         }
 
         // Navigate is a silent no-op unless Telenav is the foreground app (verified live
-        // 2026-08-23). This request arrives while the OverDrive app process is backgrounded,
+        // 2026-08-23). This request arrives while the Electric Guardian app process is backgrounded,
         // so it can't foreground an activity itself (background-activity-launch limits) — but
         // this handler runs in the daemon (UID 2000), which can `am start` regardless. Do it
         // here, before the app process runs startNavigation. Save-to-Favourites persists
@@ -103,7 +103,7 @@ public final class TelenavDebugApiHandler {
             JSONObject err = new JSONObject();
             err.put("success", false);
             err.put("error", "app IPC unreachable on 127.0.0.1:" + TelenavIpcServer.PORT
-                    + " (is the OverDrive app process running?)");
+                    + " (is the Electric Guardian app process running?)");
             HttpResponse.sendJson(out, 200, err.toString());
             return true;
         }

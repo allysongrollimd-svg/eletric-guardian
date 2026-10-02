@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">OverDrive</string>
-    <string name="accessibility_service_description">שומר על ניטור הרכב של Overdrive פעיל ברקע. שירות זה אינו קורא תוכן מהמסך ואינו מקיים איתו אינטראקציה.</string>
+    <string name="app_name">Electric Guardian</string>
+    <string name="accessibility_service_description">שומר על ניטור הרכב של Electric Guardian פעיל ברקע. שירות זה אינו קורא תוכן מהמסך ואינו מקיים איתו אינטראקציה.</string>
     <string name="action_cancel">ביטול</string>
     <string name="action_clear_plain">נקה</string>
     <string name="action_select_all">בחר הכל</string>
@@ -107,7 +107,7 @@
     <string name="camera_option_5">מצלמה 5</string>
     <string name="camera_selection_hint">\'אוטומטי\' בוחר את המצלמה הנכונה לרמת הגימור שלך בכל הפעלה. מצלמה 1 = BYD Seal, מצלמה 0 = רמות גימור של Atto. הפעל מחדש את תהליך הרקע לאחר שינוי מזהה המצלמה כדי שההגדרה תיכנס לתוקף.</string>
     <string name="camera_oem_dashcam_title">מזהה מצלמת דרך מקורית (OEM)</string>
-    <string name="camera_oem_dashcam_hint">בחר את מזהה ה-AVMCamera המפנה לחיישן מצלמת הדרך הקדמית. מצלמת הדרך היא הפוכה מהפנורמית: ב-Seal/Han פנורמית = 1 ← מצלמת דרך = 0; ב-Atto / Tang פנורמית = 0 ← מצלמת דרך = 1. השאר על \'אוטומטי\' כדי לאפשר ל-OverDrive לבחור לבד.</string>
+    <string name="camera_oem_dashcam_hint">בחר את מזהה ה-AVMCamera המפנה לחיישן מצלמת הדרך הקדמית. מצלמת הדרך היא הפוכה מהפנורמית: ב-Seal/Han פנורמית = 1 ← מצלמת דרך = 0; ב-Atto / Tang פנורמית = 0 ← מצלמת דרך = 1. השאר על \'אוטומטי\' כדי לאפשר ל-Electric Guardian לבחור לבד.</string>
     <string name="camera_oem_dashcam_auto_resolved">אוטומטי — משתמש במזהה %1$d (פנורמית היא מזהה %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">אוטומטי — מזהה הפנורמית הוא %1$d, לא ניתן להסיק את מצלמת הדרך</string>
     <string name="camera_oem_dashcam_save">שמור</string>
@@ -149,7 +149,7 @@
     <string name="camera_mapping_summary_probing">שידור פנורמי: זיהוי אוטומטי ישן / בדיקה</string>
     <string name="camera_mapping_current_format">מיפוי נוכחי: %1$s</string>
     <string name="camera_mapping_current_none">מיפוי נוכחי: אוטומטי / ברירת מחדל</string>
-    <string name="camera_mapping_hint">OverDrive שומר על התנהגות ההפעלה הקודמת כברירת מחדל, אך כעת מאפשר לך לכייל כראוי את הרצועה הפנורמית הממוזגת. צפה בתצוגה מקדימה של כל מקטע גולמי, מפה את תפקידי ה-360 הלוגיים למקטע שמציג בפועל קדימה/ימין/אחורה/שמאל ברכב שלך, ותהליך הרקע ישתמש בפריסה זו להקלטה, שידור חי וזיהוי AI לאחר הפעלה מחדש.</string>
+    <string name="camera_mapping_hint">Electric Guardian שומר על התנהגות ההפעלה הקודמת כברירת מחדל, אך כעת מאפשר לך לכייל כראוי את הרצועה הפנורמית הממוזגת. צפה בתצוגה מקדימה של כל מקטע גולמי, מפה את תפקידי ה-360 הלוגיים למקטע שמציג בפועל קדימה/ימין/אחורה/שמאל ברכב שלך, ותהליך הרקע ישתמש בפריסה זו להקלטה, שידור חי וזיהוי AI לאחר הפעלה מחדש.</string>
     <string name="dashboard_scan_to_connect">סרוק כדי להתחבר</string>
     <string name="dashboard_qr_waiting">ממתין למנהרה (tunnel)…</string>
     <string name="dashboard_daemons_running_default">0/5 פועלים</string>
@@ -163,10 +163,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">בחר שפה</string>
-    <string name="setup_language_body">ברירת המחדל היא שפת מסך המולטימדיה. הקש כדי לבחור שפה אחרת עבור אפליקציית OverDrive וממשק האינטרנט.</string>
+    <string name="setup_language_body">ברירת המחדל היא שפת מסך המולטימדיה. הקש כדי לבחור שפה אחרת עבור אפליקציית Electric Guardian וממשק האינטרנט.</string>
     <string name="setup_language_button">בחר שפה</string>
     <string name="setup_autostart_title">בטל הגבלת הפעלה אוטומטית</string>
-    <string name="setup_autostart_body">הקש למטה כדי לפתוח את הגדרות ההפעלה האוטומטית של BYD. מצא את OverDrive ברשימה ובטל את סימון התיבה. BYD מאפסת הגדרה זו בכל התקנה — יהיה עליך לבצע זאת שוב לאחר עדכונים.</string>
+    <string name="setup_autostart_body">הקש למטה כדי לפתוח את הגדרות ההפעלה האוטומטית של BYD. מצא את Electric Guardian ברשימה ובטל את סימון התיבה. BYD מאפסת הגדרה זו בכל התקנה — יהיה עליך לבצע זאת שוב לאחר עדכונים.</string>
     <string name="setup_autostart_button">פתח הפעלה אוטומטית של BYD</string>
     <string name="setup_autostart_enabling">מפעיל הפעלה אוטומטית…</string>
     <string name="setup_autostart_enabled">הפעלה אוטומטית מופעלת ✓</string>
@@ -181,21 +181,21 @@
     <string name="onboarding_dismiss">סגור</string>
     <string name="onboarding_exit">צא מהסיור</string>
     <string name="onboarding_done_short">הבנתי</string>
-    <string name="onboarding_authorize_title">הפעל את Overdrive</string>
-    <string name="onboarding_authorize_body">Overdrive מפעיל את המצלמות שלך דרך רכיב עזר ייעודי על המכשיר. מערכת Android תבקש פעם אחת לאשר ניפוי שגיאות באמצעות USB (USB debugging) — הקש על \'אפשר\' וסמן \'אפשר תמיד ממכשיר זה\' כדי שהשירות יישאר פעיל לאחר כל הפעלה מחדש.</string>
+    <string name="onboarding_authorize_title">הפעל את Electric Guardian</string>
+    <string name="onboarding_authorize_body">Electric Guardian מפעיל את המצלמות שלך דרך רכיב עזר ייעודי על המכשיר. מערכת Android תבקש פעם אחת לאשר ניפוי שגיאות באמצעות USB (USB debugging) — הקש על \'אפשר\' וסמן \'אפשר תמיד ממכשיר זה\' כדי שהשירות יישאר פעיל לאחר כל הפעלה מחדש.</string>
     <string name="onboarding_authorize_button">אפשר גישה</string>
     <string name="onboarding_authorize_waiting_title">ממתין להרשאה…</string>
     <string name="onboarding_authorize_waiting_body">אשר את החלון הקופץ של Android. אם אינך רואה אותו, ייתכן שההרשאה כבר ניתנה — התהליך ימשיך מעצמו.</string>
     <string name="onboarding_authorize_retry_title">עדיין לא מחובר</string>
     <string name="onboarding_authorize_retry_body">רכיב העזר עדיין אינו פועל. ייתכן שבקשת ההרשאה של Android נסגרה. נסה שוב וזכור לסמן \'אפשר תמיד\'.</string>
     <string name="onboarding_authorize_retry_button">נסה שוב</string>
-    <string name="onboarding_mode_title">מתי Overdrive צריך לפעול?</string>
-    <string name="onboarding_mode_body">בחר כיצד Overdrive יפעל לאחר כיבוי הרכב.\n\n\'מונע וכבוי\' ממשיך לשמור גם בזמן חניה — המעקב וניטור הרקע נשארים פעילים, כך שהרכב צורך מעט מתח במהלך הלילה.\n\n\'מונע בלבד\' מכבה לחלוטין את Overdrive ברגע שאתה עוזב. מצלמת הדרך, מעקב הנסיעות והטעינה עדיין פועלים בזמן נהיגה, והכל נדלק מחדש אוטומטית בעת הפעלת הרכב. תוכל לשנות זאת בכל עת בהגדרות.</string>
+    <string name="onboarding_mode_title">מתי Electric Guardian צריך לפעול?</string>
+    <string name="onboarding_mode_body">בחר כיצד Electric Guardian יפעל לאחר כיבוי הרכב.\n\n\'מונע וכבוי\' ממשיך לשמור גם בזמן חניה — המעקב וניטור הרקע נשארים פעילים, כך שהרכב צורך מעט מתח במהלך הלילה.\n\n\'מונע בלבד\' מכבה לחלוטין את Electric Guardian ברגע שאתה עוזב. מצלמת הדרך, מעקב הנסיעות והטעינה עדיין פועלים בזמן נהיגה, והכל נדלק מחדש אוטומטית בעת הפעלת הרכב. תוכל לשנות זאת בכל עת בהגדרות.</string>
     <string name="onboarding_mode_on_off_button">מונע וכבוי</string>
     <string name="onboarding_mode_on_only_button">מונע בלבד</string>
     <string name="onboarding_camera_step_label">מצלמה · שלב %1$d מתוך %2$d</string>
     <string name="onboarding_camera_intro_title">הגדר את המצלמות שלך</string>
-    <string name="onboarding_camera_intro_body">בוא נגדיר ל-Overdrive איזו מצלמה היא תצוגת ה-360 ואיזו מצלמת הדרך. זה לוקח כדקה, ותוכל לשנות זאת מאוחר יותר.</string>
+    <string name="onboarding_camera_intro_body">בוא נגדיר ל-Electric Guardian איזו מצלמה היא תצוגת ה-360 ואיזו מצלמת הדרך. זה לוקח כדקה, ותוכל לשנות זאת מאוחר יותר.</string>
     <string name="onboarding_camera_intro_primary">התחל</string>
     <string name="onboarding_camera_opening_title">פותח את הגדרת המצלמות…</string>
     <string name="onboarding_camera_opening_body">טוען תצוגה מקדימה חיה מהמצלמות. זה עשוי להימשך מספר שניות.</string>
@@ -204,7 +204,7 @@
     <string name="onboarding_camera_dashcam_title">כעת מצא את המצלמה הפונה לפנים הדרך</string>
     <string name="onboarding_camera_dashcam_body">דפדף בין המצלמות באמצעות החצים ועצור בזו שמציגה את מבט השמשה / הפנים קדימה. שים לב למספר שלה — תבחר אותו בשלב הבא.</string>
     <string name="onboarding_camera_pick_title">בחר את מצלמת ה-360 שלך</string>
-    <string name="onboarding_camera_pick_body">בכרטיס העליון, בחר את המספר של מצלמת ה-360 / המצלמה הרגילה. לא בטוח? השאר על \'אוטומטי\' (AUTO) ו-Overdrive יזהה זאת לבד.</string>
+    <string name="onboarding_camera_pick_body">בכרטיס העליון, בחר את המספר של מצלמת ה-360 / המצלמה הרגילה. לא בטוח? השאר על \'אוטומטי\' (AUTO) ו-Electric Guardian יזהה זאת לבד.</string>
     <string name="onboarding_camera_pick_primary">הבא</string>
     <string name="onboarding_camera_pick_dash_title">בחר את מצלמת הדרך שלך</string>
     <string name="onboarding_camera_pick_dash_body">בכרטיס זה, בחר את מספר מצלמת הדרך שמצאת קודם לכן — או השאר על \'אוטומטי\' (AUTO).</string>
@@ -219,7 +219,7 @@
     <string name="onboarding_camera_windshield_body">עבור פריסת מצלמת דרך מקורית (OEM) — מצלמת השמשה כרצועה בראש ההקלטה שלך — בחר ב\'שמשה קדמית\' בתפריט התפקידים, בחר במצלמה הפונה לפנים ושמור. רוב המשתמשים יכולים לדלג על זה.</string>
     <string name="onboarding_camera_windshield_primary">הראה לי</string>
     <string name="onboarding_camera_windshield_skip">לא תודה</string>
-    <string name="onboarding_vehicle_title">הגדר ל-Overdrive את נתוני הסוללה שלך</string>
+    <string name="onboarding_vehicle_title">הגדר ל-Electric Guardian את נתוני הסוללה שלך</string>
     <string name="onboarding_vehicle_body">בחר דגם ואנחנו ממלאים את ה-kWh, או הקלד בעצמך (15–120). זה עושה את הטווח והטעינה מדויקים. אפשר לדלג ולהגדיר אחר כך.</string>
     <string name="onboarding_vehicle_primary">הגדר סוללה</string>
     <string name="onboarding_dash_tiles_title">סביבת הנהג שלך במבט חטוף</string>
@@ -381,7 +381,7 @@
     <string name="daemons_count_pending">טוען שירותים…</string>
     <string name="daemons_count_fmt">%1$d מתוך %2$d פועלים</string>
     <string name="daemons_wifi_auto_enable_title">הפעל WiFi אוטומטית</string>
-    <string name="daemons_wifi_auto_enable_subtitle">OverDrive משחזר WiFi בחניה וכששירותי רקע עולים. כבה כדי להשאיר את מצב ה-WiFi תחת שליטת הרכב.</string>
+    <string name="daemons_wifi_auto_enable_subtitle">Electric Guardian משחזר WiFi בחניה וכששירותי רקע עולים. כבה כדי להשאיר את מצב ה-WiFi תחת שליטת הרכב.</string>
     <string name="daemons_wifi_auto_enable_save_failed">לא ניתן לשמור את הגדרת הפעלת ה-WiFi האוטומטית.</string>
     <string name="update_preparing">מכין עדכון…</string>
     <string name="update_percent_zero">0%</string>
@@ -450,7 +450,7 @@
     <string name="update_picker_empty">טרם פורסמו גרסאות.</string>
     <string name="update_picker_current_suffix">%1$s (מותקנת)</string>
     <string name="update_picker_older_suffix">%1$s (ישנה יותר)</string>
-    <string name="update_progress_title">מעדכן את Overdrive</string>
+    <string name="update_progress_title">מעדכן את Electric Guardian</string>
     <string name="update_step_downloading">מוריד עדכון…</string>
     <string name="update_step_verifying">מאמת הורדה…</string>
     <string name="update_step_stopping">עוצר תהליכי רקע…</string>
@@ -639,7 +639,7 @@
     <string name="setup_overlay_already_granted">כבר אושר</string>
     <string name="setup_tips_header">טיפים ופתרון בעיות</string>
     <string name="setup_traffic_title">השבתת ניטור התנועה של BYD</string>
-    <string name="setup_traffic_body">ניטור התנועה של BYD חוסם גישה לאינטרנט עבור אפליקציות צד שלישי. השבתתו תאפשר ל-OverDrive ולכל אפליקציה מותקנת אחרת לגשת לרשת. נדרש אתחול מלא (Hard Reboot) לאחר מכן.</string>
+    <string name="setup_traffic_body">ניטור התנועה של BYD חוסם גישה לאינטרנט עבור אפליקציות צד שלישי. השבתתו תאפשר ל-Electric Guardian ולכל אפליקציה מותקנת אחרת לגשת לרשת. נדרש אתחול מלא (Hard Reboot) לאחר מכן.</string>
     <string name="setup_traffic_button">פתח ניטור תנועה</string>
     <string name="setup_camera_fix_title">שידורי המצלמה שחורים או שגויים?</string>
     <string name="setup_camera_fix_body">בצע בדיקת מצלמות, הגדר מזהה מצלמה (Camera ID) כ-0, הקש על שמור והפעל מחדש את תהליך המצלמה. אם השידור עדיין שגוי, חזור על הפעולה עם מזהה מצלמה 1. השאר את אזור המיפוי ללא שינוי.</string>
@@ -658,11 +658,11 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <string name="nav_page_assistant">עוזר</string>
-    <string name="status_overlay_notif_title">סטטוס OverDrive</string>
+    <string name="status_overlay_notif_title">סטטוס Electric Guardian</string>
     <string name="status_overlay_notif_text">שכבת סטטוס פעילה</string>
-    <string name="daemon_keepalive_notif_title">‏Overdrive פעילה</string>
+    <string name="daemon_keepalive_notif_title">‏Electric Guardian פעילה</string>
     <string name="daemon_keepalive_notif_text">מנטר מערכות רכב</string>
-    <string name="overdrive_status_summary_title">Overdrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">שירותי רקע פועלים</string>
     <string name="rail_dashboard">לוח בקרה</string>
     <string name="rail_assistant">עוזר</string>
@@ -707,7 +707,7 @@
     <string name="remote_voice_mute">השתק שמע מרחוק</string>
     <string name="remote_voice_unmute">בטל השתקת שמע מרחוק</string>
     <string name="remote_voice_notification_title">שמע קולי מרחוק פעיל</string>
-    <string name="remote_voice_notification_text">מקבל שמע חי מהפעלת OverDrive מאומתת</string>
+    <string name="remote_voice_notification_text">מקבל שמע חי מהפעלת Electric Guardian מאומתת</string>
     <string name="settings_remote_communication_title">תקשורת מרחוק</string>
     <string name="settings_remote_communication_subtitle">הפעלת דיבור קולי, האזנה לתא הנוסעים והודעות מלוח הבקרה בדפדפן. אם הרשאת השכבה מציגה \'נדרשת הרשאה\', הקש עליה ואשר \'הצג מעל אפליקציות אחרות\'.</string>
     <string name="settings_remote_voice_title">הפעל דיבור קולי מרחוק</string>
@@ -743,7 +743,7 @@
     <string name="cd_settings_subrail">תפריט משנה להגדרות</string>
     <string name="settings_privacy_title">פרטיות ונתונים</string>
     <string name="settings_privacy_body">האיפוס מוחק את אינדקס ההקלטות, פרטי התחברות במטמון, מצב תהליכי הרקע והעדפות מקומיות במכשיר. לא ניתן לבטל פעולה זו.</string>
-    <string name="settings_about_title">אודות OverDrive</string>
+    <string name="settings_about_title">אודות Electric Guardian</string>
     <string name="settings_about_version_label">גרסה</string>
     <string name="settings_about_package_label">בילד</string>
     <string name="settings_about_vehicle_title">הרכב ומסך המולטימדיה</string>
@@ -777,13 +777,13 @@
     <string name="settings_backup_pick_file">בחר גיבוי לשחזור</string>
     <string name="settings_backup_no_files">לא נמצאו קובצי גיבוי. ייצא גיבוי תחילה, או העתק קובץ json. אל %1$s, ונסה שוב.</string>
     <string name="settings_backup_read_failed">לא ניתן לקרוא את הקובץ</string>
-    <string name="settings_backup_invalid_file">קובץ זה אינו גיבוי תקין של Overdrive</string>
+    <string name="settings_backup_invalid_file">קובץ זה אינו גיבוי תקין של Electric Guardian</string>
     <string name="settings_backup_restoring">משחזר…</string>
     <string name="settings_backup_restored">ההגדרות שוחזרו</string>
     <string name="settings_backup_restore_failed">השחזור נכשל</string>
     <string name="settings_backup_daemon_down">שירות המצלמה חייב לפעול לצורך גיבוי או שחזור. הפעל אותו מתפריט תהליכי הרקע, ונסה שוב.</string>
     <string name="settings_backup_restore_confirm_title">לשחזר הגדרות?</string>
-    <string name="settings_backup_restore_confirm_msg">פעולה זו תחליף את הגדרות Overdrive הנוכחיות באלו שבגיבוי ותטען מחדש את השירותים. שחזור זה אפשרי רק באותו מסך רכב שבו נוצר הגיבוי.</string>
+    <string name="settings_backup_restore_confirm_msg">פעולה זו תחליף את הגדרות Electric Guardian הנוכחיות באלו שבגיבוי ותטען מחדש את השירותים. שחזור זה אפשרי רק באותו מסך רכב שבו נוצר הגיבוי.</string>
     <string name="settings_backup_restore_confirm_btn">שחזר</string>
     <string name="settings_backup_restart_hint">ההגדרות שוחזרו. הפעל מחדש את תהליך המצלמה (תהליכי רקע ← מצלמה ← הפעלה מחדש) כדי לוודא שכל הגדרה ששוחזרה אכן מוחלת.</string>
     <string name="settings_backup_trips_prompt">לכלול את היסטוריית הנסיעות (מרחק, אנרגיה, עלות, ציוני נהיגה, מיקומי התחלה/סיום)? נתוני טלמטריה מפורטים של כל נסיעה אינם נכללים. הקובץ יכיל היסטוריית מיקומים — שמור עליו מאובטח.</string>
@@ -791,9 +791,9 @@
     <string name="settings_backup_with_trips">כולל נסיעות</string>
     <string name="settings_about_support_section">מונע בזכות אנשים כמוך</string>
     <string name="settings_about_support_share_title">ספר לבעל רכב נוסף</string>
-    <string name="settings_about_support_share_value">כל קישור שתשתף עוזר לבעל רכב BYD נוסף לגלות את Overdrive.</string>
-    <string name="settings_about_support_share_message">כדאי להכיר את Overdrive — מערכת מעקב ומצלמת דרך בקוד פתוח עבור BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">שיתוף Overdrive</string>
+    <string name="settings_about_support_share_value">כל קישור שתשתף עוזר לבעל רכב BYD נוסף לגלות את Electric Guardian.</string>
+    <string name="settings_about_support_share_message">כדאי להכיר את Electric Guardian — מערכת מעקב ומצלמת דרך בקוד פתוח עבור BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">שיתוף Electric Guardian</string>
     <string name="settings_about_open_link_failed">לא ניתן לפתוח את הקישור.</string>
     <string name="settings_about_open_link_copied">לא נמצא דפדפן. הקישור הועתק: %1$s</string>
     <string name="settings_about_support_kofi_title">תדלקו את הגרסה הבאה</string>
@@ -801,7 +801,7 @@
     <string name="settings_about_license_title">רישיון</string>
     <string name="settings_about_license_value">‏MIT — קוד פתוח. הקש לצפייה בטקסט המלא.</string>
     <string name="settings_about_source_title">קוד מקור</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">פרגנו לנו בכוכב ב-GitHub</string>
     <string name="settings_about_star_value">לוקח שנייה. שווה המון.</string>
     <string name="settings_about_thanks_title">תודות</string>
@@ -930,7 +930,7 @@
     <string name="diagnostics_battery_subtitle">בדיקת בריאות הסוללה (SOH) ונתוני המארז.</string>
     <string name="diagnostics_settings_subtitle">העדפות אפליקציה, ערכת נושא ושפה.</string>
     <string name="integrations_hero_title">אינטגרציות</string>
-    <string name="integrations_hero_subtitle">חיבור Overdrive לשירותים חיצוניים.</string>
+    <string name="integrations_hero_subtitle">חיבור Electric Guardian לשירותים חיצוניים.</string>
     <string name="integrations_status_unknown">הקש להגדרה</string>
     <string name="integrations_status_configured">מוגדר</string>
     <string name="integrations_status_not_set_up">לא מוגדר</string>
@@ -941,7 +941,7 @@
     <string name="integrations_configure_button">הגדרה</string>
     <string name="settings_action_check_update">בדוק עדכונים</string>
     <string name="settings_action_reset_data">איפוס נתונים…</string>
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <string name="dashboard_hero_headline">על המשמר</string>
     <string name="dashboard_subtitle_all_systems">כל המערכות מקוונות</string>
     <string name="dashboard_subtitle_some_offline">%1$d מתוך %2$d שירותים מקוונים</string>
@@ -996,10 +996,10 @@
     <string name="settings_section_recording_subtitle">מאגרי זמן לפני/אחרי, מקודד, מגבלות אחסון.</string>
     <string name="settings_section_surveillance_subtitle">אזורי זיהוי, לוח זמנים, רגישות תנועה.</string>
     <string name="settings_section_daemons_subtitle">תהליכי רקע של Cloudflared, Zrok, Telegram ו-MQTT.</string>
-    <string name="settings_about_row_title">אודות OverDrive</string>
+    <string name="settings_about_row_title">אודות Electric Guardian</string>
     <string name="settings_about_row_subtitle">גרסה, רישיון, תמיכה בפיתוח.</string>
     <string name="settings_reset_row_subtitle">מחיקת הקלטות, אירועים או כל המטמון.</string>
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <string name="settings_appearance_subtitle">ערכת נושא, שפה והעדפות תצוגה.</string>
     <string name="settings_theme_active_auto_caption">מצב אוטומטי מותאם לערכת הנושא של המערכת.</string>
     <string name="settings_theme_active_light_caption">ערכת נושא בהירה מופעלת קבוע.</string>
@@ -1007,7 +1007,7 @@
     <string name="settings_language_count_format">%1$d מתוך %2$d שפות זמינות</string>
     <string name="settings_language_card_title">שפת ממשק</string>
     <string name="settings_privacy_stance_title">על המכשיר כברירת מחדל</string>
-    <string name="settings_privacy_stance_body">‏OverDrive פועלת באופן מלא על מסך הרכב. שום מידע טלמטריה אינו יוצא מהרכב למעט דרך מנהרות ואינטגרציות שהגדרת במפורש.</string>
+    <string name="settings_privacy_stance_body">‏Electric Guardian פועלת באופן מלא על מסך הרכב. שום מידע טלמטריה אינו יוצא מהרכב למעט דרך מנהרות ואינטגרציות שהגדרת במפורש.</string>
     <string name="settings_privacy_overline_storage">אחסון מקומי</string>
     <string name="settings_privacy_overline_reset">איפוס נתונים</string>
     <string name="settings_privacy_storage_clips_label">סרטונים באחסון</string>
@@ -1033,14 +1033,14 @@
     <string name="settings_screenshot_privacy_body">מוסיף טשטוש על גבי כתובות IP, קישורים, קואורדינטות, מיקומים, קודי QR, תמונות ממוזערות של הקלטות ותצוגות מקדימות של מצלמות בממשק הרכב ובדפדפן. זהו כלי עזר חזותי; יש לבדוק תמיד צילומי מסך לפני שיתופם.</string>
     <string name="settings_screenshot_privacy_save_failed">לא ניתן לשמור את הגדרת מצב הפרטיות לצילומי מסך.</string>
     <string name="settings_security_title">אבטחה</string>
-    <string name="settings_security_subtitle">נעילת אפליקציית OverDrive כך שנוסעים או נותני שירות לא יוכלו לפתוח אותה ללא קוד ה-PIN שלך.</string>
+    <string name="settings_security_subtitle">נעילת אפליקציית Electric Guardian כך שנוסעים או נותני שירות לא יוכלו לפתוח אותה ללא קוד ה-PIN שלך.</string>
     <string name="settings_security_stance_title">נעילת ממשק בלבד</string>
-    <string name="settings_security_stance_body">מעקב, הקלטה, הרתעה, התרעות ושירותי רקע ממשיכים לפעול גם כשהאפליקציה נעולה. קוד ה-PIN נועל את ממשק OverDrive בלבד.</string>
+    <string name="settings_security_stance_body">מעקב, הקלטה, הרתעה, התרעות ושירותי רקע ממשיכים לפעול גם כשהאפליקציה נעולה. קוד ה-PIN נועל את ממשק Electric Guardian בלבד.</string>
     <string name="settings_security_overline_lock">נעילת אפליקציה</string>
     <string name="settings_security_overline_recovery">אם שכחת את קוד ה-PIN</string>
     <string name="settings_security_toggle_title">דרוש קוד PIN</string>
-    <string name="settings_security_toggle_subtitle_off">כבוי — כל אחד יכול לפתוח את OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">מופעל — נדרש קוד PIN לפתיחת OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">כבוי — כל אחד יכול לפתוח את Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">מופעל — נדרש קוד PIN לפתיחת Electric Guardian.</string>
     <string name="settings_security_change_title">שינוי קוד PIN</string>
     <string name="settings_security_change_subtitle">אשר את קוד ה-PIN הנוכחי, ולאחר מכן בחר קוד חדש.</string>
     <string name="settings_security_autolock_title">נעילה אוטומטית</string>
@@ -1072,7 +1072,7 @@
     <string name="settings_security_toast_disable_ok">נעילת האפליקציה בוטלה.</string>
     <string name="pin_lock_title">הזן קוד PIN</string>
     <string name="pin_lock_title_unlocked">פתוח</string>
-    <string name="pin_lock_subtitle_default">בטל את נעילת OverDrive כדי להמשיך.</string>
+    <string name="pin_lock_subtitle_default">בטל את נעילת Electric Guardian כדי להמשיך.</string>
     <string name="pin_lock_subtitle_wrong">קוד PIN שגוי. נסה שוב.</string>
     <string name="pin_lock_subtitle_locked_out">יותר מדי ניסיונות. נסה שוב בקרוב.</string>
     <string name="pin_lock_subtitle_locked_out_countdown">נעול. נסה שוב בעוד %1$s.</string>
@@ -1094,7 +1094,7 @@
     <string name="diagnostics_battery_value_soh">%1$.0f%%</string>
     <string name="diagnostics_battery_value_pending">ממתין לנתונים</string>
     <string name="dashboard_recordings_value_live">● %1$d</string>
-    <string name="dashboard_insight_welcome">ברוך הבא — Overdrive היא כעת זוג העיניים הנוסף שלך.</string>
+    <string name="dashboard_insight_welcome">ברוך הבא — Electric Guardian היא כעת זוג העיניים הנוסף שלך.</string>
     <string name="dashboard_insight_parked_charged_kwh">נטענו %1$s (כ-%2$s) בזמן החניה</string>
     <string name="dashboard_insight_parked_charged">נטענו %1$s בזמן החניה</string>
     <string name="dashboard_insight_parked_drained_kwh">נצרכו %1$s (כ-%2$s) מאז שחנית</string>
@@ -1111,14 +1111,14 @@
         <item quantity="other">היום הוקלטו %1$d קליפים</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">Overdrive פעיל %1$d יום, %2$d שע׳</item>
-        <item quantity="two">Overdrive פעיל %1$d ימים, %2$d שע׳</item>
-        <item quantity="other">Overdrive פעיל %1$d ימים, %2$d שע׳</item>
+        <item quantity="one">Electric Guardian פעיל %1$d יום, %2$d שע׳</item>
+        <item quantity="two">Electric Guardian פעיל %1$d ימים, %2$d שע׳</item>
+        <item quantity="other">Electric Guardian פעיל %1$d ימים, %2$d שע׳</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
-        <item quantity="one">Overdrive פעיל %1$d שעה</item>
-        <item quantity="two">Overdrive פעיל %1$d שעות</item>
-        <item quantity="other">Overdrive פעיל %1$d שעות</item>
+        <item quantity="one">Electric Guardian פעיל %1$d שעה</item>
+        <item quantity="two">Electric Guardian פעיל %1$d שעות</item>
+        <item quantity="other">Electric Guardian פעיל %1$d שעות</item>
     </plurals>
     <plurals name="dashboard_insight_minutes">
         <item quantity="one">%1$d דק׳</item>
@@ -1407,7 +1407,7 @@
     <string name="camera_decoupled_lane_label">צינור קידוד מנותק (תיקון למצלמת הנסיעה לאחור)</string>
     <string name="camera_decoupled_lane_subtitle">מעתיק כל פריים מהמצלמה לפני הקידוד, כך שעצירה בהקלטה לא תוכל למנוע תצוגה ממצלמת הנסיעה לאחור של הרכב. זמין רק במצב המצלמה הישן; צורך כ־60 MB מזיכרון ה־GPU ומעבר GPU נוסף לכל פריים. נכנס לתוקף בהפעלה הבאה של המצלמה (מחזור ACC או הפעלה מחדש של הדמון).</string>
     <string name="dialog_create_evidence_pack_title">ליצור חבילת ראיות?</string>
-    <string name="dialog_create_evidence_pack_message">OverDrive שולח לספק ה־AI שהוגדר רק מטא־נתונים מסוננים של האירוע. הסרטון נשאר מקומי ומתווסף רק לחבילת הראיות שמורדת.</string>
+    <string name="dialog_create_evidence_pack_message">Electric Guardian שולח לספק ה־AI שהוגדר רק מטא־נתונים מסוננים של האירוע. הסרטון נשאר מקומי ומתווסף רק לחבילת הראיות שמורדת.</string>
     <string name="toast_evidence_pack_creating">יוצר חבילת ראיות…</string>
     <string name="toast_evidence_pack_ready">חבילת הראיות מוכנה</string>
     <string name="toast_evidence_pack_unavailable">ההקלטה עדיין לא נוספה לאינדקס</string>

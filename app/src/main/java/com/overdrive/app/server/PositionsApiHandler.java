@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * OverDrive-native seat/mirror position store API (feature: "seat positions").
+ * ElectricGuardian-native seat/mirror position store API (feature: "seat positions").
  * Runs in the uid-2000 daemon — the only process that can read/write BYD geometry —
  * and is the endpoint the a11y "record on long-press" trigger (in the app UI process)
  * POSTs to via {@link com.overdrive.app.util.DaemonHttpClient}.
@@ -272,7 +272,7 @@ public final class PositionsApiHandler {
         long now = System.currentTimeMillis();
         // A captured entry mirrors the car, so it takes the ambient state too — the whole
         // point of storing it here is that the car's own slots carry geometry ONLY, so an
-        // OverDrive mirror that also remembers the lighting is strictly more than the native
+        // Electric Guardian mirror that also remembers the lighting is strictly more than the native
         // position it shadows. Null when the car will not report it; never a default.
         JSONObject ambient = com.overdrive.app.byd.AmbientProbe.read(ctx);
         JSONObject entry = PositionStore.getInstance().upsertCaptured(profile, slot, name, axes, ambient, now);
@@ -284,13 +284,13 @@ public final class PositionsApiHandler {
         log("captured profile=" + profile + " slot=" + slot + " name=" + name
                 + " model=" + resolvedModel() + " axes=" + axes);
         // Confirm the capture on screen. Without this the long-press is completely silent from
-        // OverDrive's side — the car shows its own feedback for ITS save, so the user has no way
-        // to tell whether OverDrive mirrored it or quietly missed it (which is exactly what
+        // Electric Guardian's side — the car shows its own feedback for ITS save, so the user has no way
+        // to tell whether Electric Guardian mirrored it or quietly missed it (which is exactly what
         // happened for every long-press in the floating widget until it was supported).
         // TYPE_APPLICATION_OVERLAY, so it draws above the BYD widget rather than behind it.
         // TOP, not bottom: the long-press happens in BYD's own UI, so the user's attention is
         // already there and a bottom pill is easy to miss (Pål wasn't sure he'd seen it at all).
-        // "long" too — this is the only signal that OverDrive mirrored the save, so it is worth
+        // "long" too — this is the only signal that Electric Guardian mirrored the save, so it is worth
         // more than the default couple of seconds.
         try {
             com.overdrive.app.byd.MessageOverlayController.showToast(

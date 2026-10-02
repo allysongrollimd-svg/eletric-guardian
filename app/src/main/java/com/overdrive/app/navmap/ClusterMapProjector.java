@@ -75,7 +75,7 @@ public final class ClusterMapProjector {
     // After the initial launch+verify, the daemon — which SURVIVES the app being
     // swiped away (it's a separate uid-2000 process) — keeps watching that OUR cluster
     // map Activity is still the resumed window on the fission display. If the user
-    // swipes Overdrive away from Recents (or the app process is recycled), the Activity
+    // swipes Electric Guardian away from Recents (or the app process is recycled), the Activity
     // is destroyed but the daemon still holds the OEM projection OPEN → the cluster goes
     // BLACK and never recovers on its own: start() is a one-shot (no-op while `active`),
     // launchMapOnDisplay() returns after a single verify, and nothing else re-launches
@@ -410,7 +410,7 @@ public final class ClusterMapProjector {
     /**
      * Keep-alive watchdog: while the map projection is active, periodically confirm OUR
      * cluster map Activity is still the resumed window on {@code displayId}, and re-launch
-     * it if it has disappeared (the user swiped Overdrive away from Recents, or the app
+     * it if it has disappeared (the user swiped Electric Guardian away from Recents, or the app
      * process was recycled). The daemon (uid 2000) survives the app's task removal and
      * still holds the OEM fission projection OPEN, so without this the cluster goes BLACK
      * and never recovers until ACC-off. Re-issuing the launch cold-starts the app process

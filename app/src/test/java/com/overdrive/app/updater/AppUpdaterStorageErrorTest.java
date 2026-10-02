@@ -15,7 +15,7 @@ public class AppUpdaterStorageErrorTest {
 
         assertTrue(AppUpdater.userFacingInstallError(
                 "Failure [INSTALL_FAILED_INSUFFICIENT_STORAGE]")
-                .startsWith("Not enough storage to update Overdrive."));
+                .startsWith("Not enough storage to update Electric Guardian."));
         assertEquals("Network failed",
                 AppUpdater.userFacingInstallError("Network failed"));
     }

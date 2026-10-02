@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">在背景下保持Overdrive车辆监测活动. 该服务不会读取或与屏幕内容交互.</string>
+    <string name="accessibility_service_description">在背景下保持Electric Guardian车辆监测活动. 该服务不会读取或与屏幕内容交互.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">机器自动选择适合您的装饰的相机.相机1=BYD Seal,相机0=Atto装饰. 改变相机的身份证后重新启动.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">OEM Dashcam 摄像头 ID</string>
-    <string name="camera_oem_dashcam_hint">选择指向前向行车记录仪传感器的 AVMCamera id。行车记录仪与全景相反：Seal/Han 全景 = 1 → 行车记录仪 = 0；Atto / Tang 全景 = 0 → 行车记录仪 = 1。保持“自动”可让 OverDrive 自动选择。</string>
+    <string name="camera_oem_dashcam_hint">选择指向前向行车记录仪传感器的 AVMCamera id。行车记录仪与全景相反：Seal/Han 全景 = 1 → 行车记录仪 = 0；Atto / Tang 全景 = 0 → 行车记录仪 = 1。保持“自动”可让 Electric Guardian 自动选择。</string>
     <string name="camera_oem_dashcam_auto_resolved">自动-使用 id %1$d (pano id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">自动-pano id 是 %1$d，不能推断控制摄像头</string>
     <string name="camera_oem_dashcam_save">保存</string>
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">全景流:遗产自动检测/探测</string>
     <string name="camera_mapping_current_format">电流映射:%1$s</string>
     <string name="camera_mapping_current_none">当前映射:自动 /默认</string>
-    <string name="camera_mapping_hint">OverDrive默认保留了传统的启动行为,但现在允许您正确校准合并的全景带. 预览每个原始合并的片段,将逻辑的360角色映射到实际显示车辆前/右/后/左的片段,然后恶魔将重新使用该布局进行录音,流媒体和AI重新启动后.</string>
+    <string name="camera_mapping_hint">Electric Guardian默认保留了传统的启动行为,但现在允许您正确校准合并的全景带. 预览每个原始合并的片段,将逻辑的360角色映射到实际显示车辆前/右/后/左的片段,然后恶魔将重新使用该布局进行录音,流媒体和AI重新启动后.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">扫描到连接</string>
     <string name="dashboard_qr_waiting">等待道...</string>
@@ -179,15 +179,15 @@
     <string name="setup_step_two_label">其他类型</string>
     <string name="setup_step_three_label">其他类型</string>
     <string name="setup_language_title">选择自己的语言</string>
-    <string name="setup_language_body">按键选择一个不同的OverDrive应用程序和网络道.</string>
+    <string name="setup_language_body">按键选择一个不同的Electric Guardian应用程序和网络道.</string>
     <string name="setup_language_button">选择语言</string>
     <string name="setup_autostart_title">禁用自动启动限制</string>
-    <string name="setup_autostart_body">按下来打开BYD自动启动. 在列表中找到OverDrive,并打消框.BYD在每次安装时都会擦除它.</string>
+    <string name="setup_autostart_body">按下来打开BYD自动启动. 在列表中找到Electric Guardian,并打消框.BYD在每次安装时都会擦除它.</string>
     <string name="setup_autostart_button">开启BYD自动启动</string>
     <string name="setup_overlay_title">允许在其他应用程序上显示</string>
     <string name="setup_overlay_body">在其他应用程序上,可显示浮动状态指标,以便记录和跟踪旅行.</string>
     <string name="setup_overlay_button">打开叠加设置</string>
-    <!-- Onboarding guide (novice track). Parked-only, glanceable. Overdrive is a
+    <!-- Onboarding guide (novice track). Parked-only, glanceable. Electric Guardian is a
          protected brand name — keep it verbatim. -->
     <!-- Shared button labels -->
     <string name="onboarding_next">下一个</string>
@@ -198,22 +198,22 @@
     <string name="onboarding_exit">退出游览</string>
     <string name="onboarding_done_short">明白了</string>
     <!-- Step 0: authorize the daemon (system ADB popup) -->
-    <string name="onboarding_authorize_title">唤醒 Overdrive</string>
-    <string name="onboarding_authorize_body">Overdrive runs your cameras through a small on-device helper. Android will ask once to allow USB debugging — tap <b>Allow</b> and check <b>Always allow from this device</b> so it stays on after every restart.</string>
+    <string name="onboarding_authorize_title">唤醒 Electric Guardian</string>
+    <string name="onboarding_authorize_body">Electric Guardian runs your cameras through a small on-device helper. Android will ask once to allow USB debugging — tap <b>Allow</b> and check <b>Always allow from this device</b> so it stays on after every restart.</string>
     <string name="onboarding_authorize_button">允许访问</string>
     <string name="onboarding_authorize_waiting_title">等待权限…</string>
     <string name="onboarding_authorize_waiting_body">接受安卓弹出窗口。如果您看不到它，它可能已经被授予了 — — 这将继续单独进行。</string>
     <string name="onboarding_authorize_retry_title">仍未连接</string>
     <string name="onboarding_authorize_retry_body">助手尚未运行。Android 权限可能已被取消。请重试并记住检查 <b>总是允许</b>。</string>
     <string name="onboarding_authorize_retry_button">再试一次</string>
-    <string name="onboarding_mode_title">Overdrive 应在何时运行？</string>
+    <string name="onboarding_mode_title">Electric Guardian 应在何时运行？</string>
     <string name="onboarding_mode_body">选择您关闭汽车后超载的行为。\n\n<b> &amp; 关闭</b> 停靠时一直观看-监视和后台监视仍然活动中 这样，汽车一夜之间就拿起一点力量。\n\n<b>只有</b> 离开后完全关闭超速操作。 Dashcam, 旅行和充电仍然可以在你开车时运行，当你开车时，一切都会自动启动备份。 您可以在设置中随时更改此项。</string>
     <string name="onboarding_mode_on_off_button">在 &amp; 关闭</string>
     <string name="onboarding_mode_on_only_button">仅在</string>
     <!-- Camera mapping chapter -->
     <string name="onboarding_camera_step_label">相机 · 步长 %1$d ，共 %2$d</string>
     <string name="onboarding_camera_intro_title">设置您的摄像头</string>
-    <string name="onboarding_camera_intro_body">让我们告诉 Overdrive 哪个摄像头是您的 360 全景视图，哪个是您的 dashcam。大约需要一分钟，稍后您也可以更改。</string>
+    <string name="onboarding_camera_intro_body">让我们告诉 Electric Guardian 哪个摄像头是您的 360 全景视图，哪个是您的 dashcam。大约需要一分钟，稍后您也可以更改。</string>
     <string name="onboarding_camera_intro_primary">开始</string>
     <string name="onboarding_camera_opening_title">打开相机设置…</string>
     <string name="onboarding_camera_opening_body">从您的摄像头加载现场预览。这可能需要几秒钟。</string>
@@ -222,7 +222,7 @@
     <string name="onboarding_camera_dashcam_title">现在找到前方摄像头</string>
     <string name="onboarding_camera_dashcam_body">步过照相机的箭头并停止显示风盾/前进视图。 注意它的数字 — — 你下一步会挑选它。</string>
     <string name="onboarding_camera_pick_title">选择您的360个摄像头</string>
-    <string name="onboarding_camera_pick_body">在顶部卡片中，选择您的 360 / 普通摄像头对应的编号。不确定？保持 AUTO 设置，Overdrive 会自动识别。</string>
+    <string name="onboarding_camera_pick_body">在顶部卡片中，选择您的 360 / 普通摄像头对应的编号。不确定？保持 AUTO 设置，Electric Guardian 会自动识别。</string>
     <string name="onboarding_camera_pick_primary">下一个</string>
     <string name="onboarding_camera_pick_dash_title">选择您的摄像头摄像头</string>
     <string name="onboarding_camera_pick_dash_body">在这张卡片中选择您早些时候发现的 dashcam 号码 — 或将它留在AUTO上。</string>
@@ -238,7 +238,7 @@
     <string name="onboarding_camera_windshield_primary">显示我</string>
     <string name="onboarding_camera_windshield_skip">不要谢谢。</string>
     <!-- Vehicle profile chapter -->
-    <string name="onboarding_vehicle_title">告诉 Overdrive 您的电池信息</string>
+    <string name="onboarding_vehicle_title">告诉 Electric Guardian 您的电池信息</string>
     <string name="onboarding_vehicle_body">选择您的模型，我们填充了 kWh，或者输入自己(5-120)。 这使得范围和充电估计准确。您可以跳过并稍后设置。</string>
     <string name="onboarding_vehicle_primary">设置电池</string>
     <!-- Dashboard orientation chapter -->
@@ -508,7 +508,7 @@
     <string name="update_picker_current_suffix">%1$s (已安裝)</string>
     <string name="update_picker_older_suffix">%1$s (舊版本)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">正在更新 Overdrive</string>
+    <string name="update_progress_title">正在更新 Electric Guardian</string>
     <string name="update_step_downloading">正在下載更新…</string>
     <string name="update_step_verifying">正在驗證下載…</string>
     <string name="update_step_stopping">正在停止守護程式…</string>
@@ -690,7 +690,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">提示 &amp; 解决问题</string>
     <string name="setup_traffic_title">禁用BYD交通监视器</string>
-    <string name="setup_traffic_body">BYD 交通监测器阻止第三方应用访问互联网. 禁用它使OverDrive和其他安装的应用程序实际上使用网络. 之后需要硬式重新启动.</string>
+    <string name="setup_traffic_body">BYD 交通监测器阻止第三方应用访问互联网. 禁用它使Electric Guardian和其他安装的应用程序实际上使用网络. 之后需要硬式重新启动.</string>
     <string name="setup_traffic_button">开放的交通监测器</string>
     <string name="setup_camera_fix_title">攝影機提供黑色或不正确的訊息?</string>
     <string name="setup_camera_fix_body">摄像头探测器,设置摄像头ID为0,点击保存,然后重新启动摄像头模特.如果传输仍然错误,请使用摄像头ID重复1.</string>
@@ -714,16 +714,16 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">OverDrive 状态</string>
+    <string name="status_overlay_notif_title">Electric Guardian 状态</string>
     <string name="status_overlay_notif_text">状态覆盖活动</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">Overdrive 激活</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian 激活</string>
     <string name="daemon_keepalive_notif_text">监测车辆系统</string>
-    <string name="overdrive_status_summary_title">Overdrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">后台服务运行</string>
     <!-- ============================================================== -->
     <!-- M3 Revamp: navigation rail + settings sub-rail + theme picker  -->
@@ -766,7 +766,7 @@
     <string name="settings_privacy_title">隐私与数据</string>
     <string name="settings_privacy_body">恢复清除录音索引,缓存凭证,魔鬼状态和设备上偏好.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">关于OverDrive</string>
+    <string name="settings_about_title">关于Electric Guardian</string>
     <string name="settings_about_version_label">版本</string>
     <string name="settings_about_package_label">建设</string>
     <string name="settings_about_check_update_value">检查最新的GitHub版本，如果更新，请安装。</string>
@@ -785,13 +785,13 @@
     <string name="settings_backup_pick_file">选择备份以恢复</string>
     <string name="settings_backup_no_files">未找到备份文件。先导出一个或复制一个备份.json到 %1$s，然后重试。</string>
     <string name="settings_backup_read_failed">无法读取文件</string>
-    <string name="settings_backup_invalid_file">该文件不是有效的 Overdrive 备份</string>
+    <string name="settings_backup_invalid_file">该文件不是有效的 Electric Guardian 备份</string>
     <string name="settings_backup_restoring">正在恢复…</string>
     <string name="settings_backup_restored">设置已恢复</string>
     <string name="settings_backup_restore_failed">还原失败</string>
     <string name="settings_backup_daemon_down">相机服务必须运行到备份或还原。从守护进程启动，然后重试。</string>
     <string name="settings_backup_restore_confirm_title">还原设置？</string>
-    <string name="settings_backup_restore_confirm_msg">此操作将用备份替换您当前的 Overdrive 设置并重新加载服务。它仅适用于创建该备份时所用的同一台车机。</string>
+    <string name="settings_backup_restore_confirm_msg">此操作将用备份替换您当前的 Electric Guardian 设置并重新加载服务。它仅适用于创建该备份时所用的同一台车机。</string>
     <string name="settings_backup_restore_confirm_btn">恢复</string>
     <string name="settings_backup_restart_hint">设置已恢复。重启相机守护进程 (Daemons = 相机-&gt; 重启) 以确保每个恢复的设置都已应用。</string>
     <string name="settings_backup_trips_prompt">包括您的旅行历史记录(距离、能源、成本、分数、起始/结束位置？不包括每次旅行的详细遥测数据。 该文件将包含您的位置历史记录——保持其隐私。</string>
@@ -802,9 +802,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">由像你这样的人来推动</string>
     <string name="settings_about_support_share_title">告诉另一位车主</string>
-    <string name="settings_about_support_share_value">每个共享的链接都能帮助另一个BYD的所有者发现Overdrive.</string>
-    <string name="settings_about_support_share_message">查看 Overdrive — 面向 BYD 的开源监控和仪表摄像头: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">分享 Overdrive</string>
+    <string name="settings_about_support_share_value">每个共享的链接都能帮助另一个BYD的所有者发现Electric Guardian.</string>
+    <string name="settings_about_support_share_message">查看 Electric Guardian — 面向 BYD 的开源监控和仪表摄像头: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">分享 Electric Guardian</string>
     <string name="settings_about_open_link_failed">无法打开链接.</string>
     <string name="settings_about_open_link_copied">没有浏览器. URL复制: %1$s</string>
     <string name="settings_about_support_kofi_title">在下一个版本中加油</string>
@@ -812,7 +812,7 @@
     <string name="settings_about_license_title">许可证</string>
     <string name="settings_about_license_value">开源. 点击查看全文.</string>
     <string name="settings_about_source_title">源代码</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">在 GitHub 上放一个</string>
     <string name="settings_about_star_value">需要一秒钟,这意味着很多.</string>
     <string name="settings_about_thanks_title">致谢</string>
@@ -882,7 +882,7 @@
     <string name="diagnostics_settings_subtitle">应用程序偏好,主题和语言.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">集成</string>
-    <string name="integrations_hero_subtitle">连接Overdrive到您的服务.</string>
+    <string name="integrations_hero_subtitle">连接Electric Guardian到您的服务.</string>
     <string name="integrations_status_unknown">按下设置</string>
     <string name="integrations_status_configured">配置</string>
     <string name="integrations_status_not_set_up">没有设置</string>
@@ -895,7 +895,7 @@
     <string name="settings_action_check_update">查看是否有更新</string>
     <string name="settings_action_reset_data">设置数据...</string>
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
     <!-- ============================================================== -->
@@ -961,11 +961,11 @@
     <string name="settings_section_surveillance_subtitle">检测区域,时间表,运动敏感性.</string>
     <string name="settings_section_daemons_subtitle">Cloudflared、Zrok、Telegram、MQTT 运行程序。</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">关于OverDrive</string>
+    <string name="settings_about_row_title">关于Electric Guardian</string>
     <string name="settings_about_row_subtitle">版本,许可证,支持开发.</string>
     <string name="settings_reset_row_subtitle">清晰的录音,事件,或所有隐藏.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -982,7 +982,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">默认的设备上</string>
-    <string name="settings_privacy_stance_body">OverDrive 完全在车机主机上运行。除了你明确配置的隧道和集成之外，没有任何遥测数据会离开你的车辆。</string>
+    <string name="settings_privacy_stance_body">Electric Guardian 完全在车机主机上运行。除了你明确配置的隧道和集成之外，没有任何遥测数据会离开你的车辆。</string>
     <string name="settings_privacy_overline_storage">地方储存</string>
     <string name="settings_privacy_overline_reset">数据重新设置</string>
     <string name="settings_privacy_storage_clips_label">磁盘上的剪辑</string>
@@ -992,18 +992,18 @@
     <string name="settings_privacy_storage_count_format_plural">片%1$d</string>
     <string name="settings_privacy_reset_subtitle">选择类别:录音,事件,恶魔配置,缓存远程测量...</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">安全</string>
-    <string name="settings_security_subtitle">锁定OverDrive应用，否则乘客和阀无法在没有您的 PIN 码的情况下打开它。</string>
+    <string name="settings_security_subtitle">锁定Electric Guardian应用，否则乘客和阀无法在没有您的 PIN 码的情况下打开它。</string>
     <string name="settings_security_stance_title">仅锁定界面</string>
-    <string name="settings_security_stance_body">监视、录制、威慑、警报和后台服务在锁定应用程序时继续运行。PIN码仅锁定 OverDrive 界面，别无其他。</string>
+    <string name="settings_security_stance_body">监视、录制、威慑、警报和后台服务在锁定应用程序时继续运行。PIN码仅锁定 Electric Guardian 界面，别无其他。</string>
     <string name="settings_security_overline_lock">应用锁</string>
     <string name="settings_security_overline_recovery">如果您忘记了您的 PIN</string>
     <string name="settings_security_toggle_title">需要 PIN</string>
-    <string name="settings_security_toggle_subtitle_off">关闭 — 任何人都可以打开OverDrive。</string>
-    <string name="settings_security_toggle_subtitle_on">开启-需要打开OverDrive的 PIN 码。</string>
+    <string name="settings_security_toggle_subtitle_off">关闭 — 任何人都可以打开Electric Guardian。</string>
+    <string name="settings_security_toggle_subtitle_on">开启-需要打开Electric Guardian的 PIN 码。</string>
     <string name="settings_security_change_title">更改 PIN</string>
     <string name="settings_security_change_subtitle">确认当前PIN，然后设置一个新PIN。</string>
     <string name="settings_security_autolock_title">自动锁定</string>
@@ -1040,7 +1040,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">输入 PIN 码</string>
     <string name="pin_lock_title_unlocked">已解锁</string>
-    <string name="pin_lock_subtitle_default">解锁OverDrive以继续。</string>
+    <string name="pin_lock_subtitle_default">解锁Electric Guardian以继续。</string>
     <string name="pin_lock_subtitle_wrong">错误的 PIN，请重试。</string>
     <string name="pin_lock_subtitle_locked_out">尝试次数过多，请稍后再试。</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -1082,7 +1082,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">欢迎——Overdrive 现已成为你的第二双眼睛。</string>
+    <string name="dashboard_insight_welcome">欢迎——Electric Guardian 现已成为你的第二双眼睛。</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">在停车时拿到%1$s (≈%2$s)</string>
     <string name="dashboard_insight_parked_charged">在停车时拿到%1$s</string>

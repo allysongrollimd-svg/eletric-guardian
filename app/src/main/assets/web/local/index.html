@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title data-i18n="app.dashboard_title">Dashboard - OverDrive</title>
+    <title data-i18n="app.dashboard_title">Dashboard - Electric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="../shared/app-icon-dark.webp">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#00876C">
+    <meta name="theme-color" content="#2B7500">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
     <link rel="stylesheet" href="../shared/leaflet.css">
@@ -27,7 +27,7 @@
                         <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
                     </svg>
                 </button>
-                <div class="brand"><span class="brand-name" style="font-size:16px;">OverDrive</span></div>
+                <div class="brand"><span class="brand-name" style="font-size:16px;">Electric Guardian</span></div>
                 <div style="width:40px;"></div>
             </div>
 
@@ -399,11 +399,11 @@
             padding: 20px;
             background:
                 radial-gradient(80% 60% at 18% 12%,
-                    rgba(0, 212, 170, 0.16) 0%,
-                    rgba(0, 212, 170, 0.04) 40%,
+                    rgba(78, 212, 0, 0.16) 0%,
+                    rgba(78, 212, 0, 0.04) 40%,
                     transparent 70%),
                 radial-gradient(60% 40% at 50% 100%,
-                    rgba(0, 212, 170, 0.08) 0%,
+                    rgba(78, 212, 0, 0.08) 0%,
                     transparent 65%),
                 linear-gradient(135deg,
                     var(--bg-elevated) 0%,
@@ -460,7 +460,7 @@
             overflow: hidden;
             border-radius: var(--radius-lg, 16px);
             background:
-                linear-gradient(110deg, rgba(0, 135, 108, 0.13), transparent 55%),
+                linear-gradient(110deg, rgba(43, 117, 0, 0.13), transparent 55%),
                 var(--bg-surface);
             cursor: pointer;
             transition: border-color 0.15s ease, transform 0.15s ease,
@@ -500,7 +500,7 @@
             border-radius: 12px;
             color: var(--brand-primary);
             background: var(--brand-primary-container);
-            border: 1px solid rgba(0, 135, 108, .2);
+            border: 1px solid rgba(43, 117, 0, .2);
         }
         .dash-ai-insight-icon svg { width: 23px; height: 23px; }
         .dash-ai-insight-copy {
@@ -715,8 +715,8 @@
         }
         .dash-drive-state.is-ready .dash-drive-icon,
         .dash-drive-state.is-driving .dash-drive-icon {
-            background: rgba(0, 212, 170, 0.10);
-            border-color: rgba(0, 212, 170, 0.30);
+            background: rgba(78, 212, 0, 0.10);
+            border-color: rgba(78, 212, 0, 0.30);
         }
         .dash-drive-state.is-reverse .dash-drive-icon,
         .dash-drive-state.is-neutral .dash-drive-icon,
@@ -809,7 +809,7 @@
             text-overflow: ellipsis;
         }
 
-        .dash-chip.good { color: var(--brand-primary); border-color: rgba(0, 212, 170, 0.35); }
+        .dash-chip.good { color: var(--brand-primary); border-color: rgba(78, 212, 0, 0.35); }
         .dash-chip.warn { color: #f59e0b; border-color: rgba(245, 158, 11, 0.35); }
         .dash-chip.alert { color: #ef4444; border-color: rgba(239, 68, 68, 0.35); }
 
@@ -852,7 +852,7 @@
             stroke: var(--border-default);
             stroke-width: 1.5;
         }
-        .dash-car-glass { fill: rgba(0, 212, 170, 0.10); stroke: transparent; transition: stroke .25s ease; }
+        .dash-car-glass { fill: rgba(78, 212, 0, 0.10); stroke: transparent; transition: stroke .25s ease; }
         .dash-car-roof {
             fill: var(--bg-surface);
             stroke: var(--border-subtle);
@@ -1220,9 +1220,9 @@
             transition: box-shadow 0.18s ease, transform 0.18s ease;
         }
         .dash-card-ghost {
-            outline: 2px dashed rgba(0, 212, 170, 0.5);
+            outline: 2px dashed rgba(78, 212, 0, 0.5);
             outline-offset: -4px;
-            background: rgba(0, 212, 170, 0.06);
+            background: rgba(78, 212, 0, 0.06);
             /* Hide ghost children — only the placeholder shape matters. */
         }
         .dash-card-ghost > * { visibility: hidden; }
@@ -1288,7 +1288,7 @@
             font-size: 13px;
             background: var(--brand-primary);
             border-color: var(--brand-primary);
-            color: #001f1a;
+            color: #050d00;
         }
 
         .dash-primary-btn svg {
@@ -1311,15 +1311,15 @@
         .dash-primary-btn:hover,
         .dash-secondary-btn:hover,
         .dash-command:hover {
-            background: rgba(0, 212, 170, 0.10);
-            border-color: rgba(0, 212, 170, 0.35);
+            background: rgba(78, 212, 0, 0.10);
+            border-color: rgba(78, 212, 0, 0.35);
             color: var(--brand-primary);
         }
 
         .dash-primary-btn:hover {
-            background: #00f0c0;
-            border-color: #00f0c0;
-            color: #001f1a;
+            background: #58f000;
+            border-color: #58f000;
+            color: #050d00;
         }
 
         .dash-command.pending {

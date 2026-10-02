@@ -445,7 +445,7 @@ public final class CameraConfigResolver {
     }
 
     /**
-     * Prefer the model explicitly selected in OverDrive over the often-generic
+     * Prefer the model explicitly selected in Electric Guardian over the often-generic
      * Android product string ("BYD AUTO"). A non-auto camera profile and any
      * persisted probe/manual camera ID still take precedence later in resolve().
      */

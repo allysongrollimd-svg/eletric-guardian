@@ -2841,7 +2841,7 @@ public class VehicleActuatorService extends Service {
                 ? new Notification.Builder(this, CHANNEL_ID)
                 : new Notification.Builder(this);
         return b.setContentTitle("Vehicle control")
-                .setContentText("OverDrive")
+                .setContentText("Electric Guardian")
                 .setSmallIcon(R.drawable.ic_play_circle)
                 .setOngoing(false)
                 .setGroup(DaemonKeepaliveService.NOTIFICATION_GROUP_KEY)

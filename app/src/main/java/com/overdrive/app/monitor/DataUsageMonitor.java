@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
- * DataUsageMonitor — tracks the network data consumed by Overdrive (the app UID
+ * DataUsageMonitor — tracks the network data consumed by Electric Guardian (the app UID
  * plus the UID-2000 daemons AND the sing-box / tailscale / cloudflared / zrok
  * native binaries, which all run under UID 2000), split by WiFi vs mobile, and
  * persisted per-day for the performance page's Data graph.

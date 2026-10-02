@@ -1240,7 +1240,7 @@ public class HttpServer {
             return LightDebugApiHandler.handle(method, path, body, out);
         }
 
-        // OverDrive-native seat/mirror POSITIONS store (feature: seat positions).
+        // ElectricGuardian-native seat/mirror POSITIONS store (feature: seat positions).
         // list / capture (fired by the long-press a11y hook) / apply / delete.
         // Runs in the daemon (only uid that can read/write BYD geometry).
         if (path.startsWith("/api/positions")) {

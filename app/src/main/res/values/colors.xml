@@ -15,7 +15,7 @@
     <color name="brand_primary">@color/md_sys_color_primary</color>
     <color name="brand_secondary">@color/md_sys_color_tertiary</color>
     <color name="brand_cyan">@color/brand_primary</color>
-    <color name="brand_cyan_glow">#33007A62</color>
+    <color name="brand_cyan_glow">#33266800</color>
 
     <!-- Backgrounds — M3 light surface stack -->
     <color name="bg_base">@color/md_sys_color_background</color>
@@ -39,7 +39,7 @@
          translucent pearl pill with a faint brand-tinted ring; the night
          variants live in values-night/colors.xml. -->
     <color name="overlay_pill_background">#E6F7FAF7</color>
-    <color name="overlay_pill_stroke">#33007A62</color>
+    <color name="overlay_pill_stroke">#33266800</color>
 
     <!-- Scrim behind labels that sit on a recording thumbnail. Fixed black
          alpha rather than a surface role because the backdrop is arbitrary

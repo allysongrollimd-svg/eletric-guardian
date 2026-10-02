@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets
 import java.util.concurrent.atomic.AtomicLong
 
 /**
- * Single source of truth for Overdrive's settings backup / restore.
+ * Single source of truth for Electric Guardian's settings backup / restore.
  *
  * ARCHITECTURE — one core, three surfaces (mirrors the OTA update feature):
  * the export/restore logic is defined ONLY here, inside the camera-daemon
@@ -268,13 +268,13 @@ object ConfigBackupService {
     fun validateBundle(bundle: JSONObject, currentAppVersion: String, currentModel: String): ApplyResult {
         val warnings = ArrayList<String>()
         val manifest = bundle.optJSONObject("manifest")
-            ?: return ApplyResult(false, "Not an Overdrive backup (missing manifest).", warnings)
+            ?: return ApplyResult(false, "Not an Electric Guardian backup (missing manifest).", warnings)
         if (BUNDLE_FORMAT != manifest.optString("format")) {
             return ApplyResult(false, "Unrecognised file format.", warnings)
         }
         if (manifest.optInt("schemaVersion", Int.MAX_VALUE) > SCHEMA_VERSION) {
             return ApplyResult(false,
-                "This backup is from a newer Overdrive version. Update the app first.", warnings)
+                "This backup is from a newer Electric Guardian version. Update the app first.", warnings)
         }
         val unifiedForCheck = bundle.optJSONObject("settings")?.optJSONObject("unified")
             ?: return ApplyResult(false, "Backup contains no settings.", warnings)

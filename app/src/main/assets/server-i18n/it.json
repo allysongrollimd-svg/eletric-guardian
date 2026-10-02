@@ -334,22 +334,22 @@
       "install_rejected": "⚠️ Installazione rifiutata: {0}",
       "install_failed": "⚠️ *Aggiornamento overdrive fallito*\nIl dispositivo è ancora nella versione precedente.\nMotivo: {0}",
       "unknown_reason": "sconosciuto (cfr. unità di testa)",
-      "installed": "🔄 *Overdrive aggiornato a {0}*",
-      "installed_new_tunnel": "🔄 *Overdrive aggiornato a {0}*\nNew tunnel URL:\n{1}\n\n_Il link cloudflared ruota dopo ogni installazione._",
-      "installed_tunnel_online": "🔄 *Overdrive aggiornato a {0}*\nTunnel torna online:\n{1}"
+      "installed": "🔄 *Electric Guardian aggiornato a {0}*",
+      "installed_new_tunnel": "🔄 *Electric Guardian aggiornato a {0}*\nNew tunnel URL:\n{1}\n\n_Il link cloudflared ruota dopo ogni installazione._",
+      "installed_tunnel_online": "🔄 *Electric Guardian aggiornato a {0}*\nTunnel torna online:\n{1}"
     },
     "backup": {
-      "restore_unavailable": "i *Il ripristino non è disponibile tramite Telegram.\n\nApri Overdrive sull'unità principale o nell'app, quindi vai su *Impostazioni → Backup & Restore* e seleziona il file di backup. I backup possono essere ripristinati solo sullo stesso dispositivo e richiedono conferma.",
+      "restore_unavailable": "i *Il ripristino non è disponibile tramite Telegram.\n\nApri Electric Guardian sull'unità principale o nell'app, quindi vai su *Impostazioni → Backup & Restore* e seleziona il file di backup. I backup possono essere ripristinati solo sullo stesso dispositivo e richiedono conferma.",
       "building_with_trips": "💾 Costruire il backup con le impostazioni e la cronologia dei viaggi…",
       "building_settings": "💾 Backup delle impostazioni di costruzione…",
       "service_unreachable": "⚠️ Impossibile raggiungere il servizio di backup.\n\nIl demone della fotocamera potrebbe non essere in esecuzione. Prova `/daemon camera start`.",
       "failed": "⚠️ Backup fallito: {0}",
       "no_data": "⚠️ Il backup non ha restituito dati.",
       "write_failed": "⚠️ Impossibile scrivere il file di backup: {0}",
-      "document_settings": "💾 Backup delle impostazioni di Overdrive\n\n⚠️ Questo file contiene credenziali e la chiave del dispositivo. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
-      "document_settings_version": "💾 Backup delle impostazioni di Overdrive · {0}\n\n⚠️ Questo file contiene credenziali e la chiave del dispositivo. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
-      "document_with_trips": "💾 Overdrive backup (impostazioni + cronologia dei viaggi: {0})\n\n⚠️ Questo file contiene credenziali, la chiave del dispositivo e la cronologia delle posizioni. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
-      "document_with_trips_version": "💾 Overdrive backup (impostazioni + cronologia del viaggio: {0}) · {1}\n\n⚠️ Questo file contiene credenziali, la chiave del dispositivo e la cronologia delle posizioni. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
+      "document_settings": "💾 Backup delle impostazioni di Electric Guardian\n\n⚠️ Questo file contiene credenziali e la chiave del dispositivo. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
+      "document_settings_version": "💾 Backup delle impostazioni di Electric Guardian · {0}\n\n⚠️ Questo file contiene credenziali e la chiave del dispositivo. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
+      "document_with_trips": "💾 Electric Guardian backup (impostazioni + cronologia dei viaggi: {0})\n\n⚠️ Questo file contiene credenziali, la chiave del dispositivo e la cronologia delle posizioni. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
+      "document_with_trips_version": "💾 Electric Guardian backup (impostazioni + cronologia del viaggio: {0}) · {1}\n\n⚠️ Questo file contiene credenziali, la chiave del dispositivo e la cronologia delle posizioni. Tienilo privato. Ripristinalo su questa stessa unità di testa da Impostazioni → Backup & Ripristino.",
       "upload_failed": "⚠️ Impossibile caricare il file di backup su Telegram."
     },
     "sendlog": {

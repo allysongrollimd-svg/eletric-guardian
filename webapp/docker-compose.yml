@@ -1,0 +1,18 @@
+# Subir:  cp .env.example .env  (edite)  &&  mkdir -p mosquitto  &&  (crie o passwd, veja mosquitto.conf)  &&  docker compose up -d
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports: ["1883:1883"]          # exponha só se o carro precisar falar direto com o broker (prefira TLS na frente)
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/passwd:/mosquitto/config/passwd:ro
+      - mosquitto-data:/mosquitto/data
+  webapp:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    depends_on: [mosquitto]
+    ports: ["8787:8787"]          # coloque atrás de HTTPS (Caddy/Traefik/Cloudflare Tunnel) para uso externo
+volumes:
+  mosquitto-data:

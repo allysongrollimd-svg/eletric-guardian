@@ -1,5 +1,5 @@
 /*
- * Overdrive — Community Automations UI controller (browse / publish / import).
+ * Electric Guardian — Community Automations UI controller (browse / publish / import).
  *
  * A sibling module to automations.js, mounted on the same automations.html page as
  * a third "Community" tab (data-tab="community"). It talks ONLY to the local daemon

@@ -244,7 +244,7 @@ public class AvcHalWarmup {
         if (dilink4) {
             // OEM-PARITY: oem does NOT launch com.byd.avc anywhere in its
             // panorama-camera flow. The 4 s blocking sleep plus launching a
-            // hardcoded AVC activity was OverDrive-specific and suspected of
+            // hardcoded AVC activity was ElectricGuardian-specific and suspected of
             // stealing the HAL's mosaic mode (PANORAMA_OUTPUT_STATE=7).
             // Skip the warmup entirely on dilink4. ensureAvcAlive() may still
             // probe process presence for diagnostics, but it never launches or

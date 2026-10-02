@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Manté actiu el seguiment del vehicle OverDrive en segon pla. Aquest servei no llegeix ni interactua amb el contingut de la pantalla.</string>
+    <string name="accessibility_service_description">Manté actiu el seguiment del vehicle Electric Guardian en segon pla. Aquest servei no llegeix ni interactua amb el contingut de la pantalla.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">Tria automàticament la càmera correcta en cada engegada. Càmera 1 = BYD Seal, Càmera 0 = Atto. Reinicieu el dimoni després de canviar l\'ID de la càmera perquè la configuració tingui efecte.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">ID de la càmera OEM</string>
-    <string name="camera_oem_dashcam_hint">"Trieu l\'id de AVMCamera que apunta al sensor davanter de la càmera de davantal. La càmera de davant és el contrari de pano: Seal/Han pano  = 1  → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Deixeu-ho a Automàtic per a deixar que triï OverDrive."</string>
+    <string name="camera_oem_dashcam_hint">"Trieu l\'id de AVMCamera que apunta al sensor davanter de la càmera de davantal. La càmera de davant és el contrari de pano: Seal/Han pano  = 1  → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Deixeu-ho a Automàtic per a deixar que triï Electric Guardian."</string>
     <string name="camera_oem_dashcam_auto_resolved">Automàtic - usant l\'ID %1$d (pano és l\'ID %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Automàtic — l\'identificador pano és %1$d, no es pot inferir la càmera</string>
     <string name="camera_oem_dashcam_save">Desa</string>
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">Flux panoràmic: detecció automàtica antiga / sonda</string>
     <string name="camera_mapping_current_format">Mapatge actual: %1$s</string>
     <string name="camera_mapping_current_none">Mapatge actual: automàtic / predeterminat</string>
-    <string name="camera_mapping_hint">OverDrive manté per defecte el comportament d\'inici antic, però ara us permet calibrar correctament la tira panoràmica fusionada. Vista prèvia de cada segment fusionat en brut, assigna els rols lògics de 360 al segment que realment mostra frontal/dreta/posterior/esquerra al vehicle, i el dimoni reutilitzarà aquesta disposició per a l\'enregistrament, transmissió i IA després de reiniciar.</string>
+    <string name="camera_mapping_hint">Electric Guardian manté per defecte el comportament d\'inici antic, però ara us permet calibrar correctament la tira panoràmica fusionada. Vista prèvia de cada segment fusionat en brut, assigna els rols lògics de 360 al segment que realment mostra frontal/dreta/posterior/esquerra al vehicle, i el dimoni reutilitzarà aquesta disposició per a l\'enregistrament, transmissió i IA després de reiniciar.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Escanegeu per a connectar</string>
     <string name="dashboard_qr_waiting">S\'està esperant el túnel...</string>
@@ -179,10 +179,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Trieu la vostra llengua</string>
-    <string name="setup_language_body">Per defecte, a la llengua de la unitat principal. Toqueu per triar-ne una de diferent per a l\'aplicació OverDrive i el túnel web.</string>
+    <string name="setup_language_body">Per defecte, a la llengua de la unitat principal. Toqueu per triar-ne una de diferent per a l\'aplicació Electric Guardian i el túnel web.</string>
     <string name="setup_language_button">Trieu una llengua</string>
     <string name="setup_autostart_title">Desactiva la restricció d\'inici automàtic</string>
-    <string name="setup_autostart_body">Toqueu a continuació per a obrir l\'inici automàtic de BYD. Cerca OverDrive a la llista i desmarca la casella. BYD ho esborra en cada instal·lació — ho tornareu a fer després de les actualitzacions.</string>
+    <string name="setup_autostart_body">Toqueu a continuació per a obrir l\'inici automàtic de BYD. Cerca Electric Guardian a la llista i desmarca la casella. BYD ho esborra en cada instal·lació — ho tornareu a fer després de les actualitzacions.</string>
     <string name="setup_autostart_button">Obre l\'inici automàtic de BYD</string>
     <string name="setup_overlay_title">Permet mostrar sobre altres aplicacions</string>
     <string name="setup_overlay_body">Habiliteu-ho per a mostrar un indicador d\'estat flotant per a enregistraments i seguiment de viatges a sobre d\'altres aplicacions.</string>
@@ -395,7 +395,7 @@
     <string name="update_picker_current_suffix">%1$s (instal·lat)</string>
     <string name="update_picker_older_suffix">%1$s (més antiga)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">S\'està actualitzant OverDrive</string>
+    <string name="update_progress_title">S\'està actualitzant Electric Guardian</string>
     <string name="update_step_downloading">S\'està baixant l\'actualització...</string>
     <string name="update_step_verifying">S\'està verificant la baixada...</string>
     <string name="update_step_stopping">S\'estan aturant els dimonis...</string>
@@ -577,7 +577,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Consells i resolució de problemes</string>
     <string name="setup_traffic_title">Desactiva el monitor de trànsit BYD</string>
-    <string name="setup_traffic_body">El Monitor de Trànsit BYD bloqueja que les aplicacions de tercers arribin a Internet. Desactivar-lo permet que OverDrive i qualsevol altra aplicació que instal·leu realment utilitzin la xarxa. Després es requereix un reinici dur.</string>
+    <string name="setup_traffic_body">El Monitor de Trànsit BYD bloqueja que les aplicacions de tercers arribin a Internet. Desactivar-lo permet que Electric Guardian i qualsevol altra aplicació que instal·leu realment utilitzin la xarxa. Després es requereix un reinici dur.</string>
     <string name="setup_traffic_button">Obre el monitor de trànsit</string>
     <string name="setup_camera_fix_title">El canal de la càmera és en nengre o incorrecte?</string>
     <string name="setup_camera_fix_body">Sonda de càmera, establiu l\'ID de la càmera a 0, feu clic a Desa i, a continuació, reinicieu el dimoni de la càmera. Si els canals encara són incorrectes, repetiu amb l\'ID de la càmera 1. Deixeu intacta la secció de mapatge.</string>
@@ -601,16 +601,16 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">Estat d\'OverDrive</string>
+    <string name="status_overlay_notif_title">Estat d\'Electric Guardian</string>
     <string name="status_overlay_notif_text">Estat superposat actiu</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">OverDrive actiu</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian actiu</string>
     <string name="daemon_keepalive_notif_text">Sistemes de seguiment de vehicles</string>
-    <string name="overdrive_status_summary_title">OverDrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">Serveis en segon pla en execució</string>
     <!-- ============================================================== -->
     <!-- M3 Revamp: navigation rail + settings sub-rail + theme picker  -->
@@ -649,7 +649,7 @@
     <string name="settings_privacy_title">Privadesa i dades</string>
     <string name="settings_privacy_body">Restableix l\'índex d\'enregistraments, les credencials en memòria cau, l\'estat del dimoni i les preferències del dispositiu. L\'acció no es pot desfer.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">Quant a OverDrive</string>
+    <string name="settings_about_title">Quant a Electric Guardian</string>
     <string name="settings_about_version_label">Versió</string>
     <string name="settings_about_package_label">Construcció</string>
     <string name="settings_about_check_update_value">Comprova l\'última versió de GitHub i instal·la-la si és més recent.</string>
@@ -658,9 +658,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Potenciat per persones com vós</string>
     <string name="settings_about_support_share_title">Digueu-ho a un altre propietari</string>
-    <string name="settings_about_support_share_value">Cada enllaç compartit ajuda a un altre propietari de BYD a descobrir OverDrive.</string>
-    <string name="settings_about_support_share_message">Feu una ullada a OverDrive — vigilància i càmdera de davantal de codi obert per a BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Comparteix OverDrive</string>
+    <string name="settings_about_support_share_value">Cada enllaç compartit ajuda a un altre propietari de BYD a descobrir Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Feu una ullada a Electric Guardian — vigilància i càmdera de davantal de codi obert per a BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Comparteix Electric Guardian</string>
     <string name="settings_about_open_link_failed">No s\'ha pogut obrir l\'enllaç.</string>
     <string name="settings_about_open_link_copied">No s\'ha trobat cap navegador. S\'ha copiat l\'URL: %1$s</string>
     <string name="settings_about_support_kofi_title">Ajudeu per a l següent llançament</string>
@@ -668,7 +668,7 @@
     <string name="settings_about_license_title">Llicència</string>
     <string name="settings_about_license_value">MIT — codi obert. Toqueu per a veure el text complet.</string>
     <string name="settings_about_source_title">Codi font</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Marqueu-nos a GitHub</string>
     <string name="settings_about_star_value">Només és un segon. Significa molt.</string>
     <string name="settings_about_thanks_title">Gràcies</string>
@@ -738,7 +738,7 @@
     <string name="diagnostics_settings_subtitle">Preferències de l\'aplicació, tema i llengua.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Integracions</string>
-    <string name="integrations_hero_subtitle">Connecteu OverDrive als vostres serveis.</string>
+    <string name="integrations_hero_subtitle">Connecteu Electric Guardian als vostres serveis.</string>
     <string name="integrations_status_unknown">Toqueu per a configurar</string>
     <string name="integrations_status_configured">Configurat</string>
     <string name="integrations_status_not_set_up">No s\'ha configurat</string>
@@ -751,7 +751,7 @@
     <string name="settings_action_check_update">Cerca actualitzacions</string>
     <string name="settings_action_reset_data">Restableix les dades...</string>
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
     <!-- ============================================================== -->
@@ -817,11 +817,11 @@
     <string name="settings_section_surveillance_subtitle">Zones de detecció, planificació, sensibilitat al moviment.</string>
     <string name="settings_section_daemons_subtitle">Executors Cloudflared, Zrok, Telegram, MQTT.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">Quant a OverDrive</string>
+    <string name="settings_about_row_title">Quant a Electric Guardian</string>
     <string name="settings_about_row_subtitle">Versió, llicència, desenvolupament.</string>
     <string name="settings_reset_row_subtitle">Netegeu els enregistraments, els esdeveniments o totes les memòries cau.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -838,7 +838,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">En el dispositiu per defecte</string>
-    <string name="settings_privacy_stance_body">OverDrive funciona completament a la unitat principal. Cap telemetria surt del cotxe excepte a través dels túnels i integracions que configureu explícitament.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian funciona completament a la unitat principal. Cap telemetria surt del cotxe excepte a través dels túnels i integracions que configureu explícitament.</string>
     <string name="settings_privacy_overline_storage">EMMAGATZEMATGE LOCAL</string>
     <string name="settings_privacy_overline_reset">REINICIALITZACIÓ DE DADES</string>
     <string name="settings_privacy_storage_clips_label">Clips al disc</string>
@@ -848,18 +848,18 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d clips</string>
     <string name="settings_privacy_reset_subtitle">Trieu categories: enregistraments, esdeveniments, configuracions del dimoni, telemetria a la memòria cau...</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Seguretat</string>
-    <string name="settings_security_subtitle">Bloqueja l\'aplicació OverDrive perquè passatgers i treballadors no puguin obrir-la sense el PIN.</string>
+    <string name="settings_security_subtitle">Bloqueja l\'aplicació Electric Guardian perquè passatgers i treballadors no puguin obrir-la sense el PIN.</string>
     <string name="settings_security_stance_title">Només el bloqueig de la IU</string>
-    <string name="settings_security_stance_body">Vigilància, gravació, dissuasió, alertes i serveis de fons segueixen funcionant mentre l\'aplicació està bloquejada. El PIN tanca la interfície OverDrive, res més.</string>
+    <string name="settings_security_stance_body">Vigilància, gravació, dissuasió, alertes i serveis de fons segueixen funcionant mentre l\'aplicació està bloquejada. El PIN tanca la interfície Electric Guardian, res més.</string>
     <string name="settings_security_overline_lock">Bloqueig de l\'aplicació</string>
     <string name="settings_security_overline_recovery">Si oblideu el PIN</string>
     <string name="settings_security_toggle_title">Requereix el PIN</string>
-    <string name="settings_security_toggle_subtitle_off">Desactivat: qualsevol pot obrir OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">Activat: cal un PIN per a obrir OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">Desactivat: qualsevol pot obrir Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">Activat: cal un PIN per a obrir Electric Guardian.</string>
     <string name="settings_security_change_title">Canvia el PIN</string>
     <string name="settings_security_change_subtitle">Confirmeu el PIN actual i, a continuació, establiu-ne un de nou.</string>
     <string name="settings_security_autolock_title">Autoblocatge</string>
@@ -896,7 +896,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Introduïu el PIN</string>
     <string name="pin_lock_title_unlocked">Desbloquejat</string>
-    <string name="pin_lock_subtitle_default">Desbloqueja OverDrive per a continuar.</string>
+    <string name="pin_lock_subtitle_default">Desbloqueja Electric Guardian per a continuar.</string>
     <string name="pin_lock_subtitle_wrong">El PIN no és correcte. Torneu-ho a provar.</string>
     <string name="pin_lock_subtitle_locked_out">Massa intents. Torneu-ho a provar d\'aquí poc.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -939,7 +939,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Us donem la benvinguda — OverDrive és ara el vostre segon parell d\'ulls.</string>
+    <string name="dashboard_insight_welcome">Us donem la benvinguda — Electric Guardian és ara el vostre segon parell d\'ulls.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">S\'han recollit %1$s (≈%2$s) mentre estava aparcat</string>
     <string name="dashboard_insight_parked_charged">S\'han recollit %1$s mentre està aparcat</string>
@@ -965,12 +965,12 @@
     </plurals>
     <!-- Process uptime. Days form takes (days, hours); hours form takes hours only. -->
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">OverDrive en línia durant %1$d dia, %2$d h</item>
-        <item quantity="other">OverDrive en línia durant %1$d dies, %2$d h</item>
+        <item quantity="one">Electric Guardian en línia durant %1$d dia, %2$d h</item>
+        <item quantity="other">Electric Guardian en línia durant %1$d dies, %2$d h</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
-        <item quantity="one">OverDrive en línia durant %1$d hora</item>
-        <item quantity="other">OverDrive en línia durant %1$d hores</item>
+        <item quantity="one">Electric Guardian en línia durant %1$d hora</item>
+        <item quantity="other">Electric Guardian en línia durant %1$d hores</item>
     </plurals>
     <!-- Duration helpers used inside insights (last_charge etc.). -->
     <plurals name="dashboard_insight_minutes">
@@ -1199,7 +1199,7 @@
     <string name="onboarding_authorize_waiting_title">S\'està esperant el permís...</string>
     <string name="onboarding_authorize_retry_title">Encara no està connectat</string>
     <string name="onboarding_authorize_retry_button">Torna-ho a provar</string>
-    <string name="onboarding_mode_title">Quan s\'ha d\'executar OverDrive?</string>
+    <string name="onboarding_mode_title">Quan s\'ha d\'executar Electric Guardian?</string>
     <string name="onboarding_camera_pano_title">Aquesta és la vostra vista 360</string>
     <string name="onboarding_camera_pick_primary">Endavant</string>
     <string name="onboarding_camera_pick_dash_title">Trieu la càmera de davantal</string>
@@ -1208,7 +1208,7 @@
     <string name="onboarding_camera_verify_ok">Sembla correcte</string>
     <string name="onboarding_camera_windshield_primary">Mostra\'m-ho</string>
     <string name="onboarding_camera_windshield_skip">No, gràcies</string>
-    <string name="onboarding_vehicle_title">Digueu a OverDrive la vostra bateria</string>
+    <string name="onboarding_vehicle_title">Digueu a Electric Guardian la vostra bateria</string>
     <string name="onboarding_vehicle_primary">Estableix la bateria</string>
     <string name="onboarding_done_body">Càmeres assignades i bateria definida. Toqueu en directe per a veure els canals — o exploreu els ajustos més profunds en qualsevol moment.</string>
     <string name="onboarding_done_primary">Fet</string>
@@ -1362,23 +1362,23 @@
     <string name="camera_role_explainer_slice">Calibració del tall: tria quin tall del mosaic 360 mostra aquesta direcció. No canvia quina càmera s\'obre.</string>
     <string name="camera_role_explainer_windshield">Rol parabrisa: el canal usat com a vista superior de la disposició d\'enregistrament de càmera de davantal i per a la transmissió de parabrises. Independentment de l\'ID de la gravadora de la càmera anterior.</string>
     <string name="camera_role_explainer_cabin">Rol de cabina: canal interior opcional per a disposicions i estríming.</string>
-    <string name="onboarding_authorize_title">Desperta OverDrive</string>
-    <string name="onboarding_authorize_body">OverDrive executa les càmeres a través d\'un petit ajudant en el dispositiu. Android demanarà una vegada que es permeti la depuració USB — toqueu <b>Permet</b> i comproveu <b>Permet sempre des d\'aquest dispositiu</b>, de manera que es mantindrà activat després de cada reinici.</string>
+    <string name="onboarding_authorize_title">Desperta Electric Guardian</string>
+    <string name="onboarding_authorize_body">Electric Guardian executa les càmeres a través d\'un petit ajudant en el dispositiu. Android demanarà una vegada que es permeti la depuració USB — toqueu <b>Permet</b> i comproveu <b>Permet sempre des d\'aquest dispositiu</b>, de manera que es mantindrà activat després de cada reinici.</string>
     <string name="onboarding_authorize_waiting_body">Accepta la finestra emergent d\'Android. Si no ho veieu, pot ser que ja ho tingui concedit — això continuarà pel seu compte.</string>
     <string name="onboarding_authorize_retry_body">L\'ajudant encara no s\'està executant. És possible que s\'hagi descartat el permís d\'Android. Torneu-ho a provar i recordeu de marcar <b>Permet permet</b>.</string>
-    <string name="onboarding_mode_body">Trieu com es comporta OverDrive després d\'apagar el cotxe.\n\n<b>Activat i desactivat</b> segueix observant mentre està aparcat — vigilància i seguiment de fons romanen actius, de manera que el cotxe gasta una mica d\'energia durant la nit.\n\n<b>Només activat</b> tanca completament OverDrive quan apagueu el cotxe. La càmera de davantal, viatges i recàrrega encara funcionen mentre conduïu, i tot comença a funcionar automàticament quan s\'engega el cotxe. Podeu canviar-ho en qualsevol moment a la configuració.</string>
+    <string name="onboarding_mode_body">Trieu com es comporta Electric Guardian després d\'apagar el cotxe.\n\n<b>Activat i desactivat</b> segueix observant mentre està aparcat — vigilància i seguiment de fons romanen actius, de manera que el cotxe gasta una mica d\'energia durant la nit.\n\n<b>Només activat</b> tanca completament Electric Guardian quan apagueu el cotxe. La càmera de davantal, viatges i recàrrega encara funcionen mentre conduïu, i tot comença a funcionar automàticament quan s\'engega el cotxe. Podeu canviar-ho en qualsevol moment a la configuració.</string>
     <string name="onboarding_mode_on_off_button">Activa i desactiva</string>
     <string name="onboarding_mode_on_only_button">Només actiu</string>
     <string name="onboarding_camera_step_label">Càmera · pas %1$d de %2$d</string>
     <string name="onboarding_camera_intro_title">Configureu les càmeres</string>
-    <string name="onboarding_camera_intro_body">Indiqueu a OverDrive quina càmera és la vista 360 i quina és la càmera de davantal. Es triga aproximadament un minut, i es pot canviar més tard.</string>
+    <string name="onboarding_camera_intro_body">Indiqueu a Electric Guardian quina càmera és la vista 360 i quina és la càmera de davantal. Es triga aproximadament un minut, i es pot canviar més tard.</string>
     <string name="onboarding_camera_intro_primary">Inicia</string>
     <string name="onboarding_camera_opening_title">S\'està obrint la configuració de la càmera...</string>
     <string name="onboarding_camera_opening_body">S\'està carregant una vista prèvia en directe des de les càmeres. Això pot trigar uns segons.</string>
     <string name="onboarding_camera_dashcam_title">Ara trobeu la càmera de carretera</string>
     <string name="onboarding_camera_dashcam_body">Passeu per les càmeres amb les fletxes i atureu-vos en la que mostra el parabrisa / vista cap endavant. Fixeu-vos en el seu número — el triareu a continuació.</string>
     <string name="onboarding_camera_pick_title">Trieu la càmera 360</string>
-    <string name="onboarding_camera_pick_body">A la targeta superior, trieu el número de la càmera 360 / normal. No n\'esteu segur? Deixeu-lo en Auto i OverDrive ho dedueix.</string>
+    <string name="onboarding_camera_pick_body">A la targeta superior, trieu el número de la càmera 360 / normal. No n\'esteu segur? Deixeu-lo en Auto i Electric Guardian ho dedueix.</string>
     <string name="onboarding_camera_pick_dash_body">En aquesta targeta, trieu el número de càmera de davantal que heu trobat abans - o deixeu-lo en AUTO.</string>
     <string name="onboarding_camera_applying_title">S\'està aplicant — reinici de les càmeres</string>
     <string name="onboarding_camera_applying_body">El canal es farà fosc i parpellejarà durant uns 10 segons. Això és normal — espereu una estona.</string>
@@ -1395,7 +1395,7 @@
     <string name="onboarding_expert_reset_body">Això esborra els enregistraments, els esdeveniments i la configuració i no es pot desfer. És aquí si mai vens el cotxe — no és part de l\'ús normal.</string>
     <string name="onboarding_expert_done_title">Això és la visita guiada</string>
     <string name="onboarding_expert_done_body">Heu vist la configuració més profunda. Obriu aquesta guia de nou en qualsevol moment des del botó d\'ajuda.</string>
-    <string name="daemons_wifi_auto_enable_subtitle">Activa o desactiva la Wi-Fi ara. Quan està desactivada, els dimonis de vigilància d\'OverDrive no la tornaran a activar.</string>
+    <string name="daemons_wifi_auto_enable_subtitle">Activa o desactiva la Wi-Fi ara. Quan està desactivada, els dimonis de vigilància d\'Electric Guardian no la tornaran a activar.</string>
     <string name="rail_charging">Recàrrega</string>
     <string name="settings_overlay_replay_subtitle">Mostra la insígnia del CLIP: verd mentre es reprodueix un registre, blau per a 5s un cop desat, vermell quan falla. Només apareix quan existeix una unió de reproducció o una automatització.</string>
     <string name="settings_overlay_roadsense_subtitle">Mostra la píndola flotant de RoadSense i la targeta de perill mentre RoadSense està activada.</string>
@@ -1409,7 +1409,7 @@
     <string name="settings_remote_save_failed">No s\'ha pogut desar la configuració de la comunicació remota</string>
     <string name="settings_backup_pick_file">Trieu una còpia de seguretat a restaurar</string>
     <string name="settings_backup_restore_confirm_title">Voleu restaurar la configuració?</string>
-    <string name="settings_backup_restore_confirm_msg">Això substitueix la configuració actual de OverDrive amb la còpia de seguretat i recàrrega els serveis. Només funciona en la mateixa unitat principal on s\'ha fet la còpia de seguretat.</string>
+    <string name="settings_backup_restore_confirm_msg">Això substitueix la configuració actual de Electric Guardian amb la còpia de seguretat i recàrrega els serveis. Només funciona en la mateixa unitat principal on s\'ha fet la còpia de seguretat.</string>
     <string name="settings_backup_restart_hint">"S\'ha restaurat la configuració. Reinicieu el dimoni de la càmera (Dimonis →  Càmera → Reinicia) per a assegurar-vos que s\'apliquen tots els paràmetres restaurats."</string>
     <string name="recordings_summary_index_down">Nombres no disponibles - l\'índex d\'enregistraments és baix</string>
     <string name="roadsense_map_search_network">No s\'ha pogut arribar al servei de cerca. Comproveu la connexió o servidor intermediari i torneu-ho a provar.</string>
@@ -1474,12 +1474,12 @@
     <string name="onboarding_expert_security_body">Establiu un PIN per a obrir l\'aplicació per a vehicles compartits. La vigilància i l\'enregistrament segueixen funcionant mentre l\'aplicació està bloquejada. Un PIN oblidat només es pot netejar des d\'un ordinador a través d\'USB.</string>
     <string name="daemons_wifi_auto_enable_save_failed">No s\'ha pogut canviar l\'estat de la Wi-Fi.</string>
     <string name="dialog_tailscale_adb_enable_message">Això afegeix l\'abast de la tailnet per a ADB (port 5555) perquè pugueu depurar aquesta unitat principal remotament.\n\nAbans d\'activar-lo:\n• ADB concedeix accés COMPLET a l\'intèrpret d\'ordres — un dispositiu tailnet amb una clau autoritzada pot llegir dades, instal·lar aplicacions i canviar la configuració del sistema\n• Això afegeix la vostra xarxa tailnet com a ruta; no exposa ADB a internet públic\n• ADB ja accepta connexions de la xarxa local, de manera que desactivar-ho no tanca completament ADB\n• L\'ordinador de connexió encara necessita una clau ADB autoritzada\n• L\'activació el punt d\'accés Wi-Fi desactiva l\'enllaç Wi-Fi, de manera que l\'accés remot depèn de les dades mòbils\n\nActiveu-ho només en una xarxa tailnet que controleu. Podeu apagar-lo en qualsevol moment.</string>
-    <string name="remote_voice_notification_text">Recepció d\'àudio en directe d\'una sessió OverDrive autenticada</string>
+    <string name="remote_voice_notification_text">Recepció d\'àudio en directe d\'una sessió Electric Guardian autenticada</string>
     <string name="settings_remote_communication_subtitle">Habilita la veu i els missatges de la consola web. Si el permís de superposició diu Permís requerit, toqueu-lo i permeteu «Mostra sobre altres aplicacions».</string>
     <string name="settings_backup_export_value">Desa un fitxer de còpia de seguretat de la configuració actual. Mantingueu-lo privat — conté les vostres credencials.</string>
     <string name="settings_backup_import_value">Carrega un fitxer de còpia de seguretat realitzat en aquesta mateixa unitat principal.</string>
     <string name="settings_backup_no_files">No s\'ha trobat cap fitxer de còpia de seguretat. Exporteu-ne primer un o copieu una còpia de seguretat .json a %1$s i torneu-ho a provar.</string>
-    <string name="settings_backup_invalid_file">Aquest fitxer no és una còpia de seguretat OverDrive vàlida</string>
+    <string name="settings_backup_invalid_file">Aquest fitxer no és una còpia de seguretat Electric Guardian vàlida</string>
     <string name="settings_backup_daemon_down">El servei de càmera ha d\'estar funcionant per a fer una còpia de seguretat o restaurar-la. Inicieu-lo des de Dimonis i torneu-ho a provar.</string>
     <string name="settings_backup_trips_prompt">Voleu incloure el vostre historial de viatges (distància, energia, cost, puntuacions, ubicacions d\'inici/final)? La telemetria detallada per viatge no està inclosa. El fitxer contindrà l\'historial de la vostra ubicació — manteniu-lo privat.</string>
     <string name="settings_about_support_count">Hi han contribuït %1$d vegades</string>
@@ -1661,7 +1661,7 @@
     <string name="recording_lib_chip_parking_session">Aquest aparcament</string>
     <string name="recording_lib_chip_parking_session_at">Aparcament %1$s</string>
     <string name="dialog_create_evidence_pack_title">Voleu crear un paquet de proves?</string>
-    <string name="dialog_create_evidence_pack_message">OverDrive només envia les metadades filtrades dels esdeveniments al proveïdor d\'IA que heu configurat. El vídeo es manté local i només s\'inclou al paquet de proves que descarregueu.</string>
+    <string name="dialog_create_evidence_pack_message">Electric Guardian només envia les metadades filtrades dels esdeveniments al proveïdor d\'IA que heu configurat. El vídeo es manté local i només s\'inclou al paquet de proves que descarregueu.</string>
     <string name="toast_evidence_pack_creating">S\'està creant el paquet de proves…</string>
     <string name="toast_evidence_pack_ready">Paquet de proves preparat</string>
     <string name="toast_evidence_pack_unavailable">Aquest enregistrament encara no està indexat</string>

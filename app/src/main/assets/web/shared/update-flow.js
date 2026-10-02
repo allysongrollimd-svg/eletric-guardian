@@ -91,7 +91,7 @@
         .upd-ver-top { display:flex; align-items:center; }
         .upd-ver-name { font-size:14px; font-weight:600; color:#fff; }
         .upd-ver-pill { margin-left:8px; font-size:10px; font-weight:700; padding:1px 7px; border-radius:9px; line-height:1.4; }
-        .upd-ver-pill.current { background:#1f6f4a; color:#d6ffe8; }
+        .upd-ver-pill.current { background:#35621a; color:#d6ffe8; }
         .upd-ver-pill.older { background:#3a2a18; color:#f3c98b; }
         .upd-ver-date { margin-left:auto; font-size:11px; color:#9aa6b3; }
         .upd-ver-notes { font-size:11px; color:#9aa6b3; line-height:1.5; margin-top:6px; max-height:54px; overflow:hidden; white-space:pre-wrap; }
@@ -412,9 +412,9 @@
         var links = document.createElement('div');
         links.className = 'upd-report-links';
         var defs = [
-            { key: 'report_discord', url: 'report_discord_url', fb: 'https://discord.gg/PZutk9fg4h' },
-            { key: 'report_github', url: 'report_github_url', fb: 'https://github.com/yash-srivastava/Overdrive-release/issues' },
-            { key: 'report_whatsapp', url: 'report_whatsapp_url', fb: 'https://chat.whatsapp.com/HChmriCWgr9KwAtE6OEkiM' }
+            { key: 'report_discord', url: 'report_discord_url', fb: 'https://github.com/allysongrollimd-svg/eletric-guardian/discussions' },
+            { key: 'report_github', url: 'report_github_url', fb: 'https://github.com/allysongrollimd-svg/eletric-guardian/issues' },
+            { key: 'report_whatsapp', url: 'report_whatsapp_url', fb: 'https://github.com/allysongrollimd-svg/eletric-guardian/discussions' }
         ];
         defs.forEach(function (d) {
             var url = BYD.i18n.t('update.' + d.url);

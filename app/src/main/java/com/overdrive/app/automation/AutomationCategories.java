@@ -116,7 +116,7 @@ public final class AutomationCategories {
         put(SURVEILLANCE, "surveillance", "operatingMode", "recording", "manualClip",
                 "showCameraFeed", "setCameraViewSize", "setBlindSpotOverlaySize", "hideCameraView",
                 "surveillanceArmed", "surveillanceThreat", "surveillanceObject",
-                // Blind-spot CARD actions (OverDrive's own rear+side view). The OEM ADAS
+                // Blind-spot CARD actions (Electric Guardian's own rear+side view). The OEM ADAS
                 // blind-spot WARNING condition keeps the "blindSpot" id under ADAS above —
                 // different feature, hence the distinct blindSpotEnable id here.
                 "blindSpotEnable", "blindSpotDismiss");

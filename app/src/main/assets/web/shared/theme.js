@@ -243,7 +243,7 @@
             '   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }',
             '#bydThemePicker .byd-theme-fab:hover { transform: scale(1.08); }',
             '#bydThemePicker .byd-theme-fab:active { transform: scale(0.94); }',
-            '#bydThemePicker .byd-theme-fab:focus { outline: 2px solid var(--primary, #5DDBB6); outline-offset: 2px; }',
+            '#bydThemePicker .byd-theme-fab:focus { outline: 2px solid var(--primary, #8BDC5C); outline-offset: 2px; }',
             '#bydThemePicker .byd-theme-fab svg { width: 18px; height: 18px; }',
             // Idle dim — fade the picker to 0.45 when the user isn\'t hovering
             // so it never competes with content underneath. Comes back to full
@@ -276,7 +276,7 @@
             '   color: var(--text-primary, #fff); }',
             '#bydThemePicker .byd-theme-opt.active {',
             '   background: var(--status-success-container, rgba(91, 211, 130, 0.14));',
-            '   color: var(--primary, #5DDBB6); }',
+            '   color: var(--primary, #8BDC5C); }',
             '#bydThemePicker .byd-theme-opt svg { width: 16px; height: 16px; flex-shrink: 0; }'
         ].join(' ');
         document.head.appendChild(s);

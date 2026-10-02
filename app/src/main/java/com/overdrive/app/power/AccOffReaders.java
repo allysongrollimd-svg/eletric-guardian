@@ -17,7 +17,7 @@ import java.util.Map;
  * getters across 18 BYD device classes; these are the ones that returned
  * actionable values when the car was asleep.
  *
- * <p><b>Nothing in Overdrive calls these yet.</b> The class exists so future
+ * <p><b>Nothing in Electric Guardian calls these yet.</b> The class exists so future
  * code (surveillance arming, diagnostic UI, cloud auth) can opt in without
  * having to re-discover which signals work ACC=OFF.
  *

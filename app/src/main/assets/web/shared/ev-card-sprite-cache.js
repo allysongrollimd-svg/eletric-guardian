@@ -1,5 +1,5 @@
 /**
- * Overdrive — EV-card sprite cache.
+ * Electric Guardian — EV-card sprite cache.
  *
  * IndexedDB-backed cache of pre-rendered EV-card images keyed by
  * (modelId, paint colour, view, dpr-bucket). The sidebar EV card is

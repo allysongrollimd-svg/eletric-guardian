@@ -1,0 +1,39 @@
+:root{--bg:#F4F6F8;--card:#fff;--text:#14181C;--muted:#5B6670;--line:#0000001f;--primary:#266800;--on-primary:#fff;--accent:#8BDC5C;--ok:#1F8F4B;--warn:#B25E00;--bad:#BA1A1A;--radius:14px}
+@media (prefers-color-scheme:dark){:root{--bg:#0E1013;--card:#171A1F;--text:#E4E8EC;--muted:#97A1AB;--line:#ffffff1f;--primary:#8BDC5C;--on-primary:#0E2600;--ok:#5BD382;--warn:#FFB870;--bad:#FFB4AB}}
+*{box-sizing:border-box}html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.2px}
+.top-right{display:flex;align-items:center;gap:8px}
+select,input,button{font:inherit;color:inherit}
+select,input{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+button{background:var(--primary);color:var(--on-primary);border:0;border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer}
+button.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);padding:6px 12px}
+.pill{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid var(--line)}
+.pill.on{color:var(--ok)}.pill.off{color:var(--muted)}
+main{max-width:1100px;margin:0 auto;padding:16px;display:grid;gap:16px}
+.hero{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.charts{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.big{display:flex;align-items:baseline;gap:6px}.big b{font-size:40px;line-height:1.1;font-variant-numeric:tabular-nums}.big small{color:var(--muted)}
+.sub{color:var(--muted);margin-top:6px;font-size:13px}.sub b{color:var(--text)}
+.kv{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--line)}.kv:last-child{border:0}.kv span{color:var(--muted)}
+.gauge-card{position:relative;text-align:center}.gauge-card svg{width:150px;height:150px}
+.ring-bg,.ring-fg{fill:none;stroke-width:10}.ring-bg{stroke:var(--line)}
+.ring-fg{stroke:var(--primary);stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:326.7;transition:stroke-dashoffset .6s,stroke .3s}
+.gauge-text{position:absolute;inset:16px 0 auto 0;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.gauge-text b{font-size:34px;font-variant-numeric:tabular-nums}.gauge-text small{color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--line);margin-top:10px;overflow:hidden;position:relative}
+.bar i{position:absolute;top:0;bottom:0;background:var(--primary);transition:all .4s}
+.spark{width:100%;height:90px}.spark path{fill:none;stroke:var(--primary);stroke-width:2;vector-effect:non-scaling-stroke}.spark .area{fill:var(--primary);opacity:.12;stroke:none}
+.map-card iframe{width:100%;height:320px;border:0;border-radius:10px}
+.all summary{cursor:pointer;font-weight:600}.all input{width:100%;margin:12px 0}
+.all table{width:100%;border-collapse:collapse;font-size:13px}.all td{padding:5px 4px;border-bottom:1px solid var(--line)}.all td:last-child{text-align:right;font-variant-numeric:tabular-nums}.all td:first-child{color:var(--muted)}
+.login{position:fixed;inset:0;display:grid;place-items:center;padding:16px;background:var(--bg);z-index:10}
+.login form{width:min(360px,100%);display:grid;gap:12px;text-align:center;justify-items:center}.login h1{margin:0}.login p{margin:0;color:var(--muted)}.login input,.login button{width:100%}
+.err{color:var(--bad)!important;min-height:1.2em}
+.empty{text-align:center;color:var(--muted);padding:48px 16px}
+[hidden]{display:none!important}
+@media(max-width:520px){.big b{font-size:34px}main{padding:12px}}

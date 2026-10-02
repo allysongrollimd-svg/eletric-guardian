@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Υπέρβαση</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Διατηρεί την εποπτεία οχημάτων Overdrive ενεργή στο παρασκήνιο. Αυτή η υπηρεσία δεν διαβάζει ή δεν αλληλεπιδρά με το περιεχόμενο οθόνης.</string>
+    <string name="accessibility_service_description">Διατηρεί την εποπτεία οχημάτων Electric Guardian ενεργή στο παρασκήνιο. Αυτή η υπηρεσία δεν διαβάζει ή δεν αλληλεπιδρά με το περιεχόμενο οθόνης.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">Αυτόματη επιλογή της σωστής κάμερας για την περικοπή σας σε κάθε εκκίνηση. Κάμερα 1 = σφραγίδα BYD, Κάμερα 0 = Περικοπές Atto. Επανεκκίνηση του δαίμονα μετά την αλλαγή του αναγνωριστικού κάμερας για να τεθεί σε ισχύ η ρύθμιση.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">Αναγνωριστικό Κάμερας Coem Dashcam</string>
-    <string name="camera_oem_dashcam_hint">Επιλέξτε το id AVMCamera που δείχνει στον προς τα εμπρός αισθητήρα dashcam . Dashcam είναι το OPPOSITE του πάνω: Σφραγίδα / Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Αφήστε το Auto για να αφήσει OverDrive επιλογή.</string>
+    <string name="camera_oem_dashcam_hint">Επιλέξτε το id AVMCamera που δείχνει στον προς τα εμπρός αισθητήρα dashcam . Dashcam είναι το OPPOSITE του πάνω: Σφραγίδα / Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Αφήστε το Auto για να αφήσει Electric Guardian επιλογή.</string>
     <string name="camera_oem_dashcam_auto_resolved">Αυτόματη — χρήση id %1$d (pano is id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Auto — pano id είναι %1$d, δεν μπορεί να εμφυσήσει dashcam</string>
     <string name="camera_oem_dashcam_save">Αποθήκευση</string>
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">Πανοραμική ροή: Αυτόματος εντοπισμός παλαιού τύπου</string>
     <string name="camera_mapping_current_format">Τρέχουσα χαρτογράφηση: %1$s</string>
     <string name="camera_mapping_current_none">Τρέχουσα χαρτογράφηση: Αυτόματη / προεπιλογή</string>
-    <string name="camera_mapping_hint">Το OverDrive διατηρεί από προεπιλογή τη συμπεριφορά εκκίνησης παλαιού τύπου, αλλά τώρα σας επιτρέπει τη βαθμονόμηση της συγχωνευμένης πανοραμικής λωρίδας σωστά. Προεπισκόπηση κάθε ακατέργαστη συγχωνευμένη φέτα, χαρτογραφήστε τους λογικούς 360 ρόλους στη φέτα που στην πραγματικότητα δείχνει εμπρός/δεξιά/πίσω/αριστερά στο όχημά σας, και ο δαίμονας θα επαναχρησιμοποιήσει αυτή τη διάταξη για την εγγραφή, τη ροή, και την Τεχνητή Νοημοσύνη μετά την επανεκκίνηση.</string>
+    <string name="camera_mapping_hint">Το Electric Guardian διατηρεί από προεπιλογή τη συμπεριφορά εκκίνησης παλαιού τύπου, αλλά τώρα σας επιτρέπει τη βαθμονόμηση της συγχωνευμένης πανοραμικής λωρίδας σωστά. Προεπισκόπηση κάθε ακατέργαστη συγχωνευμένη φέτα, χαρτογραφήστε τους λογικούς 360 ρόλους στη φέτα που στην πραγματικότητα δείχνει εμπρός/δεξιά/πίσω/αριστερά στο όχημά σας, και ο δαίμονας θα επαναχρησιμοποιήσει αυτή τη διάταξη για την εγγραφή, τη ροή, και την Τεχνητή Νοημοσύνη μετά την επανεκκίνηση.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Σάρωση για σύνδεση</string>
     <string name="dashboard_qr_waiting">Waiting for tunnel…</string>
@@ -179,10 +179,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Διαλέξτε Τη Γλώσσα Σας</string>
-    <string name="setup_language_body">Προεπιλογές για τη γλώσσα της μονάδας κεφαλής σας. Πατήστε για να επιλέξετε μια διαφορετική από την εφαρμογή OverDrive και τη διοχέτευση ιστού.</string>
+    <string name="setup_language_body">Προεπιλογές για τη γλώσσα της μονάδας κεφαλής σας. Πατήστε για να επιλέξετε μια διαφορετική από την εφαρμογή Electric Guardian και τη διοχέτευση ιστού.</string>
     <string name="setup_language_button">Επιλογή Γλώσσας</string>
     <string name="setup_autostart_title">Απενεργοποίηση Περιορισμού Αυτόματης Εκκίνησης</string>
-    <string name="setup_autostart_body">Πατήστε παρακάτω για να ανοίξετε το BYD Auto-Start. Βρείτε OverDrive στη λίστα και αποεπιλέξτε το πλαίσιο. BYD σκουπίζει αυτό σε κάθε εγκατάσταση - θα το ξανακάνετε μετά από ενημερώσεις.</string>
+    <string name="setup_autostart_body">Πατήστε παρακάτω για να ανοίξετε το BYD Auto-Start. Βρείτε Electric Guardian στη λίστα και αποεπιλέξτε το πλαίσιο. BYD σκουπίζει αυτό σε κάθε εγκατάσταση - θα το ξανακάνετε μετά από ενημερώσεις.</string>
     <string name="setup_autostart_button">Αυτόματη Εκκίνηση Byd</string>
     <string name="setup_overlay_title">Να Επιτρέπεται Η Προβολή Σε Άλλες Εφαρμογές</string>
     <string name="setup_overlay_body">Ενεργοποιήστε αυτήν την επιλογή για την εμφάνιση μιας κυμαινόμενης ένδειξης κατάστασης για την καταγραφή και την παρακολούθηση διαδρομής πάνω από άλλες εφαρμογές.</string>
@@ -395,7 +395,7 @@
     <string name="update_picker_current_suffix">%1$s (εγκατεστημένο)</string>
     <string name="update_picker_older_suffix">%1$s (παλαιότερο)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Ενημέρωση Overdrive</string>
+    <string name="update_progress_title">Ενημέρωση Electric Guardian</string>
     <string name="update_step_downloading">Downloading update…</string>
     <string name="update_step_verifying">Verifying download…</string>
     <string name="update_step_stopping">Διακοπή δαιμόνων…</string>
@@ -577,7 +577,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Συμβουλές &amp; Αντιμετώπιση προβλημάτων</string>
     <string name="setup_traffic_title">Απενεργοποίηση Οθόνης Κυκλοφορίας Byd</string>
-    <string name="setup_traffic_body">Το BYD Traffic Monitor εμποδίζει εφαρμογές τρίτων να φτάσουν στο διαδίκτυο. Η απενεργοποίηση του επιτρέπει την εφαρμογή OverDrive και οποιαδήποτε άλλη εφαρμογή εγκαθιστάτε πραγματικά χρήση του δικτύου. Απαιτείται μετά μια σκληρή επανεκκίνηση.</string>
+    <string name="setup_traffic_body">Το BYD Traffic Monitor εμποδίζει εφαρμογές τρίτων να φτάσουν στο διαδίκτυο. Η απενεργοποίηση του επιτρέπει την εφαρμογή Electric Guardian και οποιαδήποτε άλλη εφαρμογή εγκαθιστάτε πραγματικά χρήση του δικτύου. Απαιτείται μετά μια σκληρή επανεκκίνηση.</string>
     <string name="setup_traffic_button">Άνοιγμα Παρακολούθησης Κυκλοφορίας</string>
     <string name="setup_camera_fix_title">Κάμερα feeds μαύρο ή λανθασμένο?</string>
     <string name="setup_camera_fix_body">Κάμερα ανιχνευτή, ορίστε την κάμερα ID στο 0, αγγίξτε Αποθήκευση και, στη συνέχεια, επανεκκινήστε τον δαίμονα κάμερας. Εάν οι ροές εξακολουθούν να είναι λάθος, επαναλάβετε με την κάμερα ID 1. Αφήστε το τμήμα χαρτογράφησης ανέγγιχτο.</string>
@@ -601,10 +601,10 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">Κατάσταση OverDrive</string>
+    <string name="status_overlay_notif_title">Κατάσταση Electric Guardian</string>
     <string name="status_overlay_notif_text">Status overlay active</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
@@ -648,7 +648,7 @@
     <string name="settings_privacy_title">Privacy &amp; data</string>
     <string name="settings_privacy_body">Η επαναφορά καθαρίζει το ευρετήριο εγγραφών, τα προσωρινά αποθηκευμένα διαπιστευτήρια, την κατάσταση δαίμονα και τις προτιμήσεις στη συσκευή. Η ενέργεια δεν μπορεί να αναιρεθεί.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">Σχετικά Με OverDrive</string>
+    <string name="settings_about_title">Σχετικά Με Electric Guardian</string>
     <string name="settings_about_version_label">Έκδοση</string>
     <string name="settings_about_package_label">Κατασκευή</string>
     <string name="settings_about_check_update_value">Ελέγξτε την τελευταία έκδοση του GitHub και εγκαταστήστε αν είναι νεότερη.</string>
@@ -657,9 +657,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Τροφοδοτείται από ανθρώπους σαν εσάς</string>
     <string name="settings_about_support_share_title">Ενημερώστε έναν συνιδιοκτήτη</string>
-    <string name="settings_about_support_share_value">Κάθε κοινόχρηστος σύνδεσμος βοηθά έναν άλλο ιδιοκτήτη BYD να ανακαλύψει Overdrive.</string>
-    <string name="settings_about_support_share_message">Αναχώρηση Overdrive - open-source επιτήρησης &amp; dashcam για BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Κοινή Χρήση Overdrive</string>
+    <string name="settings_about_support_share_value">Κάθε κοινόχρηστος σύνδεσμος βοηθά έναν άλλο ιδιοκτήτη BYD να ανακαλύψει Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Αναχώρηση Electric Guardian - open-source επιτήρησης &amp; dashcam για BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Κοινή Χρήση Electric Guardian</string>
     <string name="settings_about_open_link_failed">Αδυναμία ανοίγματος συνδέσμου.</string>
     <string name="settings_about_open_link_copied">Δεν βρέθηκε κανένα πρόγραμμα περιήγησης. Διεύθυνση αντιγράφησης: %1$s</string>
     <string name="settings_about_support_kofi_title">Καύστε την επόμενη απελευθέρωση</string>
@@ -667,7 +667,7 @@
     <string name="settings_about_license_title">Άδεια</string>
     <string name="settings_about_license_value">MIT — ανοιχτός κώδικας. Πατήστε για να δείτε το πλήρες κείμενο.</string>
     <string name="settings_about_source_title">Πηγαίος κώδικας</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Star us on GitHub</string>
     <string name="settings_about_star_value">Παίρνει ένα δευτερόλεπτο. Σημαίνει πολλά.</string>
     <string name="settings_about_thanks_title">Ευχαριστούμε</string>
@@ -737,7 +737,7 @@
     <string name="diagnostics_settings_subtitle">Προτιμήσεις εφαρμογών, θέμα και γλώσσα.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Ενσωματώσεις</string>
-    <string name="integrations_hero_subtitle">Σύνδεση Overdrive στις υπηρεσίες σας.</string>
+    <string name="integrations_hero_subtitle">Σύνδεση Electric Guardian στις υπηρεσίες σας.</string>
     <string name="integrations_status_unknown">Πατήστε για ρύθμιση</string>
     <string name="integrations_status_configured">Διαμορφωμένο</string>
     <string name="integrations_status_not_set_up">Δεν έχει ρυθμιστεί</string>
@@ -820,11 +820,11 @@
     <string name="settings_section_surveillance_subtitle">Ζώνες ανίχνευσης, χρονοδιάγραμμα, ευαισθησία κίνησης.</string>
     <string name="settings_section_daemons_subtitle">Cloudflared, Zrok, Telegram, MQTT δρομείς.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">Σχετικά Με OverDrive</string>
+    <string name="settings_about_row_title">Σχετικά Με Electric Guardian</string>
     <string name="settings_about_row_subtitle">Έκδοση, άδεια, υποστήριξη ανάπτυξης.</string>
     <string name="settings_reset_row_subtitle">Εκκαθάριση εγγραφών, συμβάντων ή όλων των caches.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -841,7 +841,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">On-συσκευή από προεπιλογή</string>
-    <string name="settings_privacy_stance_body">Το OverDrive λειτουργεί εξ ολοκλήρου στην κεφαλή. Καμία τηλεμετρία δεν αφήνει το αυτοκίνητό σας εκτός από τις σήραγγες και τις ενσωματώσεις που ρυθμίζετε ρητά.</string>
+    <string name="settings_privacy_stance_body">Το Electric Guardian λειτουργεί εξ ολοκλήρου στην κεφαλή. Καμία τηλεμετρία δεν αφήνει το αυτοκίνητό σας εκτός από τις σήραγγες και τις ενσωματώσεις που ρυθμίζετε ρητά.</string>
     <string name="settings_privacy_overline_storage">ΤΟΠΙΚΗ ΑΠΟΘΗΚΕΥΣΗ</string>
     <string name="settings_privacy_overline_reset">ΕΠΑΝΑΦΟΡΑ ΔΕΔΟΜΕΝΩΝ</string>
     <string name="settings_privacy_storage_clips_label">Κλιπ στο δίσκο</string>
@@ -851,18 +851,18 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d clips</string>
     <string name="settings_privacy_reset_subtitle">Επιλέξτε κατηγορίες: ηχογραφήσεις, εκδηλώσεις, ρυθμίσεις δαίμονα, προσωρινή αποθήκευση τηλεμετρίας…</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Ασφάλεια</string>
-    <string name="settings_security_subtitle">Κλειδώστε την εφαρμογή OverDrive ώστε οι επιβάτες και οι βαλίτσες να μην μπορούν να την ανοίξουν χωρίς το PIN σας.</string>
+    <string name="settings_security_subtitle">Κλειδώστε την εφαρμογή Electric Guardian ώστε οι επιβάτες και οι βαλίτσες να μην μπορούν να την ανοίξουν χωρίς το PIN σας.</string>
     <string name="settings_security_stance_title">Μόνο κλειδαριά UI</string>
-    <string name="settings_security_stance_body">Η επιτήρηση, η καταγραφή, η αποτροπή, οι ειδοποιήσεις και οι υπηρεσίες παρασκηνίου συνεχίζουν να λειτουργούν όσο η εφαρμογή είναι κλειδωμένη. Οι πύλες PIN είναι η διεπαφή OverDrive, τίποτα άλλο.</string>
+    <string name="settings_security_stance_body">Η επιτήρηση, η καταγραφή, η αποτροπή, οι ειδοποιήσεις και οι υπηρεσίες παρασκηνίου συνεχίζουν να λειτουργούν όσο η εφαρμογή είναι κλειδωμένη. Οι πύλες PIN είναι η διεπαφή Electric Guardian, τίποτα άλλο.</string>
     <string name="settings_security_overline_lock">Κλείδωμα εφαρμογής</string>
     <string name="settings_security_overline_recovery">Εάν ξεχάσετε το PIN σας</string>
     <string name="settings_security_toggle_title">Απαίτηση PIN</string>
-    <string name="settings_security_toggle_subtitle_off">Απενεργοποιημένη - ο καθένας μπορεί να ανοίξει OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">Ενεργό - Απαιτείται PIN για άνοιγμα OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">Απενεργοποιημένη - ο καθένας μπορεί να ανοίξει Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">Ενεργό - Απαιτείται PIN για άνοιγμα Electric Guardian.</string>
     <string name="settings_security_change_title">Αλλαγή PIN</string>
     <string name="settings_security_change_subtitle">Επιβεβαιώστε το τρέχον PIN και μετά ορίστε ένα νέο.</string>
     <string name="settings_security_autolock_title">Αυτόματο κλείδωμα</string>
@@ -899,7 +899,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Εισαγωγή PIN</string>
     <string name="pin_lock_title_unlocked">Ξεκλείδωτο</string>
-    <string name="pin_lock_subtitle_default">Ξεκλειδώστε το OverDrive για να συνεχίσετε.</string>
+    <string name="pin_lock_subtitle_default">Ξεκλειδώστε το Electric Guardian για να συνεχίσετε.</string>
     <string name="pin_lock_subtitle_wrong">Λάθος PIN. Δοκιμάστε ξανά.</string>
     <string name="pin_lock_subtitle_locked_out">Πάρα πολλές προσπάθειες. Δοκιμάστε ξανά σύντομα.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -942,7 +942,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Καλώς ήρθατε — Overdrive είναι τώρα το δεύτερο ζευγάρι των ματιών σας.</string>
+    <string name="dashboard_insight_welcome">Καλώς ήρθατε — Electric Guardian είναι τώρα το δεύτερο ζευγάρι των ματιών σας.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">Επιλέχθηκε %1$s (Ř%2$s) ενώ σταθμεύθηκε</string>
     <string name="dashboard_insight_parked_charged">Επιλέχθηκε %1$s ενώ σταθμεύθηκε</string>
@@ -968,12 +968,12 @@
     </plurals>
     <!-- Process uptime. Days form takes (days, hours); hours form takes hours only. -->
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">Overdrive online για %1$d ημέρα, %2$d ώρα</item>
-        <item quantity="other">Overdrive online για %1$d ημέρες, %2$d ώρα</item>
+        <item quantity="one">Electric Guardian online για %1$d ημέρα, %2$d ώρα</item>
+        <item quantity="other">Electric Guardian online για %1$d ημέρες, %2$d ώρα</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
-        <item quantity="one">Overdrive online για %1$d ώρα</item>
-        <item quantity="other">Overdrive online για %1$d ώρες</item>
+        <item quantity="one">Electric Guardian online για %1$d ώρα</item>
+        <item quantity="other">Electric Guardian online για %1$d ώρες</item>
     </plurals>
     <!-- Duration helpers used inside insights (last_charge etc.). -->
     <plurals name="dashboard_insight_minutes">

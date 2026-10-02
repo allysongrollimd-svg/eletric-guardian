@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Mantiene attivo in background il monitoraggio del veicolo Overdrive. Questo servizio non legge ne interagisce con il contenuto dello schermo.</string>
+    <string name="accessibility_service_description">Mantiene attivo in background il monitoraggio del veicolo Electric Guardian. Questo servizio non legge ne interagisce con il contenuto dello schermo.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">Auto sceglie la telecamera corretta per il tuo allestimento a ogni avvio. Telecamera 1 = BYD Seal, Telecamera 0 = allestimenti Atto. Riavvia il daemon dopo aver cambiato ID telecamera per applicare l impostazione.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">Id Fotocamera Dashcam Oem</string>
-    <string name="camera_oem_dashcam_hint">Scegliere l\'ID AVMCamera che punta al sensore dashcam in avanti. Dashcam è l\'OPPOSITE di pano: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Lasciare su Auto per lasciare OverDrive scegliere.</string>
+    <string name="camera_oem_dashcam_hint">Scegliere l\'ID AVMCamera che punta al sensore dashcam in avanti. Dashcam è l\'OPPOSITE di pano: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Lasciare su Auto per lasciare Electric Guardian scegliere.</string>
     <string name="camera_oem_dashcam_auto_resolved">Auto — usando id %1$d (pano is id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Auto — pano id è %1$d, impossibile dedurre la dashcam</string>
     <string name="camera_oem_dashcam_save">Salva</string>
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">Strumento panoramico: rilevamento automatico / rilevamento dell\'eredità</string>
     <string name="camera_mapping_current_format">Cartografia corrente: %1$s</string>
     <string name="camera_mapping_current_none">Mapping corrente: automatico / predefinito</string>
-    <string name="camera_mapping_hint">OverDrive mantiene il comportamento di avvio predefinito per impostazione predefinita, ma ora consente di calibrare correttamente la striscia panoramica fusione. Visualizzare in anteprima ogni fetta grezza fusione, mappare i ruoli logici 360 alla fetta che mostra effettivamente davanti/destra/retro/sinistra sul veicolo, e il demone riutilizzerà quel layout per la registrazione, lo streaming e l\'IA dopo il riavvio.</string>
+    <string name="camera_mapping_hint">Electric Guardian mantiene il comportamento di avvio predefinito per impostazione predefinita, ma ora consente di calibrare correttamente la striscia panoramica fusione. Visualizzare in anteprima ogni fetta grezza fusione, mappare i ruoli logici 360 alla fetta che mostra effettivamente davanti/destra/retro/sinistra sul veicolo, e il demone riutilizzerà quel layout per la registrazione, lo streaming e l\'IA dopo il riavvio.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Scansiona per connetterti</string>
     <string name="dashboard_qr_waiting">In attesa del tunnel...</string>
@@ -179,15 +179,15 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Scegli la lingua</string>
-    <string name="setup_language_body">Usa di default la lingua dell unita principale. Tocca per sceglierne una diversa per l app OverDrive e il tunnel web.</string>
+    <string name="setup_language_body">Usa di default la lingua dell unita principale. Tocca per sceglierne una diversa per l app Electric Guardian e il tunnel web.</string>
     <string name="setup_language_button">Scegli lingua</string>
     <string name="setup_autostart_title">Disattiva restrizione avvio automatico</string>
-    <string name="setup_autostart_body">Tocca qui sotto per aprire BYD Auto-Start. Trova OverDrive nell elenco e togli la spunta. BYD ripristina questa opzione a ogni installazione: dovrai rifarlo dopo gli aggiornamenti.</string>
+    <string name="setup_autostart_body">Tocca qui sotto per aprire BYD Auto-Start. Trova Electric Guardian nell elenco e togli la spunta. BYD ripristina questa opzione a ogni installazione: dovrai rifarlo dopo gli aggiornamenti.</string>
     <string name="setup_autostart_button">Apri BYD Auto-Start</string>
     <string name="setup_overlay_title">Consenti visualizzazione sopra altre app</string>
     <string name="setup_overlay_body">Attivalo per mostrare sopra le altre app un indicatore flottante per registrazione e tracciamento viaggi.</string>
     <string name="setup_overlay_button">Apri impostazioni overlay</string>
-    <!-- Onboarding guide (novice track). Parked-only, glanceable. Overdrive is a
+    <!-- Onboarding guide (novice track). Parked-only, glanceable. Electric Guardian is a
          protected brand name — keep it verbatim. -->
     <!-- Shared button labels -->
     <string name="onboarding_next">Successivo</string>
@@ -198,22 +198,22 @@
     <string name="onboarding_exit">Esci dal tour</string>
     <string name="onboarding_done_short">Ho capito</string>
     <!-- Step 0: authorize the daemon (system ADB popup) -->
-    <string name="onboarding_authorize_title">Risveglia Overdrive</string>
-    <string name="onboarding_authorize_body">Overdrive esegue le telecamere attraverso un piccolo aiutante sul dispositivo. Android chiederà una volta di consentire il debug USB — tocca <b>Consenti</b> e controlla <b>Consenti sempre da questo dispositivo</b> in modo che rimanga acceso dopo ogni riavvio.</string>
+    <string name="onboarding_authorize_title">Risveglia Electric Guardian</string>
+    <string name="onboarding_authorize_body">Electric Guardian esegue le telecamere attraverso un piccolo aiutante sul dispositivo. Android chiederà una volta di consentire il debug USB — tocca <b>Consenti</b> e controlla <b>Consenti sempre da questo dispositivo</b> in modo che rimanga acceso dopo ogni riavvio.</string>
     <string name="onboarding_authorize_button">Consenti l\'accesso</string>
     <string name="onboarding_authorize_waiting_title">In attesa del permesso…</string>
     <string name="onboarding_authorize_waiting_body">Accetta il popup Android. Se non lo vedi, può già essere concesso — questo continuerà da solo.</string>
     <string name="onboarding_authorize_retry_title">Ancora non connesso</string>
     <string name="onboarding_authorize_retry_body">L\'helper non è ancora in esecuzione. Il permesso Android potrebbe essere stato respinto. Riprova e ricorda di controllare <b>Consenti sempre</b>.</string>
     <string name="onboarding_authorize_retry_button">Riprova</string>
-    <string name="onboarding_mode_title">Quando dovrebbe essere eseguito Overdrive?</string>
-    <string name="onboarding_mode_body">Scegli come si comporta Overdrive dopo aver spento l\'auto.\n\n<b>On &amp; Off</b> continua a guardare mentre parcheggiati — la sorveglianza e il monitoraggio in background rimangono attivi, così la macchina disegna un po \'di potenza durante la notte.\n\n<b>Solo su</b> chiude completamente Overdrive giù una volta che lasci. Dashcam, viaggi e ricarica funzionano ancora durante la guida, e tutto inizia automaticamente quando si accende l\'auto. È possibile modificare questo in qualsiasi momento nelle Impostazioni.</string>
+    <string name="onboarding_mode_title">Quando dovrebbe essere eseguito Electric Guardian?</string>
+    <string name="onboarding_mode_body">Scegli come si comporta Electric Guardian dopo aver spento l\'auto.\n\n<b>On &amp; Off</b> continua a guardare mentre parcheggiati — la sorveglianza e il monitoraggio in background rimangono attivi, così la macchina disegna un po \'di potenza durante la notte.\n\n<b>Solo su</b> chiude completamente Electric Guardian giù una volta che lasci. Dashcam, viaggi e ricarica funzionano ancora durante la guida, e tutto inizia automaticamente quando si accende l\'auto. È possibile modificare questo in qualsiasi momento nelle Impostazioni.</string>
     <string name="onboarding_mode_on_off_button">Acceso &amp; spento</string>
     <string name="onboarding_mode_on_only_button">Solo Su</string>
     <!-- Camera mapping chapter -->
     <string name="onboarding_camera_step_label">Camera · passo %1$d di %2$d</string>
     <string name="onboarding_camera_intro_title">Imposta le tue telecamere</string>
-    <string name="onboarding_camera_intro_body">Diciamo a Overdrive quale fotocamera è la tua vista 360 e quale è il tuo dashcam. Ci vuole circa un minuto, e puoi cambiarla più tardi.</string>
+    <string name="onboarding_camera_intro_body">Diciamo a Electric Guardian quale fotocamera è la tua vista 360 e quale è il tuo dashcam. Ci vuole circa un minuto, e puoi cambiarla più tardi.</string>
     <string name="onboarding_camera_intro_primary">Inizia</string>
     <string name="onboarding_camera_opening_title">Apertura configurazione fotocamera…</string>
     <string name="onboarding_camera_opening_body">Caricamento di un\'anteprima live dalle fotocamere. Questo può richiedere alcuni secondi.</string>
@@ -222,7 +222,7 @@
     <string name="onboarding_camera_dashcam_title">Ora trova la telecamera road-ahead</string>
     <string name="onboarding_camera_dashcam_body">Passare attraverso le telecamere con le frecce e fermarsi su quella che mostra il parabrezza / vista in avanti. Nota il suo numero — lo sceglierai dopo.</string>
     <string name="onboarding_camera_pick_title">Scegli la tua fotocamera 360</string>
-    <string name="onboarding_camera_pick_body">Nella scheda superiore, scegliere il numero per la fotocamera 360 / normale. Non è sicuro? Lasciarlo su AUTO e Overdrive figura fuori.</string>
+    <string name="onboarding_camera_pick_body">Nella scheda superiore, scegliere il numero per la fotocamera 360 / normale. Non è sicuro? Lasciarlo su AUTO e Electric Guardian figura fuori.</string>
     <string name="onboarding_camera_pick_primary">Successivo</string>
     <string name="onboarding_camera_pick_dash_title">Scegli la tua fotocamera dashcam</string>
     <string name="onboarding_camera_pick_dash_body">In questa scheda, scegliere il numero dashcam che avete trovato in precedenza — o lasciarlo su AUTO.</string>
@@ -238,7 +238,7 @@
     <string name="onboarding_camera_windshield_primary">Mostrami</string>
     <string name="onboarding_camera_windshield_skip">No grazie</string>
     <!-- Vehicle profile chapter -->
-    <string name="onboarding_vehicle_title">Dillo a Overdrive della batteria</string>
+    <string name="onboarding_vehicle_title">Dillo a Electric Guardian della batteria</string>
     <string name="onboarding_vehicle_body">Scegli il tuo modello e compiliamo il kWh, o scrivilo tu stesso (5–120). Questo rende accurati l\'intervallo e le stime di ricarica. Puoi saltare e impostarlo più tardi.</string>
     <string name="onboarding_vehicle_primary">Imposta batteria</string>
     <!-- Dashboard orientation chapter -->
@@ -511,7 +511,7 @@
     <string name="update_picker_current_suffix">%1$s (installato)</string>
     <string name="update_picker_older_suffix">%1$s (più vecchio)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Aggiornamento Overdrive</string>
+    <string name="update_progress_title">Aggiornamento Electric Guardian</string>
     <string name="update_step_downloading">Scaricamento aggiornamento…</string>
     <string name="update_step_verifying">Verifica del download…</string>
     <string name="update_step_stopping">Arresto dei demoni…</string>
@@ -695,7 +695,7 @@ Questa azione non puo essere annullata.</string>
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Suggerimenti e risoluzione dei problemi</string>
     <string name="setup_traffic_title">Disattivare il monitor del traffico BYD</string>
-    <string name="setup_traffic_body">Il Traffic Monitor BYD blocca le app di terze parti dall\'accesso a Internet. Disattivarlo consente a OverDrive e a tutte le altre app installate di utilizzare effettivamente la rete.</string>
+    <string name="setup_traffic_body">Il Traffic Monitor BYD blocca le app di terze parti dall\'accesso a Internet. Disattivarlo consente a Electric Guardian e a tutte le altre app installate di utilizzare effettivamente la rete.</string>
     <string name="setup_traffic_button">Monitore di traffico aperto</string>
     <string name="setup_camera_fix_title">La fotocamera è nera o sbagliata?</string>
     <string name="setup_camera_fix_body">Camera probe, impostare l\'ID della fotocamera a 0, toccare Salvare, quindi riavviare il daemon della fotocamera. Se i feed sono ancora sbagliati, ripetere con l\'ID della fotocamera 1. Lasciare la sezione di mappatura intatta.</string>
@@ -719,16 +719,16 @@ Questa azione non puo essere annullata.</string>
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">Stato OverDrive</string>
+    <string name="status_overlay_notif_title">Stato Electric Guardian</string>
     <string name="status_overlay_notif_text">Overlay di stato attivo</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">Overdrive Attivo</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian Attivo</string>
     <string name="daemon_keepalive_notif_text">Monitoraggio dei sistemi dei veicoli</string>
-    <string name="overdrive_status_summary_title">Overdrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">Servizi in background in esecuzione</string>
     <!-- ============================================================== -->
     <!-- M3 Revamp: navigation rail + settings sub-rail + theme picker  -->
@@ -771,7 +771,7 @@ Questa azione non puo essere annullata.</string>
     <string name="settings_privacy_title">Privacy e dati</string>
     <string name="settings_privacy_body">Reimposta cancella indice registrazioni, credenziali cache, stato daemon e preferenze sul dispositivo. L azione non puo essere annullata.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">Info su OverDrive</string>
+    <string name="settings_about_title">Info su Electric Guardian</string>
     <string name="settings_about_version_label">Versione</string>
     <string name="settings_about_package_label">Build</string>
     <string name="settings_about_check_update_value">Controlla l ultima release GitHub e installa se e piu recente.</string>
@@ -790,13 +790,13 @@ Questa azione non puo essere annullata.</string>
     <string name="settings_backup_pick_file">Scegli un backup da ripristinare</string>
     <string name="settings_backup_no_files">Nessun file di backup trovato. Esporta uno prima, o copia un backup .json in %1$s, quindi riprova.</string>
     <string name="settings_backup_read_failed">Impossibile leggere il file</string>
-    <string name="settings_backup_invalid_file">Quel file non è un backup Overdrive valido</string>
+    <string name="settings_backup_invalid_file">Quel file non è un backup Electric Guardian valido</string>
     <string name="settings_backup_restoring">Ripristino…</string>
     <string name="settings_backup_restored">Impostazioni ripristinate</string>
     <string name="settings_backup_restore_failed">Ripristino fallito</string>
     <string name="settings_backup_daemon_down">Il servizio fotocamera deve essere in esecuzione per eseguire il backup o il ripristino. Avviarlo da Demoni, quindi riprovare.</string>
     <string name="settings_backup_restore_confirm_title">Ripristinare le impostazioni?</string>
-    <string name="settings_backup_restore_confirm_msg">Questo sostituisce le impostazioni attuali di Overdrive con i servizi di backup e ricarica. Funziona solo sulla stessa unità di testa su cui è stato effettuato il backup.</string>
+    <string name="settings_backup_restore_confirm_msg">Questo sostituisce le impostazioni attuali di Electric Guardian con i servizi di backup e ricarica. Funziona solo sulla stessa unità di testa su cui è stato effettuato il backup.</string>
     <string name="settings_backup_restore_confirm_btn">Ripristina</string>
     <string name="settings_backup_restart_hint">Impostazioni ripristinate. Riavviare il demone della fotocamera (Daemons → Fotocamera → Riavvio) per assicurarsi che ogni impostazione ripristinata venga applicata.</string>
     <string name="settings_backup_trips_prompt">Includi la tua storia di viaggio (distanza, energia, costi, punteggi, luoghi di partenza/fine)? Il file conterrà la cronologia delle posizioni — mantienilo privato.</string>
@@ -807,9 +807,9 @@ Questa azione non puo essere annullata.</string>
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Reso possibile da persone come te</string>
     <string name="settings_about_support_share_title">Dillo a un altro proprietario</string>
-    <string name="settings_about_support_share_value">Ogni link condiviso aiuta un altro proprietario BYD a scoprire Overdrive.</string>
-    <string name="settings_about_support_share_message">Controlla Overdrive monitoraggio open source e dashcam per BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Condividi Overdrive</string>
+    <string name="settings_about_support_share_value">Ogni link condiviso aiuta un altro proprietario BYD a scoprire Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Controlla Electric Guardian monitoraggio open source e dashcam per BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Condividi Electric Guardian</string>
     <string name="settings_about_open_link_failed">Impossibile aprire il link.</string>
     <string name="settings_about_open_link_copied">Nessun browser trovato. URL copiato: %1$s</string>
     <string name="settings_about_support_kofi_title">Fuel il prossimo rilascio</string>
@@ -817,7 +817,7 @@ Questa azione non puo essere annullata.</string>
     <string name="settings_about_license_title">Licenza</string>
     <string name="settings_about_license_value">MIT — open source. Tocca per vedere il testo completo.</string>
     <string name="settings_about_source_title">Codice sorgente</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/OverDrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Metti una stella su GitHub</string>
     <string name="settings_about_star_value">Ci vuole un secondo. Conta molto.</string>
     <string name="settings_about_thanks_title">Grazie</string>
@@ -887,7 +887,7 @@ Questa azione non puo essere annullata.</string>
     <string name="diagnostics_settings_subtitle">Preferenze app, tema e lingua.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Integrazioni</string>
-    <string name="integrations_hero_subtitle">Collega Overdrive ai tuoi servizi.</string>
+    <string name="integrations_hero_subtitle">Collega Electric Guardian ai tuoi servizi.</string>
     <string name="integrations_status_unknown">Tocca per configurare</string>
     <string name="integrations_status_configured">Configurato</string>
     <string name="integrations_status_not_set_up">Non configurato</string>
@@ -900,7 +900,7 @@ Questa azione non puo essere annullata.</string>
     <string name="settings_action_check_update">Controlla aggiornamenti</string>
     <string name="settings_action_reset_data">Reimposta dati...</string>
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
     <!-- ============================================================== -->
@@ -966,11 +966,11 @@ Questa azione non puo essere annullata.</string>
     <string name="settings_section_surveillance_subtitle">Zone rilevamento, programma, sensibilita movimento.</string>
     <string name="settings_section_daemons_subtitle">Runner Cloudflared, Zrok, Telegram, MQTT.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">Info su OverDrive</string>
+    <string name="settings_about_row_title">Info su Electric Guardian</string>
     <string name="settings_about_row_subtitle">Versione, licenza, supporto allo sviluppo.</string>
     <string name="settings_reset_row_subtitle">Cancella registrazioni, eventi o tutte le cache.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -987,7 +987,7 @@ Questa azione non puo essere annullata.</string>
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">Sul dispositivo per impostazione predefinita</string>
-    <string name="settings_privacy_stance_body">OverDrive gira interamente sull unita principale. Nessuna telemetria lascia l auto, salvo tunnel e integrazioni che configuri esplicitamente.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian gira interamente sull unita principale. Nessuna telemetria lascia l auto, salvo tunnel e integrazioni che configuri esplicitamente.</string>
     <string name="settings_privacy_overline_storage">STORAGE LOCALE</string>
     <string name="settings_privacy_overline_reset">REIMPOSTAZIONE DATI</string>
     <string name="settings_privacy_storage_clips_label">Clip su disco</string>
@@ -997,18 +997,18 @@ Questa azione non puo essere annullata.</string>
     <string name="settings_privacy_storage_count_format_plural">%1$d clip</string>
     <string name="settings_privacy_reset_subtitle">Scegli categorie: registrazioni, eventi, configurazioni daemon, telemetria cache...</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Sicurezza</string>
-    <string name="settings_security_subtitle">Blocca l\'app OverDrive in modo che passeggeri e valvole non possano aprirla senza il PIN.</string>
+    <string name="settings_security_subtitle">Blocca l\'app Electric Guardian in modo che passeggeri e valvole non possano aprirla senza il PIN.</string>
     <string name="settings_security_stance_title">Solo blocco interfaccia utente</string>
-    <string name="settings_security_stance_body">La sorveglianza, la registrazione, il deterrente, gli avvisi e i servizi in background continuano ad essere in esecuzione mentre l\'applicazione è bloccata. Il PIN cancella l\'interfaccia OverDrive, nient\'altro.</string>
+    <string name="settings_security_stance_body">La sorveglianza, la registrazione, il deterrente, gli avvisi e i servizi in background continuano ad essere in esecuzione mentre l\'applicazione è bloccata. Il PIN cancella l\'interfaccia Electric Guardian, nient\'altro.</string>
     <string name="settings_security_overline_lock">Blocco app</string>
     <string name="settings_security_overline_recovery">Se dimentichi il PIN</string>
     <string name="settings_security_toggle_title">Richiedi PIN</string>
-    <string name="settings_security_toggle_subtitle_off">Off — chiunque può aprire OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">On — PIN necessario per aprire OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">Off — chiunque può aprire Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">On — PIN necessario per aprire Electric Guardian.</string>
     <string name="settings_security_change_title">Cambia PIN</string>
     <string name="settings_security_change_subtitle">Confermare il PIN corrente, quindi impostarne uno nuovo.</string>
     <string name="settings_security_autolock_title">Blocco Automatico</string>
@@ -1045,7 +1045,7 @@ Questa azione non puo essere annullata.</string>
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Inserisci PIN</string>
     <string name="pin_lock_title_unlocked">Sbloccato</string>
-    <string name="pin_lock_subtitle_default">Sblocca OverDrive per continuare.</string>
+    <string name="pin_lock_subtitle_default">Sblocca Electric Guardian per continuare.</string>
     <string name="pin_lock_subtitle_wrong">PIN errato. Riprova.</string>
     <string name="pin_lock_subtitle_locked_out">Troppi tentativi. Riprova a breve.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -1088,7 +1088,7 @@ Questa azione non puo essere annullata.</string>
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Benvenuto — Overdrive e ora il tuo secondo paio di occhi.</string>
+    <string name="dashboard_insight_welcome">Benvenuto — Electric Guardian e ora il tuo secondo paio di occhi.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">Guadagnato %1$s (≈%2$s) durante la sosta</string>
     <string name="dashboard_insight_parked_charged">Guadagnato %1$s durante la sosta</string>
@@ -1114,12 +1114,12 @@ Questa azione non puo essere annullata.</string>
     </plurals>
     <!-- Process uptime. Days form takes (days, hours); hours form takes hours only. -->
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">OverDrive online da %1$d giorno, %2$d h</item>
-        <item quantity="other">OverDrive online da %1$d giorni, %2$d h</item>
+        <item quantity="one">Electric Guardian online da %1$d giorno, %2$d h</item>
+        <item quantity="other">Electric Guardian online da %1$d giorni, %2$d h</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
-        <item quantity="one">OverDrive online da %1$d ora</item>
-        <item quantity="other">OverDrive online da %1$d ore</item>
+        <item quantity="one">Electric Guardian online da %1$d ora</item>
+        <item quantity="other">Electric Guardian online da %1$d ore</item>
     </plurals>
     <!-- Duration helpers used inside insights (last_charge etc.). -->
     <plurals name="dashboard_insight_minutes">

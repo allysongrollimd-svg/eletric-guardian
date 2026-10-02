@@ -2148,7 +2148,7 @@ BYD.recording = {
             label.setAttribute('data-i18n', 'oem_dashcam.native_dvr_status_disabled');
             label.textContent = (BYD.i18n && BYD.i18n.t)
                 ? BYD.i18n.t('oem_dashcam.native_dvr_status_disabled')
-                : 'Status: Disabled by OverDrive';
+                : 'Status: Disabled by Electric Guardian';
             btn.setAttribute('data-i18n', 'oem_dashcam.native_dvr_enable');
             btn.textContent = (BYD.i18n && BYD.i18n.t)
                 ? BYD.i18n.t('oem_dashcam.native_dvr_enable')

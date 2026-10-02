@@ -117,7 +117,7 @@ public final class MediaPlaybackService extends Service {
         // NOTHING in here may throw. This service is started by an `am
         // start-foreground-service` from the daemon whenever an automation or a
         // key-mapping plays a sound, so an escaping Throwable is a user-visible
-        // "OverDrive has stopped" in the REAL app process — triggered by pressing
+        // "Electric Guardian has stopped" in the REAL app process — triggered by pressing
         // a mapped button or firing an automation, with no obvious cause. Every
         // step below is optional relative to actually playing audio, so each
         // degrades independently instead of taking the process down.
@@ -253,7 +253,7 @@ public final class MediaPlaybackService extends Service {
         // is reachable right after a malformed clip kills the native decoder. It
         // used to sit outside the try below, making it the only unguarded call on
         // the whole playback path, and an escape here crashes the REAL app process
-        // (user sees "OverDrive has stopped" from pressing a mapped button).
+        // (user sees "Electric Guardian has stopped" from pressing a mapped button).
         MediaPlayer mp;
         try {
             mp = new MediaPlayer();
@@ -329,7 +329,7 @@ public final class MediaPlaybackService extends Service {
             // resolver). speak() is called straight from onStartCommand with no
             // try/catch above it, so an escape here crashes the REAL app process —
             // the user presses a "Speak" automation or mapped button and sees
-            // "OverDrive has stopped", with the foreground service leaked too.
+            // "Electric Guardian has stopped", with the foreground service leaked too.
             try {
                 tts = new TextToSpeech(getApplicationContext(), status -> {
                     ttsReady = (status == TextToSpeech.SUCCESS);
@@ -778,7 +778,7 @@ public final class MediaPlaybackService extends Service {
             // RETRY WITHOUT the foreground-service-type arg — but guarded. The
             // bare retry used to sit outside any try, so when it ALSO failed the
             // Throwable escaped onCreate() and crashed the whole app process
-            // (visible to the user as "OverDrive has stopped" the moment an
+            // (visible to the user as "Electric Guardian has stopped" the moment an
             // automation or key-mapping tried to play a sound). Both calls can
             // legitimately fail on this firmware: a missing/blocked notification
             // channel, or the OEM ROM rejecting FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK.
@@ -810,7 +810,7 @@ public final class MediaPlaybackService extends Service {
                 ? new Notification.Builder(this, CHANNEL_ID)
                 : new Notification.Builder(this);
         return b.setContentTitle("Playing audio")
-                .setContentText("OverDrive automation")
+                .setContentText("Electric Guardian automation")
                 .setSmallIcon(R.drawable.ic_play_circle)
                 .setOngoing(true)
                 .setGroup(DaemonKeepaliveService.NOTIFICATION_GROUP_KEY)

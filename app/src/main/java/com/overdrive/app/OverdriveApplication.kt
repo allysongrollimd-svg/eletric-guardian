@@ -16,7 +16,7 @@ import com.overdrive.app.services.DaemonKeepaliveService
 import com.overdrive.app.ui.util.PreferencesManager
 
 /**
- * Application class for Overdrive.
+ * Application class for Electric Guardian.
  * Initializes global singletons before any Activity is created.
  */
 class OverdriveApplication : Application() {

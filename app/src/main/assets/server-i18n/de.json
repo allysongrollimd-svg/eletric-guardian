@@ -332,11 +332,11 @@
       "installing": "⏳ *Installation des Updates…*\n\nDie Daemons werden gestoppt, die APK wird installiert und das Gerät wird neu gestartet. Dieser Bot wird für ca. 2 Minuten still sein. Eine neue Tunnel-URL-Nachricht wird kommen, wenn sie wieder online ist.",
       "install_service_unreachable": ":warnung: Die Installation konnte nicht gestartet werden, da der Kamera-Daemon nicht erreichbar ist.",
       "install_rejected": ":warnung: Installation abgelehnt: {0}",
-      "install_failed": ":Warnung: *Overdrive Update fehlgeschlagen*\nDas Gerät ist immer noch auf der vorherigen Version.\nGrund: {0}",
+      "install_failed": ":Warnung: *Electric Guardian Update fehlgeschlagen*\nDas Gerät ist immer noch auf der vorherigen Version.\nGrund: {0}",
       "unknown_reason": "unbekannt (s. Kopfeinheit)",
-      "installed": "🔄 *Overdrive aktualisiert auf {0}*",
-      "installed_new_tunnel": "🔄 *Overdrive aktualisiert auf {0}*\nNeue Tunneladresse:\n{1}\n\n_Der Cloudflared Link dreht sich nach jeder Installation._",
-      "installed_tunnel_online": "🔄 *Overdrive aktualisiert auf {0}*\nTunnel wieder online:\n{1}"
+      "installed": "🔄 *Electric Guardian aktualisiert auf {0}*",
+      "installed_new_tunnel": "🔄 *Electric Guardian aktualisiert auf {0}*\nNeue Tunneladresse:\n{1}\n\n_Der Cloudflared Link dreht sich nach jeder Installation._",
+      "installed_tunnel_online": "🔄 *Electric Guardian aktualisiert auf {0}*\nTunnel wieder online:\n{1}"
     },
     "backup": {
       "restore_unavailable": "i *Restore ist nicht über Telegramm verfügbar.\n\nOverdrive auf der Kopfeinheit oder in der App öffnen, dann gehen Sie zu *Einstellungen → Backup & Wiederherstellen* und wählen Sie die Backup-Datei. Sicherungen können nur auf demselben Gerät wiederhergestellt werden und benötigen dort eine Bestätigung.",
@@ -346,10 +346,10 @@
       "failed": ":Warnung: Sicherung fehlgeschlagen: {0}",
       "no_data": ":warnung: Die Sicherung lieferte keine Daten.",
       "write_failed": ":warnung: Die Sicherungsdatei konnte nicht geschrieben werden: {0}",
-      "document_settings": "💾 Overdrive Einstellungen sichern\n\n⚠️ Diese Datei enthält Zugangsdaten und den Geräteschlüssel. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
-      "document_settings_version": "💾 Backup der Overdrive Einstellungen · {0}\n\n⚠️ Diese Datei enthält Anmeldedaten und den Geräteschlüssel. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
-      "document_with_trips": "💾 Overdrive Backup (Einstellungen + Fahrtverlauf: {0})\n\n⚠️ Diese Datei enthält Anmeldeinformationen, den Geräteschlüssel und den Standortverlauf. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
-      "document_with_trips_version": "💾 Overdrive Backup (Einstellungen + Fahrtverlauf: {0}) · {1}\n\n:Warnung: Diese Datei enthält Anmeldeinformationen, der Geräteschlüssel und der Standortverlauf. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
+      "document_settings": "💾 Electric Guardian Einstellungen sichern\n\n⚠️ Diese Datei enthält Zugangsdaten und den Geräteschlüssel. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
+      "document_settings_version": "💾 Backup der Electric Guardian Einstellungen · {0}\n\n⚠️ Diese Datei enthält Anmeldedaten und den Geräteschlüssel. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
+      "document_with_trips": "💾 Electric Guardian Backup (Einstellungen + Fahrtverlauf: {0})\n\n⚠️ Diese Datei enthält Anmeldeinformationen, den Geräteschlüssel und den Standortverlauf. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
+      "document_with_trips_version": "💾 Electric Guardian Backup (Einstellungen + Fahrtverlauf: {0}) · {1}\n\n:Warnung: Diese Datei enthält Anmeldeinformationen, der Geräteschlüssel und der Standortverlauf. Behalten Sie es privat. Wiederherstellen Sie es auf derselben Kopfeinheit unter Einstellungen → Backup & Wiederherstellen.",
       "upload_failed": ":warnung: Die Sicherungsdatei konnte nicht zu Telegramm hochgeladen werden."
     },
     "sendlog": {

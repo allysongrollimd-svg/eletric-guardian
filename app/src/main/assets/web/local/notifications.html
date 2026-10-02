@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#00876C">
+    <meta name="theme-color" content="#2B7500">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="../shared/app-icon-dark.webp">
-    <title data-i18n="app.notifications_title">Notifications - OverDrive</title>
+    <title data-i18n="app.notifications_title">Notifications - Electric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
@@ -15,7 +15,7 @@
       WebView detection MUST run before app-tabs.js builds the tab bar so
       we can filter OT_TABS to the Telegram-only flow on the head unit.
       The AndroidBridge JS interface is injected by WebViewFragment; its
-      mere presence is the canonical "we're inside the Overdrive shell"
+      mere presence is the canonical "we're inside the Electric Guardian shell"
       signal (same approach core.js uses for locale / theme decisions).
       Setting the class on <html> (not <body>) so CSS rules can style
       pre-paint elements like <main> and <style> media queries.
@@ -344,7 +344,7 @@
         /* ============================================================
            In-app WebView adaptations
            ------------------------------------------------------------
-           When loaded inside the Overdrive Android shell (signaled by
+           When loaded inside the Electric Guardian Android shell (signaled by
            html.is-app-webview), Web Push is unreachable (the head unit
            can't satisfy the secure-origin requirement and the on-device
            browser is the wrong UA for the Devices list). Hide both
@@ -557,7 +557,7 @@
         .calendar-day.other-month { color: var(--text-muted); opacity: .5; }
         .calendar-day.today { background: var(--bg-elevated); color: var(--text-primary); font-weight: 600; }
         .calendar-day.selected { background: var(--brand-primary); color: var(--bg-base); }
-        .calendar-day.in-range { background: rgba(93,219,182,0.16); color: var(--text-primary); }
+        .calendar-day.in-range { background: rgba(139, 220, 92,0.16); color: var(--text-primary); }
         .calendar-day.disabled { color: var(--text-muted); opacity: .3; cursor: not-allowed; pointer-events: none; }
 
         /* ---- Date sheet (presets + inline range calendar) ---- */

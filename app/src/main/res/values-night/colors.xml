@@ -15,7 +15,7 @@
     <color name="brand_primary">@color/md_sys_color_primary</color>
     <color name="brand_secondary">@color/md_sys_color_tertiary</color>
     <color name="brand_cyan">@color/brand_primary</color>
-    <color name="brand_cyan_glow">#335DDBB6</color>
+    <color name="brand_cyan_glow">#338BDC5C</color>
 
     <!-- Backgrounds — M3 surface tonal stack -->
     <color name="bg_base">@color/md_sys_color_background</color>
@@ -36,7 +36,7 @@
     <!-- Floating status overlay — dark variant (charcoal glass + faint
          brand-tinted ring). See values/colors.xml for the light pair. -->
     <color name="overlay_pill_background">#CC16161A</color>
-    <color name="overlay_pill_stroke">#335DDBB6</color>
+    <color name="overlay_pill_stroke">#338BDC5C</color>
 
     <!-- Status -->
     <color name="status_success">@color/overdrive_status_success</color>
@@ -61,7 +61,7 @@
 
     <!-- Switches -->
     <color name="switch_track_on">@color/brand_primary</color>
-    <color name="switch_thumb_on">#003828</color>
+    <color name="switch_thumb_on">#0E2600</color>
     <color name="switch_track_off">@color/bg_hover</color>
     <color name="switch_thumb_off">@color/text_muted</color>
 

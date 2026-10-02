@@ -1,54 +1,47 @@
-# Gradle / build output
-.gradle/
-build/
-captures/
-
-# Native build (NDK / CMake)
-.cxx/
-.externalNativeBuild/
-
-# Vendored native dependencies, fetched by CMake at configure time
-/app/src/main/cpp/opencv
-/app/src/main/cpp/openh264
-
-# Local machine config — SDK and NDK paths differ per checkout
-/local.properties
-
-# IDE
-.idea/
-.kotlin/
-*.iml
-.cursor
-
-# Signing material. Never commit these.
-*.jks
-*.keystore
-keystore.properties
-
-# Packaged artifacts
-*.apk
-*.aab
-*.ap_
-*.dex
 
 # Camera and daemon capture dumps. `*.png` is blanket-ignored because dumps
+# Gradle / build output
+# IDE
+# Local machine config — SDK and NDK paths differ per checkout
+# Native build (NDK / CMake)
+# OS
+# Packaged artifacts
+# Pulled device data and local scratch dirs
+# Signing material. Never commit these.
+# Vendored native dependencies, fetched by CMake at configure time
 # land as PNG anywhere in the tree; committed raster art is WebP for this
 # reason as much as for size.
-/scratch
-ref/
-design-lab/
-dilink5_camera_dump*
+*.aab
+*.ap_
+*.apk
+*.dex
+*.iml
+*.jks
+*.keystore
+*.png
 *.raw
 *.zip
-*.png
-
-# OS
 .DS_Store
+.cursor
+.cxx/
+.externalNativeBuild/
+.gradle/
+.idea/
+.kotlin/
+/app/src/main/cpp/opencv
+/app/src/main/cpp/openh264
+/local.properties
+/scratch
 Thumbs.db
-
-# Pulled device data and local scratch dirs
-ref
+build/
+captures/
+design-lab/
 device_backup
-logs_debug
+dilink5_camera_dump*
 downloaded_logs
 frame_grabber_light
+keystore.properties
+local.properties
+logs_debug
+ref
+ref/

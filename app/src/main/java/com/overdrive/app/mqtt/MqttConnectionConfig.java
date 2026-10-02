@@ -21,7 +21,7 @@ public class MqttConnectionConfig {
     public String name;                  // User-friendly label ("Home Assistant", "Fleet Server")
     public String brokerUrl;             // tcp://broker.hivemq.com or ssl://your-broker.com
     public int port;                     // 1883 (tcp) or 8883 (ssl)
-    public String topic;                 // e.g. overdrive/vehicle/telemetry
+    public String topic;                 // e.g. electric-guardian/car/telemetry
     public String clientId;              // Auto-generated from deviceId + connectionId
     public String username;              // Optional MQTT auth
     public String password;              // Optional MQTT auth
@@ -93,7 +93,7 @@ public class MqttConnectionConfig {
         this.name = "";
         this.brokerUrl = "";
         this.port = DEFAULT_PORT;
-        this.topic = "overdrive/vehicle/telemetry";
+        this.topic = "electric-guardian/car/telemetry";
         this.clientId = "";
         this.username = "";
         this.password = "";
@@ -283,7 +283,7 @@ public class MqttConnectionConfig {
         config.name = json.optString("name", "");
         config.brokerUrl = json.optString("brokerUrl", "");
         config.port = json.optInt("port", DEFAULT_PORT);
-        config.topic = json.optString("topic", "overdrive/vehicle/telemetry");
+        config.topic = json.optString("topic", "electric-guardian/car/telemetry");
         config.clientId = json.optString("clientId", "");
         // decrypt() passes plaintext through unchanged (isEncrypted() check),
         // so this also transparently migrates connections saved before

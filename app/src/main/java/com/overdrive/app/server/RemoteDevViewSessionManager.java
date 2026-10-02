@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.nio.charset.StandardCharsets;
 
-/** In-memory, single-client capability for Remote Overdrive Dev View. */
+/** In-memory, single-client capability for Remote Electric Guardian Dev View. */
 final class RemoteDevViewSessionManager {
     static final long IDLE_TIMEOUT_MS = 5 * 60 * 1000L;
     static final long MAX_LIFETIME_MS = 8 * 60 * 60 * 1000L;

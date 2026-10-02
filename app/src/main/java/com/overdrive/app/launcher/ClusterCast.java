@@ -82,7 +82,7 @@ public final class ClusterCast {
     // SurfaceControl layer (no task, structurally immune). The map is NOT protected merely by
     // "castPkg is null": the map lives in com.overdrive.app, which is itself a launchable package,
     // so a self-cast would make a by-package task lookup ambiguous. The real guard is that every
-    // resize is scoped to `castDisplayId` (and the picker hides OverDrive) — see
+    // resize is scoped to `castDisplayId` (and the picker hides Electric Guardian) — see
     // ClusterFreeformWindow's class doc. On stop the task is restored to fullscreen before
     // reparent so the display is left pristine. Flip to false in
     // surveillance.clusterFreeformResize to force the old always-fullscreen cast. ──────

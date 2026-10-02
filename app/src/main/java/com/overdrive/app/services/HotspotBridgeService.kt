@@ -102,7 +102,7 @@ class HotspotBridgeService : Service() {
             Notification.Builder(this)
         }
         return b.setContentTitle("Network & Hotspot")
-            .setContentText("OverDrive")
+            .setContentText("Electric Guardian")
             .setSmallIcon(R.drawable.ic_play_circle)
             .setOngoing(false)
             .setGroup(DaemonKeepaliveService.NOTIFICATION_GROUP_KEY)

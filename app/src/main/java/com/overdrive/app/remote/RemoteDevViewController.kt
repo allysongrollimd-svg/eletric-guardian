@@ -35,20 +35,20 @@ import java.util.concurrent.locks.ReentrantLock
 import kotlin.math.roundToInt
 
 /**
- * App-process half of Remote Overdrive Dev View.
+ * App-process half of Remote Electric Guardian Dev View.
  *
  * Live frames come from [RemoteDevVirtualDisplay], which contains only a
- * dedicated Overdrive task. On Android builds that reject Activity launches
+ * dedicated Electric Guardian task. On Android builds that reject Activity launches
  * on app-owned displays, the controller can instead reuse an already-open
  * physical [MainActivity] Window. Input is dispatched only into roots owned
  * by that selected Activity; this class never uses global input injection.
  */
 object RemoteDevViewController : Application.ActivityLifecycleCallbacks {
     const val ACCESS_LOCKED_DETAIL =
-        "Unlock the physical Overdrive UI before using Remote Dev View"
+        "Unlock the physical Electric Guardian UI before using Remote Dev View"
     const val PHYSICAL_COMPATIBILITY_DETAIL =
         "This Android build blocks Remote Dev View's private display. " +
-            "Open and unlock Overdrive on the head unit, then retry."
+            "Open and unlock Electric Guardian on the head unit, then retry."
 
     private const val TAG = "RemoteDevView"
     private const val UI_TIMEOUT_SECONDS = 6L
@@ -177,7 +177,7 @@ object RemoteDevViewController : Application.ActivityLifecycleCallbacks {
             success = activity != null && !activity.isFinishing && !activity.isDestroyed,
             handled = false,
             activityName = activity?.javaClass?.name,
-            detail = if (activity == null) "No Overdrive activity is ready" else null,
+            detail = if (activity == null) "No Electric Guardian activity is ready" else null,
         )
     }
 
@@ -371,7 +371,7 @@ object RemoteDevViewController : Application.ActivityLifecycleCallbacks {
         }
         val result = runOnUiThread {
             val activity = readyActivity()
-                ?: return@runOnUiThread InputResult(false, false, null, "No Overdrive activity is ready")
+                ?: return@runOnUiThread InputResult(false, false, null, "No Electric Guardian activity is ready")
             val decor = activity.window.decorView
             val decorLocation = IntArray(2).also { decor.getLocationOnScreen(it) }
             val screenX = decorLocation[0] + normalizedX * decor.width
@@ -426,7 +426,7 @@ object RemoteDevViewController : Application.ActivityLifecycleCallbacks {
         }
         val result = runOnUiThread {
             val activity = readyActivity()
-                ?: return@runOnUiThread InputResult(false, false, null, "No Overdrive activity is ready")
+                ?: return@runOnUiThread InputResult(false, false, null, "No Electric Guardian activity is ready")
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 @Suppress("DEPRECATION")
                 activity.onBackPressed()
@@ -451,7 +451,7 @@ object RemoteDevViewController : Application.ActivityLifecycleCallbacks {
         }
         val result = runOnUiThread {
             val activity = readyActivity()
-                ?: return@runOnUiThread InputResult(false, false, null, "No Overdrive activity is ready")
+                ?: return@runOnUiThread InputResult(false, false, null, "No Electric Guardian activity is ready")
             val root = topInputRoot(activity.window.decorView, activity)
             val focused = root.findFocus()
             var handled = false
@@ -538,7 +538,7 @@ object RemoteDevViewController : Application.ActivityLifecycleCallbacks {
         for (index in roots.indices.reversed()) {
             val root = roots[index]
             if (!root.isShown || root.width <= 0 || root.height <= 0) continue
-            // Non-focusable overlays (for example Overdrive's recording status
+            // Non-focusable overlays (for example Electric Guardian's recording status
             // pill) are visible but are not real input targets. Directly calling
             // dispatchTouchEvent would bypass their WindowManager flags.
             if (root !== fallback && !root.hasWindowFocus()) continue

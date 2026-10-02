@@ -12,7 +12,7 @@
  *      (currently optional; pages opt in by adding <header class="app-bar">).
  *   3. M3 Expressive active-link affordance: a 3px leading inset stripe in
  *      colorPrimary on the active sidebar link. Replaces the previous
- *      "background: rgba(0, 212, 170, 0.1)" tint that read off-brand under
+ *      "background: rgba(78, 212, 0, 0.1)" tint that read off-brand under
  *      light theme.
  *   4. A no-flash bootstrap rule (html.shell-ready -> visibility:visible)
  *      paired with app-shell.js's mount() event. Pages that opt in by adding
@@ -433,10 +433,10 @@ html.shell-ready { visibility: visible; }
         inset 0 1px 1px rgba(0, 0, 0, 0.4);
 }
 :root[data-theme="light"] .ev-battery-body-overlay {
-    background: rgba(24, 28, 26, 0.18);
+    background: rgba(24, 26, 28, 0.18);
     box-shadow:
-        inset 0 0 0 1px rgba(24, 28, 26, 0.20),
-        inset 0 1px 1px rgba(24, 28, 26, 0.10);
+        inset 0 0 0 1px rgba(24, 26, 28, 0.20),
+        inset 0 1px 1px rgba(24, 26, 28, 0.10);
 }
 
 .ev-battery-body-fill,

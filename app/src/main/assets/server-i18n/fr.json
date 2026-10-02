@@ -339,15 +339,15 @@
       "installed_tunnel_online": "🔄 *Surcharge mise à jour vers {0}*\nTunnel de retour en ligne:\n{1}"
     },
     "backup": {
-      "restore_unavailable": "i *La restauration n'est pas disponible via Telegram.\n\nOuvrez Overdrive sur l'unité principale ou dans l'application, puis allez dans *Paramètres → Sauvegarde et restauration* et sélectionnez le fichier de sauvegarde. Les sauvegardes ne peuvent être restaurées que sur le même appareil et nécessitent une confirmation.",
+      "restore_unavailable": "i *La restauration n'est pas disponible via Telegram.\n\nOuvrez Electric Guardian sur l'unité principale ou dans l'application, puis allez dans *Paramètres → Sauvegarde et restauration* et sélectionnez le fichier de sauvegarde. Les sauvegardes ne peuvent être restaurées que sur le même appareil et nécessitent une confirmation.",
       "building_with_trips": "💾 Construire une sauvegarde avec les paramètres et l'historique de voyage…",
       "building_settings": "💾 Construction de la sauvegarde des paramètres…",
       "service_unreachable": "⚠️ Impossible d'accéder au service de sauvegarde.\n\nLe démon de la caméra peut ne pas être en cours d'exécution. Essayez `/daemon camera start`.",
       "failed": "⚠️ Échec de la sauvegarde: {0}",
       "no_data": "⚠️ La sauvegarde n'a retourné aucune donnée.",
       "write_failed": "⚠️ Impossible d'écrire le fichier de sauvegarde : {0}",
-      "document_settings": "💾 Sauvegarde des paramètres de Overdrive\n\n⚠️ Ce fichier contient des informations d'identification et la clé du périphérique. Gardez-le privé. Restaurer sur cette même unité depuis Paramètres → Sauvegarde et restauration.",
-      "document_settings_version": "💾 Sauvegarde des paramètres de Overdrive · {0}\n\n⚠️ Ce fichier contient des informations d'identification et la clé du périphérique. Gardez-le privé. Restaurer sur cette même unité depuis Paramètres → Sauvegarde et restauration.",
+      "document_settings": "💾 Sauvegarde des paramètres de Electric Guardian\n\n⚠️ Ce fichier contient des informations d'identification et la clé du périphérique. Gardez-le privé. Restaurer sur cette même unité depuis Paramètres → Sauvegarde et restauration.",
+      "document_settings_version": "💾 Sauvegarde des paramètres de Electric Guardian · {0}\n\n⚠️ Ce fichier contient des informations d'identification et la clé du périphérique. Gardez-le privé. Restaurer sur cette même unité depuis Paramètres → Sauvegarde et restauration.",
       "document_with_trips": "💾 Surcharge de la sauvegarde (paramètres + historique de voyage : {0})\n\n⚠️ Ce fichier contient des identifiants, la clé de l'appareil et l'historique de l'emplacement. Gardez-le privé. Restaurer sur cette même unité depuis Paramètres → Sauvegarde et restauration.",
       "document_with_trips_version": "💾 Surcharge de sauvegarde (paramètres + historique de voyage : {0}) · {1}\n\n⚠️ Ce fichier contient des identifiants, la clé de l'appareil, et l'historique de localisation. Gardez-le privé. Restaurer sur cette même unité depuis Paramètres → Sauvegarde et restauration.",
       "upload_failed": "⚠️ Impossible de télécharger le fichier de sauvegarde sur Telegram."

@@ -52,8 +52,8 @@ public class AutomationPickerGroupingAssetTest {
                 "'automation.operating_mode_help_on_only'"));
         assertTrue(automations.contains(
                 "'automation.operating_mode_help_on_and_off'"));
-        assertTrue(english.contains("entire OverDrive daemon stack"));
-        assertTrue(english.contains("all OverDrive daemons shut down"));
+        assertTrue(english.contains("entire Electric Guardian daemon stack"));
+        assertTrue(english.contains("all Electric Guardian daemons shut down"));
         assertTrue(english.contains("uses more parked battery"));
     }
 

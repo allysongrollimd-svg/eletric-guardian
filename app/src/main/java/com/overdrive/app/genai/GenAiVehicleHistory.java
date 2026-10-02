@@ -95,7 +95,7 @@ public final class GenAiVehicleHistory {
             setOf("VERY_CLOSE", "CLOSE", "MID", "FAR");
 
     private static final String PLANNER_INSTRUCTIONS =
-            "Convert the latest user request into exactly one read-only OverDrive "
+            "Convert the latest user request into exactly one read-only Electric Guardian "
             + "vehicle-history query. Return only the required structured object. "
             + "Choose one source: trips, events, or charging. Use the supplied "
             + "nowMs and timeZoneId to resolve relative dates. If no time window "

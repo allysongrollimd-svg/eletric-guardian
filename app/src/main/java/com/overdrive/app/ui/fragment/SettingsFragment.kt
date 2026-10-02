@@ -462,7 +462,7 @@ class SettingsFragment : Fragment() {
 
     /**
      * Footer line at the bottom of the portrait hub. Read-only. Shows
-     * "OverDrive vX.Y · com.overdrive.app" so power users can confirm
+     * "Electric Guardian vX.Y · com.overdrive.app" so power users can confirm
      * the running version + package id without diving into About.
      */
     private fun setupFooter(view: View) {

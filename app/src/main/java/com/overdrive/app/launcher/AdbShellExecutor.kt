@@ -957,10 +957,10 @@ class AdbShellExecutor(private val context: Context) {
                         // [local] Back off so a STUCK connection doesn't hammer adbd every 3s. Each
                         // poll re-opens a TCP + dadb connect to 127.0.0.1:5555; at a 3s cadence that
                         // churns adbd and flaps any external adb-over-wifi session (observed 2026-07-01:
-                        // laptop adb cycling device->offline while OverDrive was stuck relaunching
+                        // laptop adb cycling device->offline while Electric Guardian was stuck relaunching
                         // daemons post-reboot). Quick first tries still catch a transient blip / a
                         // first-time auth grant; then stretch to a 30s ceiling so a persistently-stuck
-                        // OverDrive polls at most every 30s and stops interrupting adb.
+                        // Electric Guardian polls at most every 30s and stops interrupting adb.
                         val backoffMs = if (attempts <= 3) 3000L
                                         else minOf(3000L * (1L shl minOf(attempts - 3, 4)), 30000L)
                         Thread.sleep(backoffMs)

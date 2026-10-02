@@ -1,5 +1,5 @@
 /**
- * OverDrive Service Worker
+ * Electric Guardian Service Worker
  *
  * Two responsibilities:
  *
@@ -151,14 +151,14 @@ self.addEventListener('push', (event) => {
   try {
     payload = event.data ? event.data.json() : {};
   } catch (e) {
-    payload = { title: 'OverDrive', body: '(unreadable payload)', severity: 'info' };
+    payload = { title: 'Electric Guardian', body: '(unreadable payload)', severity: 'info' };
   }
 
   event.waitUntil(showFromPayload(payload));
 });
 
 function showFromPayload(payload) {
-  const title = payload.title || 'OverDrive';
+  const title = payload.title || 'Electric Guardian';
   const severity = payload.severity || 'info';
 
   const options = {

@@ -25,7 +25,7 @@ import java.util.Locale;
  * The install runs in CameraDaemon's process (via SurveillanceIpcServer). That
  * process dies mid-install — the signal to webapp/Telegram that progress has
  * passed the point of no return. The new process boots with the post-update
- * hint planted, so the next "Tunnel URL" message reads "🔄 Overdrive updated
+ * hint planted, so the next "Tunnel URL" message reads "🔄 Electric Guardian updated
  * to X" instead of generic "URL changed".
  */
 public class UpdateCommandHandler implements TelegramCommandHandler {

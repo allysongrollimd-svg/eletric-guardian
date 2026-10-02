@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Overdrive araç izlemesini arka planda etkin tutar. Bu hizmet ekran içeriğini okumaz veya onunla etkileşime girmez.</string>
+    <string name="accessibility_service_description">Electric Guardian araç izlemesini arka planda etkin tutar. Bu hizmet ekran içeriğini okumaz veya onunla etkileşime girmez.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">Otomatik olarak her çubukta trim için doğru kamera seçilir. Kamera 1 = BYD Seal, Kamera 0 = Atto trimler. Kurulumun yürürlüğe girmesi için kamera kimliğini değiştirdikten sonra daemon\'u yeniden başlatın.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">OEM Dashcam Kamera Kimliği</string>
-    <string name="camera_oem_dashcam_hint">Ön dashcam sensörünü gösteren AVMCamera kimliğini seçin. Dashcam pano\'nun TERSİDİR: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. OverDrive\'ın seçmesi için Auto\'da bırakın.</string>
+    <string name="camera_oem_dashcam_hint">Ön dashcam sensörünü gösteren AVMCamera kimliğini seçin. Dashcam pano\'nun TERSİDİR: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Electric Guardian\'ın seçmesi için Auto\'da bırakın.</string>
     <string name="camera_oem_dashcam_auto_resolved">Otomatik — id %1$d kullanılıyor (pano id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Otomatik — pano id %1$d, dashcam çıkarılamıyor</string>
     <string name="camera_oem_dashcam_save">Kaydet</string>
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">Panoramik akış: Miras otomatik tespit / araştırma</string>
     <string name="camera_mapping_current_format">Akım haritası: %1$s</string>
     <string name="camera_mapping_current_none">Akım haritası: Otomatik / Varsayılan</string>
-    <string name="camera_mapping_hint">OverDrive varsayılan olarak eski başlangıç davranışını korur, ancak şimdi birleşik panoramik şeridi düzgün kalibre etmenizi sağlar. Her çiğ birleşik parçayı önceden görüntüleyin, mantıksal 360 rollerini aracınızda ön/sağ/arktaki/sol gösterilen parçaya haritasınız ve daemon bu düzeni kaydetme, akış ve AI için yeniden başlatıldıktan sonra tekrar kullanacaktır.</string>
+    <string name="camera_mapping_hint">Electric Guardian varsayılan olarak eski başlangıç davranışını korur, ancak şimdi birleşik panoramik şeridi düzgün kalibre etmenizi sağlar. Her çiğ birleşik parçayı önceden görüntüleyin, mantıksal 360 rollerini aracınızda ön/sağ/arktaki/sol gösterilen parçaya haritasınız ve daemon bu düzeni kaydetme, akış ve AI için yeniden başlatıldıktan sonra tekrar kullanacaktır.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Bağlantı için taray</string>
     <string name="dashboard_qr_waiting">Tünel için bekliyordum...</string>
@@ -179,10 +179,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Dilinizi Seçin</string>
-    <string name="setup_language_body">OverDrive uygulaması ve web tüneli için farklı bir dil seçmek için basın.</string>
+    <string name="setup_language_body">Electric Guardian uygulaması ve web tüneli için farklı bir dil seçmek için basın.</string>
     <string name="setup_language_button">Dil Seç</string>
     <string name="setup_autostart_title">Otomatik Başlatma Sınırını Engelle</string>
-    <string name="setup_autostart_body">BYD Otomatik Başlatma açmak için aşağıdakine tıklayın. OverDrive listesinde bulun ve kutuyu açın. BYD bunu her yüklemede siler  güncelleştirmelerden sonra yeniden yapacaksınız.</string>
+    <string name="setup_autostart_body">BYD Otomatik Başlatma açmak için aşağıdakine tıklayın. Electric Guardian listesinde bulun ve kutuyu açın. BYD bunu her yüklemede siler  güncelleştirmelerden sonra yeniden yapacaksınız.</string>
     <string name="setup_autostart_button">BYD Otomatik Başlatma Aç</string>
     <string name="setup_overlay_title">Diğer Uygulamalarda Gösterilmesine İzin Ver</string>
     <string name="setup_overlay_body">Diğer uygulamalar üzerinde kaydetme ve seyahat izleme için yüzen bir durum göstergesi göstermek için bunu etkinleştirin.</string>
@@ -395,7 +395,7 @@
     <string name="update_picker_current_suffix">%1$s (yüklü)</string>
     <string name="update_picker_older_suffix">%1$s (eski)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Overdrive güncelleniyor</string>
+    <string name="update_progress_title">Electric Guardian güncelleniyor</string>
     <string name="update_step_downloading">Güncelleme indiriliyor…</string>
     <string name="update_step_verifying">İndirme doğrulanıyor…</string>
     <string name="update_step_stopping">Daemon\'lar durduruluyor…</string>
@@ -577,7 +577,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">İpuç ve sorun çözme</string>
     <string name="setup_traffic_title">BYD Trafik Monitörü Etkinleştir</string>
-    <string name="setup_traffic_body">BYD Traffic Monitor üçüncü taraf uygulamaların internet\'e ulaşmasını engeller. Bu uygulamayı devre dışı bırakmak, OverDrive ve yüklediğiniz diğer uygulamaların ağı kullanmasına izin verir.</string>
+    <string name="setup_traffic_body">BYD Traffic Monitor üçüncü taraf uygulamaların internet\'e ulaşmasını engeller. Bu uygulamayı devre dışı bırakmak, Electric Guardian ve yüklediğiniz diğer uygulamaların ağı kullanmasına izin verir.</string>
     <string name="setup_traffic_button">Açık Trafik İzleyici</string>
     <string name="setup_camera_fix_title">Kamera siyah mı yanlış mı?</string>
     <string name="setup_camera_fix_body">Kamera sondası, Camera ID\'yi 0 olarak ayarlayın, Save\'e dokunun ve sonra kamera demonu yeniden başlatın.</string>
@@ -601,16 +601,16 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">OverDrive Durumu</string>
+    <string name="status_overlay_notif_title">Electric Guardian Durumu</string>
     <string name="status_overlay_notif_text">Durum üstü aktif</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">Overdrive Etkin</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian Etkin</string>
     <string name="daemon_keepalive_notif_text">Araç sistemleri izleniyor</string>
-    <string name="overdrive_status_summary_title">Overdrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">Arka plan hizmetleri çalışıyor</string>
     <!-- ============================================================== -->
     <!-- M3 Revamp: navigation rail + settings sub-rail + theme picker  -->
@@ -650,7 +650,7 @@
     <string name="settings_privacy_title">Gizlilik &amp; Veriler</string>
     <string name="settings_privacy_body">Reset kayıt indeksini, önbelleğe alınan kimlik bilgileri, daemon durumunu ve cihazdaki tercihleri temizler.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">OverDrive hakkında</string>
+    <string name="settings_about_title">Electric Guardian hakkında</string>
     <string name="settings_about_version_label">Versiyon</string>
     <string name="settings_about_package_label">İnşaat</string>
     <string name="settings_about_check_update_value">En son GitHub sürümünü kontrol edin ve daha yeniyse yükleyin.</string>
@@ -659,9 +659,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Senin gibi insanlar tarafından güçlendirilmiş.</string>
     <string name="settings_about_support_share_title">Başka bir araç sahibine bahset</string>
-    <string name="settings_about_support_share_value">Paylaşılan her bağlantı başka bir BYD sahibinin Overdrive\'i keşfetmesine yardımcı olur.</string>
-    <string name="settings_about_support_share_message">BYD için Overdrive  açık kaynaklı gözetim &amp; dashcam\'ı kontrol edin: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Overdrive\'ı Paylaş</string>
+    <string name="settings_about_support_share_value">Paylaşılan her bağlantı başka bir BYD sahibinin Electric Guardian\'i keşfetmesine yardımcı olur.</string>
+    <string name="settings_about_support_share_message">BYD için Electric Guardian  açık kaynaklı gözetim &amp; dashcam\'ı kontrol edin: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Electric Guardian\'ı Paylaş</string>
     <string name="settings_about_open_link_failed">Bağlantıyı açamadım.</string>
     <string name="settings_about_open_link_copied">URL kopyalandı: %1$s</string>
     <string name="settings_about_support_kofi_title">Sonraki versiyon için yakıt</string>
@@ -669,7 +669,7 @@
     <string name="settings_about_license_title">Lisans</string>
     <string name="settings_about_license_value">MIT  açık kaynak. Tam metni görüntülemek için dokunun.</string>
     <string name="settings_about_source_title">Kaynak kodu</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">GitHub\'da bir bırak</string>
     <string name="settings_about_star_value">Bir saniye sürer, çok şey ifade eder.</string>
     <string name="settings_about_thanks_title">Teşekkürler</string>
@@ -739,7 +739,7 @@
     <string name="diagnostics_settings_subtitle">Uygulama tercihleri, tema ve dil.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Entegreler</string>
-    <string name="integrations_hero_subtitle">Overdrive\'ı hizmetlerinize bağlayın.</string>
+    <string name="integrations_hero_subtitle">Electric Guardian\'ı hizmetlerinize bağlayın.</string>
     <string name="integrations_status_unknown">Yapılandırmak için dokun</string>
     <string name="integrations_status_configured">Yapılandırılmış</string>
     <string name="integrations_status_not_set_up">Yapılandırılmamış .</string>
@@ -752,7 +752,7 @@
     <string name="settings_action_check_update">Güncellemeleri kontrol edin</string>
     <string name="settings_action_reset_data">Verileri yeniden ayarlayın...</string>
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
     <!-- ============================================================== -->
@@ -818,11 +818,11 @@
     <string name="settings_section_surveillance_subtitle">Deteksiyon bölgeleri, program, hareket hassasiyeti.</string>
     <string name="settings_section_daemons_subtitle">Cloudflared, Zrok, Telegram, MQTT çalıştırıcıları.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">OverDrive hakkında</string>
+    <string name="settings_about_row_title">Electric Guardian hakkında</string>
     <string name="settings_about_row_subtitle">Versiyon, lisans, destek geliştirme.</string>
     <string name="settings_reset_row_subtitle">Kayıtları, olayları ya da tüm gizli yerleri temizle.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -839,7 +839,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">Öntanımlı olarak cihazda</string>
-    <string name="settings_privacy_stance_body">OverDrive tamamen ana birimle çalışır. Arabanızdan açıkça ayarladığınız tüneller ve entegrasyonlar dışında hiçbir telemetri çıkmaz.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian tamamen ana birimle çalışır. Arabanızdan açıkça ayarladığınız tüneller ve entegrasyonlar dışında hiçbir telemetri çıkmaz.</string>
     <string name="settings_privacy_overline_storage">Yerel depolama</string>
     <string name="settings_privacy_overline_reset">Veri Yeniden Sunu</string>
     <string name="settings_privacy_storage_clips_label">Disk üzerindeki klipler</string>
@@ -849,18 +849,18 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d klipleri</string>
     <string name="settings_privacy_reset_subtitle">Kategorileri seçin: kayıtlar, olaylar, daemon yapılandırmaları, önbelleğe alınmış telemetri...</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Güvenlik</string>
-    <string name="settings_security_subtitle">Yolcuların ve vale görevlilerinin PIN\'iniz olmadan açamaması için OverDrive uygulamasını kilitleyin.</string>
+    <string name="settings_security_subtitle">Yolcuların ve vale görevlilerinin PIN\'iniz olmadan açamaması için Electric Guardian uygulamasını kilitleyin.</string>
     <string name="settings_security_stance_title">Yalnızca arayüz kilidi</string>
-    <string name="settings_security_stance_body">Uygulama kilitliyken gözetim, kayıt, caydırıcı, uyarılar ve arka plan hizmetleri çalışmaya devam eder. PIN yalnızca OverDrive arayüzünü kısıtlar, başka hiçbir şeyi değil.</string>
+    <string name="settings_security_stance_body">Uygulama kilitliyken gözetim, kayıt, caydırıcı, uyarılar ve arka plan hizmetleri çalışmaya devam eder. PIN yalnızca Electric Guardian arayüzünü kısıtlar, başka hiçbir şeyi değil.</string>
     <string name="settings_security_overline_lock">Uygulama kilidi</string>
     <string name="settings_security_overline_recovery">PIN\'inizi unutursanız</string>
     <string name="settings_security_toggle_title">PIN gerektir</string>
-    <string name="settings_security_toggle_subtitle_off">Kapalı — herkes OverDrive\'ı açabilir.</string>
-    <string name="settings_security_toggle_subtitle_on">Açık — OverDrive\'ı açmak için PIN gerekli.</string>
+    <string name="settings_security_toggle_subtitle_off">Kapalı — herkes Electric Guardian\'ı açabilir.</string>
+    <string name="settings_security_toggle_subtitle_on">Açık — Electric Guardian\'ı açmak için PIN gerekli.</string>
     <string name="settings_security_change_title">PIN Değiştir</string>
     <string name="settings_security_change_subtitle">Mevcut PIN\'i onaylayın, ardından yeni bir tane belirleyin.</string>
     <string name="settings_security_autolock_title">Otomatik kilit</string>
@@ -897,7 +897,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">PIN girin</string>
     <string name="pin_lock_title_unlocked">Kilidi açıldı</string>
-    <string name="pin_lock_subtitle_default">Devam etmek için OverDrive\'ın kilidini açın.</string>
+    <string name="pin_lock_subtitle_default">Devam etmek için Electric Guardian\'ın kilidini açın.</string>
     <string name="pin_lock_subtitle_wrong">Yanlış PIN. Tekrar deneyin.</string>
     <string name="pin_lock_subtitle_locked_out">Çok fazla deneme. Kısa süre sonra tekrar deneyin.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -940,7 +940,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Hoşgeldiniz  Overdrive şimdi ikinci göz çiftiniz.</string>
+    <string name="dashboard_insight_welcome">Hoşgeldiniz  Electric Guardian şimdi ikinci göz çiftiniz.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">%1$s (≈%2$s) park ederken alındı.</string>
     <string name="dashboard_insight_parked_charged">%1$s\'i park ederken aldım.</string>
@@ -1187,9 +1187,9 @@
     <string name="onboarding_authorize_waiting_body">Android açılır penceresini kabul edin. Görmüyorsanız zaten verilmiş olabilir — bu işlem kendi kendine devam edecektir.</string>
     <string name="onboarding_authorize_waiting_title">İzin bekleniyor…</string>
     <string name="settings_backup_restore_failed">Geri yükleme başarısız oldu</string>
-    <string name="onboarding_authorize_title">Overdrive\'ı uyandır</string>
+    <string name="onboarding_authorize_title">Electric Guardian\'ı uyandır</string>
     <string name="onboarding_expert_integrations_body">Telegram bildirimlerini, A Better Routeplanner\'ı, MQTT\'yi veya BYD Cloud\'u bağlayın. Her kart kurulumunu uygulama içinde açar. Her şey bağlandığında üstteki hap yeşile döner.</string>
-    <string name="settings_backup_restore_confirm_msg">Bu işlem mevcut Overdrive ayarlarınızı yedekle değiştirir ve hizmetleri yeniden yükler. Yalnızca yedeğin oluşturulduğu aynı kafa ünitesinde çalışır.</string>
+    <string name="settings_backup_restore_confirm_msg">Bu işlem mevcut Electric Guardian ayarlarınızı yedekle değiştirir ve hizmetleri yeniden yükler. Yalnızca yedeğin oluşturulduğu aynı kafa ünitesinde çalışır.</string>
     <string name="onboarding_camera_dashcam_body">Oklarla kameralar arasında geçiş yapın ve ön cam / ileri görünümü gösterende durun. Numarasını not edin — bir sonraki adımda onu seçeceksiniz.</string>
     <string name="onboarding_later">Bunu sonra yap</string>
     <string name="onboarding_camera_pano_body">Birleştirilmiş 4\'lü görüntüyü bulmak için okları kullanın. ALTTAN okuyun: sol alt ARKA, sağ alt SOL taraftır.</string>
@@ -1212,7 +1212,7 @@
     <string name="onboarding_camera_pick_primary">İleri</string>
     <string name="onboarding_help_cd">Rehberli tur</string>
     <string name="onboarding_dash_tiles_body">Bu kartlar birer düğmedir — Canlı kameralar, Kayıtlar, Hizmetler veya Aracınızı açmak için dokunun.</string>
-    <string name="onboarding_vehicle_title">Overdrive\'a bataryanızı tanıtın</string>
+    <string name="onboarding_vehicle_title">Electric Guardian\'a bataryanızı tanıtın</string>
     <string name="onboarding_expert_security_title">PIN ile kilitle</string>
     <string name="settings_backup_restoring">Geri yükleniyor…</string>
     <string name="onboarding_expert_surveillance_title">Gözetim ve kayıt</string>
@@ -1274,9 +1274,9 @@
     <string name="onboarding_expert_vehicle_body">Batarya boyutunuzu ve modelinizi ayarlamak için Araç kutusuna dokunun — doğru menzil ve sağlık tahminlerini sağlar.</string>
     <string name="onboarding_expert_camprobe_body">Bu, her role hangi fiziksel kameranın yayın yapacağını yeniden eşler ve kameraları yeniden başlatır. Yalnızca bir yayın yanlış görünüyorsa değiştirin — bunu rehberde daha önce ayarlamıştınız.</string>
     <string name="onboarding_done_title">Kokpit hazır</string>
-    <string name="onboarding_authorize_body">Overdrive, kameralarınızı küçük bir cihaz içi yardımcı üzerinden çalıştırır. Android bir kez USB hata ayıklamaya izin vermenizi isteyecek — <b>İzin Ver</b>\'e dokunun ve her yeniden başlatmadan sonra açık kalması için <b>Bu cihazdan her zaman izin ver</b> seçeneğini işaretleyin.</string>
-    <string name="onboarding_camera_intro_body">Overdrive\'a hangi kameranın 360 görünümünüz, hangisinin dashcam\'iniz olduğunu söyleyelim. Yaklaşık bir dakika sürer ve sonradan değiştirebilirsiniz.</string>
-    <string name="settings_backup_invalid_file">Bu dosya geçerli bir Overdrive yedeği değil</string>
+    <string name="onboarding_authorize_body">Electric Guardian, kameralarınızı küçük bir cihaz içi yardımcı üzerinden çalıştırır. Android bir kez USB hata ayıklamaya izin vermenizi isteyecek — <b>İzin Ver</b>\'e dokunun ve her yeniden başlatmadan sonra açık kalması için <b>Bu cihazdan her zaman izin ver</b> seçeneğini işaretleyin.</string>
+    <string name="onboarding_camera_intro_body">Electric Guardian\'a hangi kameranın 360 görünümünüz, hangisinin dashcam\'iniz olduğunu söyleyelim. Yaklaşık bir dakika sürer ve sonradan değiştirebilirsiniz.</string>
+    <string name="settings_backup_invalid_file">Bu dosya geçerli bir Electric Guardian yedeği değil</string>
     <string name="onboarding_camera_verify_body">360 görünüm birleştirilmiş görüntüyü, dashcam ise önündeki yolu gösteriyor mu? Bir görüntü yanlış görünüyorsa Yeniden Seç\'e dokunun — hiçbir şey bozulmadı.</string>
     <string name="onboarding_expert_bydcloud_body">BYD hesabınızı buraya bağlamak, telefonunuzdan uzaktan kilitleme, sinyal çakma ve korna çalma özelliklerini etkinleştirir. Bağlı hesabı ve erişim kodunu hassas bilgi olarak ele alın.</string>
     <string name="settings_backup_restored">Ayarlar geri yüklendi</string>
@@ -1293,8 +1293,8 @@
     <string name="settings_backup_daemon_down">Yedekleme veya geri yükleme için kamera hizmetinin çalışıyor olması gerekir. Arka Plan Hizmetleri\'nden başlatın, ardından tekrar deneyin.</string>
     <string name="onboarding_expert_menu_title">Rehberli tur</string>
     <string name="onboarding_authorize_retry_button">Tekrar dene</string>
-    <string name="onboarding_mode_title">Overdrive ne zaman çalışsın?</string>
-    <string name="onboarding_mode_body">Aracı kapattıktan sonra Overdrive\'ın nasıl davranacağını seçin.\n\n<b>Açık &amp; Kapalı</b> park halindeyken izlemeye devam eder — gözetim ve arka plan izleme etkin kalır, böylece araç gece boyunca biraz güç çeker.\n\n<b>Yalnızca açık</b>, siz ayrıldığınızda Overdrive\'ı tamamen kapatır. Dashcam, yolculuklar ve şarj siz sürerken çalışmaya devam eder ve aracı çalıştırdığınızda her şey otomatik olarak yeniden başlar. Bunu istediğiniz zaman Ayarlar\'dan değiştirebilirsiniz.</string>
+    <string name="onboarding_mode_title">Electric Guardian ne zaman çalışsın?</string>
+    <string name="onboarding_mode_body">Aracı kapattıktan sonra Electric Guardian\'ın nasıl davranacağını seçin.\n\n<b>Açık &amp; Kapalı</b> park halindeyken izlemeye devam eder — gözetim ve arka plan izleme etkin kalır, böylece araç gece boyunca biraz güç çeker.\n\n<b>Yalnızca açık</b>, siz ayrıldığınızda Electric Guardian\'ı tamamen kapatır. Dashcam, yolculuklar ve şarj siz sürerken çalışmaya devam eder ve aracı çalıştırdığınızda her şey otomatik olarak yeniden başlar. Bunu istediğiniz zaman Ayarlar\'dan değiştirebilirsiniz.</string>
     <string name="onboarding_mode_on_off_button">Açık &amp; Kapalı</string>
     <string name="onboarding_mode_on_only_button">Yalnızca açık</string>
     <string name="onboarding_expert_trips_title">Yolculuk geçmişi</string>
@@ -1302,7 +1302,7 @@
     <string name="settings_backup_read_failed">Dosya okunamadı</string>
     <string name="onboarding_expert_daemons_title">Hizmetler — dikkatli kullanın</string>
     <string name="onboarding_done_short">Anladım</string>
-    <string name="onboarding_camera_pick_body">Üstteki kartta 360 / normal kameranızın numarasını seçin. Emin değil misiniz? OTOMATİK\'te bırakın, Overdrive halletsin.</string>
+    <string name="onboarding_camera_pick_body">Üstteki kartta 360 / normal kameranızın numarasını seçin. Emin değil misiniz? OTOMATİK\'te bırakın, Electric Guardian halletsin.</string>
     <string name="recording_lib_storage_filter_internal">Dahili</string>
     <string name="recording_lib_storage_internal">DAH</string>
     <string name="onboarding_camera_windshield_body">OEM dashcam düzeni için — ön cam kamerası kaydınızın üstünde bir şerit olarak — rol menüsünden Ön Cam\'i seçin, ileri kamerayı belirleyin ve Kaydedin. Çoğu kullanıcı bunu atlayabilir.</string>

@@ -725,7 +725,7 @@ public class PerformanceMonitor {
      * Performance page WITHOUT adb: when cpuFreqMhz sits well below
      * cpuMaxFreqMhz under load (and CPU temp is high), the SoC is throttling —
      * which on this shared SDM665 drags the whole head-unit UI, not just
-     * OverDrive. cpuinfo_max_freq is the hardware ceiling; scaling_max_freq is
+     * Electric Guardian. cpuinfo_max_freq is the hardware ceiling; scaling_max_freq is
      * the governor's current cap (can itself be lowered by thermal HAL) — we
      * prefer cpuinfo_max_freq so a thermally-capped governor still compares
      * against the true hardware max.

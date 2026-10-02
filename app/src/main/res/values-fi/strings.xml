@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Pitää Overdrive ajoneuvon seuranta aktiivisena taustalla. Tämä palvelu ei lue tai ole vuorovaikutuksessa näytön sisällön kanssa.</string>
+    <string name="accessibility_service_description">Pitää Electric Guardian ajoneuvon seuranta aktiivisena taustalla. Tämä palvelu ei lue tai ole vuorovaikutuksessa näytön sisällön kanssa.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">Panoraama stream: Legacy auto-detect / probing</string>
     <string name="camera_mapping_current_format">Nykyinen kartoitus: %1$s</string>
     <string name="camera_mapping_current_none">Nykyinen kartoitus: Automaattinen / oletus</string>
-    <string name="camera_mapping_hint">OverDrive pitää oletuksena legacy käynnistyksen käytöksen, mutta nyt voit kalibroida yhdistetyn panoraama kaistan oikein. Esikatsele jokainen raaka yhdistetty viipale, kartoita loogiset 360 roolit siivulle, joka näyttää ajoneuvoosi edestä/oikealle/taakse / vasemmalle ja demoni käyttää uudelleen tätä asettelua tallennukseen, suoratoistoon ja tekoälyyn uudelleenkäynnistyksen jälkeen.</string>
+    <string name="camera_mapping_hint">Electric Guardian pitää oletuksena legacy käynnistyksen käytöksen, mutta nyt voit kalibroida yhdistetyn panoraama kaistan oikein. Esikatsele jokainen raaka yhdistetty viipale, kartoita loogiset 360 roolit siivulle, joka näyttää ajoneuvoosi edestä/oikealle/taakse / vasemmalle ja demoni käyttää uudelleen tätä asettelua tallennukseen, suoratoistoon ja tekoälyyn uudelleenkäynnistyksen jälkeen.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Skannaa yhdistää</string>
     <string name="dashboard_qr_waiting">Odotetaan tunnelia…</string>
@@ -179,10 +179,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Valitse Kieli</string>
-    <string name="setup_language_body">Oletuksena on pääyksikön kieli. Napauta valitaksesi toisen OverDrive-sovelluksen ja web-tunnelin osalta.</string>
+    <string name="setup_language_body">Oletuksena on pääyksikön kieli. Napauta valitaksesi toisen Electric Guardian-sovelluksen ja web-tunnelin osalta.</string>
     <string name="setup_language_button">Valitse Kieli</string>
     <string name="setup_autostart_title">Poista Automaattisen Käynnistyksen Rajoitus Käytöstä</string>
-    <string name="setup_autostart_body">Napauta alla avataksesi BYD Autoto-Start. Etsi OverDrive luettelosta ja poista valintaruutu. BYD pyyhkii tämän jokaiseen asennukseen — teet sen uudelleen päivitysten jälkeen.</string>
+    <string name="setup_autostart_body">Napauta alla avataksesi BYD Autoto-Start. Etsi Electric Guardian luettelosta ja poista valintaruutu. BYD pyyhkii tämän jokaiseen asennukseen — teet sen uudelleen päivitysten jälkeen.</string>
     <string name="setup_autostart_button">Avaa Byd Automaattikäynnistys</string>
     <string name="setup_overlay_title">Salli Muiden Sovellusten Näyttö</string>
     <string name="setup_overlay_body">Ota tämä käyttöön, jos haluat näyttää kelluvan tilaindikaattorin muiden sovellusten päälle tapahtuvaan tallennukseen ja matkanseurantaan.</string>
@@ -577,7 +577,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Vinkkejä &amp; vianmääritys</string>
     <string name="setup_traffic_title">Poista Byd Traffic Monitori Käytöstä</string>
-    <string name="setup_traffic_body">BYD Traffic Monitor estää kolmannen osapuolen sovelluksia pääsemästä internetiin. Kun poistat sen käytöstä, OverDrive ja muut asentamasi sovellukset käyttävät todella verkkoa. Jälkeen tarvitaan kova uudelleenkäynnistys.</string>
+    <string name="setup_traffic_body">BYD Traffic Monitor estää kolmannen osapuolen sovelluksia pääsemästä internetiin. Kun poistat sen käytöstä, Electric Guardian ja muut asentamasi sovellukset käyttävät todella verkkoa. Jälkeen tarvitaan kova uudelleenkäynnistys.</string>
     <string name="setup_traffic_button">Avaa Liikenteen Valvonta</string>
     <string name="setup_camera_fix_title">Kamera syöttää mustia tai virheellisiä?</string>
     <string name="setup_camera_fix_body">Camera probe, aseta kameran tunnus arvoon 0, napauta Talleta ja käynnistä kameran taustakuva uudelleen. Jos syötteet ovat edelleen väärässä, toista kameran tunnuksella 1. Jätä kartoitusosio koskematta.</string>
@@ -604,7 +604,7 @@
     <string name="status_overlay_notif_title">YliDriven Tila</string>
     <string name="status_overlay_notif_text">Status overlay active</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
@@ -657,8 +657,8 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Palvelun tarjoaa kaltaisesi ihmiset</string>
     <string name="settings_about_support_share_title">Kerro omalle omistajalle</string>
-    <string name="settings_about_support_share_value">Jokainen jaettu linkki auttaa toista BYD omistajaa löytämään Overdrive.</string>
-    <string name="settings_about_support_share_message">Katso Overdrive – avoimen lähdekoodin valvonta &amp; dashcam BYD: https://overdrive-5lc.pages.dev/</string>
+    <string name="settings_about_support_share_value">Jokainen jaettu linkki auttaa toista BYD omistajaa löytämään Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Katso Electric Guardian – avoimen lähdekoodin valvonta &amp; dashcam BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_support_share_chooser">Jaa Yliveto</string>
     <string name="settings_about_open_link_failed">Linkkiä ei voitu avata.</string>
     <string name="settings_about_open_link_copied">Selainta ei löytynyt. URL kopioitu: %1$s</string>
@@ -667,7 +667,7 @@
     <string name="settings_about_license_title">Lisenssi</string>
     <string name="settings_about_license_value">MIT – avoin lähdekoodi. Napauta nähdäksesi koko tekstin.</string>
     <string name="settings_about_source_title">Lähdekoodi</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Star us on GitHub</string>
     <string name="settings_about_star_value">Ottaa toisen. Tarkoittaa paljon.</string>
     <string name="settings_about_thanks_title">Kiitos</string>
@@ -737,7 +737,7 @@
     <string name="diagnostics_settings_subtitle">Sovelluksen asetukset, teemat ja kieli.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Integraatiot</string>
-    <string name="integrations_hero_subtitle">Yhdistä Overdrive palveluihisi.</string>
+    <string name="integrations_hero_subtitle">Yhdistä Electric Guardian palveluihisi.</string>
     <string name="integrations_status_unknown">Määritä napauttamalla</string>
     <string name="integrations_status_configured">Määritetty</string>
     <string name="integrations_status_not_set_up">Ei määritetty</string>
@@ -750,7 +750,7 @@
     <string name="settings_action_check_update">Tarkista päivitykset</string>
     <string name="settings_action_reset_data">Nollaa tiedot…</string>
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
     <!-- ============================================================== -->
@@ -841,7 +841,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">Laitteessa oletuksena</string>
-    <string name="settings_privacy_stance_body">OverDrive toimii täysin pääyksikössä. Mikään telemetria ei poistu autostasi paitsi tunneleiden ja erikseen konfiguroitavien integrointien kautta.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian toimii täysin pääyksikössä. Mikään telemetria ei poistu autostasi paitsi tunneleiden ja erikseen konfiguroitavien integrointien kautta.</string>
     <string name="settings_privacy_overline_storage">PAIKALLINEN VARASTOINTI</string>
     <string name="settings_privacy_overline_reset">TIETOJEN PALAUTUS</string>
     <string name="settings_privacy_storage_clips_label">Levyllä olevat leikkeet</string>
@@ -851,18 +851,18 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d leikkeet</string>
     <string name="settings_privacy_reset_subtitle">Valitse kategoriat: nauhoitukset, tapahtumat, taustakuvat, välimuistissa olevat telemetria…</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Turvallisuus</string>
-    <string name="settings_security_subtitle">Lukitse OverDrive-sovellus, joten matkustajat ja kuvakkeet eivät voi avata sitä ilman PIN-koodiasi.</string>
+    <string name="settings_security_subtitle">Lukitse Electric Guardian-sovellus, joten matkustajat ja kuvakkeet eivät voi avata sitä ilman PIN-koodiasi.</string>
     <string name="settings_security_stance_title">Vain käyttöliittymän lukitus</string>
-    <string name="settings_security_stance_body">Valvonta, tallennus, pesu, hälytykset ja taustapalvelut toimivat sovelluksen ollessa lukittu. PIN vie OverDrive-käyttöliittymän, ei mitään muuta.</string>
+    <string name="settings_security_stance_body">Valvonta, tallennus, pesu, hälytykset ja taustapalvelut toimivat sovelluksen ollessa lukittu. PIN vie Electric Guardian-käyttöliittymän, ei mitään muuta.</string>
     <string name="settings_security_overline_lock">Sovelluksen lukitus</string>
     <string name="settings_security_overline_recovery">Jos unohdat PIN-koodisi</string>
     <string name="settings_security_toggle_title">Vaadi PIN-koodi</string>
     <string name="settings_security_toggle_subtitle_off">Pois päältä — kuka tahansa voi avata OverDriveen.</string>
-    <string name="settings_security_toggle_subtitle_on">On – PIN-koodi vaaditaan avaamaan OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_on">On – PIN-koodi vaaditaan avaamaan Electric Guardian.</string>
     <string name="settings_security_change_title">Vaihda PIN-koodi</string>
     <string name="settings_security_change_subtitle">Vahvista nykyinen PIN-koodi ja aseta uusi.</string>
     <string name="settings_security_autolock_title">Lukitse Automaattisesti</string>
@@ -899,7 +899,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Anna PIN-koodi</string>
     <string name="pin_lock_title_unlocked">Avattu</string>
-    <string name="pin_lock_subtitle_default">Avaa OverDrive jatkaaksesi.</string>
+    <string name="pin_lock_subtitle_default">Avaa Electric Guardian jatkaaksesi.</string>
     <string name="pin_lock_subtitle_wrong">Väärä PIN-koodi. Yritä uudelleen.</string>
     <string name="pin_lock_subtitle_locked_out">Liian monta yritystä. Yritä hetken kuluttua uudelleen.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -942,7 +942,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Tervetuloa — Overdrive on nyt toinen silmäparisi.</string>
+    <string name="dashboard_insight_welcome">Tervetuloa — Electric Guardian on nyt toinen silmäparisi.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">Noudetaan %1$s (¼%2$s) pysäköitynä</string>
     <string name="dashboard_insight_parked_charged">Noudetaan %1$s pysäköitynä</string>
@@ -968,8 +968,8 @@
     </plurals>
     <!-- Process uptime. Days form takes (days, hours); hours form takes hours only. -->
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">Overdrive online for %1$d päivä, %2$d h</item>
-        <item quantity="other">Overdrive online for %1$d päivää, %2$d h</item>
+        <item quantity="one">Electric Guardian online for %1$d päivä, %2$d h</item>
+        <item quantity="other">Electric Guardian online for %1$d päivää, %2$d h</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
         <item quantity="one">Yliajaa verkossa %1$d tunnin ajan</item>

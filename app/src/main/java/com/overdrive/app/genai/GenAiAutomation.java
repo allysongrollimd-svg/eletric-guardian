@@ -137,7 +137,7 @@ public final class GenAiAutomation {
         Automation parsed = Automation.fromJson(proposed);
         if (parsed == null) {
             throw new ValidationException(
-                    "The provider draft does not match OverDrive's automation schema.");
+                    "The provider draft does not match Electric Guardian's automation schema.");
         }
         parsed.setName(clamp(parsed.getName(), MAX_NAME_CHARS));
         parsed.setMode(Automation.MODE_MANUAL);
@@ -158,7 +158,7 @@ public final class GenAiAutomation {
         Automation parsed = Automation.fromJson(proposed);
         if (parsed == null) {
             throw new ValidationException(
-                    "Automation does not match OverDrive's schema.");
+                    "Automation does not match Electric Guardian's schema.");
         }
         parsed.setName(clamp(parsed.getName(), MAX_NAME_CHARS));
         parsed.setMode(Automation.MODE_MANUAL);

@@ -34,12 +34,12 @@ import okhttp3.Response;
  * - Update detection: compare asset updated_at vs last installed timestamp
  * - Debug tag is ignored in release builds
  *
- * API: https://api.github.com/repos/yash-srivastava/Overdrive-release/releases/tags/{channel}
+ * API: https://api.github.com/repos/allysongrollimd-svg/eletric-guardian/releases/tags/{channel}
  */
 public class AppUpdater {
 
     private static final String TAG = "AppUpdater";
-    private static final String GITHUB_REPO = "yash-srivastava/Overdrive-release";
+    private static final String GITHUB_REPO = "allysongrollimd-svg/eletric-guardian";
     private static final String PREFS_NAME = "app_updater";
     // LEGACY (pre-channel) baseline key/file. Still read once by
     // migrateBaseline() to seed the per-channel "alpha" slot, then unused.
@@ -707,7 +707,7 @@ public class AppUpdater {
     private static final long MIN_UPDATE_FREE_BYTES = 350L * MIB;
     private static final long UPDATE_INSTALL_HEADROOM_BYTES = 128L * MIB;
     private static final String STORAGE_ERROR_MESSAGE =
-            "Not enough storage to update Overdrive. Free space on the head unit and try again.";
+            "Not enough storage to update Electric Guardian. Free space on the head unit and try again.";
 
     private String getApkPath() {
         return APK_PATH;
@@ -782,7 +782,7 @@ public class AppUpdater {
 
             long requiredMiB = (required + MIB - 1L) / MIB;
             long availableMiB = Math.max(0L, available) / MIB;
-            return "Not enough storage to update Overdrive. Only " + availableMiB
+            return "Not enough storage to update Electric Guardian. Only " + availableMiB
                     + " MB is free; " + requiredMiB
                     + " MB is required. Free space on the head unit and try again.";
         } catch (Exception e) {
@@ -1431,7 +1431,7 @@ public class AppUpdater {
         });
     }
 
-    // ==================== COMPANION APK INSTALL (OverDrive Launcher, WP-H) ====================
+    // ==================== COMPANION APK INSTALL (Electric Guardian Launcher, WP-H) ====================
     //
     // Silent install of a SEPARATE companion package (com.overdrive.launcher)
     // from its OWN GitHub release track. This is fully ADDITIVE and REUSES the
@@ -2297,7 +2297,7 @@ public class AppUpdater {
         // Delete the Telegram post-update hint planted at install-time (it's
         // written unconditionally BEFORE pm install in handleInstallUpdate).
         // On FAILURE it would otherwise survive, and the reborn Telegram bot's
-        // consumePostUpdateHint() would send a FALSE "Overdrive updated to X"
+        // consumePostUpdateHint() would send a FALSE "Electric Guardian updated to X"
         // confirmation for an install that never landed. Remove it so a failed
         // Telegram-triggered install stays silent on the SUCCESS channel (the
         // failure is instead surfaced via the FAILURE hint planted just above,
@@ -2331,7 +2331,7 @@ public class AppUpdater {
         // Clear any stale FAILURE hint from a PRIOR failed install so the reborn
         // bot doesn't send a failure message on top of this success. (The
         // success hint is intentionally KEPT here so notifyTunnel frames the
-        // "Overdrive updated to X" message.)
+        // "Electric Guardian updated to X" message.)
         script.append("  rm -f ").append(UpdateLifecycle.TELEGRAM_INSTALL_FAILED_HINT_FILE).append("\n");
         script.append("fi\n");
         // Step 5: relaunch. Runs in both success and failure cases so the user
@@ -2986,7 +2986,7 @@ public class AppUpdater {
     }
     static String userFacingInstallError(String msg) {
         String error = msg == null || msg.trim().isEmpty() ? "Update failed" : msg.trim();
-        if (error.startsWith("Not enough storage to update Overdrive.")) return error;
+        if (error.startsWith("Not enough storage to update Electric Guardian.")) return error;
         String lower = error.toLowerCase(java.util.Locale.ROOT);
         if (lower.contains("no space left")
                 || lower.contains("enospc")

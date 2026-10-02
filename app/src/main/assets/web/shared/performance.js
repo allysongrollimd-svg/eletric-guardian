@@ -68,7 +68,7 @@ BYD.performance = {
     // (grid, text, crosshair, tooltip) get refreshed from CSS tokens by
     // _refreshPalette() so they flip with [data-theme="light"].
     colors: {
-        system: '#00D4AA',
+        system: '#4ED400',
         app: '#0EA5E9',
         gpu: '#a855f7',
         soc: '#22c55e',
@@ -1100,7 +1100,7 @@ BYD.performance = {
             // Show current / max so thermal throttling is self-evident: when the
             // current freq sits well below max under load (and temp is high) the
             // SoC is throttling — which drags the whole head-unit UI on this
-            // shared SDM665, not just OverDrive. maxFreqMhz is the static hardware
+            // shared SDM665, not just Electric Guardian. maxFreqMhz is the static hardware
             // ceiling; omitted (0) on kernels that don't expose it.
             if (data.cpu.maxFreqMhz) {
                 this.updateMetric('cpuFreq', data.cpu.freqMhz + ' / ' + data.cpu.maxFreqMhz, ' MHz');

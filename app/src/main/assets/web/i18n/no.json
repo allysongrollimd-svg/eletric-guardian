@@ -8,7 +8,7 @@
   "app": {
     "name": "Overstasjon",
     "tagline": "Overvåking System",
-    "live_view_title": "Live View - OverDrive",
+    "live_view_title": "Live View - Electric Guardian",
     "events_title": "Hendelser - Overstasjon",
     "surveillance_title": "Overvåking - Overstasjon",
     "recordings_title": "Opptak - Overstasjon",
@@ -21,7 +21,7 @@
     "notifications_title": "Varsler - Overstasjon",
     "vehicle_control_title": "Kontroll av kjøretøy - overstasjon",
     "login_title": "Logg inn - Overdisk",
-    "byd_cloud_title": "BYD Cloud - OverDrive",
+    "byd_cloud_title": "BYD Cloud - Electric Guardian",
     "telegram_title": "Telegram - Overstasjon",
     "dashboard_title": "Dashbord - Overstasjon",
     "road_sense_title": "RoadSense - Overstasjon",
@@ -309,7 +309,7 @@
   "login": {
     "subtitle": "Skriv inn enhetens token for tilgang",
     "device_id": "Enhetens ID",
-    "find_hint": "Finn dette i din OverDrive-app → Dashboard → Adgangskode",
+    "find_hint": "Finn dette i din Electric Guardian-app → Dashboard → Adgangskode",
     "login_btn": "Innlogging",
     "privacy": "Dine data forblir på enheten."
   },
@@ -2004,9 +2004,9 @@
     "report_discord": "Splid",
     "report_github": "GitHub Issues",
     "report_whatsapp": "WhatsApp",
-    "report_discord_url": "https://discord.gg/PZutk9fg4h",
-    "report_github_url": "https://github.com/yash-srivastava/Overdrive-release/issues",
-    "report_whatsapp_url": "https://chat.whatsapp.com/HChmriCWgr9KwAtE6OEkiM",
+    "report_discord_url": "https://github.com/allysongrollimd-svg/eletric-guardian/discussions",
+    "report_github_url": "https://github.com/allysongrollimd-svg/eletric-guardian/issues",
+    "report_whatsapp_url": "https://github.com/allysongrollimd-svg/eletric-guardian/discussions",
     "catalog_title": "Velg en versjon",
     "catalog_empty": "Ingen versjoner publisert ennå.",
     "catalog_retry": "Prøv igjen",
@@ -2343,10 +2343,10 @@
       "section": "Drevet av mennesker som deg",
       "star_title": "Drop a ⭐ on GitHub",
       "star_value": "Tar et sekund til. Betyr mye.",
-      "star_url": "https://github.com/yash-srivastava/Overdrive-release",
+      "star_url": "https://github.com/allysongrollimd-svg/eletric-guardian",
       "share_title": "Fortell en medeier",
       "share_value": "Hver delte lenke hjelper en annen BYD-eier å oppdage overdrive.",
-      "share_message": "Sjekk ut overdriv— åpen kildekode overvåkning & dashcam for BYD: https://overdrive-5lc.pages.dev/",
+      "share_message": "Sjekk ut overdriv— åpen kildekode overvåkning & dashcam for BYD: https://github.com/allysongrollimd-svg/eletric-guardian",
       "kofi_title": "Drivstoff den neste utgaven ☕",
       "kofi_value": "En kaffe på Ko-fi holder sen natt til å komme.",
       "kofi_url": "https://ko-fi.com/E1E71XALHX"
@@ -2377,7 +2377,7 @@
     "recommend_step_5": "Velg en godkjenningsperiode som passer hvor lenge du vil at denne profilen skal være aktiv.",
     "recommend_step_6": "Logg ut av BYD-appen, registrer deg deretter med den sekundære e-posten ved hjelp av verifiseringskoden og opprett et passord.",
     "recommend_step_7": "Trykk på lås eller lås opp i BYD-appen - det vil spørre deg om å velge en kontrollpenn.",
-    "recommend_step_8": "Skriv inn den sekundære e-posten, passordet og kontroller PIN her i OverDrive."
+    "recommend_step_8": "Skriv inn den sekundære e-posten, passordet og kontroller PIN her i Electric Guardian."
   },
   "telegram": {
     "page_title": "Telegram",
@@ -2385,7 +2385,7 @@
     "tab_pair": "Paring",
     "tab_preferences": "Innstillinger",
     "bot_title": "Bot Token",
-    "bot_hint": "Lag en bot via @BotFather på Telegram, kopier tokenet her, og OverDrive vil validere den. tokenet er kun lagret på denne enheten.",
+    "bot_hint": "Lag en bot via @BotFather på Telegram, kopier tokenet her, og Electric Guardian vil validere den. tokenet er kun lagret på denne enheten.",
     "token": "Bot token",
     "token_supporting": "Format: 123456789:ABCdef-GHI…",
     "token_keep": "La stå tomt for å beholde nåværende",
@@ -2519,7 +2519,7 @@
     "mode_continuous": "Kontinuerlig",
     "mode_smart": "Smart",
     "mode_off_desc_recording": "Ikke opptak fra OEM forward sensor. Pano dashkamera holder skriving cam_*.mp4 normalt.",
-    "mode_continuous_desc_recording": "Alltid registrer dvr_*.mp4 mens OverDrive kjører, uansett hva panos dashcam gjør.",
+    "mode_continuous_desc_recording": "Alltid registrer dvr_*.mp4 mens Electric Guardian kjører, uansett hva panos dashcam gjør.",
     "mode_smart_desc_recording": "Speil panelinstrumentet: når pano er i opptak (Drive Mode / Kontinuerlig / Proximity Guard fires), registrer dvr_*.mp4 også. Pano stopper, OEM stopper.",
     "mode_off_desc_surveillance": "Ikke spill inn fra OEM-sensoren på overvåking. Pano sentry holder skriving av event_*.mp4 normalt.",
     "mode_continuous_desc_surveillance": "Alltid ta opp dvr_*.mp4 hele tiden bilen er parkert, uavhengig av bevegelse. Brenner deg gjennom lagring raskest.",
@@ -2536,7 +2536,7 @@
     "native_dvr_enable": "Aktiver naturlig DVR på nytt",
     "native_dvr_status_enabled": "Status: Aktivert",
     "native_dvr_status_disabled": "Status: Deaktivert av logged...",
-    "native_dvr_disable_toast": "Naturlig DVR deaktivert. OverDrive eier nå kameraet.",
+    "native_dvr_disable_toast": "Naturlig DVR deaktivert. Electric Guardian eier nå kameraet.",
     "native_dvr_enable_toast": "Nativ DVR ble reaktivert.",
     "start_timeout": "Tidsavbrudd på rørnett - sjekk av daemon-logger"
   },

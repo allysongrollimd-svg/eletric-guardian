@@ -177,7 +177,7 @@ public class GenAiIncidentPacksTest {
         Map<String, byte[]> localEntries =
                 unzip(withoutVideo.toByteArray());
         assertEquals(Arrays.asList(
-                        "OverDrive-Incident-Report.pdf",
+                        "ElectricGuardian-Incident-Report.pdf",
                         "evidence/incident-preview.jpg",
                         "README.txt",
                         "metadata.json",
@@ -188,19 +188,19 @@ public class GenAiIncidentPacksTest {
                         "manifest.sha256"),
                 new ArrayList<>(localEntries.keySet()));
         byte[] pdf =
-                localEntries.get("OverDrive-Incident-Report.pdf");
+                localEntries.get("ElectricGuardian-Incident-Report.pdf");
         assertNotNull(pdf);
         String pdfText = new String(
                 pdf, StandardCharsets.ISO_8859_1);
         assertTrue(pdfText.startsWith("%PDF-1.4"));
         assertTrue(pdfText.contains(
-                "OverDrive Incident Evidence Pack"));
+                "Electric Guardian Incident Evidence Pack"));
         assertTrue(pdfText.endsWith("%%EOF\n"));
         String readme = new String(
                 localEntries.get("README.txt"),
                 StandardCharsets.UTF_8);
         assertTrue(readme.contains(
-                "OverDrive Incident Evidence Pack"));
+                "Electric Guardian Incident Evidence Pack"));
         assertTrue(readme.contains(
                 "Video: media/recording.mp4 (when included)"));
         assertTrue(readme.contains(

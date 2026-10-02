@@ -67,7 +67,7 @@ public final class GenAiIncidentPacks {
 
     private static final String ZIP_README = "README.txt";
     private static final String ZIP_PDF =
-            "OverDrive-Incident-Report.pdf";
+            "ElectricGuardian-Incident-Report.pdf";
     private static final String ZIP_METADATA = "metadata.json";
     private static final String ZIP_EVIDENCE = "evidence/evidence.json";
     private static final String ZIP_REPORT = "report/report.json";
@@ -187,7 +187,7 @@ public final class GenAiIncidentPacks {
                 .put("filename", video.getName())
                 .put("recordingType", inferType(video.getName()))
                 .put("title", report.optString(
-                        "title", "OverDrive Incident Evidence Report"))
+                        "title", "Electric Guardian Incident Evidence Report"))
                 .put("video", json()
                         .put("sizeBytes", videoSize)
                         .put("mtimeMs", videoMtime)
@@ -376,7 +376,7 @@ public final class GenAiIncidentPacks {
                 directory, source, video, includeVideo);
         HttpResponse.sendAttachmentNoStoreHeaders(
                 out, "application/zip",
-                "OverDrive-Incident-" + packId + ".zip");
+                "ElectricGuardian-Incident-" + packId + ".zip");
         try {
             writeZipBody(
                     directory, video, includeVideo,
@@ -927,7 +927,7 @@ public final class GenAiIncidentPacks {
         }
 
         SafeJson body = json()
-                .put("title", "OverDrive Incident Evidence Report")
+                .put("title", "Electric Guardian Incident Evidence Report")
                 .put("summary", summary.toString())
                 .put("observations", observations)
                 .put("unknowns", new JSONArray()
@@ -1132,7 +1132,7 @@ public final class GenAiIncidentPacks {
                 .put("schemaVersion", SCHEMA_VERSION)
                 .put("createdAtMs", createdAt)
                 .put("generation", generation)
-                .put("title", "OverDrive Incident Evidence Report")
+                .put("title", "Electric Guardian Incident Evidence Report")
                 .put("summary", body.optString("summary", ""))
                 .put("timeline", body.optJSONArray("timeline") == null
                         ? new JSONArray() : body.optJSONArray("timeline"))
@@ -1633,10 +1633,10 @@ public final class GenAiIncidentPacks {
         JSONObject stats = evidence.optJSONObject("stats");
         JSONObject place = evidence.optJSONObject("approximatePlace");
         List<String> cameras = evidenceCameras(evidence);
-        text.append("OverDrive Incident Evidence Pack\n")
+        text.append("Electric Guardian Incident Evidence Pack\n")
                 .append("================================\n\n")
                 .append(clean(report.optString(
-                        "title", "OverDrive Incident Evidence Report"), 120))
+                        "title", "Electric Guardian Incident Evidence Report"), 120))
                 .append("\n\nSUMMARY\n-------\n")
                 .append(clean(report.optString("summary", ""), 1200))
                 .append("\n\nRECORDING\n---------\n")
@@ -1939,7 +1939,7 @@ public final class GenAiIncidentPacks {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream(8192);
         int[] offsets = new int[objectCount + 1];
-        writeUnchecked(out, ascii("%PDF-1.4\n%OverDrive\n"));
+        writeUnchecked(out, ascii("%PDF-1.4\n%Electric Guardian\n"));
         for (int i = 1; i <= objectCount; i++) {
             offsets[i] = out.size();
             writeUnchecked(out, ascii(i + " 0 obj\n"));

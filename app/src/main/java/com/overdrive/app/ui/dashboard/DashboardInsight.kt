@@ -290,7 +290,7 @@ class DashboardInsightProvider(appContext: Context) {
         )
     }
 
-    /** "Overdrive online for 14 days, 6 hours" — only when uptime > 24h. */
+    /** "Electric Guardian online for 14 days, 6 hours" — only when uptime > 24h. */
     private fun uptimeInsight(emphasisColor: Int): DashboardInsight? {
         val uptimeMs = readProcessUptimeMs() ?: return null
         if (uptimeMs < 24L * 60 * 60 * 1000L) return null

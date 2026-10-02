@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">Auto alege camera potrivită pentru fiecare pornire. Camera 1 = Sigiliu BYD, Camera 0 = Atto trims. Reporneşte daemonul după schimbarea ID-ului camerei pentru ca setarea să aibă efect.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">ID cameră Dashcam OEM</string>
-    <string name="camera_oem_dashcam_hint">Alege id-ul AVMCamera care indică senzorul de cameră înainte. Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Lăsați pe Auto pentru a permite alegerea OverDrive.</string>
+    <string name="camera_oem_dashcam_hint">Alege id-ul AVMCamera care indică senzorul de cameră înainte. Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Lăsați pe Auto pentru a permite alegerea Electric Guardian.</string>
     <string name="camera_oem_dashcam_auto_resolved">Auto — folosind id %1$d (panoul este id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Auto - ID-ul panoului este %1$d, nu poate infa camera</string>
     <string name="camera_oem_dashcam_save">Salvează</string>
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">Flux panoramic: detectare automată moștenită / testare</string>
     <string name="camera_mapping_current_format">Maparea curentă: %1$s</string>
     <string name="camera_mapping_current_none">Mapare curentă: Auto / Implicit</string>
-    <string name="camera_mapping_hint">OverDrive păstrează implicit comportamentul moștenit de pornire, dar acum vă permite să calibrați corect banda panoramică fuzionată. Previzualizează fiecare secţiune brută îmbinată, hartă rolurile logice 360 la secţiunea care arată în faţă/dreapta/spate/stânga pe vehiculul tău; și daemonul va reutiliza schema pentru înregistrare, streaming, și AI după repornire.</string>
+    <string name="camera_mapping_hint">Electric Guardian păstrează implicit comportamentul moștenit de pornire, dar acum vă permite să calibrați corect banda panoramică fuzionată. Previzualizează fiecare secţiune brută îmbinată, hartă rolurile logice 360 la secţiunea care arată în faţă/dreapta/spate/stânga pe vehiculul tău; și daemonul va reutiliza schema pentru înregistrare, streaming, și AI după repornire.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Scanare pentru conectare</string>
     <string name="dashboard_qr_waiting">Se așteaptă tunelul…</string>
@@ -179,10 +179,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Alege limba</string>
-    <string name="setup_language_body">Implicit este limba pentru unitatea capului. Atingeți pentru a alege una diferită pentru aplicația OverDrive și tunelul web.</string>
+    <string name="setup_language_body">Implicit este limba pentru unitatea capului. Atingeți pentru a alege una diferită pentru aplicația Electric Guardian și tunelul web.</string>
     <string name="setup_language_button">Alege limba</string>
     <string name="setup_autostart_title">Dezactivează restricția Auto-Start</string>
-    <string name="setup_autostart_body">Atinge mai jos pentru a deschide Auto-Start. Găseşte OverDrive în listă şi debifează caseta. BYD şterge asta pe fiecare instalare - o vei face din nou după actualizări.</string>
+    <string name="setup_autostart_body">Atinge mai jos pentru a deschide Auto-Start. Găseşte Electric Guardian în listă şi debifează caseta. BYD şterge asta pe fiecare instalare - o vei face din nou după actualizări.</string>
     <string name="setup_autostart_button">Deschide Auto-Start BYD</string>
     <string name="setup_overlay_title">Permite afişarea peste alte aplicaţii</string>
     <string name="setup_overlay_body">Activați această opțiune pentru a afișa un indicator de stare plutitor pentru înregistrarea și urmărirea cursei în partea superioară a altor aplicații.</string>
@@ -398,7 +398,7 @@
     <string name="update_picker_current_suffix">%1$s (instalat)</string>
     <string name="update_picker_older_suffix">%1$s (mai vechi)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Actualizare Overdrive</string>
+    <string name="update_progress_title">Actualizare Electric Guardian</string>
     <string name="update_step_downloading">Descărcare actualizare…</string>
     <string name="update_step_verifying">Se verifică descărcarea…</string>
     <string name="update_step_stopping">Oprirea daemonilor…</string>
@@ -580,7 +580,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Sfaturi &amp; depanare</string>
     <string name="setup_traffic_title">Dezactivează monitorizarea traficului BYD</string>
-    <string name="setup_traffic_body">Monitorul Traficului BYD blochează aplicațiile terțe să ajungă pe internet. Dezactivarea permite OverDrive și orice alte aplicații pe care le instalați de fapt utilizează rețeaua. Ulterior este necesară o repornire dură.</string>
+    <string name="setup_traffic_body">Monitorul Traficului BYD blochează aplicațiile terțe să ajungă pe internet. Dezactivarea permite Electric Guardian și orice alte aplicații pe care le instalați de fapt utilizează rețeaua. Ulterior este necesară o repornire dură.</string>
     <string name="setup_traffic_button">Deschide Monitorul Traficului</string>
     <string name="setup_camera_fix_title">Camera foto alimentează negru sau incorect?</string>
     <string name="setup_camera_fix_body">Sonda Camera video, setați Camera ID la 0, apăsați Salvare, apoi reporniți daemonul camerei. Dacă feed-urile sunt încă greșite, repetă cu Camera ID 1. Lasă secțiunea de cartografiere neatinsă.</string>
@@ -604,10 +604,10 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">Stare OverDrive</string>
+    <string name="status_overlay_notif_title">Stare Electric Guardian</string>
     <string name="status_overlay_notif_text">Status overlay active</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
@@ -651,7 +651,7 @@
     <string name="settings_privacy_title">Confidențialitate &amp; date</string>
     <string name="settings_privacy_body">Resetează ștergerea indexului înregistrărilor, a datelor geocutiei, a stării daemon și a preferințelor pe dispozitiv. Acțiunea nu poate fi anulată.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">Despre OverDrive</string>
+    <string name="settings_about_title">Despre Electric Guardian</string>
     <string name="settings_about_version_label">Versiune</string>
     <string name="settings_about_package_label">Construire</string>
     <string name="settings_about_check_update_value">Verificați ultima versiune GitHub și instalați dacă este mai nouă.</string>
@@ -660,9 +660,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Oferit de oameni ca tine</string>
     <string name="settings_about_support_share_title">Spune-i unui alt proprietar</string>
-    <string name="settings_about_support_share_value">Fiecare link comun ajută un alt proprietar BYD să descopere Overdrive.</string>
-    <string name="settings_about_support_share_message">Vezi Overdrive — Supravegherea open-source &amp; dashcam pentru BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Împărtășește Overdrive</string>
+    <string name="settings_about_support_share_value">Fiecare link comun ajută un alt proprietar BYD să descopere Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Vezi Electric Guardian — Supravegherea open-source &amp; dashcam pentru BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Împărtășește Electric Guardian</string>
     <string name="settings_about_open_link_failed">Nu s-a putut deschide link-ul.</string>
     <string name="settings_about_open_link_copied">Nici un browser găsit. URL copiat: %1$s</string>
     <string name="settings_about_support_kofi_title">Combustibil la următoarea versiune</string>
@@ -670,7 +670,7 @@
     <string name="settings_about_license_title">Licenta</string>
     <string name="settings_about_license_value">MIT – open source. Atingeți pentru a vizualiza textul complet.</string>
     <string name="settings_about_source_title">Cod sursă</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Star us on GitHub</string>
     <string name="settings_about_star_value">Ia o secundă. Înseamnă mult.</string>
     <string name="settings_about_thanks_title">Mulțumim</string>
@@ -740,7 +740,7 @@
     <string name="diagnostics_settings_subtitle">Preferințe aplicații, temă și limbă.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Integrări</string>
-    <string name="integrations_hero_subtitle">Conectează Overdrive la serviciile tale.</string>
+    <string name="integrations_hero_subtitle">Conectează Electric Guardian la serviciile tale.</string>
     <string name="integrations_status_unknown">Atingeți pentru a configura</string>
     <string name="integrations_status_configured">Configurat</string>
     <string name="integrations_status_not_set_up">Nu este configurat</string>
@@ -823,7 +823,7 @@
     <string name="settings_section_surveillance_subtitle">Zone de detectare, programare, sensibilitate la mişcare.</string>
     <string name="settings_section_daemons_subtitle">Cloudflared, Zrok, Telegram, alergători MQTT.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">Despre OverDrive</string>
+    <string name="settings_about_row_title">Despre Electric Guardian</string>
     <string name="settings_about_row_subtitle">Versiune, licenţă, suport pentru dezvoltare.</string>
     <string name="settings_reset_row_subtitle">Ştergeţi înregistrările, evenimentele sau toate geocutiile.</string>
     <!-- Footer -->
@@ -844,7 +844,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">Dispozitiv conectat în mod implicit</string>
-    <string name="settings_privacy_stance_body">OverDrive rulează în întregime pe unitatea capului. Telemetria nu părăsește mașina ta decât prin tuneluri și integrări pe care le configurezi în mod explicit.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian rulează în întregime pe unitatea capului. Telemetria nu părăsește mașina ta decât prin tuneluri și integrări pe care le configurezi în mod explicit.</string>
     <string name="settings_privacy_overline_storage">DEPOZITAREA LOCALĂ</string>
     <string name="settings_privacy_overline_reset">RESETAREA DATELOR</string>
     <string name="settings_privacy_storage_clips_label">Clipuri pe disc</string>
@@ -854,18 +854,18 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d clipuri</string>
     <string name="settings_privacy_reset_subtitle">Alegeți categoriile: înregistrări, evenimente, configurări de daemon, telemetrie cache…</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Securitate</string>
-    <string name="settings_security_subtitle">Blocați aplicația OverDrive astfel încât pasagerii și valetele să nu o poată deschide fără codul PIN.</string>
+    <string name="settings_security_subtitle">Blocați aplicația Electric Guardian astfel încât pasagerii și valetele să nu o poată deschide fără codul PIN.</string>
     <string name="settings_security_stance_title">Doar blocare UI</string>
-    <string name="settings_security_stance_body">Supravegherea, înregistrarea, descurajarea, alertele și serviciile de fundal continuă să ruleze în timp ce aplicația este blocată. Codul PIN pornește interfața OverDrive, nimic altceva.</string>
+    <string name="settings_security_stance_body">Supravegherea, înregistrarea, descurajarea, alertele și serviciile de fundal continuă să ruleze în timp ce aplicația este blocată. Codul PIN pornește interfața Electric Guardian, nimic altceva.</string>
     <string name="settings_security_overline_lock">Blocare aplicație</string>
     <string name="settings_security_overline_recovery">Dacă uitaţi codul PIN</string>
     <string name="settings_security_toggle_title">Necesită PIN</string>
-    <string name="settings_security_toggle_subtitle_off">Oprită — oricine poate deschide OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">Pornit — PIN necesar pentru a deschide OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">Oprită — oricine poate deschide Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">Pornit — PIN necesar pentru a deschide Electric Guardian.</string>
     <string name="settings_security_change_title">Schimbă codul PIN</string>
     <string name="settings_security_change_subtitle">Confirmați codul PIN actual, apoi setați unul nou.</string>
     <string name="settings_security_autolock_title">Auto-blocare</string>
@@ -902,7 +902,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Introduceți codul PIN</string>
     <string name="pin_lock_title_unlocked">Deblocat</string>
-    <string name="pin_lock_subtitle_default">Deblochează OverDrive pentru a continua.</string>
+    <string name="pin_lock_subtitle_default">Deblochează Electric Guardian pentru a continua.</string>
     <string name="pin_lock_subtitle_wrong">PIN greșit. Încercați din nou.</string>
     <string name="pin_lock_subtitle_locked_out">Prea multe încercări. Încercați din nou în scurt timp.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -946,7 +946,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Bine ai venit - Overdrive este acum a doua pereche de ochi.</string>
+    <string name="dashboard_insight_welcome">Bine ai venit - Electric Guardian este acum a doua pereche de ochi.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">A ridicat %1$s (£%2$s) în timp ce parcați</string>
     <string name="dashboard_insight_parked_charged">A ridicat %1$s în timp ce este parcat</string>
@@ -973,9 +973,9 @@
     </plurals>
     <!-- Process uptime. Days form takes (days, hours); hours form takes hours only. -->
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">Overdrive online pentru %1$d day, %2$d hr</item>
-        <item quantity="few">Overdrive online pentru %1$d zile, %2$d hr</item>
-        <item quantity="other">Overdrive online pentru %1$d zile, %2$d hr</item>
+        <item quantity="one">Electric Guardian online pentru %1$d day, %2$d hr</item>
+        <item quantity="few">Electric Guardian online pentru %1$d zile, %2$d hr</item>
+        <item quantity="other">Electric Guardian online pentru %1$d zile, %2$d hr</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
         <item quantity="one">Depășire online pentru %1$d oră</item>

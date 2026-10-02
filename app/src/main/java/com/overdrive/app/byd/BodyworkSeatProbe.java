@@ -371,7 +371,7 @@ public final class BodyworkSeatProbe {
             o.put("idHex", "0x" + Integer.toHexString(id.featureId));
 
             // The real device exposes get(int[], Class); the Class arg selects the
-            // return shape. OverDrive's other reads pass a primitive TYPE (Double.TYPE
+            // return shape. Electric Guardian's other reads pass a primitive TYPE (Double.TYPE
             // etc.), while the DiLink decompile that this recipe came from passed the
             // BYDAutoEventValue class itself. Both route through the SAME overload, so
             // try all three and report which one the getter actually answers — that is

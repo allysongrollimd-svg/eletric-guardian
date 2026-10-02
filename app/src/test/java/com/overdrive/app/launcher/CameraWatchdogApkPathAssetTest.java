@@ -27,7 +27,7 @@ public class CameraWatchdogApkPathAssetTest {
         assertTrue(source.contains(
                 "-Djava.library.path=\\$NATIVE_LIB_DIR:/system/lib64"));
         assertTrue(source.contains(
-                "Installed OverDrive APK not found, retrying in 10s"));
+                "Installed Electric Guardian APK not found, retrying in 10s"));
     }
 
     private static String readRepositoryFile(String relativePath) throws IOException {

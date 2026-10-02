@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * <p>Generation is always explicit: an HTTP request or an existing automation
  * action starts one bounded call. There is no private timer or resident worker;
- * daily/weekly presets are ordinary OverDrive time automations and disappear
+ * daily/weekly presets are ordinary Electric Guardian time automations and disappear
  * while the GenAI master switch is off.
  */
 public final class GenAiInsights {
@@ -54,7 +54,7 @@ public final class GenAiInsights {
     private static final int MAX_PROMPT_CHARS = 600;
 
     private static final String INSIGHT_INSTRUCTIONS =
-            "Write one concise OverDrive insight for a dashboard inbox. "
+            "Write one concise Electric Guardian insight for a dashboard inbox. "
             + "Return a short title and plain-text body with no Markdown. "
             + "Start with the most useful conclusion, "
             + "then give short evidence-backed details and at most three practical "
@@ -460,7 +460,7 @@ public final class GenAiInsights {
                     "genai.insight",
                     NotificationEvent.Severity.INFO,
                     item.optString(
-                            "title", "OverDrive insight"),
+                            "title", "Electric Guardian insight"),
                     body,
                     "genai-insight-"
                             + item.optString("source", "manual"),

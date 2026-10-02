@@ -23,7 +23,7 @@
     --chart-line-2: #0EA5E9;
     --chart-warning: #fbbf24;
     --chart-soh: #a855f7;
-    --chart-batt-1: #2dd4bf;
+    --chart-batt-1: #6ad62b;
     --chart-batt-2: #06b6d4;
     --chart-batt-3: #3b82f6;
 
@@ -45,7 +45,7 @@
     --bg-secondary: var(--bg-elevated);
     --accent: var(--brand-primary);
     --accent-hover: var(--primary);
-    --shadow-glow: 0 0 20px rgba(0, 212, 170, 0.15);
+    --shadow-glow: 0 0 20px rgba(78, 212, 0, 0.15);
 
     /* Translucent overlay surfaces (toasts, modals, cards over maps). */
     --panel-overlay-bg: rgba(10, 10, 15, 0.96);
@@ -71,32 +71,32 @@
 :root[data-theme="light"] {
     --bg-glass: rgba(247, 250, 247, 0.88);
 
-    --chart-line-1: #007A62;
+    --chart-line-1: #266800;
     --chart-line-2: #00658F;
     --chart-warning: #B45309;
     --chart-soh: #7C3AED;
-    --chart-batt-1: #0F766E;
+    --chart-batt-1: #2D670C;
     --chart-batt-2: #0369A1;
     --chart-batt-3: #1D4ED8;
 
-    --chart-text: rgba(24, 28, 26, 0.70);
-    --chart-text-strong: #181C1A;
-    --chart-grid: rgba(24, 28, 26, 0.10);
-    --chart-crosshair: rgba(24, 28, 26, 0.40);
+    --chart-text: rgba(24, 26, 28, 0.70);
+    --chart-text-strong: #181A1C;
+    --chart-grid: rgba(24, 26, 28, 0.10);
+    --chart-crosshair: rgba(24, 26, 28, 0.40);
     --chart-tooltip-bg: rgba(247, 250, 247, 0.97);
-    --chart-tooltip-border: rgba(24, 28, 26, 0.15);
-    --chart-tooltip-text: #181C1A;
+    --chart-tooltip-border: rgba(24, 26, 28, 0.15);
+    --chart-tooltip-text: #181A1C;
 
     --border-subtle: rgba(0, 0, 0, 0.06);
     --border-default: rgba(0, 0, 0, 0.10);
-    --shadow-glow: 0 0 20px rgba(0, 135, 108, 0.16);
+    --shadow-glow: 0 0 20px rgba(43, 117, 0, 0.16);
 
     --panel-overlay-bg: rgba(247, 250, 247, 0.96);
     --panel-overlay-bg-strong: rgba(247, 250, 247, 0.92);
-    --panel-overlay-bg-soft: rgba(24, 28, 26, 0.10);
-    --panel-overlay-bg-faint: rgba(24, 28, 26, 0.05);
-    --panel-overlay-bg-deep: rgba(24, 28, 26, 0.18);
-    --modal-backdrop: rgba(24, 28, 26, 0.45);
+    --panel-overlay-bg-soft: rgba(24, 26, 28, 0.10);
+    --panel-overlay-bg-faint: rgba(24, 26, 28, 0.05);
+    --panel-overlay-bg-deep: rgba(24, 26, 28, 0.18);
+    --modal-backdrop: rgba(24, 26, 28, 0.45);
     --shadow-overlay: 0 8px 24px rgba(0, 0, 0, 0.14);
 }
 
@@ -452,7 +452,7 @@ textarea:focus,
 }
 
 .nav-link.active {
-    background: rgba(0, 212, 170, 0.1);
+    background: rgba(78, 212, 0, 0.1);
     color: var(--brand-primary);
 }
 
@@ -1174,7 +1174,7 @@ select.text-input option {
 
 .select-control:focus {
     border-color: var(--brand-primary);
-    box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
+    box-shadow: 0 0 0 2px rgba(78, 212, 0, 0.15);
 }
 
 .select-control option {
@@ -1199,7 +1199,7 @@ select.text-input option {
 .checkbox-item:hover { border-color: var(--border-default); }
 
 .checkbox-item.active {
-    background: rgba(0, 212, 170, 0.1);
+    background: rgba(78, 212, 0, 0.1);
     border-color: var(--brand-primary);
     color: var(--brand-primary);
 }
@@ -1346,7 +1346,7 @@ select.md-input option {
 
 .md-input:focus {
     border-color: var(--brand-primary);
-    box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
+    box-shadow: 0 0 0 2px rgba(78, 212, 0, 0.15);
 }
 
 .md-input::placeholder { color: transparent; }
@@ -1463,8 +1463,8 @@ select.md-input ~ .md-label {
     position: relative;
     margin-bottom: 18px;
     padding: 0;
-    background: linear-gradient(135deg, rgba(0, 212, 170, 0.08) 0%, rgba(14, 165, 233, 0.06) 100%);
-    border: 1px solid rgba(0, 212, 170, 0.30);
+    background: linear-gradient(135deg, rgba(78, 212, 0, 0.08) 0%, rgba(14, 165, 233, 0.06) 100%);
+    border: 1px solid rgba(78, 212, 0, 0.30);
     border-radius: 14px;
     overflow: hidden;
 }
@@ -1492,7 +1492,7 @@ select.md-input ~ .md-label {
     transition: background-color 160ms ease-out;
 }
 .recommend-callout-summary::-webkit-details-marker { display: none; }
-.recommend-callout-summary:hover { background: rgba(0, 212, 170, 0.05); }
+.recommend-callout-summary:hover { background: rgba(78, 212, 0, 0.05); }
 
 .recommend-callout-icon {
     flex-shrink: 0;
@@ -1502,7 +1502,7 @@ select.md-input ~ .md-label {
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(0, 212, 170, 0.15);
+    background: rgba(78, 212, 0, 0.15);
     color: var(--brand-primary);
 }
 .recommend-callout-icon svg { width: 18px; height: 18px; }
@@ -1576,7 +1576,7 @@ select.md-input ~ .md-label {
 /* Selected state for a choice group (e.g. blind-spot corner) — M3 tonal-primary
    fill + primary border so the saved option reads as "currently active". */
 .btn-secondary.active {
-    background: rgba(0, 212, 170, 0.16);
+    background: rgba(78, 212, 0, 0.16);
     border-color: var(--brand-primary);
     color: var(--brand-primary);
     font-weight: 600;
@@ -2219,7 +2219,7 @@ select.md-input ~ .md-label {
 
 .pip-toggle-btn:hover {
     transform: scale(1.05);
-    box-shadow: var(--shadow-lg), 0 0 30px rgba(0, 212, 170, 0.3);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(78, 212, 0, 0.3);
 }
 
 .pip-toggle-btn svg {
@@ -2382,8 +2382,8 @@ select.md-input ~ .md-label {
 
 .tab-btn.active {
     color: var(--brand-primary);
-    background: rgba(0, 212, 170, 0.1);
-    border-color: rgba(0, 212, 170, 0.3);
+    background: rgba(78, 212, 0, 0.1);
+    border-color: rgba(78, 212, 0, 0.3);
 }
 
 /* Tab Content */
@@ -2533,7 +2533,7 @@ select.md-input ~ .md-label {
     padding: 14px 20px;
     padding-bottom: 14px;
     padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    background: var(--bg-glass, rgba(10, 20, 20, 0.9));
+    background: var(--bg-glass, rgba(6, 8, 4, 0.9));
     border-top: 1px solid var(--lv-pill-border, rgba(255, 255, 255, 0.10));
     backdrop-filter: saturate(180%) blur(16px);
     -webkit-backdrop-filter: saturate(180%) blur(16px);
@@ -2552,7 +2552,7 @@ select.md-input ~ .md-label {
     width: 16px;
     height: 16px;
     color: var(--brand-primary);
-    filter: drop-shadow(0 0 4px rgba(0, 212, 170, 0.40));
+    filter: drop-shadow(0 0 4px rgba(78, 212, 0, 0.40));
 }
 
 /* Cameras Panel — outer background flips with theme. The inner
@@ -2579,11 +2579,11 @@ select.md-input ~ .md-label {
     width: 80px;
     height: 80px;
     background: rgba(26, 26, 46, 0.95);
-    border: 2px solid rgba(0, 212, 170, 0.4);
+    border: 2px solid rgba(78, 212, 0, 0.4);
     border-radius: var(--radius-lg);
     cursor: grab;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 212, 170, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(78, 212, 0, 0.15);
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     z-index: 50;
     display: flex;
@@ -2597,7 +2597,7 @@ select.md-input ~ .md-label {
 .mini-preview:hover {
     transform: scale(1.05);
     border-color: var(--brand-primary);
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 212, 170, 0.35);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5), 0 0 25px rgba(78, 212, 0, 0.35);
 }
 
 /* Active drag state — Material-3 elevation lift + brand glow.
@@ -2608,7 +2608,7 @@ select.md-input ~ .md-label {
     cursor: grabbing;
     transform: scale(1.10);
     border-color: var(--brand-primary);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 212, 170, 0.45);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(78, 212, 0, 0.45);
     transition: transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
                 box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
                 border-color 140ms ease;
@@ -2628,7 +2628,7 @@ select.md-input ~ .md-label {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 212, 170, 0.08);
+    background: rgba(78, 212, 0, 0.08);
     color: var(--brand-primary);
 }
 
@@ -2644,7 +2644,7 @@ select.md-input ~ .md-label {
     font-weight: 700;
     text-align: center;
     color: var(--brand-primary);
-    background: rgba(0, 212, 170, 0.12);
+    background: rgba(78, 212, 0, 0.12);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -2789,7 +2789,7 @@ select.md-input ~ .md-label {
 }
 
 .distance-label-content {
-    background: rgba(0, 212, 170, 0.9);
+    background: rgba(78, 212, 0, 0.9);
     color: #000;
     padding: 4px 10px;
     border-radius: 12px;
@@ -2881,13 +2881,13 @@ select.md-input ~ .md-label {
 }
 
 .cam-btn.active {
-    background: rgba(0, 212, 170, 0.12);
+    background: rgba(78, 212, 0, 0.12);
     color: var(--brand-primary);
-    border-color: rgba(0, 212, 170, 0.3);
+    border-color: rgba(78, 212, 0, 0.3);
 }
 
 .cam-btn.active svg {
-    filter: drop-shadow(0 0 6px rgba(0, 212, 170, 0.5));
+    filter: drop-shadow(0 0 6px rgba(78, 212, 0, 0.5));
 }
 
 /* Loading state */
@@ -2918,7 +2918,7 @@ select.md-input ~ .md-label {
     padding: 30px 20px;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at center, rgba(0, 212, 170, 0.03) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(78, 212, 0, 0.03) 0%, transparent 70%);
 }
 
 .stream-hint {
@@ -2938,7 +2938,7 @@ select.md-input ~ .md-label {
 .car-diagram {
     width: 180px;
     height: 306px;
-    filter: drop-shadow(0 0 40px rgba(0, 212, 170, 0.08));
+    filter: drop-shadow(0 0 40px rgba(78, 212, 0, 0.08));
 }
 
 /* Camera Areas (clickable) */
@@ -2948,10 +2948,10 @@ select.md-input ~ .md-label {
 }
 
 .cam-area:hover .cam-indicator {
-    fill: rgba(0, 212, 170, 0.3);
+    fill: rgba(78, 212, 0, 0.3);
     stroke: var(--brand-primary);
     stroke-width: 2;
-    filter: drop-shadow(0 0 12px rgba(0, 212, 170, 0.6));
+    filter: drop-shadow(0 0 12px rgba(78, 212, 0, 0.6));
 }
 
 .cam-area:hover .cam-line {
@@ -2962,7 +2962,7 @@ select.md-input ~ .md-label {
 /* Car section highlight on hover */
 .cam-area.hover-front ~ .car-body-front,
 .cam-area:hover[id="camFrontArea"] ~ * .car-front-section {
-    fill: rgba(0, 212, 170, 0.1);
+    fill: rgba(78, 212, 0, 0.1);
 }
 
 .cam-hitbox {
@@ -2980,7 +2980,7 @@ select.md-input ~ .md-label {
 .cam-indicator.active {
     fill: var(--brand-primary);
     stroke: var(--brand-primary);
-    filter: drop-shadow(0 0 16px rgba(0, 212, 170, 0.9));
+    filter: drop-shadow(0 0 16px rgba(78, 212, 0, 0.9));
 }
 
 .cam-line {
@@ -3018,15 +3018,15 @@ select.md-input ~ .md-label {
 .cam-label:hover,
 .cam-label.hover {
     color: var(--text-primary);
-    border-color: rgba(0, 212, 170, 0.4);
+    border-color: rgba(78, 212, 0, 0.4);
     background: rgba(0, 0, 0, 0.7);
 }
 
 .cam-label.active {
     color: var(--brand-primary);
     border-color: var(--brand-primary);
-    background: rgba(0, 212, 170, 0.15);
-    box-shadow: 0 0 12px rgba(0, 212, 170, 0.3);
+    background: rgba(78, 212, 0, 0.15);
+    box-shadow: 0 0 12px rgba(78, 212, 0, 0.3);
 }
 
 /* Label Positions - aligned with camera indicators */
@@ -3105,12 +3105,12 @@ select.md-input ~ .md-label {
 
 .quality-select-large:hover {
     border-color: var(--brand-primary);
-    background-color: rgba(0, 212, 170, 0.05);
+    background-color: rgba(78, 212, 0, 0.05);
 }
 
 .quality-select-large:focus {
     border-color: var(--brand-primary);
-    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+    box-shadow: 0 0 0 3px rgba(78, 212, 0, 0.1);
 }
 
 .quality-select-large option {
@@ -3140,12 +3140,12 @@ select.md-input ~ .md-label {
     border-radius: var(--radius-full);
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+    box-shadow: 0 4px 20px rgba(78, 212, 0, 0.3);
 }
 
 .btn-stream-all:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 28px rgba(0, 212, 170, 0.4);
+    box-shadow: 0 6px 28px rgba(78, 212, 0, 0.4);
 }
 
 .btn-stream-all:active {
@@ -3836,8 +3836,8 @@ select.md-input ~ .md-label {
 .ev-personalized-range {
     margin-top: 8px;
     padding: 8px 10px;
-    background: rgba(0, 212, 170, 0.08);
-    border: 1px solid rgba(0, 212, 170, 0.15);
+    background: rgba(78, 212, 0, 0.08);
+    border: 1px solid rgba(78, 212, 0, 0.15);
     border-radius: var(--radius-sm);
     display: flex;
     justify-content: space-between;
@@ -4020,7 +4020,7 @@ select.md-input ~ .md-label {
 
 .mode-option input[type="radio"]:checked + .mode-card {
     border-color: var(--brand-primary);
-    background: rgba(0, 212, 170, 0.08);
+    background: rgba(78, 212, 0, 0.08);
     box-shadow: 0 0 0 1px var(--brand-primary), var(--shadow-glow);
 }
 
@@ -4387,7 +4387,7 @@ select.md-input ~ .md-label {
 }
 .lang-sheet-item:hover,
 .lang-sheet-item:focus { background: var(--bg-hover); outline: none; }
-.lang-sheet-item.active { background: rgba(0, 212, 170, 0.1); }
+.lang-sheet-item.active { background: rgba(78, 212, 0, 0.1); }
 .lang-sheet-name {
     flex: 1;
     font-size: 15px;
@@ -4500,7 +4500,7 @@ select.md-input ~ .md-label {
 .soh-modal-input:hover { border-color: var(--text-muted); }
 .soh-modal-input:focus {
     border-color: var(--brand-primary);
-    box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
+    box-shadow: 0 0 0 2px rgba(78, 212, 0, 0.15);
 }
 
 .safe-zone-dialog {

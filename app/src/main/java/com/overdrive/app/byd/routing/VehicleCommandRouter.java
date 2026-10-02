@@ -1732,7 +1732,7 @@ public final class VehicleCommandRouter {
         }
     }
 
-    /** Drive mode on OverDrive's config axis: 1=NORMAL, 2=ECO, 3=SPORT, 4=SNOW.
+    /** Drive mode on Electric Guardian's config axis: 1=NORMAL, 2=ECO, 3=SPORT, 4=SNOW.
      *  Routed via {@link BydDataCollector#setDriveConfigMode(int)}, which selects the OEM
      *  Energy, road-surface, or setting-device axis for that mode. */
     public static final class OperationModeCommand extends VehicleCommand {
@@ -1766,7 +1766,7 @@ public final class VehicleCommandRouter {
 
     /**
      * Select a view in the OEM native panorama camera app using its AUTO_VIDEO_BUTTON broadcast.
-     * This is distinct from OverDrive's camera overlay/viewpoint controls.
+     * This is distinct from Electric Guardian's camera overlay/viewpoint controls.
      */
     public static final class NativeCameraViewCommand extends VehicleCommand {
         public final int viewCode;

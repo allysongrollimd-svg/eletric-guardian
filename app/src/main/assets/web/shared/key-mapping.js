@@ -134,7 +134,7 @@ window.KM = (function () {
         { id: 'mirror_fold',     i18n: 'keymap.act_mirror_fold',     kind: 'catalog', key: 'mirror_fold',
           payloads: [ { v: 'on', i18n: 'keymap.mirror_fold' }, { v: 'off', i18n: 'keymap.mirror_unfold' }, { v: 'toggle', i18n: 'keymap.toggle' } ] },
         // OEM native panorama application. These AUTO_VIDEO_BUTTON view choices do not use
-        // OverDrive's camera overlay.
+        // Electric Guardian's camera overlay.
         { id: 'native_camera_view', i18n: 'keymap.act_native_camera_view', kind: 'catalog', key: 'native_camera_view',
           payloads: [ { v: 'front', i18n: 'keymap.camera_front' }, { v: 'front_wide', i18n: 'keymap.camera_front_wide' }, { v: 'rear', i18n: 'keymap.camera_rear' }, { v: 'rear_wide', i18n: 'keymap.camera_rear_wide' }, { v: 'left', i18n: 'keymap.camera_left' }, { v: 'right', i18n: 'keymap.camera_right' }, { v: 'left_right', i18n: 'keymap.camera_left_right' } ] },
         // Camera views on the native SurfaceControl lane (shares blind-spot pipeline;

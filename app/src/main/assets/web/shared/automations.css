@@ -179,7 +179,7 @@
 .form-grid select:focus {
     outline: none;
     border-color: var(--brand-primary);
-    box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
+    box-shadow: 0 0 0 2px rgba(78, 212, 0, 0.15);
 }
 .form-grid select option {
     background: var(--bg-surface);
@@ -210,7 +210,7 @@
 .form-grid input.time:focus {
     outline: none;
     border-color: var(--brand-primary);
-    box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.15);
+    box-shadow: 0 0 0 2px rgba(78, 212, 0, 0.15);
 }
 .form-grid .label {
     font-size: 14px;

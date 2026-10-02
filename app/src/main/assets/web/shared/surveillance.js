@@ -1944,7 +1944,7 @@ BYD.surveillance = {
                 : hintEl.textContent;
         }
 
-        // Inert-state reflection: in "On Only" mode Overdrive fully shuts down when
+        // Inert-state reflection: in "On Only" mode Electric Guardian fully shuts down when
         // parked, so every post-vehicle-OFF surveillance control is meaningless. Dim +
         // disable them (and their hints) so the user isn't tuning knobs that can't apply,
         // and show one explanatory note. Mirrors applyAccOffModeUI's dim idiom

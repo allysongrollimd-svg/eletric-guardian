@@ -1,5 +1,5 @@
 /**
- * Overdrive — Collapsible cards.
+ * Electric Guardian — Collapsible cards.
  *
  * Turns every `.card` with a `.card-header` + `.card-body` into a tappable
  * accordion section. Lightweight: no animation library, just CSS transitions

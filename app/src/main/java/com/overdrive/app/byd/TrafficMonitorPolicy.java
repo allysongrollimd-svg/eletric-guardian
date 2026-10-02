@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 /**
  * Package policy for BYD's built-in traffic monitor ({@code com.byd.trafficmonitor}).
  *
- * <p>Disabling it is OS package state ({@code pm disable-user}), not an OverDrive
+ * <p>Disabling it is OS package state ({@code pm disable-user}), not an Electric Guardian
  * preference. A firmware OTA re-scans the system partition and resurrects the
  * package, so the user's choice must be persisted separately and re-applied on
  * daemon boot — otherwise every update silently undoes it. This class owns both

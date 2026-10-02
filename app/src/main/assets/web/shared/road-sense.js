@@ -1,5 +1,5 @@
 /**
- * Overdrive — RoadSense Settings Module
+ * Electric Guardian — RoadSense Settings Module
  *
  * Mirrors recording.js / surveillance.js:
  *   - loadConfig() reads the current state from the daemon (GET

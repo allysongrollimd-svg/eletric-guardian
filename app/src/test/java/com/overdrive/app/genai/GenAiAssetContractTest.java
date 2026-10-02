@@ -118,13 +118,13 @@ public class GenAiAssetContractTest {
         assertTrue(html.contains(
                 "class=\"card ai-insight-card\""));
         assertTrue(html.contains("core.js?v=21"));
-        assertTrue(html.contains("placeholder=\"Ask OverDrive…\""));
+        assertTrue(html.contains("placeholder=\"Ask Electric Guardian…\""));
         assertTrue(html.contains(
                 "min-height: 180px; max-height: 720px"));
         assertFalse(html.contains(
                 "bottom: calc(90px + var(--safe-bottom, 0px))"));
         assertTrue(runtime.contains(
-                "OverDrive is the app name, not the user's name"));
+                "Electric Guardian is the app name, not the user's name"));
         assertTrue(html.contains("genai.js?v=11"));
         assertTrue(javascript.contains("BYD.utils.confirmDialog"));
     }

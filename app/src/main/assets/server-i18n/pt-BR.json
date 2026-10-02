@@ -274,7 +274,7 @@
       "error": "⚠️ Erro: {0}"
     },
     "help": {
-      "text": "📖 *Comandos*\n*OverDrive {0}*\n\n*Vigilância*\n`/start` - Iniciar vigilância\n`/stop` - Parar vigilância\n`/status` - Status do sistema\n\n*Eventos*\n`/events [horas] [página]` - Listar gravações\n`/download <file>` - Baixar vídeo\n\n*Daemons*\n`/daemons` - Listar todos os daemons\n`/daemon <name>  start|stop` - Iniciar/Parar daemon\n\n*Sistema*\n`/url` - URL do túnel\n`/update` - Verificar atualizações do app\n`/backup` - Exportar backup das configurações\n`/backup trips` - Backup incluindo histórico de viagens\n`/where` - Onde estacionei?\n`/help` - Esta mensagem"
+      "text": "📖 *Comandos*\n*Electric Guardian {0}*\n\n*Vigilância*\n`/start` - Iniciar vigilância\n`/stop` - Parar vigilância\n`/status` - Status do sistema\n\n*Eventos*\n`/events [horas] [página]` - Listar gravações\n`/download <file>` - Baixar vídeo\n\n*Daemons*\n`/daemons` - Listar todos os daemons\n`/daemon <name>  start|stop` - Iniciar/Parar daemon\n\n*Sistema*\n`/url` - URL do túnel\n`/update` - Verificar atualizações do app\n`/backup` - Exportar backup das configurações\n`/backup trips` - Backup incluindo histórico de viagens\n`/where` - Onde estacionei?\n`/help` - Esta mensagem"
     },
     "parking": {
       "where": {
@@ -372,24 +372,24 @@
       "installing": "⏳ *Instalando atualização…*\n\nOs daemons serão parados, o APK será instalado e o dispositivo será reiniciado. Esse bot ficará silencioso por cerca de 2 minutos. Uma nova mensagem do URL do túnel chegará quando estiver online.",
       "install_service_unreachable": "⚠️ Não foi possível iniciar a instalação porque o daemon da câmera está inacessível.",
       "install_rejected": "⚠️ Instalação rejeitada: {0}",
-      "install_failed": "⚠️ *O update do Overdrive falhou*\nO dispositivo ainda está na versão anterior.\nMotivo: {0}",
+      "install_failed": "⚠️ *O update do Electric Guardian falhou*\nO dispositivo ainda está na versão anterior.\nMotivo: {0}",
       "unknown_reason": "desconhecido (ver central multimídia)",
-      "installed": "🔄 *Overdrive atualizado para {0}*",
-      "installed_new_tunnel": "🔄 *Overdrive atualizado para {0}*\nNovo URL do túnel:\n{1}\n\n_O link do cloudflared rotaciona após cada instalação._",
+      "installed": "🔄 *Electric Guardian atualizado para {0}*",
+      "installed_new_tunnel": "🔄 *Electric Guardian atualizado para {0}*\nNovo URL do túnel:\n{1}\n\n_O link do cloudflared rotaciona após cada instalação._",
       "installed_tunnel_online": "🔄 *Overdriveatualizada paro {0}*\nTúnel está online novamente:\n{1}"
     },
     "backup": {
-      "restore_unavailable": "i *A restauração não está disponível pelo Telegram.*\n\nAbra o Overdrive na central multimídia ou no aplicativo, vá em *Configurações → Backup e Restauração* e selecione o arquivo de backup. Os backups só podem ser restaurados no mesmo dispositivo e exigem confirmação nele.",
+      "restore_unavailable": "i *A restauração não está disponível pelo Telegram.*\n\nAbra o Electric Guardian na central multimídia ou no aplicativo, vá em *Configurações → Backup e Restauração* e selecione o arquivo de backup. Os backups só podem ser restaurados no mesmo dispositivo e exigem confirmação nele.",
       "building_with_trips": "💾 Fazendo backup com configurações e histórico de viagem…",
       "building_settings": "💾 Fazendo backup das configurações…",
       "service_unreachable": "⚠️ Não foi possível conectar ao serviço de backup.\n\nO daemon da câmera pode não estar em execução. Tente '/daemon camera start'.",
       "failed": "⚠️ Backup falhou: {0}",
       "no_data": "⚠️ O backup não retornou dados.",
       "write_failed": "⚠️ Não foi possível escrever o arquivo de backup: {0}",
-      "document_settings": "💾 Backup de configurações do Overdrive\n\n⚠️ Este arquivo contém credenciais e a chave do dispositivo. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
-      "document_settings_version": "💾 Backup das configurações do Overdrive · {0}\n\n⚠️ Este arquivo contém credenciais e a chave do dispositivo. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
-      "document_with_trips": "💾 Backup do Overdrive (configurações + histórico de viagens: {0})\n\n⚠️ Este arquivo contém credenciais, a chave do dispositivo e o histórico de localização. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
-      "document_with_trips_version": "💾 Backup do Overdrive (configurações + histórico de viagens: {0}) · {1}\n\n⚠️ Este arquivo contém credenciais, a chave do dispositivo e histórico de localização. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
+      "document_settings": "💾 Backup de configurações do Electric Guardian\n\n⚠️ Este arquivo contém credenciais e a chave do dispositivo. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
+      "document_settings_version": "💾 Backup das configurações do Electric Guardian · {0}\n\n⚠️ Este arquivo contém credenciais e a chave do dispositivo. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
+      "document_with_trips": "💾 Backup do Electric Guardian (configurações + histórico de viagens: {0})\n\n⚠️ Este arquivo contém credenciais, a chave do dispositivo e o histórico de localização. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
+      "document_with_trips_version": "💾 Backup do Electric Guardian (configurações + histórico de viagens: {0}) · {1}\n\n⚠️ Este arquivo contém credenciais, a chave do dispositivo e histórico de localização. Mantenha-o seguro. Restaure na mesma central multimídia em Configurações → Backup e Restauração.",
       "upload_failed": "⚠️ Não foi possível carregar o arquivo de backup no Telegram."
     },
     "sendlog": {

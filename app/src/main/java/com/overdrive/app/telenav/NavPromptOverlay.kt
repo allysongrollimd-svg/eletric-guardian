@@ -33,7 +33,7 @@ import kotlin.math.abs
  * daemon's [DeferredNavManager] reports, on ACC-on, a target queued while the car
  * was off.
  *
- * Styled with OverDrive's own Material 3 theme ([R.style.Theme_Overdrive_M3]) so it
+ * Styled with Electric Guardian's own Material 3 theme ([R.style.Theme_Overdrive_M3]) so it
  * matches the rest of the app and flips day/night with the head unit: the views are
  * built against a ContextThemeWrapper whose configuration carries the current night
  * state, and colours are resolved from theme attributes (surface / onSurface /
@@ -62,7 +62,7 @@ object NavPromptOverlay {
         }
         dismiss() // never stack two
 
-        // Theme the context: match OverDrive's night choice (AppCompatDelegate has no
+        // Theme the context: match Electric Guardian's night choice (AppCompatDelegate has no
         // Activity here, so resolve it ourselves), then wrap in Theme.Overdrive.M3 so
         // the same day/night palette as the rest of the app resolves from attributes.
         val nightYes = when (AppCompatDelegate.getDefaultNightMode()) {

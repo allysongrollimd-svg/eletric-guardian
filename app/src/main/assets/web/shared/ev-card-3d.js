@@ -1,5 +1,5 @@
 /**
- * Overdrive — EV-card 3D body shell.
+ * Electric Guardian — EV-card 3D body shell.
  *
  * Mounts a tiny three.js scene inside the sidebar's EV-card and renders the
  * user's selected vehicle (GLB) tinted in their selected paint colour. Runs

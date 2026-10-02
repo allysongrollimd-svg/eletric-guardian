@@ -37,12 +37,12 @@ class DaemonKeepaliveService : Service() {
         private const val CHANNEL_ID = "daemon_keepalive_channel"
 
         // Shared notification grouping. The three foreground services that
-        // Overdrive runs (this one + LocationSidecarService + StatusOverlay
+        // Electric Guardian runs (this one + LocationSidecarService + StatusOverlay
         // Service) each post their own ongoing notification — Android needs
         // the FGS notification to remain visible per service. Tagging them
         // all with the same group key, plus a 4th `setGroupSummary(true)`
         // notification posted by this service, collapses the four entries
-        // into a single expandable shade row. The user sees one "Overdrive
+        // into a single expandable shade row. The user sees one "Electric Guardian
         // Active" tile with the per-service lines available on tap-to-expand.
         //
         // The summary notification is *not* a foreground-service notification
@@ -93,7 +93,7 @@ class DaemonKeepaliveService : Service() {
         acquireWakeLock()
         registerScreenOffReceiver()
         // GATE (G3): in "Vehicle ON only" mode the app-process keep-alive wakelock
-        // ("Overdrive:DaemonKeepalive") must NOT pin the CPU 24/7 while parked, or the
+        // ("ElectricGuardian:DaemonKeepalive") must NOT pin the CPU 24/7 while parked, or the
         // head unit can never sleep even after the daemon-side gates (G1/G4) let it.
         // There is no reliable ACC-OFF broadcast in the app process (only ACC_ON/IGN_ON
         // are directionally trustworthy — see OnboardingGate), so we use SCREEN_OFF as
@@ -413,10 +413,10 @@ class DaemonKeepaliveService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 SUMMARY_CHANNEL_ID,
-                "Overdrive Status",
+                "Electric Guardian Status",
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "Combined status row for Overdrive's background services"
+                description = "Combined status row for Electric Guardian's background services"
                 setShowBadge(false)
             }
             val manager = getSystemService(NotificationManager::class.java)
@@ -484,7 +484,7 @@ class DaemonKeepaliveService : Service() {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
             wakeLock = powerManager.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK,
-                "Overdrive:DaemonKeepalive"
+                "ElectricGuardian:DaemonKeepalive"
             ).apply {
                 setReferenceCounted(false)
                 acquire()
@@ -671,7 +671,7 @@ class DaemonKeepaliveService : Service() {
      * One-shot startup reconciliation for the G3 wakelock. SCREEN_OFF is an edge-only
      * broadcast, so a service (re)start while the vehicle is already parked with the
      * screen already off would never receive the release edge — leaving the
-     * "Overdrive:DaemonKeepalive" wakelock pinned for the whole parked window and
+     * "ElectricGuardian:DaemonKeepalive" wakelock pinned for the whole parked window and
      * re-establishing the CPU keep-awake onOnly is meant to remove. Here we read the
      * CURRENT interactive state directly and, in onOnly with the screen already off,
      * release immediately. In onAndOff (or when the screen is on) this is a no-op, so

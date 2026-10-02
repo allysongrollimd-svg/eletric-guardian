@@ -99,7 +99,7 @@ class WebViewFragment : Fragment() {
             }
         });
     };
-    console.log('[OverDrive] fetch() patched to bypass proxy');
+    console.log('[Electric Guardian] fetch() patched to bypass proxy');
 })();
 """
         private const val EMBED_CHROME =

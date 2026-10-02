@@ -127,7 +127,7 @@ var VC = {
         { name: 'Aurora White', hex: '#E8E8EC' },
         { name: 'Cosmos Black', hex: '#1A1A1E' },
         { name: 'Atlantic Blue', hex: '#1E3A5F' },
-        { name: 'Deepsea Green', hex: '#1B4D3E' },
+        { name: 'Deepsea Green', hex: '#254016' },
         { name: 'Cherry Red',   hex: '#C8102E' },
         { name: 'Storm Grey',   hex: '#5C5C66' }
     ],
@@ -2320,7 +2320,7 @@ var VC = {
 
         this.bindBtn('btnIviReboot', function() {
             var body =
-                'The display and OverDrive will be unavailable while the IVI restarts.';
+                'The display and Electric Guardian will be unavailable while the IVI restarts.';
             var confirmation = window.BYD && BYD.utils
                     && BYD.utils.confirmDialog
                 ? BYD.utils.confirmDialog({

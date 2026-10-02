@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title data-i18n="app.trips_title">Trips - OverDrive</title>
+    <title data-i18n="app.trips_title">Trips - Electric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="../shared/app-icon-dark.webp">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#00876C">
+    <meta name="theme-color" content="#2B7500">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
     <!--
@@ -100,8 +100,8 @@
 
         /* Driver Score Hero - Modern Glassmorphism */
         .score-hero-card {
-            background: linear-gradient(135deg, rgba(0,212,170,0.08) 0%, rgba(14,165,233,0.06) 100%);
-            border: 1px solid rgba(0,212,170,0.15);
+            background: linear-gradient(135deg, rgba(78, 212, 0,0.08) 0%, rgba(14,165,233,0.06) 100%);
+            border: 1px solid rgba(78, 212, 0,0.15);
             border-radius: 20px;
             padding: 20px 18px;
             display: flex;
@@ -117,7 +117,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 30% 30%, rgba(0,212,170,0.06) 0%, transparent 60%);
+            background: radial-gradient(circle at 30% 30%, rgba(78, 212, 0,0.06) 0%, transparent 60%);
             pointer-events: none;
         }
         .score-circle {
@@ -152,7 +152,7 @@
             border-radius: var(--radius-full);
         }
         .score-hero-label.excellent { color: #22C55E; background: rgba(34,197,94,0.1); }
-        .score-hero-label.good { color: var(--brand-primary); background: rgba(0,212,170,0.1); }
+        .score-hero-label.good { color: var(--brand-primary); background: rgba(78, 212, 0,0.1); }
         .score-hero-label.average { color: var(--warning); background: rgba(245,158,11,0.1); }
         .score-hero-label.poor { color: var(--danger); background: rgba(239,68,68,0.1); }
 
@@ -195,7 +195,7 @@
         }
         .score-tier-pill.active { opacity: 1; }
         .score-tier-pill.t-excellent { background: rgba(34,197,94,0.15); color: #22C55E; }
-        .score-tier-pill.t-good { background: rgba(0,212,170,0.15); color: var(--brand-primary); }
+        .score-tier-pill.t-good { background: rgba(78, 212, 0,0.15); color: var(--brand-primary); }
         .score-tier-pill.t-average { background: rgba(245,158,11,0.15); color: var(--warning); }
         .score-tier-pill.t-poor { background: rgba(239,68,68,0.15); color: var(--danger); }
         .score-hero-tooltip-desc {
@@ -214,7 +214,7 @@
 
         /* Range Hero Card */
         .range-hero-card {
-            background: linear-gradient(135deg, rgba(14,165,233,0.08) 0%, rgba(0,212,170,0.04) 100%);
+            background: linear-gradient(135deg, rgba(14,165,233,0.08) 0%, rgba(78, 212, 0,0.04) 100%);
             border: 1px solid rgba(14,165,233,0.15);
             border-radius: 20px;
             padding: 20px 18px;
@@ -629,7 +629,7 @@
         .calendar-day.other-month { color: var(--text-muted); opacity: 0.5; }
         .calendar-day.today { background: var(--bg-elevated); color: var(--text-primary); font-weight: 600; }
         .calendar-day.selected { background: var(--brand-primary); color: var(--bg-base); }
-        .calendar-day.in-range { background: rgba(0,212,170,0.16); color: var(--text-primary); }
+        .calendar-day.in-range { background: rgba(78, 212, 0,0.16); color: var(--text-primary); }
         .calendar-day.disabled { color: var(--text-muted); opacity: 0.3; cursor: not-allowed; pointer-events: none; }
         .calendar-day.has-trips::after {
             content: '';
@@ -745,11 +745,11 @@
             text-decoration: none; overflow: hidden;
         }
         .trip-park-gap span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 6px; }
-        .trip-park-gap b { color: var(--accent, #2fbf9f); font-weight: 600; }
+        .trip-park-gap b { color: var(--accent, #63c02e); font-weight: 600; }
         .trip-park-gap:hover span { color: var(--text-primary, #fff); }
         .trip-card:hover {
             background: var(--bg-elevated);
-            border-color: rgba(0,212,170,0.4);
+            border-color: rgba(78, 212, 0,0.4);
             transform: translateY(-4px);
             box-shadow: 0 10px 30px var(--panel-overlay-bg-soft);
         }
@@ -777,8 +777,8 @@
             font-size: 14px;
             font-weight: 700;
             color: var(--brand-primary);
-            background: rgba(0,212,170,0.1);
-            box-shadow: 0 0 0 1px rgba(0,212,170,0.3) inset;
+            background: rgba(78, 212, 0,0.1);
+            box-shadow: 0 0 0 1px rgba(78, 212, 0,0.3) inset;
         }
         .trip-score-badge.mid {
             color: var(--warning);
@@ -1030,11 +1030,11 @@
             background: var(--brand-primary);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,212,170,0.4);
+            box-shadow: 0 0 10px rgba(78, 212, 0,0.4);
             transition: box-shadow 0.2s;
         }
         #timelineSlider::-webkit-slider-thumb:hover {
-            box-shadow: 0 0 16px rgba(0,212,170,0.6);
+            box-shadow: 0 0 16px rgba(78, 212, 0,0.6);
         }
         #timelineSlider::-moz-range-track {
             height: 6px;
@@ -1800,7 +1800,7 @@
                             <div class="info-box" id="tripCdrRecommendBanner" style="display:none;background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.3);">
                                 <div class="info-row" style="color:var(--warning);">
                                     <span class="label" data-i18n="trip.cdr.recommend_label">⚠️ Recommended</span>
-                                    <span class="value" data-i18n="trip.cdr.recommend_text">Overdrive uses SD — enable cleanup to keep space free</span>
+                                    <span class="value" data-i18n="trip.cdr.recommend_text">Electric Guardian uses SD — enable cleanup to keep space free</span>
                                 </div>
                             </div>
                             <div class="info-box" id="tripCdrInfoBox">
@@ -1814,7 +1814,7 @@
                             </div>
                             <div class="setting-row" style="margin-top:12px;">
                                 <div class="setting-info">
-                                    <div class="setting-name" data-i18n="trip.cdr.reserved">Reserved Space for Overdrive</div>
+                                    <div class="setting-name" data-i18n="trip.cdr.reserved">Reserved Space for Electric Guardian</div>
                                     <div class="setting-desc" data-i18n="trip.cdr.reserved_desc">Keep this much free on SD card</div>
                                 </div>
                                 <div class="setting-control">

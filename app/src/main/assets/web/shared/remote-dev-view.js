@@ -97,7 +97,7 @@
         if (!running) {
             exitFullscreen();
             closeFrameStream();
-            clearFrame(t('remote_dev.placeholder', 'Start a session to view Overdrive.'));
+            clearFrame(t('remote_dev.placeholder', 'Start a session to view Electric Guardian.'));
             fetchingFrame = false;
             consecutiveFrameFailures = 0;
             pollingFallback = false;
@@ -198,7 +198,7 @@
                 setRunning(true);
                 placeholder.textContent = data.activityReady
                     ? 'Connecting live stream...'
-                    : 'Waiting for Overdrive to render...';
+                    : 'Waiting for Electric Guardian to render...';
                 setMessage('', false);
                 openFrameStream();
                 try { viewerCard.focus({ preventScroll: true }); }
@@ -312,10 +312,10 @@
         if (!data.success) {
             consecutiveFrameFailures += 1;
             if (data.pixelCopyResult === 'LOCKED') {
-                clearFrame(t('remote_dev.unlock_resume', 'Unlock the physical Overdrive UI to resume.'));
+                clearFrame(t('remote_dev.unlock_resume', 'Unlock the physical Electric Guardian UI to resume.'));
                 connectionState.textContent = t('remote_dev.locked', 'Locked');
                 setMessage(data.detail ||
-                    'Unlock the physical Overdrive UI to resume.', true);
+                    'Unlock the physical Electric Guardian UI to resume.', true);
                 return;
             }
             if (!currentObjectUrl) {
@@ -451,7 +451,7 @@
                 setRunning(false);
             }
             if (error.remoteLocked) {
-                clearFrame(t('remote_dev.unlock_resume', 'Unlock the physical Overdrive UI to resume.'));
+                clearFrame(t('remote_dev.unlock_resume', 'Unlock the physical Electric Guardian UI to resume.'));
                 connectionState.textContent = t('remote_dev.locked', 'Locked');
                 setMessage(error.message, true);
             } else if (error.sessionInvalid) setMessage(error.message + '.', true);

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title data-i18n="app.performance_title">Performance - OverDrive</title>
+    <title data-i18n="app.performance_title">Performance - Electric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
@@ -299,8 +299,8 @@
         
         /* SOC Chart Card */
         .soc-chart-card {
-            background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(0, 212, 170, 0.05) 100%);
-            border: 1px solid rgba(0, 212, 170, 0.2);
+            background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(78, 212, 0, 0.05) 100%);
+            border: 1px solid rgba(78, 212, 0, 0.2);
         }
         
         .soc-chart-card .chart-title {
@@ -412,8 +412,8 @@
         }
         
         .gpu-status-badge.optimal {
-            background: rgba(0, 212, 170, 0.2);
-            color: #00D4AA;
+            background: rgba(78, 212, 0, 0.2);
+            color: #4ED400;
         }
         
         .gpu-status-badge.heavy {
@@ -463,11 +463,11 @@
         }
         
         .gpu-health-hint.optimal .hint-icon {
-            background: rgba(0, 212, 170, 0.2);
+            background: rgba(78, 212, 0, 0.2);
         }
         .gpu-health-hint.optimal .hint-icon::before {
             content: '●';
-            color: #00D4AA;
+            color: #4ED400;
         }
         
         .gpu-health-hint.heavy .hint-icon {
@@ -687,7 +687,7 @@
         }
 
         .process-row.is-overdrive {
-            background: rgba(0, 212, 170, 0.06);
+            background: rgba(78, 212, 0, 0.06);
         }
 
         .process-command {
@@ -1234,7 +1234,7 @@
 
                     <!-- Disabled / empty hint (shown when feature is off) -->
                     <div class="du-hint" id="dataUsageHint" style="display:none;">
-                        <p data-i18n="performance.data_usage_hint">Track the data Overdrive uses (WiFi vs mobile, app vs background) over the last 30 days. Collection is off by default and uses negligible resources.</p>
+                        <p data-i18n="performance.data_usage_hint">Track the data Electric Guardian uses (WiFi vs mobile, app vs background) over the last 30 days. Collection is off by default and uses negligible resources.</p>
                     </div>
 
                     <!-- Live content (shown when enabled) -->

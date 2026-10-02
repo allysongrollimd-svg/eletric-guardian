@@ -215,7 +215,7 @@ public final class GenAiContext {
                     .put("type", "function")
                     .put("name", REALTIME_TOOL_NAME)
                     .put("description",
-                            "Fetch one current, privacy-filtered OverDrive "
+                            "Fetch one current, privacy-filtered Electric Guardian "
                                     + "context snapshot only after the user "
                                     + "explicitly asks about that data.")
                     .put("parameters", realtimeToolParameters());
@@ -229,7 +229,7 @@ public final class GenAiContext {
             return new JSONObject()
                     .put("name", REALTIME_TOOL_NAME)
                     .put("description",
-                            "Fetch one current, privacy-filtered OverDrive "
+                            "Fetch one current, privacy-filtered Electric Guardian "
                                     + "context snapshot only after the user "
                                     + "explicitly asks about that data.")
                     .put("parameters", realtimeToolParameters());
@@ -335,7 +335,7 @@ public final class GenAiContext {
                 ? LocaleManager.get()
                 : LocaleManager.resolve(requested);
         String policy = "Default all user-facing prose to the active "
-                + "OverDrive language (" + language + "). If the user's "
+                + "Electric Guardian language (" + language + "). If the user's "
                 + "latest message or speech is clearly in another language, "
                 + "reply in that language instead. For mixed-language input, "
                 + "use the language of the request. Keep identifiers, JSON "

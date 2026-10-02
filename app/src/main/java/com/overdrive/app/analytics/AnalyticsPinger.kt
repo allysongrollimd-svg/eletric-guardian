@@ -46,7 +46,7 @@ object AnalyticsPinger {
     private const val KEY_LAST_PING_DAY = "lastPingDay"
 
     /** Project default backend. A self-hoster overrides `analytics.workerUrl`. */
-    private const val DEFAULT_WORKER_URL = "https://analytics-edge.yash321sri.workers.dev"
+    private const val DEFAULT_WORKER_URL = "" // no analytics backend by default (opt-in via analytics.workerUrl)
 
     private val logger = DaemonLogger.getInstance("Analytics/Ping")
     private val JSON = "application/json; charset=utf-8".toMediaType()
@@ -77,6 +77,7 @@ object AnalyticsPinger {
 
             val base = (section?.optString(KEY_WORKER_URL, "")?.trim()
                 ?.takeIf { it.isNotEmpty() } ?: DEFAULT_WORKER_URL).trimEnd('/')
+            if (base.isEmpty()) return // no backend configured: never phone home
 
             // Pass the section we already loaded so AnalyticsId doesn't do a second
             // forceReload() disk/cross-UID read on this same tick.

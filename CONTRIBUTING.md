@@ -1,6 +1,6 @@
-# Contributing to OverDrive
+# Contributing to Electric Guardian
 
-Thanks for your interest in contributing to OverDrive! This guide will help you get started.
+Thanks for your interest in contributing to Electric Guardian! This guide will help you get started.
 
 ## Table of Contents
 
@@ -41,7 +41,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 
 ```bash
 # Clone your fork
-git clone https://github.com/yash-srivastava/Overdrive-release.git
+git clone https://github.com/allysongrollimd-svg/eletric-guardian
 cd overdrive
 
 # Build the project
@@ -175,4 +175,4 @@ By contributing, you agree that your contributions will be licensed under the sa
 
 ---
 
-Thanks for helping make OverDrive better!
+Thanks for helping make Electric Guardian better!

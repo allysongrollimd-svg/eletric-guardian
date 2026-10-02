@@ -13,9 +13,9 @@ import java.io.OutputStream;
 
 /**
  * Launcher aggregation API — the stable, public {@code /api/launcher/v1/*} face
- * over OverDrive core's internal handlers.
+ * over Electric Guardian core's internal handlers.
  *
- * <p>This is Work-Package A of the OverDrive Launcher (see
+ * <p>This is Work-Package A of the Electric Guardian Launcher (see
  * {@code docs/LAUNCHER_SPEC.md} §2). The launcher is a SEPARATE thin APK that
  * reads data over localhost; it must never re-derive vehicle state. These
  * endpoints DO NOT expose internal handlers directly — internal shapes change,

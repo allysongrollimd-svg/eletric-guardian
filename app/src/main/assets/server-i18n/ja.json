@@ -333,12 +333,12 @@
       "install_rejected": "⚠️ インストールが拒否されました: {0}",
       "install_failed": "⚠️ *オーバードライブの更新に失敗しました*\nデバイスはまだ以前のバージョンにあります。\n理由: {0}",
       "unknown_reason": "不明（頭部ユニット参照）",
-      "installed": "🔄 *Overdrive を {0} に更新しました*",
-      "installed_new_tunnel": "🔄 *Overdrive updated to {0}*\nNew トンネル URL:\n{1}\n\n_インストールごとにクラウドフレアされたリンクが回転します。_",
-      "installed_tunnel_online": "🔄 *Overdrive を {0} に更新しました*\nトンネルが復帰しました:\n{1}"
+      "installed": "🔄 *Electric Guardian を {0} に更新しました*",
+      "installed_new_tunnel": "🔄 *Electric Guardian updated to {0}*\nNew トンネル URL:\n{1}\n\n_インストールごとにクラウドフレアされたリンクが回転します。_",
+      "installed_tunnel_online": "🔄 *Electric Guardian を {0} に更新しました*\nトンネルが復帰しました:\n{1}"
     },
     "backup": {
-      "restore_unavailable": "私は*復元はTelegramでは利用できません。\n\nヘッドユニットまたはアプリでOverdriveを開き、*設定 → バックアップと復元*に進み、バックアップファイルを選択します。 バックアップは、同じデバイスでのみ復元でき、確認が必要です。",
+      "restore_unavailable": "私は*復元はTelegramでは利用できません。\n\nヘッドユニットまたはアプリでElectric Guardianを開き、*設定 → バックアップと復元*に進み、バックアップファイルを選択します。 バックアップは、同じデバイスでのみ復元でき、確認が必要です。",
       "building_with_trips": "💾 設定と走行履歴のバックアップを作成中…",
       "building_settings": "💾 ビルド設定のバックアップ…",
       "service_unreachable": "⚠️ バックアップサービスにアクセスできませんでした。\n\nカメラデーモンが実行されていない可能性があります。`/daemon camera start` を試してください。",

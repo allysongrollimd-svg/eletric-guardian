@@ -1,5 +1,5 @@
 /**
- * Overdrive — Web app shell.
+ * Electric Guardian — Web app shell.
  *
  * Each in-app web page used to copy-paste the same ~250-line <aside class="sidebar">
  * block. This script mounts it once at runtime so every page shares one source
@@ -147,13 +147,13 @@
         // dashboard, the canonical "home"). The close-X stays for mobile.
         var header = ''
             + '<div class="sidebar-header">'
-            +   '<a href="index.html" class="brand brand-link" aria-label="OverDrive — open Dashboard" data-i18n-attr="aria-label:nav.brand_home">'
+            +   '<a href="index.html" class="brand brand-link" aria-label="Electric Guardian — open Dashboard" data-i18n-attr="aria-label:nav.brand_home">'
             +     '<div class="brand-logo">'
-            +       '<img src="../shared/app-icon-glyph-dark.webp" alt="OverDrive">'
+            +       '<img src="../shared/app-icon-glyph-dark.webp" alt="Electric Guardian">'
             +       '<span class="brand-online-pulse" aria-hidden="true"></span>'
             +     '</div>'
             +     '<div class="brand-text">'
-            +       '<span class="brand-name" data-i18n="app.name">OverDrive</span>'
+            +       '<span class="brand-name" data-i18n="app.name">Electric Guardian</span>'
             +       '<span class="brand-tagline" data-i18n="app.tagline">Surveillance System</span>'
             +       '<span class="brand-version" id="appVersion"></span>'
             +     '</div>'
@@ -244,10 +244,10 @@
             // No matrix transform needed — gradient inherits the
             // shape's bbox via the default gradientUnits.
             +         '<radialGradient id="evChargeBoltGrad" cx="35%" cy="30%" r="80%">'
-            +           '<stop offset="0%"   stop-color="#1AF0C2"/>'
-            +           '<stop offset="42%"  stop-color="#00B894"/>'
-            +           '<stop offset="78%"  stop-color="#016B55"/>'
-            +           '<stop offset="100%" stop-color="#021E18"/>'
+            +           '<stop offset="0%"   stop-color="#68F218"/>'
+            +           '<stop offset="42%"  stop-color="#3DA600"/>'
+            +           '<stop offset="78%"  stop-color="#215A00"/>'
+            +           '<stop offset="100%" stop-color="#050D01"/>'
             +         '</radialGradient>'
             // Subtle inner-glow filter so the bolt path reads with a
             // soft halo against the dark gradient instead of looking
@@ -266,7 +266,7 @@
             // Outer disc — gradient fill + thin teal-tinted rim
             // instead of the flat white stroke. The rim catches the
             // ambient and gives the disc the "shiny bezel" feel.
-            +         '<circle r="12" fill="url(#evChargeBoltGrad)" stroke="rgba(0,212,170,0.45)" stroke-width="1.2"/>'
+            +         '<circle r="12" fill="url(#evChargeBoltGrad)" stroke="rgba(78, 212, 0,0.45)" stroke-width="1.2"/>'
             // Specular highlight — a small bright crescent in the
             // upper-left quadrant that sells the gloss. Painted as a
             // semi-transparent white ellipse, no animation.
@@ -376,7 +376,7 @@
         var source = document.querySelector('.page-title, .dev-view-header h1');
         var title = source && source.textContent
             ? source.textContent.replace(/^\s+|\s+$/g, '')
-            : (document.title || 'OverDrive');
+            : (document.title || 'Electric Guardian');
         if (source && source.parentNode &&
             source.parentNode.classList.contains('dev-view-header')) {
             source.parentNode.classList.add('mobile-title-source');

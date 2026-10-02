@@ -16260,7 +16260,7 @@ public class BydDataCollector {
      *
      * <p><b>UNVERIFIED on device:</b> the behavioural difference between mode 1 and mode 2. Both
      * are proven to be what the OEM writes for its two presets, but no SDK constants document
-     * them and OverDrive's daemon UID may not be permitted to write them at all.
+     * them and Electric Guardian's daemon UID may not be permitted to write them at all.
      */
     public boolean setSocHoldMode(int mode) {
         if (mode < SOC_HOLD_MODE_OFF || mode > SOC_HOLD_MODE_AT_CURRENT) return false;
@@ -19229,7 +19229,7 @@ public class BydDataCollector {
      *
      * <p>This only sends the OEM {@code AUTO_VIDEO_BUTTON} view command; it never opens
      * the panorama application. Key mapping separately verifies that the native camera
-     * window is active before consuming a physical key. It does not touch OverDrive's
+     * window is active before consuming a physical key. It does not touch Electric Guardian's
      * AVM capture/viewpoint pipeline.
      */
     public boolean setNativeCameraView(int viewCode) {
@@ -19381,7 +19381,7 @@ public class BydDataCollector {
     }
 
     /**
-     * Drive mode exposed to OverDrive on the config-axis convention:
+     * Drive mode exposed to Electric Guardian on the config-axis convention:
      * <pre>NORMAL = 1, ECO = 2, SPORT = 3, SNOW = 4</pre>
      *
      * <p>Fallback chain (first physically confirmed path wins):
@@ -19612,7 +19612,7 @@ public class BydDataCollector {
     }
 
     /**
-     * Read the drive mode on OverDrive's config axis
+     * Read the drive mode on Electric Guardian's config axis
      * (1=normal/2=eco/3=sport/4=snow).
      *
      * <p>The live ENERGY axis is authoritative. This trim reports both Normal and Eco as

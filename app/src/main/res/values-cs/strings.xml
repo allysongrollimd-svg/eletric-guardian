@@ -22,7 +22,7 @@
     <string name="language_auto_subtitle">Podle systému · %1$s</string>
     <string name="language_label_auto_fmt">%1$s · Automaticky</string>
     <string name="setup_language_title">Vyberte jazyk</string>
-    <string name="setup_language_body">Nastavení začíná výběrem jazyka. Klepnutím zvolíte jiný jazyk pro aplikaci OverDrive a webové rozhraní.</string>
+    <string name="setup_language_body">Nastavení začíná výběrem jazyka. Klepnutím zvolíte jiný jazyk pro aplikaci Electric Guardian a webové rozhraní.</string>
     <string name="setup_language_button">Vybrat jazyk</string>
     <string name="settings_hero_title">Nastavení</string>
     <string name="settings_hero_subtitle">Upravte vzhled, nahrávání, dohled a data uložená v zařízení.</string>
@@ -32,8 +32,8 @@
     <string name="vehicle_dialog_capacity_helper">5 až 120 kWh. Pro hodnoty pod 15 je vyžadován PHEV.</string>
     <string name="vehicle_dialog_invalid_capacity">Kapacita musí být 5 až 120 kWh</string>
     <!-- PR #299 reviewed Czech strings; changed/newer keys fall back to English. -->
-    <string name="app_name">OverDrive</string>
-    <string name="accessibility_service_description">Udržuje aktivní sledování vozidla aplikací OverDrive na pozadí. Tato služba nečte obsah obrazovky ani s ním nijak nepracuje.</string>
+    <string name="app_name">Electric Guardian</string>
+    <string name="accessibility_service_description">Udržuje aktivní sledování vozidla aplikací Electric Guardian na pozadí. Tato služba nečte obsah obrazovky ani s ním nijak nepracuje.</string>
     <string name="cd_camera">Kamera</string>
     <string name="cd_qr">QR</string>
     <string name="cd_qr_code">QR kód</string>
@@ -115,7 +115,7 @@
     <string name="camera_option_5">Kamera 5</string>
     <string name="camera_selection_hint">Auto vybere správnou kameru pro váš vůz při každém spuštění. Kamera 1 = BYD Seal, Kamera 0 = Atto. Po změně ID kamery restartujte službu, aby se nastavení projevilo.</string>
     <string name="camera_oem_dashcam_title">ID OEM kamery (dashcam)</string>
-    <string name="camera_oem_dashcam_hint">Vyberte ID AVMCamera, které odpovídá přednímu snímači palubní kamery. Palubní kamera používá OPAČNÉ ID než panorama: Seal/Han panorama = 1 → palubní kamera = 0; Atto/Tang panorama = 0 → palubní kamera = 1. Ponechte možnost Automaticky, aby ID vybral OverDrive.</string>
+    <string name="camera_oem_dashcam_hint">Vyberte ID AVMCamera, které odpovídá přednímu snímači palubní kamery. Palubní kamera používá OPAČNÉ ID než panorama: Seal/Han panorama = 1 → palubní kamera = 0; Atto/Tang panorama = 0 → palubní kamera = 1. Ponechte možnost Automaticky, aby ID vybral Electric Guardian.</string>
     <string name="camera_oem_dashcam_auto_resolved">Automatické použití id %1$d (pano je id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Auto — pano id je %1$d, nelze odvodit dashcam</string>
     <string name="camera_oem_dashcam_save">Uložit</string>
@@ -136,7 +136,7 @@
     <string name="camera_mapping_summary_probing">Panoramatický stream: Automatická starší detekce / testování</string>
     <string name="camera_mapping_current_format">Aktuální přiřazení: %1$s</string>
     <string name="camera_mapping_current_none">Aktuální přiřazení: Automatické / výchozí</string>
-    <string name="camera_mapping_hint">OverDrive ve výchozím nastavení zachovává po startu obvyklé rozložení, ale nyní umožňuje správně kalibrovat sloučený panoramatický pohled. Prohlédněte si každý sloučený pohled, namapujte logické role na 360° pohled, který na vašem vozidle skutečně ukazuje vpředu/vpravo/vzadu/vlevo, a služba použije toto rozložení po restartu pro nahrávání, streamování i AI.</string>
+    <string name="camera_mapping_hint">Electric Guardian ve výchozím nastavení zachovává po startu obvyklé rozložení, ale nyní umožňuje správně kalibrovat sloučený panoramatický pohled. Prohlédněte si každý sloučený pohled, namapujte logické role na 360° pohled, který na vašem vozidle skutečně ukazuje vpředu/vpravo/vzadu/vlevo, a služba použije toto rozložení po restartu pro nahrávání, streamování i AI.</string>
     <string name="dashboard_scan_to_connect">Naskenujte pro připojení</string>
     <string name="dashboard_qr_waiting">Čekání na tunel…</string>
     <string name="dashboard_daemons_running_default">0/5 běží</string>
@@ -150,7 +150,7 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_autostart_title">Zakázat omezení automatického spuštění</string>
-    <string name="setup_autostart_body">Klepnutím níže otevřete BYD Auto-Start. Najděte OverDrive v seznamu a zrušte zaškrtnutí políčka. BYD toto nastavení maže při každé instalaci – po aktualizacích to budete muset zopakovat.</string>
+    <string name="setup_autostart_body">Klepnutím níže otevřete BYD Auto-Start. Najděte Electric Guardian v seznamu a zrušte zaškrtnutí políčka. BYD toto nastavení maže při každé instalaci – po aktualizacích to budete muset zopakovat.</string>
     <string name="setup_autostart_button">Otevřít BYD Auto-Start</string>
     <string name="setup_overlay_title">Povolit zobrazení přes ostatní aplikace</string>
     <string name="setup_overlay_body">Povolením zobrazíte plovoucí indikátor stavu pro nahrávání a sledování jízdy nad jinými aplikacemi.</string>
@@ -315,7 +315,7 @@
     <string name="update_picker_empty">Zatím nebyly zveřejněny žádné verze.</string>
     <string name="update_picker_current_suffix">%1$s (nainstalována)</string>
     <string name="update_picker_older_suffix">%1$s (starší)</string>
-    <string name="update_progress_title">Aktualizace OverDrive</string>
+    <string name="update_progress_title">Aktualizace Electric Guardian</string>
     <string name="update_step_downloading">Stahování aktualizace…</string>
     <string name="update_step_verifying">Ověřování staženého souboru…</string>
     <string name="update_step_stopping">Zastavování služeb…</string>
@@ -482,7 +482,7 @@
     <string name="setup_overlay_already_granted">Již uděleno</string>
     <string name="setup_tips_header">Tipy &amp; řešení problémů</string>
     <string name="setup_traffic_title">Zakázat BYD Monitor provozu</string>
-    <string name="setup_traffic_body">BYD Traffic Monitor blokuje aplikace třetích stran v přístupu k internetu. Zakázání umožňuje OverDrive a všem dalším aplikacím, které skutečně instalujete, používat síť. Poté je nutný tvrdý restart.</string>
+    <string name="setup_traffic_body">BYD Traffic Monitor blokuje aplikace třetích stran v přístupu k internetu. Zakázání umožňuje Electric Guardian a všem dalším aplikacím, které skutečně instalujete, používat síť. Poté je nutný tvrdý restart.</string>
     <string name="setup_traffic_button">Otevřít sledování provozu</string>
     <string name="setup_camera_fix_title">Obraz z kamer se nezobrazuje správně nebo je černý?</string>
     <string name="setup_camera_fix_body">Spusťte detekci kamer, nastavte ID kamery na 0, klepněte na Uložit a poté restartujte službu kamer. Pokud obraz stále není správný, zopakujte postup s ID kamery 1. Sekci mapování ponechte beze změny.</string>
@@ -499,11 +499,11 @@
     <string name="nav_page_abrp">ABRP</string>
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
-    <string name="status_overlay_notif_title">Stav OverDrive</string>
+    <string name="status_overlay_notif_title">Stav Electric Guardian</string>
     <string name="status_overlay_notif_text">Překryvné zobrazení stavu aktivní</string>
-    <string name="daemon_keepalive_notif_title">OverDrive aktivní</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian aktivní</string>
     <string name="daemon_keepalive_notif_text">Sledování systémů vozidla</string>
-    <string name="overdrive_status_summary_title">OverDrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">Služby na pozadí běží</string>
     <string name="rail_dashboard">Hlavní panel</string>
     <string name="rail_live">Živě</string>
@@ -530,15 +530,15 @@
     <string name="cd_settings_subrail">Postranní panel nastavení</string>
     <string name="settings_privacy_title">Soukromí &amp; data</string>
     <string name="settings_privacy_body">Reset vymaže index nahrávek, uložené přihlašovací údaje, stav služeb a nastavení uložená v zařízení. Tuto akci nelze vrátit zpět.</string>
-    <string name="settings_about_title">O aplikaci OverDrive</string>
+    <string name="settings_about_title">O aplikaci Electric Guardian</string>
     <string name="settings_about_version_label">Verze</string>
     <string name="settings_about_package_label">Sestavení</string>
     <string name="settings_about_check_update_value">Zkontroluje nejnovější verzi na GitHubu a nainstaluje ji, pokud je novější.</string>
     <string name="settings_about_support_section">Tvořeno lidmi jako vy</string>
     <string name="settings_about_support_share_title">Doporučte to ostatním majitelům</string>
-    <string name="settings_about_support_share_value">Každý sdílený odkaz pomáhá jinému majiteli BYD objevit Overdrive.</string>
-    <string name="settings_about_support_share_message">Podívejte se na Overdrive — open-source sledování &amp; dashcam pro BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Sdílet OverDrive</string>
+    <string name="settings_about_support_share_value">Každý sdílený odkaz pomáhá jinému majiteli BYD objevit Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Podívejte se na Electric Guardian — open-source sledování &amp; dashcam pro BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Sdílet Electric Guardian</string>
     <string name="settings_about_open_link_failed">Nelze otevřít odkaz.</string>
     <string name="settings_about_open_link_copied">Nebyl nalezen žádný prohlížeč. URL zkopírováno: %1$s</string>
     <string name="settings_about_support_kofi_title">Přispějte k vývoji příští verze</string>
@@ -546,7 +546,7 @@
     <string name="settings_about_license_title">Licence</string>
     <string name="settings_about_license_value">MIT — open source. Klepnutím zobrazíte celý text.</string>
     <string name="settings_about_source_title">Zdrojový kód</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Ohodnoťte nás hvězdičkou na GitHubu</string>
     <string name="settings_about_star_value">Zabere vteřinu. Znamená hodně.</string>
     <string name="settings_about_thanks_title">Děkujeme</string>
@@ -601,7 +601,7 @@
     <string name="diagnostics_battery_subtitle">Prozkoumejte SOH článků a statistiky baterie.</string>
     <string name="diagnostics_settings_subtitle">Nastavení aplikace, motivu a jazyka.</string>
     <string name="integrations_hero_title">Integrace</string>
-    <string name="integrations_hero_subtitle">Připojit Overdrive ke svým službám.</string>
+    <string name="integrations_hero_subtitle">Připojit Electric Guardian ke svým službám.</string>
     <string name="integrations_status_unknown">Klepnutím nastavíte</string>
     <string name="integrations_status_configured">Konfigurováno</string>
     <string name="integrations_status_not_set_up">Není nastaveno</string>
@@ -612,7 +612,7 @@
     <string name="integrations_configure_button">Konfigurace</string>
     <string name="settings_action_check_update">Zkontrolovat aktualizace</string>
     <string name="settings_action_reset_data">Obnovit data…</string>
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <string name="dashboard_hero_headline">Sledováno</string>
     <string name="dashboard_modern_vehicle_status">Stav vozidla</string>
     <string name="dashboard_subtitle_all_systems">Všechny systémy online</string>
@@ -658,10 +658,10 @@
     <string name="settings_section_recording_subtitle">Před/po: vyrovnávací paměť, kodek, limity úložného prostoru.</string>
     <string name="settings_section_surveillance_subtitle">Detekční zóny, harmonogram, citlivost pohybu.</string>
     <string name="settings_section_daemons_subtitle">Cloudflared, Zrok, Telegram, MQTT moduly.</string>
-    <string name="settings_about_row_title">O aplikaci OverDrive</string>
+    <string name="settings_about_row_title">O aplikaci Electric Guardian</string>
     <string name="settings_about_row_subtitle">Verze, licence, podpora vývoje.</string>
     <string name="settings_reset_row_subtitle">Vymazat záznamy, události nebo všechny mezipaměti.</string>
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <string name="settings_appearance_subtitle">Motivy, jazyky a vizuální preference.</string>
     <string name="settings_theme_active_auto_caption">Automaticky se řídit motivem systému.</string>
     <string name="settings_theme_active_light_caption">Světlý motiv je vždy zapnutý.</string>
@@ -669,7 +669,7 @@
     <string name="settings_language_count_format">%1$d z %2$d jazyků k dispozici</string>
     <string name="settings_language_card_title">Zobrazit jazyk</string>
     <string name="settings_privacy_stance_title">Ve výchozím nastavení zapnout zařízení</string>
-    <string name="settings_privacy_stance_body">OverDrive běží zcela na hlavní jednotce. Žádná telemetrie neopustí vaše vozidlo kromě tunelů a integrací, které si výslovně nastavíte.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian běží zcela na hlavní jednotce. Žádná telemetrie neopustí vaše vozidlo kromě tunelů a integrací, které si výslovně nastavíte.</string>
     <string name="settings_privacy_overline_storage">MÍSTNÍ ÚLOŽIŠTĚ</string>
     <string name="settings_privacy_overline_reset">OBNOVENÍ ÚDAJŮ</string>
     <string name="settings_privacy_storage_clips_label">Záznamy na disku</string>
@@ -679,14 +679,14 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d záznamů</string>
     <string name="settings_privacy_reset_subtitle">Vyberte kategorie: nahrávky, události, konfigurace služeb, uložená telemetrie…</string>
     <string name="settings_security_title">Zabezpečení</string>
-    <string name="settings_security_subtitle">Chraňte aplikaci OverDrive PINem před přístupem cestujících a pracovníků valet parkingu.</string>
+    <string name="settings_security_subtitle">Chraňte aplikaci Electric Guardian PINem před přístupem cestujících a pracovníků valet parkingu.</string>
     <string name="settings_security_stance_title">Pouze zámek rozhraní</string>
-    <string name="settings_security_stance_body">Monitorování, nahrávání, odstrašení, upozornění a služby na pozadí běží i při uzamčení aplikace. PIN chrání pouze rozhraní OverDrive, nic dalšího.</string>
+    <string name="settings_security_stance_body">Monitorování, nahrávání, odstrašení, upozornění a služby na pozadí běží i při uzamčení aplikace. PIN chrání pouze rozhraní Electric Guardian, nic dalšího.</string>
     <string name="settings_security_overline_lock">Zámek aplikace</string>
     <string name="settings_security_overline_recovery">Pokud zapomenete svůj PIN</string>
     <string name="settings_security_toggle_title">Vyžadovat PIN</string>
-    <string name="settings_security_toggle_subtitle_off">Vypnuto — OverDrive může otevřít kdokoliv.</string>
-    <string name="settings_security_toggle_subtitle_on">Zapnuto – k otevření OverDrive je vyžadován PIN.</string>
+    <string name="settings_security_toggle_subtitle_off">Vypnuto — Electric Guardian může otevřít kdokoliv.</string>
+    <string name="settings_security_toggle_subtitle_on">Zapnuto – k otevření Electric Guardian je vyžadován PIN.</string>
     <string name="settings_security_change_title">Změnit PIN</string>
     <string name="settings_security_change_subtitle">Potvrďte aktuální kód PIN, poté nastavte nový.</string>
     <string name="settings_security_autolock_title">Automatické uzamčení</string>
@@ -718,7 +718,7 @@
     <string name="settings_security_toast_disable_ok">Zámek aplikace je vypnutý.</string>
     <string name="pin_lock_title">Zadejte PIN</string>
     <string name="pin_lock_title_unlocked">Odemknuto</string>
-    <string name="pin_lock_subtitle_default">Odemkněte OverDrive pro pokračování.</string>
+    <string name="pin_lock_subtitle_default">Odemkněte Electric Guardian pro pokračování.</string>
     <string name="pin_lock_subtitle_wrong">Nesprávný PIN. Zkuste to znovu.</string>
     <string name="pin_lock_subtitle_locked_out">Příliš mnoho pokusů. Zkuste to za chvíli znovu.</string>
     <string name="pin_lock_subtitle_locked_out_countdown">Uzamčeno. Zkuste to znovu v %1$s.</string>
@@ -741,7 +741,7 @@
     <string name="diagnostics_battery_value_soh">%1$.0f%%</string>
     <string name="diagnostics_battery_value_pending">Čekám na údaje</string>
     <string name="dashboard_recordings_value_live">● %1$d</string>
-    <string name="dashboard_insight_welcome">Vítejte — OverDrive je nyní vaším druhým párem očí.</string>
+    <string name="dashboard_insight_welcome">Vítejte — Electric Guardian je nyní vaším druhým párem očí.</string>
     <string name="dashboard_insight_parked_charged_kwh">Získáno %1$s (≈%2$s) během parkování</string>
     <string name="dashboard_insight_parked_charged">Získáno %1$s během parkování</string>
     <string name="dashboard_insight_parked_drained_kwh">Spotřebováno %1$s (≈%2$s) od zaparkování</string>
@@ -759,16 +759,16 @@
         <item quantity="other">%1$d klipů zaznamenáno dnes</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">OverDrive je online %1$d den, %2$d h</item>
-        <item quantity="few">OverDrive je online %1$d dny, %2$d h</item>
-        <item quantity="many">OverDrive je online %1$d dní, %2$d h</item>
-        <item quantity="other">OverDrive je online %1$d dní, %2$d h</item>
+        <item quantity="one">Electric Guardian je online %1$d den, %2$d h</item>
+        <item quantity="few">Electric Guardian je online %1$d dny, %2$d h</item>
+        <item quantity="many">Electric Guardian je online %1$d dní, %2$d h</item>
+        <item quantity="other">Electric Guardian je online %1$d dní, %2$d h</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
-        <item quantity="one">OverDrive je online %1$d hodinu</item>
-        <item quantity="few">OverDrive je online %1$d hodiny</item>
-        <item quantity="many">OverDrive je online %1$d hodin</item>
-        <item quantity="other">OverDrive je online %1$d hodin</item>
+        <item quantity="one">Electric Guardian je online %1$d hodinu</item>
+        <item quantity="few">Electric Guardian je online %1$d hodiny</item>
+        <item quantity="many">Electric Guardian je online %1$d hodin</item>
+        <item quantity="other">Electric Guardian je online %1$d hodin</item>
     </plurals>
     <plurals name="dashboard_insight_minutes">
         <item quantity="one">%1$d min</item>
@@ -1006,21 +1006,21 @@
     <string name="onboarding_dismiss">Zavřít</string>
     <string name="onboarding_exit">Ukončit prohlídku</string>
     <string name="onboarding_done_short">Rozumím</string>
-    <string name="onboarding_authorize_title">Probuďte OverDrive</string>
-    <string name="onboarding_authorize_body">OverDrive spravuje vaše kamery přes malého pomocníka přímo v zařízení. Android jednou požádá o povolení USB ladění – klepněte na <b>Povolit</b> a zaškrtněte <b>Vždy povolit z tohoto zařízení</b>, aby to zůstalo zapnuté po každém restartu.</string>
+    <string name="onboarding_authorize_title">Probuďte Electric Guardian</string>
+    <string name="onboarding_authorize_body">Electric Guardian spravuje vaše kamery přes malého pomocníka přímo v zařízení. Android jednou požádá o povolení USB ladění – klepněte na <b>Povolit</b> a zaškrtněte <b>Vždy povolit z tohoto zařízení</b>, aby to zůstalo zapnuté po každém restartu.</string>
     <string name="onboarding_authorize_button">Povolit přístup</string>
     <string name="onboarding_authorize_waiting_title">Čekání na povolení…</string>
     <string name="onboarding_authorize_waiting_body">Potvrďte vyskakovací okno Androidu. Pokud ho nevidíte, povolení už možná bylo uděleno – pokračování proběhne samo.</string>
     <string name="onboarding_authorize_retry_title">Stále nepřipojeno</string>
     <string name="onboarding_authorize_retry_body">Pomocník ještě neběží. Povolení Androidu mohlo být zamítnuto. Zkuste to znovu a nezapomeňte zaškrtnout <b>Vždy povolit</b>.</string>
     <string name="onboarding_authorize_retry_button">Zkusit znovu</string>
-    <string name="onboarding_mode_title">Kdy má OverDrive běžet?</string>
-    <string name="onboarding_mode_body">Vyberte, jak se má OverDrive chovat po vypnutí auta.\n\n<b>Zapnuto &amp; vypnuto</b> nechá monitorování běžet i po zaparkování – dohled na pozadí zůstává aktivní, takže auto přes noc odebírá trochu energie navíc.\n\n<b>Jen zapnuto</b> OverDrive po odchodu úplně vypne. Dashcam, jízdy a nabíjení fungují dál během jízdy a všechno se samo znovu spustí, jakmile auto zapnete. Toto můžete kdykoli změnit v Nastavení.</string>
+    <string name="onboarding_mode_title">Kdy má Electric Guardian běžet?</string>
+    <string name="onboarding_mode_body">Vyberte, jak se má Electric Guardian chovat po vypnutí auta.\n\n<b>Zapnuto &amp; vypnuto</b> nechá monitorování běžet i po zaparkování – dohled na pozadí zůstává aktivní, takže auto přes noc odebírá trochu energie navíc.\n\n<b>Jen zapnuto</b> Electric Guardian po odchodu úplně vypne. Dashcam, jízdy a nabíjení fungují dál během jízdy a všechno se samo znovu spustí, jakmile auto zapnete. Toto můžete kdykoli změnit v Nastavení.</string>
     <string name="onboarding_mode_on_off_button">Zapnuto &amp; vypnuto</string>
     <string name="onboarding_mode_on_only_button">Jen zapnuto</string>
     <string name="onboarding_camera_step_label">Kamera · krok %1$d z %2$d</string>
     <string name="onboarding_camera_intro_title">Nastavte své kamery</string>
-    <string name="onboarding_camera_intro_body">Řekněme OverDrive, která kamera je váš 360° pohled a která dashcam. Zabere to asi minutu a později to můžete změnit.</string>
+    <string name="onboarding_camera_intro_body">Řekněme Electric Guardian, která kamera je váš 360° pohled a která dashcam. Zabere to asi minutu a později to můžete změnit.</string>
     <string name="onboarding_camera_intro_primary">Začít</string>
     <string name="onboarding_camera_opening_title">Otevírám nastavení kamer…</string>
     <string name="onboarding_camera_opening_body">Načítám živý náhled z vašich kamer. Může to trvat pár sekund.</string>
@@ -1029,7 +1029,7 @@
     <string name="onboarding_camera_dashcam_title">Teď najděte kameru mířící dopředu</string>
     <string name="onboarding_camera_dashcam_body">Procházejte kamery pomocí šipek a zastavte se u té, která ukazuje čelní sklo / pohled dopředu. Zapamatujte si její číslo – vyberete ho v dalším kroku.</string>
     <string name="onboarding_camera_pick_title">Vyberte svou 360° kameru</string>
-    <string name="onboarding_camera_pick_body">V horní kartě vyberte číslo pro svou 360° / běžnou kameru. Nejste si jisti? Nechte na AUTO a OverDrive to zjistí sám.</string>
+    <string name="onboarding_camera_pick_body">V horní kartě vyberte číslo pro svou 360° / běžnou kameru. Nejste si jisti? Nechte na AUTO a Electric Guardian to zjistí sám.</string>
     <string name="onboarding_camera_pick_primary">Další</string>
     <string name="onboarding_camera_pick_dash_title">Vyberte svou kameru dashcamu</string>
     <string name="onboarding_camera_pick_dash_body">V této kartě vyberte číslo dashcamu, které jste našli dříve – nebo nechte na AUTO.</string>
@@ -1044,7 +1044,7 @@
     <string name="onboarding_camera_windshield_body">Pro rozvržení OEM dashcamu – kamera čelního skla jako pruh nahoře v nahrávce – vyberte v nabídce rolí Čelní sklo, zvolte přední kameru a uložte. Většina uživatelů toto může přeskočit.</string>
     <string name="onboarding_camera_windshield_primary">Ukázat</string>
     <string name="onboarding_camera_windshield_skip">Ne, děkuji</string>
-    <string name="onboarding_vehicle_title">Řekněte OverDrive kapacitu baterie</string>
+    <string name="onboarding_vehicle_title">Řekněte Electric Guardian kapacitu baterie</string>
     <string name="onboarding_vehicle_body">Vyberte svůj model a kWh doplníme za vás, nebo je zadejte sami (5–120). Díky tomu budou odhady dojezdu a nabíjení přesné. Můžete to přeskočit a nastavit později.</string>
     <string name="onboarding_vehicle_primary">Nastavit baterii</string>
     <string name="onboarding_dash_tiles_title">Váš kokpit na první pohled</string>
@@ -1108,11 +1108,11 @@
     <string name="recording_lib_storage_usb">USB</string>
     <string name="recording_lib_storage_internal">INT</string>
     <string name="daemons_wifi_auto_enable_title">Wi&#8209;Fi</string>
-    <string name="daemons_wifi_auto_enable_subtitle">Nyní zapne nebo vypne Wi&#8209;Fi. Když je vypnuto, sledovací služby OverDrive ho už zpátky nezapnou.</string>
+    <string name="daemons_wifi_auto_enable_subtitle">Nyní zapne nebo vypne Wi&#8209;Fi. Když je vypnuto, sledovací služby Electric Guardian ho už zpátky nezapnou.</string>
     <string name="daemons_wifi_auto_enable_save_failed">Nepodařilo se změnit stav Wi&#8209;Fi.</string>
-    <string name="community_discord_url">https://discord.gg/PZutk9fg4h</string>
-    <string name="community_github_issues_url">https://github.com/yash-srivastava/Overdrive-release/issues</string>
-    <string name="community_whatsapp_url">https://chat.whatsapp.com/HChmriCWgr9KwAtE6OEkiM</string>
+    <string name="community_discord_url">https://github.com/allysongrollimd-svg/eletric-guardian/discussions</string>
+    <string name="community_github_issues_url">https://github.com/allysongrollimd-svg/eletric-guardian/issues</string>
+    <string name="community_whatsapp_url">https://github.com/allysongrollimd-svg/eletric-guardian/discussions</string>
     <string name="toast_traffic_monitor_persist_failed">Použito, ale předvolbu se nepodařilo uložit – nepřežije aktualizaci firmwaru.</string>
     <string name="dashboard_tunnel_failed">Chyba tunelu</string>
     <string name="dashboard_tunnel_stopping">Zastavuji tunel…</string>
@@ -1136,7 +1136,7 @@
     <string name="dialog_tailscale_adb_enable_title">Povolit vzdálené ADB?</string>
     <string name="dialog_tailscale_adb_enable_message">Tímto se přidá dosah ADB (port 5555) v rámci tailnet sítě, takže můžete tuto hlavní jednotku ladit na dálku.\n\nNež to zapnete:\n• ADB uděluje PLNÝ přístup přes shell – zařízení v tailnet síti s autorizovaným klíčem může číst data, instalovat appky a měnit systémová nastavení\n• Tímto se přidá vaše tailnet síť jako trasa; ADB se tím nezpřístupní veřejnému internetu\n• ADB už přijímá připojení z lokální sítě, takže vypnutí tohoto přepínače ADB úplně nezavře\n• Připojující se počítač stále potřebuje autorizovaný klíč ADB\n• Zapnutí Wi-Fi hotspotu přeruší Wi-Fi připojení, takže vzdálený přístup pak závisí na mobilních datech\n\nZapínejte to jen v tailnet síti, kterou máte pod kontrolou. Kdykoli to můžete vypnout.</string>
     <string name="dialog_create_evidence_pack_title">Vytvořit balíček důkazů?</string>
-    <string name="dialog_create_evidence_pack_message">OverDrive odesílá vašemu nastavenému poskytovateli AI jen filtrovaná metadata události. Video zůstává lokálně a přidá se jen do staženého balíčku důkazů.</string>
+    <string name="dialog_create_evidence_pack_message">Electric Guardian odesílá vašemu nastavenému poskytovateli AI jen filtrovaná metadata události. Video zůstává lokálně a přidá se jen do staženého balíčku důkazů.</string>
     <string name="toast_evidence_pack_creating">Vytvářím balíček důkazů…</string>
     <string name="toast_evidence_pack_ready">Balíček důkazů je připraven</string>
     <string name="toast_evidence_pack_unavailable">Tato nahrávka ještě není zaindexovaná</string>
@@ -1157,7 +1157,7 @@
     <string name="remote_voice_mute">Ztlumit vzdálený hlas</string>
     <string name="remote_voice_unmute">Zrušit ztlumení vzdáleného hlasu</string>
     <string name="remote_voice_notification_title">Vzdálený hlas aktivní</string>
-    <string name="remote_voice_notification_text">Přijímá živé audio z ověřené relace OverDrive</string>
+    <string name="remote_voice_notification_text">Přijímá živé audio z ověřené relace Electric Guardian</string>
     <string name="settings_remote_communication_title">Vzdálená komunikace</string>
     <string name="settings_remote_communication_subtitle">Povolte hlas, poslech kabiny a zprávy z webové konzole. Pokud oprávnění Překryv ukazuje Vyžadováno oprávnění, klepněte na něj a povolte Zobrazení přes ostatní aplikace.</string>
     <string name="settings_remote_voice_title">Povolit vzdálený hlas</string>
@@ -1218,22 +1218,22 @@
     <string name="settings_backup_pick_file">Vyberte zálohu k obnovení</string>
     <string name="settings_backup_no_files">Nebyly nalezeny žádné záložní soubory. Nejprve nějakou zálohu vytvořte, nebo zkopírujte záložní .json do %1$s a zkuste to znovu.</string>
     <string name="settings_backup_read_failed">Nepodařilo se přečíst soubor</string>
-    <string name="settings_backup_invalid_file">Tento soubor není platnou zálohou OverDrive</string>
+    <string name="settings_backup_invalid_file">Tento soubor není platnou zálohou Electric Guardian</string>
     <string name="settings_backup_restoring">Obnovuji…</string>
     <string name="settings_backup_restored">Nastavení obnoveno</string>
     <string name="settings_backup_restore_failed">Obnovení selhalo</string>
     <string name="settings_backup_daemon_down">Pro zálohování nebo obnovení musí běžet služba kamery. Spusťte ji ve Službách a zkuste to znovu.</string>
     <string name="settings_backup_restore_confirm_title">Obnovit nastavení?</string>
-    <string name="settings_backup_restore_confirm_msg">Tímto se vaše aktuální nastavení OverDrive nahradí zálohou a znovu se načtou služby. Funguje to jen na stejné hlavní jednotce, na které byla záloha vytvořena.</string>
+    <string name="settings_backup_restore_confirm_msg">Tímto se vaše aktuální nastavení Electric Guardian nahradí zálohou a znovu se načtou služby. Funguje to jen na stejné hlavní jednotce, na které byla záloha vytvořena.</string>
     <string name="settings_backup_restore_confirm_btn">Obnovit</string>
     <string name="settings_backup_restart_hint">Nastavení obnoveno. Restartujte službu kamery (Služby → Kamera → Restartovat), aby se opravdu projevila všechna obnovená nastavení.</string>
     <string name="settings_backup_trips_prompt">Zahrnout historii jízd (vzdálenost, energie, náklady, skóre, počáteční/koncová místa)? Podrobná telemetrie jednotlivých jízd zahrnuta není. Soubor bude obsahovat historii vašich poloh – uchovávejte ho v soukromí.</string>
     <string name="settings_backup_settings_only">Jen nastavení</string>
     <string name="settings_backup_with_trips">Včetně jízd</string>
     <string name="settings_about_support_kofi_url">https://ko-fi.com/E1E71XALHX</string>
-    <string name="settings_about_license_url">https://github.com/yash-srivastava/Overdrive-release/blob/main/LICENSE</string>
-    <string name="settings_about_source_url">https://github.com/yash-srivastava/Overdrive-release</string>
-    <string name="settings_about_star_url">https://github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_license_url">https://github.com/allysongrollimd-svg/eletric-guardian/blob/main/LICENSE</string>
+    <string name="settings_about_source_url">https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_star_url">https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_tier_diamond">Diamant</string>
     <string name="settings_about_tier_platinum">Platina</string>
     <string name="settings_about_tier_gold">Zlato</string>

@@ -1,5 +1,5 @@
 /**
- * OverDrive — Network & Hotspot page module.
+ * Electric Guardian — Network & Hotspot page module.
  *
  * The page is a pure CONSUMER of the daemon's /api/hotspot state, which is in
  * turn published by the app-process hotspot owner. There is no AP driving logic

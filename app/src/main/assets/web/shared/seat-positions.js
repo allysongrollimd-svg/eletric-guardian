@@ -1,7 +1,7 @@
 /*
  * Seat positions page.
  *
- * Manages OverDrive's own store of driver seat + mirror geometry: the positions
+ * Manages Electric Guardian's own store of driver seat + mirror geometry: the positions
  * captured from the car's own memory slots (by holding a position button in the car)
  * plus any the user saves here.
  *
@@ -441,7 +441,7 @@ const SeatPositions = {
                         // the car's name to fall back to, so this is a revert, not a delete.
                         : '<div class="sp-menu-sep"></div>' +
                             '<button data-act="alias">' + this.ICONS.pencil +
-                                this.esc(this.t('seatpos.set_alias', 'Rename in OverDrive')) + '</button>' +
+                                this.esc(this.t('seatpos.set_alias', 'Rename in Electric Guardian')) + '</button>' +
                             (p.carName ? '<button data-act="clearAlias">' + this.ICONS.undo +
                                 this.esc(this.t('seatpos.clear_alias', 'Use the car’s name')) +
                                 '</button>' : '')) +
@@ -583,7 +583,7 @@ const SeatPositions = {
         b1.className = 'sp-batch run';
         b2.className = 'sp-batch';
         // The vehicle can still refuse this write outside Park even when the user disables
-        // OverDrive's positioning guard.
+        // Electric Guardian's positioning guard.
         const url = '/api/positions/apply?id=' + encodeURIComponent(p.id) + ack;
         const res = await this.post(url).catch(() => null);
         b1.className = 'sp-batch done';
@@ -679,8 +679,8 @@ const SeatPositions = {
      */
     async setAlias(p) {
         const alias = await this.prompt(
-            this.t('seatpos.alias_title', 'Rename in OverDrive'),
-            this.t('seatpos.alias_body', 'The car keeps calling it {0}. This name is only used in OverDrive.')
+            this.t('seatpos.alias_title', 'Rename in Electric Guardian'),
+            this.t('seatpos.alias_body', 'The car keeps calling it {0}. This name is only used in Electric Guardian.')
                 .replace('{0}', p.carName || p.name),
             p.name);
         if (alias === null || alias === p.name) return;

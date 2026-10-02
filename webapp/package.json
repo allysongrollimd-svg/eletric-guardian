@@ -1,0 +1,19 @@
+{
+  "name": "electric-guardian-webapp",
+  "version": "0.1.0",
+  "description": "Realtime web dashboard for Electric Guardian vehicle telemetry (MQTT / HTTP ingest -> SSE).",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "DEMO=1 DASHBOARD_TOKEN=dev INGEST_TOKEN=dev node server.js",
+    "simulate": "node scripts/simulate.mjs",
+    "gen:fields": "node scripts/gen-fields.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "mqtt": "^5.10.0"
+  }
+}

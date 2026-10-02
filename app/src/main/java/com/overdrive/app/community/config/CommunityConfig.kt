@@ -44,7 +44,7 @@ object CommunityConfig {
      * never crashy. The field stays editable so a self-host can point elsewhere; a user
      * who blanks it disables community sync entirely.
      */
-    const val DEFAULT_WORKER_URL = "https://community-edge.yash321sri.workers.dev"
+    const val DEFAULT_WORKER_URL = "" // no shared backend by default; set your own Worker URL to enable
 
     // Keys (also the JSON field names the web settings page reads/writes).
     private const val K_WORKER_URL = "workerUrl"     // user-configurable community-edge URL

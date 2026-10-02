@@ -1,5 +1,5 @@
 /*
- * Overdrive — Automations UI controller.
+ * Electric Guardian — Automations UI controller.
  *
  * ES5 / Chrome 58 floor (BYD DiLink head-unit WebView, Android 7.1). Assets
  * ship raw — there is NO transpile/build step — so this file must parse and
@@ -3098,7 +3098,7 @@ BYD.automations = {
     createColourInput(data, defaultValue, eventListener) {
         const wrap = document.createElement('div');
         wrap.classList.add('input', 'colour-swatches');
-        const codes = (data.colourCodes != null && data.colourCodes.length) ? data.colourCodes : ['#00D4AA'];
+        const codes = (data.colourCodes != null && data.colourCodes.length) ? data.colourCodes : ['#4ED400'];
         const min = 1, max = codes.length;
         let current = (defaultValue != null && !isNaN(defaultValue)
             && defaultValue >= min && defaultValue <= max) ? parseInt(defaultValue, 10) : 1;

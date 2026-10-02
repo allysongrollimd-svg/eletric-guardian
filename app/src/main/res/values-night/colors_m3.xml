@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Material 3 token palette — DARK theme.
-  Generated from seed #00D4AA. Surfaces follow M3 elevation tonal stepping
+  Generated from seed #4ED400. Surfaces follow M3 elevation tonal stepping
   (dim/bright + 5 container tiers) so we can stack two surfaces without
   needing elevation shadows that read poorly on dark.
 -->
 <resources>
 
     <!-- Primary -->
-    <color name="md_sys_color_primary_dark">#5DDBB6</color>
-    <color name="md_sys_color_on_primary_dark">#003828</color>
-    <color name="md_sys_color_primary_container_dark">#00513B</color>
-    <color name="md_sys_color_on_primary_container_dark">#78F3CC</color>
+    <color name="md_sys_color_primary_dark">#8BDC5C</color>
+    <color name="md_sys_color_on_primary_dark">#0E2600</color>
+    <color name="md_sys_color_primary_container_dark">#173F00</color>
+    <color name="md_sys_color_on_primary_container_dark">#A5F477</color>
 
     <!-- Secondary -->
-    <color name="md_sys_color_secondary_dark">#B1CCC0</color>
-    <color name="md_sys_color_on_secondary_dark">#1D352D</color>
-    <color name="md_sys_color_secondary_container_dark">#334B43</color>
-    <color name="md_sys_color_on_secondary_container_dark">#CDE8DC</color>
+    <color name="md_sys_color_secondary_dark">#AFBCCE</color>
+    <color name="md_sys_color_on_secondary_dark">#1E2A16</color>
+    <color name="md_sys_color_secondary_container_dark">#313D4D</color>
+    <color name="md_sys_color_on_secondary_container_dark">#D7E8CD</color>
 
     <!-- Tertiary -->
     <color name="md_sys_color_tertiary_dark">#85CFFF</color>
@@ -33,28 +33,28 @@
 
     <!-- Background / surfaces — green-black; the seed hue is carried into the
          neutrals themselves rather than left grey. -->
-    <color name="md_sys_color_background_dark">#010A07</color>
+    <color name="md_sys_color_background_dark">#000000</color>
     <color name="md_sys_color_on_background_dark">#E6EDE9</color>
-    <color name="md_sys_color_surface_dark">#010A07</color>
+    <color name="md_sys_color_surface_dark">#000000</color>
     <color name="md_sys_color_on_surface_dark">#E6EDE9</color>
-    <color name="md_sys_color_surface_variant_dark">#2C3F39</color>
-    <color name="md_sys_color_on_surface_variant_dark">#B2C4BC</color>
-    <color name="md_sys_color_surface_dim_dark">#010A07</color>
-    <color name="md_sys_color_surface_bright_dark">#1B3B32</color>
-    <color name="md_sys_color_surface_container_lowest_dark">#000503</color>
-    <color name="md_sys_color_surface_container_low_dark">#04120F</color>
-    <color name="md_sys_color_surface_container_dark">#081915</color>
-    <color name="md_sys_color_surface_container_high_dark">#0E241E</color>
-    <color name="md_sys_color_surface_container_highest_dark">#143029</color>
+    <color name="md_sys_color_surface_variant_dark">#2B3440</color>
+    <color name="md_sys_color_on_surface_variant_dark">#B1B9C5</color>
+    <color name="md_sys_color_surface_dim_dark">#000000</color>
+    <color name="md_sys_color_surface_bright_dark">#1F2F15</color>
+    <color name="md_sys_color_surface_container_lowest_dark">#000000</color>
+    <color name="md_sys_color_surface_container_low_dark">#020301</color>
+    <color name="md_sys_color_surface_container_dark">#070C04</color>
+    <color name="md_sys_color_surface_container_high_dark">#0E1709</color>
+    <color name="md_sys_color_surface_container_highest_dark">#16240F</color>
 
     <!-- Outline / dividers -->
-    <color name="md_sys_color_outline_dark">#7D918B</color>
-    <color name="md_sys_color_outline_variant_dark">#24332D</color>
+    <color name="md_sys_color_outline_dark">#7C8592</color>
+    <color name="md_sys_color_outline_variant_dark">#232A34</color>
 
     <!-- Inverse / scrim -->
     <color name="md_sys_color_inverse_surface_dark">#DEE4E0</color>
-    <color name="md_sys_color_inverse_on_surface_dark">#2D3130</color>
-    <color name="md_sys_color_inverse_primary_dark">#00876C</color>
+    <color name="md_sys_color_inverse_on_surface_dark">#2D2F31</color>
+    <color name="md_sys_color_inverse_primary_dark">#2B7500</color>
     <color name="md_sys_color_scrim_dark">#000000</color>
 
     <!-- Brand-aware status colors -->
@@ -66,7 +66,7 @@
     <!-- Container tones for the status colors above, for status pills that need
          a fill rather than just text. Alpha lets the hero card's ribbon carry
          through the pills. -->
-    <color name="overdrive_status_success_container_dark">#CC06331F</color>
+    <color name="overdrive_status_success_container_dark">#CC0F2304</color>
     <color name="overdrive_status_warning_container_dark">#CC33240C</color>
     <color name="overdrive_status_danger_container_dark">#CC3A1512</color>
     <color name="overdrive_status_info_container_dark">#CC062F42</color>

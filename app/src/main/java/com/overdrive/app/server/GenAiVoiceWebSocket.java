@@ -324,7 +324,7 @@ public final class GenAiVoiceWebSocket {
                     && !"run_automation".equals(actionType))) {
                 return;
             }
-            String text = "OverDrive confirmation result for "
+            String text = "Electric Guardian confirmation result for "
                     + actionType + ": "
                     + (success
                     ? "the user confirmed it and the app accepted the action"
@@ -736,7 +736,7 @@ public final class GenAiVoiceWebSocket {
                                                 : "confirmation_required")
                                         .put("detail", token.isEmpty()
                                                 ? "A valid context approval could not be created."
-                                                : "Ask the user to approve sharing this data on the OverDrive screen.")
+                                                : "Ask the user to approve sharing this data on the Electric Guardian screen.")
                                         .toString());
                     } else if (GenAiAction.TOOL_NAME.equals(name)) {
                         try {
@@ -753,7 +753,7 @@ public final class GenAiVoiceWebSocket {
                                             .put("status",
                                                     "confirmation_required")
                                             .put("detail",
-                                                    "Confirmation is required on the OverDrive screen.")
+                                                    "Confirmation is required on the Electric Guardian screen.")
                                             .toString());
                         } catch (GenAiAction.ValidationException error) {
                             sendOpenAiFunctionOutput(
@@ -881,7 +881,7 @@ public final class GenAiVoiceWebSocket {
                                         : "confirmation_required")
                                 .put("detail", token.isEmpty()
                                         ? "A valid context approval could not be created."
-                                        : "Ask the user to approve sharing this data on the OverDrive screen.");
+                                        : "Ask the user to approve sharing this data on the Electric Guardian screen.");
                     } else if (oneCall && GenAiAction.TOOL_NAME.equals(
                             name)) {
                         try {
@@ -897,7 +897,7 @@ public final class GenAiVoiceWebSocket {
                                     .put("status",
                                             "confirmation_required")
                                     .put("detail",
-                                            "Confirmation is required on the OverDrive screen.");
+                                            "Confirmation is required on the Electric Guardian screen.");
                         } catch (GenAiAction.ValidationException error) {
                             responseBody = new JSONObject()
                                     .put("status", "rejected")

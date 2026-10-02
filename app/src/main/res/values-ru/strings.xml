@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Позволяет OverDrive продолжать мониторинг автомобиля в фоновом режиме. Служба не считывает содержимое экрана и не взаимодействует с ним.</string>
+    <string name="accessibility_service_description">Позволяет Electric Guardian продолжать мониторинг автомобиля в фоновом режиме. Служба не считывает содержимое экрана и не взаимодействует с ним.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">Камера 1 = BYD Seal, Камера 0 = Atto. Возобновить загрузку после изменения идентификатора камеры, чтобы настройка вступила в силу.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">Идентификатор штатной камеры регистратора</string>
-    <string name="camera_oem_dashcam_hint">Выберите идентификатор AVMCamera, который указывает на датчик приборной панели вперед. Дашкэм – это ВЫПОЗИТА панели: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Оставьте на авто, чтобы OverDrive выбрать.</string>
+    <string name="camera_oem_dashcam_hint">Выберите идентификатор AVMCamera, который указывает на датчик приборной панели вперед. Дашкэм – это ВЫПОЗИТА панели: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Оставьте на авто, чтобы Electric Guardian выбрать.</string>
     <string name="camera_oem_dashcam_auto_resolved">Авто — с id %1$d (pano id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Авто — pano id %1$d, не может отобразить dashcam</string>
     <string name="camera_oem_dashcam_save">Сохранить</string>
@@ -162,7 +162,7 @@
     <string name="camera_mapping_summary_probing">Панорамный поток: автоматическое обнаружение / исследование наследия</string>
     <string name="camera_mapping_current_format">Текущее сопоставление: %1$s</string>
     <string name="camera_mapping_current_none">Текущее сопоставление: авто / по умолчанию</string>
-    <string name="camera_mapping_hint">OverDrive поддерживает традиционное поведение запуска по умолчанию, но теперь позволяет правильно калибровывать сливную панорамную ленту. Предусмотреть каждый сырый слитый слайд, отобразить логические 360-роли на слайд, который на самом деле показывает передний / правый / задний / левый на вашем автомобиле, и демон будет повторно использовать этот макет для записи, потоковой передачи и ИИ после перезапуска.</string>
+    <string name="camera_mapping_hint">Electric Guardian поддерживает традиционное поведение запуска по умолчанию, но теперь позволяет правильно калибровывать сливную панорамную ленту. Предусмотреть каждый сырый слитый слайд, отобразить логические 360-роли на слайд, который на самом деле показывает передний / правый / задний / левый на вашем автомобиле, и демон будет повторно использовать этот макет для записи, потоковой передачи и ИИ после перезапуска.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Сканировать для подключения</string>
     <string name="dashboard_qr_waiting">Ждём туннеля...</string>
@@ -179,15 +179,15 @@
     <string name="setup_step_two_label">2 .</string>
     <string name="setup_step_three_label">3 .</string>
     <string name="setup_language_title">Выберите свой язык</string>
-    <string name="setup_language_body">Нажмите, чтобы выбрать другой язык для приложения OverDrive и веб- туннеля.</string>
+    <string name="setup_language_body">Нажмите, чтобы выбрать другой язык для приложения Electric Guardian и веб- туннеля.</string>
     <string name="setup_language_button">Выберите язык</string>
     <string name="setup_autostart_title">Отключить ограничение автозапуска</string>
-    <string name="setup_autostart_body">Нажмите ниже, чтобы открыть BYD Auto-Start. Найдите OverDrive в списке и отберите поле. BYD стирает это при каждой установке  Вы будете переделать его после обновлений.</string>
+    <string name="setup_autostart_body">Нажмите ниже, чтобы открыть BYD Auto-Start. Найдите Electric Guardian в списке и отберите поле. BYD стирает это при каждой установке  Вы будете переделать его после обновлений.</string>
     <string name="setup_autostart_button">Откройте BYD Автозапуск</string>
     <string name="setup_overlay_title">Позвольте отображаться в других приложениях</string>
     <string name="setup_overlay_body">Разрешите показ плавающего индикатора записи и отслеживания поездок поверх других приложений.</string>
     <string name="setup_overlay_button">Откройте настройки перекрытия</string>
-    <!-- Onboarding guide (novice track). Parked-only, glanceable. Overdrive is a
+    <!-- Onboarding guide (novice track). Parked-only, glanceable. Electric Guardian is a
          protected brand name — keep it verbatim. -->
     <!-- Shared button labels -->
     <string name="onboarding_next">Следующий</string>
@@ -198,8 +198,8 @@
     <string name="onboarding_exit">Выйти из тура</string>
     <string name="onboarding_done_short">Понятно</string>
     <!-- Step 0: authorize the daemon (system ADB popup) -->
-    <string name="onboarding_authorize_title">Активируйте Overdrive</string>
-    <string name="onboarding_authorize_body">Overdrive runs your cameras through a small on-device helper. Android will ask once to allow USB debugging — tap <b>Allow</b> and check <b>Always allow from this device</b> so it stays on after every restart.</string>
+    <string name="onboarding_authorize_title">Активируйте Electric Guardian</string>
+    <string name="onboarding_authorize_body">Electric Guardian runs your cameras through a small on-device helper. Android will ask once to allow USB debugging — tap <b>Allow</b> and check <b>Always allow from this device</b> so it stays on after every restart.</string>
     <string name="onboarding_authorize_button">Разрешить доступ</string>
     <string name="onboarding_authorize_waiting_title">Ожидание разрешения…</string>
     <string name="onboarding_authorize_waiting_body">Принять всплывающее окно Android. Если вы его не увидите, может быть предоставлено — это будет продолжено самостоятельно.</string>
@@ -213,7 +213,7 @@
     <!-- Camera mapping chapter -->
     <string name="onboarding_camera_step_label">Камера · шаг %1$d из %2$d</string>
     <string name="onboarding_camera_intro_title">Настройка камер</string>
-    <string name="onboarding_camera_intro_body">Давайте расскажем Overdrive о том, какая камера является вашим 360 просмотром и какая из них является вашей панелью. Это займет около минуты, и вы можете изменить ее позже.</string>
+    <string name="onboarding_camera_intro_body">Давайте расскажем Electric Guardian о том, какая камера является вашим 360 просмотром и какая из них является вашей панелью. Это займет около минуты, и вы можете изменить ее позже.</string>
     <string name="onboarding_camera_intro_primary">Начать</string>
     <string name="onboarding_camera_opening_title">Открытие настройки камеры…</string>
     <string name="onboarding_camera_opening_body">Загрузка предварительного просмотра в реальном времени с ваших камер. Это может занять несколько секунд.</string>
@@ -222,7 +222,7 @@
     <string name="onboarding_camera_dashcam_title">Теперь найдите дорогу впереди камеру</string>
     <string name="onboarding_camera_dashcam_body">Пройдите через камеру с помощью стрелок и остановитесь на одной с показом ветрового щита / вперед. Обратите внимание на его номер — вы выберете его дальше.</string>
     <string name="onboarding_camera_pick_title">Выберите вашу 360 камеру</string>
-    <string name="onboarding_camera_pick_body">В верхней карте выберите номер для вашей 360 / обычной камеры. Не уверены? Оставьте его на AUTO и Overdrive фигуры.</string>
+    <string name="onboarding_camera_pick_body">В верхней карте выберите номер для вашей 360 / обычной камеры. Не уверены? Оставьте его на AUTO и Electric Guardian фигуры.</string>
     <string name="onboarding_camera_pick_primary">Следующий</string>
     <string name="onboarding_camera_pick_dash_title">Выберите камеру приборной камеры</string>
     <string name="onboarding_camera_pick_dash_body">В этой карте выберите ранее имевшийся номер панели инструментов — или оставьте его на AUTO.</string>
@@ -238,7 +238,7 @@
     <string name="onboarding_camera_windshield_primary">Покажите мне</string>
     <string name="onboarding_camera_windshield_skip">Нет благодарности</string>
     <!-- Vehicle profile chapter -->
-    <string name="onboarding_vehicle_title">Укажите Overdrive вашу батарею</string>
+    <string name="onboarding_vehicle_title">Укажите Electric Guardian вашу батарею</string>
     <string name="onboarding_vehicle_body">Выберите свою модель и мы заполним кВт или напечатаем ее самостоятельно (5–120). Это повышает точность оценок диапазона и зарядки. Вы можете пропустить и установить их позже.</string>
     <string name="onboarding_vehicle_primary">Установить батарею</string>
     <!-- Dashboard orientation chapter -->
@@ -517,7 +517,7 @@
     <string name="update_picker_current_suffix">%1$s (установлен)</string>
     <string name="update_picker_older_suffix">%1$s (старше)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Обновление Overdrive</string>
+    <string name="update_progress_title">Обновление Electric Guardian</string>
     <string name="update_step_downloading">Загрузка обновления…</string>
     <string name="update_step_verifying">Проверка загрузки…</string>
     <string name="update_step_stopping">Остановка демонов…</string>
@@ -699,7 +699,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Советы и решение проблем</string>
     <string name="setup_traffic_title">Отключить монитор трафика BYD</string>
-    <string name="setup_traffic_body">Монитор трафика BYD блокирует доступ третьих лиц к Интернету. Отключение позволяет OverDrive и любым другим приложениям, которые вы устанавливаете, фактически использовать сеть.</string>
+    <string name="setup_traffic_body">Монитор трафика BYD блокирует доступ третьих лиц к Интернету. Отключение позволяет Electric Guardian и любым другим приложениям, которые вы устанавливаете, фактически использовать сеть.</string>
     <string name="setup_traffic_button">Открытый монитор трафика</string>
     <string name="setup_camera_fix_title">Камера подает черный или неточный?</string>
     <string name="setup_camera_fix_body">Зонд камеры, нажмите идентификатор камеры на 0, нажмите Save, а затем перезагрузите демона камеры. Если ленты все еще неправильны, повторяйте с идентификатором камеры 1. Оставьте раздел отображения нетронутым.</string>
@@ -723,16 +723,16 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">Статус OverDrive</string>
+    <string name="status_overlay_notif_title">Статус Electric Guardian</string>
     <string name="status_overlay_notif_text">Статус накладки активный</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">Overdrive активна</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian активна</string>
     <string name="daemon_keepalive_notif_text">Мониторинг систем транспортных средств</string>
-    <string name="overdrive_status_summary_title">Overdrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">Фоновые службы запущены</string>
     <!-- ============================================================== -->
     <!-- M3 Revamp: navigation rail + settings sub-rail + theme picker  -->
@@ -775,7 +775,7 @@
     <string name="settings_privacy_title">Конфиденциальность и данные</string>
     <string name="settings_privacy_body">Ресет очищает индекс записей, кешированные учетные данные, состояние демона и предпочтения на устройстве.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">О OverDrive</string>
+    <string name="settings_about_title">О Electric Guardian</string>
     <string name="settings_about_version_label">Версия</string>
     <string name="settings_about_package_label">Построение</string>
     <string name="settings_about_check_update_value">Проверьте последнюю версию GitHub и установите, если она новее.</string>
@@ -794,13 +794,13 @@
     <string name="settings_backup_pick_file">Выберите резервную копию для восстановления</string>
     <string name="settings_backup_no_files">Файлы резервных копий не найдены. Экспортируйте один раз или копируйте резервную копию .json в %1$s, затем попробуйте снова.</string>
     <string name="settings_backup_read_failed">Не удалось прочитать файл</string>
-    <string name="settings_backup_invalid_file">Этот файл не является допустимой резервной копией Overdrive</string>
+    <string name="settings_backup_invalid_file">Этот файл не является допустимой резервной копией Electric Guardian</string>
     <string name="settings_backup_restoring">Восстановление…</string>
     <string name="settings_backup_restored">Настройки восстановлены</string>
     <string name="settings_backup_restore_failed">Не удалось восстановить</string>
     <string name="settings_backup_daemon_down">Служба камеры должна быть запущена для резервного копирования или восстановления. Запустите её из демонов, а затем повторите попытку.</string>
     <string name="settings_backup_restore_confirm_title">Восстановить настройки?</string>
-    <string name="settings_backup_restore_confirm_msg">Это заменяет ваши текущие настройки Overdrive на службы резервного копирования и перезагрузки. Он работает только на том же блоке резервного копирования, на котором была сделана резервная копия.</string>
+    <string name="settings_backup_restore_confirm_msg">Это заменяет ваши текущие настройки Electric Guardian на службы резервного копирования и перезагрузки. Он работает только на том же блоке резервного копирования, на котором была сделана резервная копия.</string>
     <string name="settings_backup_restore_confirm_btn">Восстановить</string>
     <string name="settings_backup_restart_hint">Настройки восстановлены. Перезапустите демон камеры (Daemons → Camera → Перезапустить), чтобы убедиться, что все восстановленные настройки будут применены.</string>
     <string name="settings_backup_trips_prompt">Включите историю вашей поездки (расстояние, энергия, стоимость, результаты, начальные и конечные места)? Детали телеметрии по поездкам не включены. Файл будет содержать историю вашего местоположения — сохранить его приватным.</string>
@@ -811,9 +811,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Поддерживаются такими людьми, как ты.</string>
     <string name="settings_about_support_share_title">Расскажите другому владельцу</string>
-    <string name="settings_about_support_share_value">Каждый общий ссылка помогает другому владельцу BYD обнаружить Overdrive.</string>
-    <string name="settings_about_support_share_message">Проверьте Overdrive  открытый код наблюдения и дашкамы для BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Поделиться Overdrive</string>
+    <string name="settings_about_support_share_value">Каждый общий ссылка помогает другому владельцу BYD обнаружить Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Проверьте Electric Guardian  открытый код наблюдения и дашкамы для BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Поделиться Electric Guardian</string>
     <string name="settings_about_open_link_failed">Не удалось открыть ссылку.</string>
     <string name="settings_about_open_link_copied">Никакой браузер не найден. URL скопирован: %1$s</string>
     <string name="settings_about_support_kofi_title">Заправляйте следующий выпуск</string>
@@ -821,7 +821,7 @@
     <string name="settings_about_license_title">Лицензия</string>
     <string name="settings_about_license_value">MIT  открытый код. Нажмите, чтобы просмотреть полный текст.</string>
     <string name="settings_about_source_title">Исходный код</string>
-    <string name="settings_about_source_value">Github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">Github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Отпустить на GitHub</string>
     <string name="settings_about_star_value">Это много значит.</string>
     <string name="settings_about_thanks_title">Спасибо</string>
@@ -891,7 +891,7 @@
     <string name="diagnostics_settings_subtitle">Предпочтения приложения, тема и язык.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Интеграции</string>
-    <string name="integrations_hero_subtitle">Подключите Overdrive к вашим услугам.</string>
+    <string name="integrations_hero_subtitle">Подключите Electric Guardian к вашим услугам.</string>
     <string name="integrations_status_unknown">Нажмите на настройку</string>
     <string name="integrations_status_configured">Конфигурированные</string>
     <string name="integrations_status_not_set_up">Не установлено</string>
@@ -904,7 +904,7 @@
     <string name="settings_action_check_update">Проверяйте обновления</string>
     <string name="settings_action_reset_data">Перезагрузить данные...</string>
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
     <!-- ============================================================== -->
@@ -970,11 +970,11 @@
     <string name="settings_section_surveillance_subtitle">Зон обнаружения, график, чувствительность к движению.</string>
     <string name="settings_section_daemons_subtitle">Службы Cloudflared, Zrok, Telegram, MQTT.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">О OverDrive</string>
+    <string name="settings_about_row_title">О Electric Guardian</string>
     <string name="settings_about_row_subtitle">Версия, лицензия, поддержка разработки.</string>
     <string name="settings_reset_row_subtitle">Чистые записи, события или все скрытые.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -991,7 +991,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">На устройстве по умолчанию</string>
-    <string name="settings_privacy_stance_body">OverDrive работает полностью на головном устройстве. Никакая телеметрия не покидает вашу машину, кроме как через туннели и интеграции, которые вы изъявлено настройка.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian работает полностью на головном устройстве. Никакая телеметрия не покидает вашу машину, кроме как через туннели и интеграции, которые вы изъявлено настройка.</string>
     <string name="settings_privacy_overline_storage">МЕЧЕСТВОЕ Хранилище</string>
     <string name="settings_privacy_overline_reset">Перезагрузка данных</string>
     <string name="settings_privacy_storage_clips_label">Клип на диске</string>
@@ -1001,18 +1001,18 @@
     <string name="settings_privacy_storage_count_format_plural">Клипки %1$d</string>
     <string name="settings_privacy_reset_subtitle">Выберите категории: записи, события, конфигурации демона, кешированная телеметрия...</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Безопасность</string>
-    <string name="settings_security_subtitle">Заблокируйте приложение OverDrive, чтобы пассажиры и доспехи не могли открыть его без вашего PIN-кода.</string>
+    <string name="settings_security_subtitle">Заблокируйте приложение Electric Guardian, чтобы пассажиры и доспехи не могли открыть его без вашего PIN-кода.</string>
     <string name="settings_security_stance_title">Только UI блокировка</string>
-    <string name="settings_security_stance_body">Наблюдение, запись, сдерживание, оповещения и фоновые сервисы остаются работающими пока приложение заблокировано. ПИН-код открывает интерфейс OverDrive, ничего больше.</string>
+    <string name="settings_security_stance_body">Наблюдение, запись, сдерживание, оповещения и фоновые сервисы остаются работающими пока приложение заблокировано. ПИН-код открывает интерфейс Electric Guardian, ничего больше.</string>
     <string name="settings_security_overline_lock">Блокировка приложений</string>
     <string name="settings_security_overline_recovery">Если вы забыли PIN-код</string>
     <string name="settings_security_toggle_title">Требовать PIN-код</string>
-    <string name="settings_security_toggle_subtitle_off">Выключен — любой может открыть OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">Вкл — PIN-код необходим для открытия OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">Выключен — любой может открыть Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">Вкл — PIN-код необходим для открытия Electric Guardian.</string>
     <string name="settings_security_change_title">Изменить PIN-код</string>
     <string name="settings_security_change_subtitle">Подтвердите текущий PIN-код, затем установите новый.</string>
     <string name="settings_security_autolock_title">Автоблокировка</string>
@@ -1049,7 +1049,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Введите PIN-код</string>
     <string name="pin_lock_title_unlocked">Разблокирован</string>
-    <string name="pin_lock_subtitle_default">Разблокируйте OverDrive, чтобы продолжить.</string>
+    <string name="pin_lock_subtitle_default">Разблокируйте Electric Guardian, чтобы продолжить.</string>
     <string name="pin_lock_subtitle_wrong">Неверный PIN-код. Попробуйте еще раз.</string>
     <string name="pin_lock_subtitle_locked_out">Слишком много попыток. Попробуйте позже.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -1094,7 +1094,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Добро пожаловать — Overdrive теперь ваша вторая пара глаз.</string>
+    <string name="dashboard_insight_welcome">Добро пожаловать — Electric Guardian теперь ваша вторая пара глаз.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">Взял %1$s (≈%2$s) во время парковки</string>
     <string name="dashboard_insight_parked_charged">Взял %1$s, когда был на парковке.</string>
@@ -1435,7 +1435,7 @@
     <string name="recording_lib_index_down_body">Записи сохранены на диске, но индекс библиотеки недоступен. Повторная попытка выполняется автоматически…</string>
     <string name="toast_share_failed">Не удалось поделиться</string>
     <string name="daemons_wifi_auto_enable_title">Wi&#8209;Fi</string>
-    <string name="daemons_wifi_auto_enable_subtitle">Включает или выключает Wi&#8209;Fi сейчас. Если Wi&#8209;Fi выключен, службы наблюдения OverDrive не включат его снова.</string>
+    <string name="daemons_wifi_auto_enable_subtitle">Включает или выключает Wi&#8209;Fi сейчас. Если Wi&#8209;Fi выключен, службы наблюдения Electric Guardian не включат его снова.</string>
     <string name="daemons_wifi_auto_enable_save_failed">Не удалось изменить состояние Wi&#8209;Fi.</string>
     <string name="toast_traffic_monitor_persist_failed">Применяется, но предпочтение не удалось сохранить — оно не переживет обновление прошивки.</string>
     <string name="dashboard_tunnel_failed">Туннельная ошибка</string>
@@ -1453,7 +1453,7 @@
     <string name="remote_voice_mute">Выключить удалённый голос</string>
     <string name="remote_voice_unmute">Включить удалённый голос</string>
     <string name="remote_voice_notification_title">Удаленная голосовая активность</string>
-    <string name="remote_voice_notification_text">Получение живого аудио с аутентифицированной сессии OverDrive</string>
+    <string name="remote_voice_notification_text">Получение живого аудио с аутентифицированной сессии Electric Guardian</string>
     <string name="settings_remote_communication_title">Удаленная коммуникация</string>
     <string name="settings_remote_communication_subtitle">Включите голос, прослушивание кабины и сообщения с веб-консоли. Если разрешение Overlay говорит, что требуется разрешение, нажмите его и разрешите отображение по другим приложениям.</string>
     <string name="settings_remote_voice_title">Включить удалённый голос</string>

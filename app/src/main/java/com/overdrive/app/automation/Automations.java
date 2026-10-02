@@ -1858,7 +1858,7 @@ public class Automations {
      * Publish an INBOUND MQTT message as an automation signal. The daemon's MQTT
      * subscriber calls this when a broker message lands on {@code <base>/automation/<channel>}
      * (see MqttPublisherService), letting an external system (Home Assistant, Node-RED, …)
-     * trigger an OverDrive automation. Distinct from {@link #publishExternalEvent}: the
+     * trigger an Electric Guardian automation. Distinct from {@link #publishExternalEvent}: the
      * channel is caller-defined, so this is its own guarded seam rather than a fixed
      * whitelist. The channel is validated (bounded, safe charset) so a malformed/hostile
      * topic can't inject arbitrary automation state; the value is bounded in length. The

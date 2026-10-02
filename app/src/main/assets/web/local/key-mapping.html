@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title data-i18n="app.key_mapping_title">Key Mapping - OverDrive</title>
+    <title data-i18n="app.key_mapping_title">Key Mapping - Electric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#00876C">
+    <meta name="theme-color" content="#2B7500">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
     <!--
@@ -40,11 +40,11 @@
             padding: 22px 16px;
             border: 1px dashed var(--brand-primary);
             border-radius: 14px;
-            background: rgba(0, 212, 170, 0.06);
+            background: rgba(78, 212, 0, 0.06);
             text-align: center;
         }
         .km-capture > * + * { margin-top: 6px; }
-        .km-capture.armed { border-style: solid; background: rgba(0, 212, 170, 0.12); }
+        .km-capture.armed { border-style: solid; background: rgba(78, 212, 0, 0.12); }
         .km-capture .km-keycode {
             font-family: 'JetBrains Mono', monospace;
             font-size: 40px;
@@ -78,7 +78,7 @@
             min-width: 46px;
             text-align: center;
             padding: 6px 8px;
-            background: rgba(0, 212, 170, 0.08);
+            background: rgba(78, 212, 0, 0.08);
             border-radius: 8px;
         }
         .km-binding .km-meta { flex: 1; min-width: 0; }
@@ -188,7 +188,7 @@
                              (there is nothing to go and change). Both need ids for that. -->
                         <div class="info-box-note info-box-framed" id="kmA11yNeeded" style="background:rgba(255,179,0,0.10);border:1px solid rgba(255,179,0,0.35);">
                             <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="#ffb300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            <div data-i18n="keymap.a11y_needed">Key mapping needs the OverDrive accessibility service turned on to intercept hardware buttons. Bindings are saved but won't fire until you enable it.</div>
+                            <div data-i18n="keymap.a11y_needed">Key mapping needs the Electric Guardian accessibility service turned on to intercept hardware buttons. Bindings are saved but won't fire until you enable it.</div>
                         </div>
                         <!-- Shown INSTEAD of the amber note when the service is enabled but the
                              system hasn't finished starting it — the normal window right after a

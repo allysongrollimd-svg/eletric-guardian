@@ -349,7 +349,7 @@ public class MqttConnectionManager {
             // because VIN only appears once the BYD SDK has been read at least once).
             if (config.isHomeAssistant()) {
                 String vin = payload.optString("vin", null);
-                publisher.setHaMeta(vin, null, "OverDrive " + com.overdrive.app.BuildConfig.VERSION_NAME);
+                publisher.setHaMeta(vin, null, "Electric Guardian " + com.overdrive.app.BuildConfig.VERSION_NAME);
             }
 
             // Change-gated publish (per-field for HA, full snapshot for aggregate).
@@ -1260,7 +1260,7 @@ public class MqttConnectionManager {
                 if (vd.tempUnit != BydVehicleData.UNAVAILABLE) payload.put("temp_unit", vd.tempUnit);
                 // Real dial readback. The climate entity's temperature_state_topic pointed at
                 // `climate_setpoint`, which only ever carried an OPTIMISTIC echo of our own
-                // write — so before OverDrive ever set the temperature HA showed nothing, and
+                // write — so before Electric Guardian ever set the temperature HA showed nothing, and
                 // turning the physical dial left the echo stale. Publishing the polled setpoint
                 // to the same key makes it a true state topic; the echo now just fills the gap
                 // until the next poll instead of being the only source.

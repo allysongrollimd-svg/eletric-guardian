@@ -329,7 +329,7 @@ public class GlobalProxyDaemon {
     private static void setupSystemProxy() {
         // DISABLED: System-wide proxy is no longer needed and is risky.
         // If sing-box dies, stale proxy settings break ALL apps on the device.
-        // All OverDrive components use explicit proxy configuration instead:
+        // All Electric Guardian components use explicit proxy configuration instead:
         // - ABRP/Telegram/Updater: ProxyHelper.getHttpProxy() via OkHttp
         // - MQTT: ProxyHelper.getMqttSocketFactory() via Paho
         // - Zrok/Cloudflared: HTTP_PROXY env var set per-process at launch

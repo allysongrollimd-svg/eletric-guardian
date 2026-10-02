@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 /**
  * A saved seat/mirror position selector. The value is a position id (String) from
- * OverDrive's own position store, not one of the car's hardware memory banks.
+ * Electric Guardian's own position store, not one of the car's hardware memory banks.
  *
  * <p>Modelled on {@link AppType}: the option set is NOT baked into the schema, because
  * positions are created and deleted by the user at runtime and captured entries differ

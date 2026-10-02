@@ -204,7 +204,7 @@ public class CameraDaemonRestartSafetyContractTest {
                 "app/src/main/assets/server-i18n/en.json");
 
         assertTrue(actions.contains("applyCurrentAccState"));
-        assertTrue(messages.contains("all OverDrive daemons after ACC turns off"));
+        assertTrue(messages.contains("all Electric Guardian daemons after ACC turns off"));
 
         int operatingModePost = handler.indexOf("// Operating mode:");
         int persist = handler.indexOf("UnifiedConfigManager.updateValues(", operatingModePost);

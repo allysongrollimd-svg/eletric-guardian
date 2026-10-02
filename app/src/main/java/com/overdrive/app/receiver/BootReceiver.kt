@@ -138,7 +138,7 @@ class BootReceiver : BroadcastReceiver() {
             // Launching the activity keeps the app process alive (Android is less
             // likely to kill a process with a recent activity) and runs essential
             // initialization (storage, device ID, BYD whitelist). We immediately
-            // move it to the back so the user sees their home screen, not OverDrive.
+            // move it to the back so the user sees their home screen, not Electric Guardian.
             Intent.ACTION_BOOT_COMPLETED,
             "android.intent.action.LOCKED_BOOT_COMPLETED",
             "android.intent.action.QUICKBOOT_POWERON",

@@ -121,7 +121,7 @@
 .community-filter-chips .community-chip-mine.active {
     background: var(--brand-primary, var(--primary));
     border-color: var(--brand-primary, var(--primary));
-    color: #05100c;
+    color: #010201;
 }
 
 /* ── Browse grid + cards ──────────────────────────────────────────────────── */
@@ -163,7 +163,7 @@
 .community-badge-mine {
     background: var(--brand-primary, var(--primary));
     border-color: var(--brand-primary, var(--primary));
-    color: #05100c;
+    color: #010201;
     /* No margin-left here: .community-card-head's sibling-margin shim already
        spaces this badge from the category pill. Adding one would double it. */
     font-weight: 700;
@@ -186,7 +186,7 @@
 .community-card-mine {
     border-left: 3px solid var(--brand-primary, var(--primary));
     background-image: linear-gradient(90deg,
-        rgba(0, 212, 170, 0.09), rgba(0, 212, 170, 0) 140px);
+        rgba(78, 212, 0, 0.09), rgba(78, 212, 0, 0) 140px);
 }
 .community-badge {
     flex-shrink: 0;

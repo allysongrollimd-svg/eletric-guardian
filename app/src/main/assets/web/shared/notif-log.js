@@ -1,5 +1,5 @@
 /**
- * OverDrive — Notification Log module (Notifications ▸ Log tab).
+ * Electric Guardian — Notification Log module (Notifications ▸ Log tab).
  *
  * A chronological, filterable, paginated history of every push notification the
  * daemon has emitted (surveillance, proximity, tyre, door, charging, SOH…).

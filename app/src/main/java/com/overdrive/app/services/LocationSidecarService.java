@@ -282,7 +282,7 @@ public class LocationSidecarService extends Service implements LocationListener 
             builder = new Notification.Builder(this);
         }
 
-        // Tag with the shared Overdrive group key so DaemonKeepaliveService's
+        // Tag with the shared Electric Guardian group key so DaemonKeepaliveService's
         // group-summary collapses this entry under a single shade row.
         // Android still requires this FGS notification to exist and remain
         // user-visible; grouping just changes how the shade renders it.

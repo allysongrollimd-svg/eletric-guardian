@@ -80,11 +80,11 @@
         .bk-check { position:relative; width:20px; height:20px; margin-top:1px; flex:none;
                     border:1px solid var(--border-default,#394150); border-radius:5px;
                     background:var(--bg-surface,#111720); box-sizing:border-box; }
-        .bk-opt input:checked + .bk-check { background:var(--brand-primary,#00d4aa); border-color:var(--brand-primary,#00d4aa); }
+        .bk-opt input:checked + .bk-check { background:var(--brand-primary,#4ed400); border-color:var(--brand-primary,#4ed400); }
         .bk-opt input:checked + .bk-check::after { content:""; position:absolute; left:6px; top:2px;
-                    width:5px; height:10px; border:solid var(--on-primary,#06130f);
+                    width:5px; height:10px; border:solid var(--on-primary,#030502);
                     border-width:0 2px 2px 0; transform:rotate(45deg); }
-        .bk-opt input:focus + .bk-check { outline:2px solid var(--primary,#00d4aa); outline-offset:2px; }
+        .bk-opt input:focus + .bk-check { outline:2px solid var(--primary,#4ed400); outline-offset:2px; }
         .bk-opt-text { font-size:13px; color:var(--text-secondary,#9aa6b3); line-height:1.4; }
         .bk-opt-text b { color:var(--text-primary,#e8eef5); font-weight:600; display:block; margin-bottom:2px; }
         `;
@@ -104,7 +104,7 @@
             '<h3 class="about-subhead" data-i18n="backup.section_title">Backup &amp; Restore</h3>' +
             '<p class="about-section-sub" data-i18n="backup.section_sub">' +
                 escapeHtml(t('backup.section_sub',
-                    'Save your Overdrive settings to a file, or restore them on this same head unit. The file includes your credentials — keep it private.')) +
+                    'Save your Electric Guardian settings to a file, or restore them on this same head unit. The file includes your credentials — keep it private.')) +
             '</p>' +
             '<div class="support-tier-list">' +
               '<button type="button" class="tier-card" id="bkExport">' +
@@ -234,7 +234,7 @@
         // memory (a real bundle is a few KB; a 100MB pick would balloon the
         // Chrome-58 WebView heap on the head unit). file.size is bytes.
         if (typeof file.size === 'number' && file.size > MAX_IMPORT_BYTES) {
-            toast(t('backup.invalid_file', 'That file is not a valid Overdrive backup.'), 'error');
+            toast(t('backup.invalid_file', 'That file is not a valid Electric Guardian backup.'), 'error');
             return;
         }
         var reader = new FileReader();
@@ -242,7 +242,7 @@
             var text = reader.result;
             var parsed;
             try { parsed = JSON.parse(text); } catch (e) {
-                toast(t('backup.invalid_file', 'That file is not a valid Overdrive backup.'), 'error');
+                toast(t('backup.invalid_file', 'That file is not a valid Electric Guardian backup.'), 'error');
                 return;
             }
             previewRestore(text, parsed);
@@ -266,7 +266,7 @@
             try { res = resp.body ? JSON.parse(resp.body) : null; } catch (e) { res = null; }
             if (!res) { toast(t('backup.preview_failed', 'Could not validate the backup.'), 'error'); return; }
             if (!res.valid) {
-                toast(res.message || t('backup.invalid_file', 'That file is not a valid Overdrive backup.'), 'error');
+                toast(res.message || t('backup.invalid_file', 'That file is not a valid Electric Guardian backup.'), 'error');
                 return;
             }
             showRestoreConfirm(rawText, res.warnings || []);
@@ -290,7 +290,7 @@
             '<div class="bk-modal" role="dialog" aria-labelledby="bkTitle">' +
               '<h2 id="bkTitle">' + escapeHtml(t('backup.restore_title', 'Restore settings?')) + '</h2>' +
               '<div class="bk-sub">' + escapeHtml(t('backup.restore_sub',
-                  'This replaces your current Overdrive settings with the ones in this backup. Services will reload. This only works on the same head unit the backup was made on.')) + '</div>' +
+                  'This replaces your current Electric Guardian settings with the ones in this backup. Services will reload. This only works on the same head unit the backup was made on.')) + '</div>' +
               warnRows +
               '<div class="bk-actions">' +
                 '<button class="bk-btn bk-btn-cancel" id="bkCancel">' + escapeHtml(t('common.cancel', 'Cancel')) + '</button>' +

@@ -342,7 +342,7 @@ public class MqttPublisherService implements MqttCallback {
 
             // Inbound automation triggers: <base>/automation/<channel>. Independent of the
             // HA/control gates above — an external broker message on this subtree fires an
-            // OverDrive automation (see messageArrived → Automations.publishMqttTrigger).
+            // Electric Guardian automation (see messageArrived → Automations.publishMqttTrigger).
             // Re-subscribed on every (re)connect since connect() is the reconnect path.
             // Cheap and inert when no automation watches the channel.
             try {

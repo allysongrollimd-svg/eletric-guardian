@@ -513,7 +513,7 @@ public class Actions {
                         new Label("position", "automation.action"),
                         new Label("1", "automation.position_1"),
                         new Label("2", "automation.position_2"))));
-        // Recall a saved seat AND mirror position from OverDrive's own store. This is a
+        // Recall a saved seat AND mirror position from Electric Guardian's own store. This is a
         // different memory system from seatPosition/seatSave above: those drive the car's
         // hardware ECU banks. On the Seal this was developed against, recalling a bank moves
         // the seat to a position the owner never set — consistent with the banks holding
@@ -1068,7 +1068,7 @@ public class Actions {
                         new Label("vertical", "automation.orientation_vertical"),
                         new Label("toggle", "automation.toggle"))));
         // Switch the view inside the OEM native panorama application. These
-        // AUTO_VIDEO_BUTTON choices are distinct from OverDrive's camera overlay.
+        // AUTO_VIDEO_BUTTON choices are distinct from Electric Guardian's camera overlay.
         addAction(new VehicleControlAction(
                 new Label("native_camera_view", "automation.native_camera_view"),
                 "automation.native_camera_view_description",

@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * Recordings API Handler - serves recording list, metadata, and video files.
  * 
- * SOTA: Uses StorageManager for dedicated Overdrive directories with size limits.
+ * SOTA: Uses StorageManager for dedicated Electric Guardian directories with size limits.
  * 
  * Endpoints:
  * - GET /api/recordings - List all recordings with optional filters

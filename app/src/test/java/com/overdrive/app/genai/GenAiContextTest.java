@@ -71,7 +71,7 @@ public class GenAiContextTest {
     public void responseLanguageIsNormalizedWithoutTranslatingMachineValues() {
         String french = GenAiContext.withResponseLanguage(
                 "Return structured data.", "fr-CA");
-        assertTrue(french.contains("OverDrive language (fr)"));
+        assertTrue(french.contains("Electric Guardian language (fr)"));
         assertTrue(french.contains(
                 "latest message or speech is clearly in another language"));
         assertTrue(french.contains(
@@ -79,7 +79,7 @@ public class GenAiContextTest {
 
         String unsupported = GenAiContext.withResponseLanguage(
                 "", "xx-YY");
-        assertTrue(unsupported.contains("OverDrive language (en)"));
+        assertTrue(unsupported.contains("Electric Guardian language (en)"));
     }
 
     @Test

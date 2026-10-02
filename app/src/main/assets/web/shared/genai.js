@@ -1,4 +1,4 @@
-/* OverDrive GenAI BYOK page. ES5 for the head-unit WebView floor. */
+/* Electric Guardian GenAI BYOK page. ES5 for the head-unit WebView floor. */
 (function (window, document) {
     'use strict';
 
@@ -1418,7 +1418,7 @@
                 var confirmSelf = this;
                 this.confirmAction({
                     title: 'Save suggested routine?',
-                    body: 'OverDrive will save a disabled, manual-only automation for review. It will not run automatically.',
+                    body: 'Electric Guardian will save a disabled, manual-only automation for review. It will not run automatically.',
                     confirmLabel: 'Save for review',
                     cancelLabel: 'Cancel'
                 }).then(function (accepted) {
@@ -1486,7 +1486,7 @@
                 var confirmSelf = this;
                 this.confirmAction({
                     title: 'Reset learned routines?',
-                    body: 'OverDrive will erase learned action patterns. Saved automations will not be deleted.',
+                    body: 'Electric Guardian will erase learned action patterns. Saved automations will not be deleted.',
                     confirmLabel: 'Reset patterns',
                     cancelLabel: 'Cancel',
                     danger: true
@@ -1592,7 +1592,7 @@
                 var confirmSelf = this;
                 this.confirmAction({
                     title: 'Delete evidence pack?',
-                    body: 'This removes the local OverDrive evidence pack. The source recording is not deleted.',
+                    body: 'This removes the local Electric Guardian evidence pack. The source recording is not deleted.',
                     confirmLabel: 'Delete pack',
                     cancelLabel: 'Cancel',
                     danger: true

@@ -8,7 +8,7 @@ import android.os.SystemClock
 import android.util.Log
 
 /**
- * Process-singleton holding the in-memory unlock state for the OverDrive
+ * Process-singleton holding the in-memory unlock state for the Electric Guardian
  * UI. Companion to [PinManager], which owns persisted PIN material.
  *
  * Design points:

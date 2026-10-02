@@ -661,7 +661,7 @@ object UnifiedConfigManager {
         if (!surveillance.has("di5ParkedKeepAliveCutoffVoltage")) surveillance.put("di5ParkedKeepAliveCutoffVoltage", 11.8)
         if (!surveillance.has("di5ParkedKeepAliveCutoffSamples")) surveillance.put("di5ParkedKeepAliveCutoffSamples", 3)
         if (!surveillance.has("di5ParkedKeepAliveVoltageMaxAgeSeconds")) surveillance.put("di5ParkedKeepAliveVoltageMaxAgeSeconds", 120)
-        // Operating mode: WHICH lifecycle phases OverDrive is active for.
+        // Operating mode: WHICH lifecycle phases Electric Guardian is active for.
         //   "onAndOff" — full current behaviour: after the vehicle powers off the
         //                daemon keeps the head unit awake (MCU/USB/AP wake, keep-alive
         //                loop, voltage/SoC monitors) AND runs post-OFF surveillance /
@@ -2453,7 +2453,7 @@ object UnifiedConfigManager {
     fun setAutomationShellAllowed(allow: Boolean): Boolean =
         updateValues("automation", mapOf("allowShell" to allow))
 
-    /** Whether OverDrive's WiFi keep-alive must stand down. User/automation intent and
+    /** Whether Electric Guardian's WiFi keep-alive must stand down. User/automation intent and
      *  the hotspot's temporary single-radio guard are independent: changing either one
      *  must never clear the other. Defaults FALSE and fails open on read errors. */
     @JvmStatic
@@ -2602,7 +2602,7 @@ object UnifiedConfigManager {
         updateValues("hotspotState", values)
 
     /** The dataUsage config section: {enabled}. Tracks per-day WiFi/mobile bytes
-     *  consumed by Overdrive (app UID + UID-2000 daemons/tunnels) for the
+     *  consumed by Electric Guardian (app UID + UID-2000 daemons/tunnels) for the
      *  performance page's Data graph. */
     @JvmStatic
     fun getDataUsage(): JSONObject = loadConfig().optJSONObject("dataUsage") ?: JSONObject()

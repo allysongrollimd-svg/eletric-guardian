@@ -323,9 +323,9 @@
       "install_rejected": "⚠️ Installasjon avvist: {0}",
       "install_failed": "⚠️ *Overdriv-oppdatering mislyktes*\nEnheten er fortsatt på forrige versjon.\nÅrsak: {0}",
       "unknown_reason": "ukjent (se vedlikeholdsaggregatet)",
-      "installed": "🔄 *Overdrive oppdatert til {0}*",
-      "installed_new_tunnel": "🔄 *Overdrive oppdatert til {0}*\nNy tunnel URL:\n{1}\n\n_Skyflare-koblingen roterer etter hver install._",
-      "installed_tunnel_online": "🔄 *Overdrive oppdatert til {0}*\ntunnel tilbake på nettet:\n{1}"
+      "installed": "🔄 *Electric Guardian oppdatert til {0}*",
+      "installed_new_tunnel": "🔄 *Electric Guardian oppdatert til {0}*\nNy tunnel URL:\n{1}\n\n_Skyflare-koblingen roterer etter hver install._",
+      "installed_tunnel_online": "🔄 *Electric Guardian oppdatert til {0}*\ntunnel tilbake på nettet:\n{1}"
     },
     "backup": {
       "restore_unavailable": "I *Gjenoppretting er ikke tilgjengelig via Telegram.\n\nÅpne Overdisk på hovedenheten eller i appen, og gå til *Innstillinger → Sikkerhetskopiering og gjenoppretting* og velg sikkerhetskopifilen. Sikkerhetskopier kan bare gjenopprettes på samme enhet og krever bekreftelse der.",
@@ -337,8 +337,8 @@
       "write_failed": "⚠️ Kunne ikke skrive sikkerhetskopifilen: {0}",
       "document_settings": "💾 Overdisk-innstillinger sikkerhetskopiering\n\n⚠️ Denne filen inneholder legitimasjon og enhetsnøkkelen. Hold det privat. Gjenopprett det på denne samme hodeenheten i Innstillinger → Sikkerhetskopier og gjenopprettet.",
       "document_settings_version": "💾 Overdriv-innstillinger · {0}\n\n⚠️ Denne filen inneholder legitimasjon og enhetsnøkkelen. Hold det privat. Gjenopprett det på denne samme hodeenheten i Innstillinger → Sikkerhetskopier og gjenopprettet.",
-      "document_with_trips": "💾 Overdrive sikkerhetskopiering (innstillinger + reiselogg: {0})\n\n⚠️ Denne filen inneholder legitimasjon, enhetsnøkkel og posisjonslogg. Hold det privat. Gjenopprett det på denne samme hodeenheten i Innstillinger → Sikkerhetskopier og gjenopprettet.",
-      "document_with_trips_version": "💾 Overdrive sikkerhetskopi (innstillinger + reiselogg: {0}) · {1}\n\n⚠️ Denne filen inneholder legitimasjoner, enhetens nøkkel, og posisjons historikk. Hold det privat. Gjenopprett det på denne samme hodeenheten i Innstillinger → Sikkerhetskopier og gjenopprettet.",
+      "document_with_trips": "💾 Electric Guardian sikkerhetskopiering (innstillinger + reiselogg: {0})\n\n⚠️ Denne filen inneholder legitimasjon, enhetsnøkkel og posisjonslogg. Hold det privat. Gjenopprett det på denne samme hodeenheten i Innstillinger → Sikkerhetskopier og gjenopprettet.",
+      "document_with_trips_version": "💾 Electric Guardian sikkerhetskopi (innstillinger + reiselogg: {0}) · {1}\n\n⚠️ Denne filen inneholder legitimasjoner, enhetens nøkkel, og posisjons historikk. Hold det privat. Gjenopprett det på denne samme hodeenheten i Innstillinger → Sikkerhetskopier og gjenopprettet.",
       "upload_failed": "⚠️ Kunne ikke laste opp sikkerhetskopifilen til Telegram."
     },
     "sendlog": {

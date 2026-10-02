@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The following versions of OverDrive are currently receiving security updates:
+The following versions of Electric Guardian are currently receiving security updates:
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -17,7 +17,7 @@ We recommend always running the latest release. Older versions will not receive 
 
 If you discover a security vulnerability, please report it responsibly:
 
-1. **Discord/Telegram**: Send a detailed report to **@irshsay**
+1. **GitHub private vulnerability reporting**: open the repository's *Security* tab → *Report a vulnerability* (https://github.com/allysongrollimd-svg/eletric-guardian/security/advisories/new)
 2. **Include**:
    - A description of the vulnerability
    - Steps to reproduce the issue
@@ -27,7 +27,7 @@ If you discover a security vulnerability, please report it responsibly:
 
 ## Security Considerations
 
-Given that OverDrive runs on vehicle hardware and handles sensitive data, the following areas are particularly security-sensitive:
+Given that Electric Guardian runs on vehicle hardware and handles sensitive data, the following areas are particularly security-sensitive:
 
 - **HTTP/TCP/IPC servers** — Unauthorized access to API endpoints could expose vehicle data or camera feeds
 - **MQTT messaging** — Improperly secured MQTT connections could leak telemetry data
@@ -36,6 +36,7 @@ Given that OverDrive runs on vehicle hardware and handles sensitive data, the fo
 - **Vehicle data (BYD APIs)** — Exposure of vehicle diagnostics, location, or battery data
 - **Remote access (Zrok)** — Tunnel misconfiguration could expose the device to the internet
 - **OTA updates** — Tampered update packages could compromise the device
+- **Cloud dashboard (`webapp/`)** — Holds GPS position and vehicle state; always run it behind HTTPS with a strong `DASHBOARD_TOKEN` and an authenticated MQTT broker
 
 ## Best Practices for Contributors
 
@@ -60,4 +61,4 @@ We ask that you give us reasonable time to address the issue before any public d
 
 ---
 
-Thank you for helping keep OverDrive and its users safe.
+Thank you for helping keep Electric Guardian and its users safe.

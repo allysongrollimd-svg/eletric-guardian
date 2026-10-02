@@ -17,7 +17,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 /**
- * PIN-lock manager for the OverDrive app UI.
+ * PIN-lock manager for the Electric Guardian app UI.
  *
  * Scope: this gates {@link com.overdrive.app.ui.MainActivity} only. The
  * cam daemon, AccSentry, surveillance, recording, Telegram alerts, status

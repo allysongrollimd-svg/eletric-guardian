@@ -4,7 +4,7 @@
 
   Colors come from @color/overlay_pill_* so the pill follows the app's
   day/night theme — the values-night variants flip both fill and stroke.
-  Previously hard-coded to dark-only (#CC16161A / #3300D4AA), which made
+  Previously hard-coded to dark-only (#CC16161A / #334ED400), which made
   the pill read as a black blob over a light-themed launcher.
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"

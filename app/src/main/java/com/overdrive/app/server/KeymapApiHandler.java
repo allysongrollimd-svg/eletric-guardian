@@ -920,7 +920,7 @@ public final class KeymapApiHandler {
      *
      * <p>The scope is taken by BRACE MATCHING, not by reading to the end of the line. AMS
      * wraps a list onto continuation lines once it holds more than one entry — observed
-     * live, with "Bound services" spilling its second entry ({@code Service[label=OverDrive
+     * live, with "Bound services" spilling its second entry ({@code Service[label=Electric Guardian
      * …]}) onto the next line. A line-bounded read would therefore silently miss a pending
      * component whenever a second service happens to be binding at the same time, i.e. it
      * would fail exactly in the busier situations this check exists for.

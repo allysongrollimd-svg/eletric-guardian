@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Authenticated HTTP surface for Remote Overdrive Dev View.
+ * Authenticated HTTP surface for Remote Electric Guardian Dev View.
  *
  * HttpServer invokes this only after AuthMiddleware. A second, short-lived
  * in-memory session capability is required on every frame/input request so a

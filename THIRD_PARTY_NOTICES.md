@@ -1,7 +1,15 @@
 # Third-Party Notices
 
-OverDrive's own source code is licensed under the MIT License (see [LICENSE](LICENSE)).
-The MIT license applies **only** to OverDrive's own code. The application bundles and
+## Origin of this project
+
+Electric Guardian is a **derivative work of [OverDrive](https://github.com/yash-srivastava/Overdrive-release)**
+by Yash Srivastava, used under the MIT License (see [LICENSE](LICENSE), which keeps the original
+copyright notice as the license requires). It was rebranded and extended with a cloud dashboard
+(`webapp/`). The pristine upstream snapshot is preserved in this repository's git history
+(commit "Import upstream yash-srivastava/Overdrive-release"). Elsewhere in this file, "OverDrive"
+refers to that upstream project's releases.
+
+The MIT license applies **only** to the project's own code. The application bundles and
 distributes the third-party components listed below, each of which remains under its
 own license — those licenses, not MIT, govern those components.
 
@@ -62,8 +70,8 @@ available from the upstream projects linked above.
 
 **Written offer:** for three years from the date of distribution, the maintainer will,
 on request, provide the complete corresponding source code for the GPL-3.0 and AGPL-3.0
-components as bundled in any given OverDrive release. Contact the maintainer via the
-channels in [SECURITY.md](SECURITY.md) or the [Discord server](https://discord.gg/PZutk9fg4h).
+components as bundled in any given Electric Guardian release. Contact the maintainer via the
+channels in [SECURITY.md](SECURITY.md) or the repository's GitHub Discussions.
 
 The full text of each license (GPL-3.0, AGPL-3.0, Apache-2.0, BSD-2-Clause,
 BSD-3-Clause) is available from the respective upstream repositories.

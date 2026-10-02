@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 
 /**
- * Named seat/mirror geometry store — the OverDrive-native "seat positions" a user
+ * Named seat/mirror geometry store — the ElectricGuardian-native "seat positions" a user
  * builds up beyond BYD's fixed 3 slots. Persisted as JSON at
  * {@code /data/local/tmp/seat_positions.json} so BOTH the uid-2000 daemon (which
  * writes it, from the capture endpoint) and the app UI process (which will read it
@@ -47,7 +47,7 @@ import java.nio.file.Files;
  * rename must not change it, and re-capturing a native slot must land on the same id.
  *
  * <p>Captured entries are keyed by native slot (1..3) and UPSERTED, so re-saving a
- * native position updates OverDrive's mirror of it rather than piling up duplicates.
+ * native position updates Electric Guardian's mirror of it rather than piling up duplicates.
  * Unlimited arbitrary named positions (source "user") come from the management UI later.
  */
 public final class PositionStore {
@@ -369,7 +369,7 @@ public final class PositionStore {
      *
      * <p>Unlike geometry, this is allowed on CAPTURED entries too. A captured entry's
      * geometry is off-limits because it mirrors the car's own slot, but the ambient block is
-     * something OverDrive added on top — BYD's slots never stored it — so there is no car
+     * something Electric Guardian added on top — BYD's slots never stored it — so there is no car
      * state being contradicted, and re-capture overwrites it from the car anyway.
      *
      * @return the updated entry, or null if absent or the block is empty.

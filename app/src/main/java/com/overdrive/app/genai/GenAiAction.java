@@ -109,7 +109,7 @@ public final class GenAiAction {
                 + "tell the user to confirm on screen and never claim it ran. "
                 + "Ask a question instead of calling the tool when any detail is "
                 + "missing or ambiguous. For an automation, pass the exact name "
-                + "spoken by the user; OverDrive resolves it locally and rejects "
+                + "spoken by the user; Electric Guardian resolves it locally and rejects "
                 + "missing or ambiguous matches.";
     }
 
@@ -286,7 +286,7 @@ public final class GenAiAction {
     }
 
     private static String toolDescription() {
-        return "Prepare exactly one user-confirmed OverDrive action. Use "
+        return "Prepare exactly one user-confirmed Electric Guardian action. Use "
                 + "climate_temperature, sunshade, or run_automation only. "
                 + "For unused fields send -1, none, or an empty string. "
                 + "Never call this for questions or when details are ambiguous.";

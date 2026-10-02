@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 
 /**
- * Renders a second, real Overdrive Activity onto an app-owned private display.
+ * Renders a second, real Electric Guardian Activity onto an app-owned private display.
  *
  * Display stack 0 and BYD's AccAnimation layer are never part of this display.
  * The ImageReader surface matches the normal 1920x1080 / 240-dpi Activity
@@ -46,7 +46,7 @@ object RemoteDevVirtualDisplay {
     const val COMPATIBILITY_BACKEND_NAME = "Physical window compatibility"
 
     private const val TAG = "RemoteDevVirtualDisplay"
-    private const val DISPLAY_NAME = "Overdrive Remote Dev"
+    private const val DISPLAY_NAME = "Electric Guardian Remote Dev"
     private const val LOGICAL_WIDTH = 1920
     private const val LOGICAL_HEIGHT = 1080
     private const val LOGICAL_DENSITY_DPI = 240
@@ -174,7 +174,7 @@ object RemoteDevVirtualDisplay {
     private fun physicalCompatibilityResult(reason: String? = null): StartResult {
         physicalCompatibilityMode = true
         if (reason != null) {
-            Log.w(TAG, "$reason; using the existing physical Overdrive window")
+            Log.w(TAG, "$reason; using the existing physical Electric Guardian window")
         }
         val status = RemoteDevViewController.physicalCompatibilityStatus()
         return StartResult(

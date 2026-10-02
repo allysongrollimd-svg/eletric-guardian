@@ -179,7 +179,7 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">اختر لغتك</string>
-    <string name="setup_language_body">الافتراضي إلى لغة وحدة الرأس الخاصة بك. انقر لاختيار واحدة مختلفة لتطبيق OverDrive ونفق الويب.</string>
+    <string name="setup_language_body">الافتراضي إلى لغة وحدة الرأس الخاصة بك. انقر لاختيار واحدة مختلفة لتطبيق Electric Guardian ونفق الويب.</string>
     <string name="setup_language_button">اختر اللغة</string>
     <string name="setup_autostart_title">تعطيل تقييد البدء التلقائي</string>
     <string name="setup_autostart_body">انقر أدناه لفتح BYD Stto-Start. ابحث عن تجاوز القرص في القائمة وألغي تحديد المربع. يمحو BYD هذا على كل تثبيت - ستعيد القيام به بعد التحديثات.</string>
@@ -589,7 +589,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">نصائح &amp; استكشاف الأخطاء</string>
     <string name="setup_traffic_title">تعطيل مراقب بيانات BYD</string>
-    <string name="setup_traffic_body">يمنع مراقب حركة المرور BYD تطبيقات الطرف الثالث من الوصول إلى الإنترنت. تعطيل هذا يسمح لـ OverDrive وأي تطبيقات أخرى تثبيتها في الواقع تستخدم الشبكة. مطلوب إعادة تشغيل صلبة بعد ذلك.</string>
+    <string name="setup_traffic_body">يمنع مراقب حركة المرور BYD تطبيقات الطرف الثالث من الوصول إلى الإنترنت. تعطيل هذا يسمح لـ Electric Guardian وأي تطبيقات أخرى تثبيتها في الواقع تستخدم الشبكة. مطلوب إعادة تشغيل صلبة بعد ذلك.</string>
     <string name="setup_traffic_button">فتح مراقبة حركة البيانات</string>
     <string name="setup_camera_fix_title">تغذية الكاميرا سوداء أو غير صحيحة؟</string>
     <string name="setup_camera_fix_body">مسبار الكاميرا، عيّن معرف الكاميرا على 0، انقر على الحفظ، ثم أعد تشغيل مسبار الكاميرا. إذا كانت الخلاصات لا تزال خاطئة، قم بتكرارها مع معرف الكاميرا 1. اترك قسم رسم الخرائط دون أن يمس.</string>
@@ -616,7 +616,7 @@
     <string name="status_overlay_notif_title">تجاوز حالة القرص</string>
     <string name="status_overlay_notif_text">Status overlay active</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
@@ -661,7 +661,7 @@
     <string name="settings_privacy_title">الخصوصية &amp; البيانات</string>
     <string name="settings_privacy_body">إعادة تعيين فهرس التسجيلات، بيانات الاعتماد المخزنة مؤقتا، حالة الرديمون والتفضيلات على الجهاز. لا يمكن التراجع عن هذا الإجراء.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">حول OverDrive</string>
+    <string name="settings_about_title">حول Electric Guardian</string>
     <string name="settings_about_version_label">الإصدار</string>
     <string name="settings_about_package_label">بناء</string>
     <string name="settings_about_check_update_value">تحقق من أحدث إصدار لـ GitHub وتثبيته إذا كان أحدث.</string>
@@ -671,7 +671,7 @@
     <string name="settings_about_support_section">مدعوم من أشخاص مثلك</string>
     <string name="settings_about_support_share_title">أخبر مالك زميل</string>
     <string name="settings_about_support_share_value">كل رابط مشترك يساعد مالك BYD آخر على اكتشاف الزحف المفرط.</string>
-    <string name="settings_about_support_share_message">تحقق من فائقة القيادة - مراقبة مفتوحة المصدر &amp; Dashcam لـ BYD: https://overdrive-5lc.pages.dev/</string>
+    <string name="settings_about_support_share_message">تحقق من فائقة القيادة - مراقبة مفتوحة المصدر &amp; Dashcam لـ BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_support_share_chooser">شارك فوق القرص</string>
     <string name="settings_about_open_link_failed">تعذر فتح الرابط.</string>
     <string name="settings_about_open_link_copied">لم يتم العثور على المتصفح. تم نسخ الرابط: %1$s</string>
@@ -680,7 +680,7 @@
     <string name="settings_about_license_title">الترخيص</string>
     <string name="settings_about_license_value">MIT - المصدر المفتوح. انقر لعرض النص الكامل.</string>
     <string name="settings_about_source_title">الكود المصدري</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Star us on GitHub</string>
     <string name="settings_about_star_value">يأخذ ثانية. يعني الكثير.</string>
     <string name="settings_about_thanks_title">شكراً</string>
@@ -829,7 +829,7 @@
     <string name="settings_section_surveillance_subtitle">اكتشاف المناطق، الجدول، حساسية الحركة.</string>
     <string name="settings_section_daemons_subtitle">خدمات Cloudflared و Zrok و Telegram و MQTT.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">حول OverDrive</string>
+    <string name="settings_about_row_title">حول Electric Guardian</string>
     <string name="settings_about_row_subtitle">الإصدار، الترخيص، دعم التطوير.</string>
     <string name="settings_reset_row_subtitle">مسح التسجيلات أو الأحداث أو جميع المخبآت.</string>
     <!-- Footer -->
@@ -860,11 +860,11 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d مقطع</string>
     <string name="settings_privacy_reset_subtitle">اختر فئات: تسجيلات، أحداث، تكوينات دايمون، القياس عن بعد الذاكرة المؤقتة…</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">أمان</string>
-    <string name="settings_security_subtitle">قفل تطبيق OverDrive حتى لا يتمكن المسافرون والقيم من فتحه بدون رقم التعريف الشخصي الخاص بك.</string>
+    <string name="settings_security_subtitle">قفل تطبيق Electric Guardian حتى لا يتمكن المسافرون والقيم من فتحه بدون رقم التعريف الشخصي الخاص بك.</string>
     <string name="settings_security_stance_title">تأمين واجهة المستخدم فقط</string>
     <string name="settings_security_stance_body">يستمر تشغيل خدمات المراقبة والتسجيل والردع والتنبيهات والخلفية أثناء قفل التطبيق. بوابة PIN الخاصة بواجهة تجاوز القرص، لا شيء آخر.</string>
     <string name="settings_security_overline_lock">قفل التطبيق</string>
@@ -1213,15 +1213,15 @@
     <string name="toast_cloudflared_saved_settings">تم حفظ إعدادات Cloudflared</string>
     <!-- Added machine-generated placeholder translations for previously missing Arabic strings -->
     <string name="cd_replay_status">حالة إعادة العرض الفورية</string>
-    <string name="community_discord_url">https://discord.gg/PZutk9fg4h</string>
-    <string name="community_github_issues_url">https://github.com/yash-srivastava/Overdrive-release/issues</string>
-    <string name="community_whatsapp_url">https://chat.whatsapp.com/HChmriCWgr9KwAtE6OEkiM</string>
-    <string name="onboarding_authorize_body">يقوم Overdrive بتشغيل الكاميرات عبر أداة مساعدة صغيرة على الجهاز. سيطلب Android مرة واحدة السماح بتصحيح USB — اضغط </string>
+    <string name="community_discord_url">https://github.com/allysongrollimd-svg/eletric-guardian/discussions</string>
+    <string name="community_github_issues_url">https://github.com/allysongrollimd-svg/eletric-guardian/issues</string>
+    <string name="community_whatsapp_url">https://github.com/allysongrollimd-svg/eletric-guardian/discussions</string>
+    <string name="onboarding_authorize_body">يقوم Electric Guardian بتشغيل الكاميرات عبر أداة مساعدة صغيرة على الجهاز. سيطلب Android مرة واحدة السماح بتصحيح USB — اضغط </string>
     <string name="onboarding_authorize_button">السماح بالوصول</string>
     <string name="onboarding_authorize_retry_body">الأداة المساعدة لم تعمل بعد. قد يكون إذن Android قد تم رفضه. حاول مرة أخرى وتأكد من التحقق من </string>
     <string name="onboarding_authorize_retry_button">حاول مرة أخرى</string>
     <string name="onboarding_authorize_retry_title">لا يزال غير متصل</string>
-    <string name="onboarding_authorize_title">إيقاظ Overdrive</string>
+    <string name="onboarding_authorize_title">إيقاظ Electric Guardian</string>
     <string name="onboarding_authorize_waiting_body">اقبل منبثق Android. إذا لم تره، فقد تم منحه بالفعل — سيستمر هذا تلقائيًا.</string>
     <string name="onboarding_authorize_waiting_title">في انتظار الإذن…</string>
     <string name="onboarding_back">العودة</string>
@@ -1229,14 +1229,14 @@
     <string name="onboarding_camera_applying_title">جارٍ التطبيق — إعادة تشغيل الكاميرات</string>
     <string name="onboarding_camera_dashcam_body">تقدم عبر الكاميرات باستخدام الأسهم وتوقف عند تلك التي تظهر الزجاج الأمامي / المنظر الأمامي. لاحظ رقمها — ستختاره بعد ذلك.</string>
     <string name="onboarding_camera_dashcam_title">ابحث الآن عن كاميرا الطريق الأمامي</string>
-    <string name="onboarding_camera_intro_body">دعنا نخبر Overdrive أي كاميرا هي عرض 360 وأيها داشكام. يستغرق ذلك حوالي دقيقة، ويمكنك تغييره لاحقًا.</string>
+    <string name="onboarding_camera_intro_body">دعنا نخبر Electric Guardian أي كاميرا هي عرض 360 وأيها داشكام. يستغرق ذلك حوالي دقيقة، ويمكنك تغييره لاحقًا.</string>
     <string name="onboarding_camera_intro_primary">ابدأ</string>
     <string name="onboarding_camera_intro_title">قم بإعداد الكاميرات</string>
     <string name="onboarding_camera_opening_body">تحميل معاينة حية من كاميراتك. قد يستغرق ذلك بضع ثوانٍ.</string>
     <string name="onboarding_camera_opening_title">فتح إعداد الكاميرا…</string>
     <string name="onboarding_camera_pano_body">استخدم الأسهم للعثور على الصورة المجمعة 4-up. اقرأها من الأسفل: أسفل-يسار = الخلف، أسفل-يمين = الجانب الأيسر.</string>
     <string name="onboarding_camera_pano_title">هذا هو عرض 360 الخاص بك</string>
-    <string name="onboarding_camera_pick_body">في البطاقة العلوية، اختر رقم الكاميرا للعرض 360 / الكاميرا العادية. لست متأكدًا؟ اتركها على AUTO وسيتعرف Overdrive عليها.</string>
+    <string name="onboarding_camera_pick_body">في البطاقة العلوية، اختر رقم الكاميرا للعرض 360 / الكاميرا العادية. لست متأكدًا؟ اتركها على AUTO وسيتعرف Electric Guardian عليها.</string>
     <string name="onboarding_camera_pick_dash_body">في هذه البطاقة، اختر رقم الداشكام الذي وجدته سابقًا — أو اتركها على AUTO.</string>
     <string name="onboarding_camera_pick_dash_title">اختر كاميرا داشكامك</string>
     <string name="onboarding_camera_pick_primary">التالي</string>
@@ -1307,7 +1307,7 @@
     <string name="onboarding_skip">تخطي</string>
     <string name="onboarding_vehicle_body">اختر طرازك ونملأ قيمة kWh، أو اكتبها بنفسك (5–120). هذا يجعل تقديرات المدى والشحن دقيقة. يمكنك تخطي ذلك وتعيينه لاحقًا.</string>
     <string name="onboarding_vehicle_primary">تعيين البطارية</string>
-    <string name="onboarding_vehicle_title">أخبر Overdrive بحجم بطاريتك</string>
+    <string name="onboarding_vehicle_title">أخبر Electric Guardian بحجم بطاريتك</string>
     <string name="overlay_mode_continuous_label">CONT</string>
     <string name="overlay_mode_drive_label">DRIVE</string>
     <string name="overlay_mode_off_label">OFF</string>
@@ -1330,9 +1330,9 @@
     <string name="roadsense_map_route_key_rejected">تم رفض مفتاح التوجيه. تحقق من مفتاحك في إعدادات RoadSense.</string>
     <string name="roadsense_map_route_network">الشبكة بطيئة جدًا للعثور على مسار. تحقق من اتصالك وحاول مرة أخرى.</string>
     <string name="roadsense_map_search_network">تعذر الوصول إلى خدمة البحث. تحقق من اتصالك أو الوكيل وحاول مرة أخرى.</string>
-    <string name="settings_about_license_url">https://github.com/yash-srivastava/Overdrive-release/blob/main/LICENSE</string>
-    <string name="settings_about_source_url">https://github.com/yash-srivastava/Overdrive-release</string>
-    <string name="settings_about_star_url">https://github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_license_url">https://github.com/allysongrollimd-svg/eletric-guardian/blob/main/LICENSE</string>
+    <string name="settings_about_source_url">https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_star_url">https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_support_kofi_url">https://ko-fi.com/E1E71XALHX</string>
     <string name="settings_backup_daemon_down">يجب أن تكون خدمة الكاميرا قيد التشغيل لعمل النسخ الاحتياطي أو الاستعادة. قم بتشغيلها من Daemons ثم حاول مرة أخرى.</string>
     <string name="settings_backup_default_filename">overdrive-backup.json</string>
@@ -1342,13 +1342,13 @@
     <string name="settings_backup_exporting">جاري بناء النسخة الاحتياطية…</string>
     <string name="settings_backup_import_title">استعادة الإعدادات</string>
     <string name="settings_backup_import_value">تحميل ملف نسخ احتياطي تم إنشاؤه على وحدة الرأس نفسها.</string>
-    <string name="settings_backup_invalid_file">هذا الملف ليس نسخة احتياطية صالحة لـ Overdrive</string>
+    <string name="settings_backup_invalid_file">هذا الملف ليس نسخة احتياطية صالحة لـ Electric Guardian</string>
     <string name="settings_backup_no_files">لم يتم العثور على ملفات نسخ احتياطية. صدّر واحدة أولاً أو انسخ ملف .json إلى %1$s ثم حاول مرة أخرى.</string>
     <string name="settings_backup_pick_file">اختر نسخة احتياطية للاستعادة</string>
     <string name="settings_backup_read_failed">تعذر قراءة الملف</string>
     <string name="settings_backup_restart_hint">تمت استعادة الإعدادات. أعد تشغيل daemon الكاميرا (Daemons → Camera → Restart) للتأكد من تطبيق كل الإعدادات المستعادة.</string>
     <string name="settings_backup_restore_confirm_btn">استعادة</string>
-    <string name="settings_backup_restore_confirm_msg">هذا سيستبدل إعدادات Overdrive الحالية بالنسخة الاحتياطية ويعيد تحميل الخدمات. يعمل فقط على نفس وحدة الرأس التي تم إنشاء النسخة عليها.</string>
+    <string name="settings_backup_restore_confirm_msg">هذا سيستبدل إعدادات Electric Guardian الحالية بالنسخة الاحتياطية ويعيد تحميل الخدمات. يعمل فقط على نفس وحدة الرأس التي تم إنشاء النسخة عليها.</string>
     <string name="settings_backup_restore_confirm_title">استعادة الإعدادات؟</string>
     <string name="settings_backup_restore_failed">فشل الاستعادة</string>
     <string name="settings_backup_restored">تمت استعادة الإعدادات</string>

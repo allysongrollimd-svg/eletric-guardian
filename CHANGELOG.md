@@ -1,5 +1,17 @@
 # Changelog
 
+## Electric Guardian
+
+- Rebrand of the upstream OverDrive project (name, strings in all locales, M3 palette lime/graphite, new shield+bolt logo and icons, PWA manifest).
+- Removed outbound calls to the upstream author's infrastructure: analytics ping, shared community and RoadSense backends now default to *disabled* (empty URL); update checker, issue links and support links point to this repository. Model downloads still use the upstream `models-v1` release assets.
+- Default MQTT topic is now `electric-guardian/car/telemetry`.
+- New `webapp/`: realtime cloud dashboard (MQTT or HTTP ingest -> Server-Sent Events).
+- `applicationId` / Kotlin package remain `com.overdrive.app` for now (see README).
+
+---
+
+*The entries below are the upstream project's history (kept as-is).*
+
 Tutte le modifiche e gli sviluppi in corso vengono tracciati in questo file e versionati in corrispondenza delle release ufficiali o dei Version Bump.
 
 ## [In corso / Unreleased]

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title data-i18n="app.surveillance_title">Surveillance - OverDrive</title>
+    <title data-i18n="app.surveillance_title">Surveillance - Electric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="../shared/app-icon-dark.webp">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#00876C">
+    <meta name="theme-color" content="#2B7500">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
     <!--
@@ -104,7 +104,7 @@
                         <div class="setting-row">
                             <div class="setting-info">
                                 <div class="setting-name" data-i18n="surveillance.operating_mode">Operating Mode</div>
-                                <div class="setting-desc" data-i18n="surveillance.operating_mode_desc">Whether Overdrive keeps running after the car is turned off. On Only fully shuts Overdrive down when you park; while-driving features (dashcam, trips, charging) are unaffected.</div>
+                                <div class="setting-desc" data-i18n="surveillance.operating_mode_desc">Whether Electric Guardian keeps running after the car is turned off. On Only fully shuts Electric Guardian down when you park; while-driving features (dashcam, trips, charging) are unaffected.</div>
                             </div>
                             <div class="setting-control">
                                 <div class="btn-group" id="operatingModeBtns">
@@ -113,7 +113,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="setting-hint" id="operatingModeHint" data-i18n="surveillance.operating_mode_hint_on_off">Overdrive keeps watching while parked — surveillance and background monitoring stay active. Uses a little battery overnight.</div>
+                        <div class="setting-hint" id="operatingModeHint" data-i18n="surveillance.operating_mode_hint_on_off">Electric Guardian keeps watching while parked — surveillance and background monitoring stay active. Uses a little battery overnight.</div>
 
                         <!-- Shown only in "On Only" mode: the settings below govern
                              post-vehicle-OFF surveillance, which is disabled when the head
@@ -121,7 +121,7 @@
                              SurvSettings.applyOperatingModeUI(). -->
                         <div class="info-box-note" id="postOffDisabledNotice" style="display:none;margin-top:12px;">
                             <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                            <div class="info-note" data-i18n="surveillance.operating_mode_postoff_disabled_note">These settings control surveillance after the car is off. In On Only mode Overdrive shuts down when parked, so they don't apply. Switch to On &amp; Off to use them.</div>
+                            <div class="info-note" data-i18n="surveillance.operating_mode_postoff_disabled_note">These settings control surveillance after the car is off. In On Only mode Electric Guardian shuts down when parked, so they don't apply. Switch to On &amp; Off to use them.</div>
                         </div>
 
                         <div class="setting-row">
@@ -960,14 +960,14 @@
                                             <!-- Theme 1 -->
                                             <div style="border:1px solid var(--card-border); border-radius:8px; padding:8px; background:var(--bg-base); width: 140px; text-align: center;">
                                                 <div style="font-size:12px; font-weight:600; margin-bottom:8px;">Sentry 1</div>
-                                                <button type="button" class="btn btn-primary" style="width:100%; font-size:12px; padding:6px 0;" onclick="SurvSettings.downloadAndSetTheme('https://raw.githubusercontent.com/yash-srivastava/Overdrive-release/refs/heads/main/themes/sentry1.gif', 'sentry1.gif', this)">
+                                                <button type="button" class="btn btn-primary" style="width:100%; font-size:12px; padding:6px 0;" onclick="SurvSettings.downloadAndSetTheme('https://raw.githubusercontent.com/allysongrollimd-svg/eletric-guardian/refs/heads/main/themes/sentry1.gif', 'sentry1.gif', this)">
                                                     <span data-i18n="surveillance.download_set">Download &amp; Set</span>
                                                 </button>
                                             </div>
                                             <!-- Theme 2 -->
                                             <div style="border:1px solid var(--card-border); border-radius:8px; padding:8px; background:var(--bg-base); width: 140px; text-align: center;">
                                                 <div style="font-size:12px; font-weight:600; margin-bottom:8px;">Sentry 2</div>
-                                                <button type="button" class="btn btn-primary" style="width:100%; font-size:12px; padding:6px 0;" onclick="SurvSettings.downloadAndSetTheme('https://raw.githubusercontent.com/yash-srivastava/Overdrive-release/refs/heads/main/themes/sentry2.gif', 'sentry2.gif', this)">
+                                                <button type="button" class="btn btn-primary" style="width:100%; font-size:12px; padding:6px 0;" onclick="SurvSettings.downloadAndSetTheme('https://raw.githubusercontent.com/allysongrollimd-svg/eletric-guardian/refs/heads/main/themes/sentry2.gif', 'sentry2.gif', this)">
                                                     <span data-i18n="surveillance.download_set">Download &amp; Set</span>
                                                 </button>
                                             </div>
@@ -1456,7 +1456,7 @@
                     <div class="card-body">
                         <div class="setting-row" style="border-bottom:none;">
                             <div class="setting-info" style="flex:1 1 auto;">
-                                <div class="setting-desc" data-i18n="oem_dashcam.native_dvr_explainer">The factory dashcam app records to /sdcard/DCIM/BYDCam and opens AVMCamera on every ACC ON. Disabling lets OverDrive own the camera without contention.</div>
+                                <div class="setting-desc" data-i18n="oem_dashcam.native_dvr_explainer">The factory dashcam app records to /sdcard/DCIM/BYDCam and opens AVMCamera on every ACC ON. Disabling lets Electric Guardian own the camera without contention.</div>
                                 <div class="setting-name" id="oemNativeDvrStatusLabel" style="margin-top:8px;" data-i18n="oem_dashcam.native_dvr_status_enabled">Status: Enabled</div>
                             </div>
                             <div class="setting-control">
@@ -1587,7 +1587,7 @@
                             <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                             <div class="info-row" style="color:var(--warning);">
                                 <span class="label" data-i18n="recording.cdr_recommend_label_v2">Recommended</span>
-                                <span class="value" data-i18n="recording.cdr_recommend_text">Overdrive uses SD — enable cleanup to keep space free</span>
+                                <span class="value" data-i18n="recording.cdr_recommend_text">Electric Guardian uses SD — enable cleanup to keep space free</span>
                             </div>
                         </div>
                         <!-- CDR Status -->
@@ -1602,7 +1602,7 @@
                         </div>
                         <div class="setting-row" style="margin-top:12px;">
                             <div class="setting-info">
-                                <div class="setting-name" data-i18n="recording.cdr_reserved">Reserved Space for Overdrive</div>
+                                <div class="setting-name" data-i18n="recording.cdr_reserved">Reserved Space for Electric Guardian</div>
                                 <div class="setting-desc" data-i18n="recording.cdr_reserved_desc">Keep this much free on SD card</div>
                             </div>
                             <div class="setting-control">

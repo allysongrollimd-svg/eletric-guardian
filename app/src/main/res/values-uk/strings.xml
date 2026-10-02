@@ -134,7 +134,7 @@
     <string name="camera_selection_hint">Автоматично вибирає праву камеру для підрізки при кожному завантаженні. Камера 1 = BYD Seal, Camera 0 = Верт. Перезапустіть служби після зміни ідентифікатора камери, щоб зміни вступили в силу.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">OEM ID Dashcam камери</string>
-    <string name="camera_oem_dashcam_hint">Оберіть AVMCamera ідентифікатор, який вказує на майбутній пунктирному датчику. Dashcam - OPPOSITE пано: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Залишіть на автоматичному режимі, щоб OverDrive видалений.</string>
+    <string name="camera_oem_dashcam_hint">Оберіть AVMCamera ідентифікатор, який вказує на майбутній пунктирному датчику. Dashcam - OPPOSITE пано: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Залишіть на автоматичному режимі, щоб Electric Guardian видалений.</string>
     <string name="camera_oem_dashcam_auto_resolved">Авто — використання id %1$d (pano є id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Авто — pano id %1$d, не можливо вбудувати дефіс</string>
     <string name="camera_oem_dashcam_save">Зберегти</string>
@@ -179,10 +179,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Оберіть мову</string>
-    <string name="setup_language_body">За замовчуванням мова удвох головних одиниць. Натисніть щоб вибрати іншу для додатка OverDrive і веб-тунелю.</string>
+    <string name="setup_language_body">За замовчуванням мова удвох головних одиниць. Натисніть щоб вибрати іншу для додатка Electric Guardian і веб-тунелю.</string>
     <string name="setup_language_button">Оберіть мову</string>
     <string name="setup_autostart_title">Вимкнути автоматичне обмеження запуску</string>
-    <string name="setup_autostart_body">Натисніть нижче, щоб відкрити BYD AutStart. Знайдіть OverDrive в списку і зніміть прапорець. BYD встановлює це при кожному встановленні — ви будете повторно робити це після оновлення.</string>
+    <string name="setup_autostart_body">Натисніть нижче, щоб відкрити BYD AutStart. Знайдіть Electric Guardian в списку і зніміть прапорець. BYD встановлює це при кожному встановленні — ви будете повторно робити це після оновлення.</string>
     <string name="setup_autostart_button">Відкрити BYD автозапуск</string>
     <string name="setup_overlay_title">Дозволити показ поверх інших програм</string>
     <string name="setup_overlay_body">Увімкніть це, щоб показувати індикатор плаваючого стану для запису та відслідковування поїздки на вершині інших програм.</string>
@@ -401,7 +401,7 @@
     <string name="update_picker_current_suffix">%1$s (встановлено)</string>
     <string name="update_picker_older_suffix">%1$s (старше)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Оновлення OverDrive</string>
+    <string name="update_progress_title">Оновлення Electric Guardian</string>
     <string name="update_step_downloading">Завантажується оновлення…</string>
     <string name="update_step_verifying">Перевірка завантаження…</string>
     <string name="update_step_stopping">Stopping daemons…</string>
@@ -583,7 +583,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Поради &amp; усунення несправностей</string>
     <string name="setup_traffic_title">Вимкнути режим передачі даних</string>
-    <string name="setup_traffic_body">Монітор BYD блокує сторонні програми від досягнення Інтернету. Вимкнення дозволяє OverDrive та будь-які інші додатки, які ви встановлюєте, дійсно використовують мережу. Жорстке перезавантаження потрібно після цього.</string>
+    <string name="setup_traffic_body">Монітор BYD блокує сторонні програми від досягнення Інтернету. Вимкнення дозволяє Electric Guardian та будь-які інші додатки, які ви встановлюєте, дійсно використовують мережу. Жорстке перезавантаження потрібно після цього.</string>
     <string name="setup_traffic_button">Відкрити монітор трафіку</string>
     <string name="setup_camera_fix_title">Камера подає чорне чи некоректне?</string>
     <string name="setup_camera_fix_body">Зупинка камери, встановіть ID камери на 0, натисніть Зберегти, а потім перезавантажте демон камери. Якщо стрічки помилилися, повторити з камерою ID 1. Залиште розділ зіставлення без змін.</string>
@@ -610,11 +610,11 @@
     <string name="status_overlay_notif_title">Статус Супердиску</string>
     <string name="status_overlay_notif_text">Status overlay active</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">Активний Overdrive</string>
+    <string name="daemon_keepalive_notif_title">Активний Electric Guardian</string>
     <string name="daemon_keepalive_notif_text">Моніторинг транспортних засобів</string>
     <string name="overdrive_status_summary_title">Овердрайв</string>
     <string name="overdrive_status_summary_text">Фонові служби працюють</string>
@@ -654,7 +654,7 @@
     <string name="settings_privacy_title">Конфіденційність &amp; дані</string>
     <string name="settings_privacy_body">Скинути очищення індексу записів, кешовані облікові дані, стан і налаштування на пристрої. Дія не може бути скасована.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">Про OverDrive</string>
+    <string name="settings_about_title">Про Electric Guardian</string>
     <string name="settings_about_version_label">Версія</string>
     <string name="settings_about_package_label">Збірка</string>
     <string name="settings_about_check_update_value">Перевірте останній випуск на GitHub і встановіть новіший.</string>
@@ -663,9 +663,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Розроблено такими людьми як ви</string>
     <string name="settings_about_support_share_title">Розкажіть співрозмовнику</string>
-    <string name="settings_about_support_share_value">Кожне спільне посилання допомагає іншому власнику BYD знаходити Overdrive.</string>
-    <string name="settings_about_support_share_message">Check out Overdrive — open-source surveillance &amp; dashcam for BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Поділитися OverDrive</string>
+    <string name="settings_about_support_share_value">Кожне спільне посилання допомагає іншому власнику BYD знаходити Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Check out Electric Guardian — open-source surveillance &amp; dashcam for BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Поділитися Electric Guardian</string>
     <string name="settings_about_open_link_failed">Не вдалося відкрити посилання.</string>
     <string name="settings_about_open_link_copied">Браузер не знайдено. URL-адреса скопійована: %1$s</string>
     <string name="settings_about_support_kofi_title">Заправте наступний реліз</string>
@@ -673,7 +673,7 @@
     <string name="settings_about_license_title">Ліцензія</string>
     <string name="settings_about_license_value">MIT - з відкритим кодом. Натисніть для перегляду повного тексту.</string>
     <string name="settings_about_source_title">Початковий код</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Star us on GitHub</string>
     <string name="settings_about_star_value">Замикає секунду.</string>
     <string name="settings_about_thanks_title">Подяка</string>
@@ -826,11 +826,11 @@
     <string name="settings_section_surveillance_subtitle">Виявлення зон, розкладу, чутливість руху.</string>
     <string name="settings_section_daemons_subtitle">Cloudflared, Zrok, Telegram, MQTT runner\'и.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">Про OverDrive</string>
+    <string name="settings_about_row_title">Про Electric Guardian</string>
     <string name="settings_about_row_subtitle">Версія, ліцензія, підтримка розробки.</string>
     <string name="settings_reset_row_subtitle">Очистити записи, події або всі кеші.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -847,7 +847,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">За замовчуванням</string>
-    <string name="settings_privacy_stance_body">OverDrive працює повністю в підрозділі. Жодна телеметрія не залишає Вашого автомобіля, крім тунелів та інтеграцій які Ви явно встановили.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian працює повністю в підрозділі. Жодна телеметрія не залишає Вашого автомобіля, крім тунелів та інтеграцій які Ви явно встановили.</string>
     <string name="settings_privacy_overline_storage">ЛОКАЛЬНИЙ СПОРУДА</string>
     <string name="settings_privacy_overline_reset">СКИНУТИ ДАНІ</string>
     <string name="settings_privacy_storage_clips_label">Кліпи на диску</string>
@@ -857,18 +857,18 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d кліпи</string>
     <string name="settings_privacy_reset_subtitle">Choose categories: recordings, events, daemon configs, cached telemetry…</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Безпека</string>
-    <string name="settings_security_subtitle">Заблокуйте додаток OverDrive, щоб пасажири та валенти не могли відкрити його без PIN-коду.</string>
+    <string name="settings_security_subtitle">Заблокуйте додаток Electric Guardian, щоб пасажири та валенти не могли відкрити його без PIN-коду.</string>
     <string name="settings_security_stance_title">Тільки блокування інтерфейсу</string>
-    <string name="settings_security_stance_body">Перегляд, записування, стримування, оповіщення та фонові служби і затворювати разом з програмою заблоковано. PIN-кодом ворота інтерфейсу OverDrive, більше нічого іншого.</string>
+    <string name="settings_security_stance_body">Перегляд, записування, стримування, оповіщення та фонові служби і затворювати разом з програмою заблоковано. PIN-кодом ворота інтерфейсу Electric Guardian, більше нічого іншого.</string>
     <string name="settings_security_overline_lock">Блокування програм</string>
     <string name="settings_security_overline_recovery">Якщо ви забудете PIN-код</string>
     <string name="settings_security_toggle_title">Вимагати PIN-код</string>
     <string name="settings_security_toggle_subtitle_off">Вимкнуто - будь-хто може відкрити овердиск.</string>
-    <string name="settings_security_toggle_subtitle_on">Увімкнено - PIN-код необхідний для відкриття OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_on">Увімкнено - PIN-код необхідний для відкриття Electric Guardian.</string>
     <string name="settings_security_change_title">Змінити PIN-код</string>
     <string name="settings_security_change_subtitle">Підтвердьте поточний PIN-код, потім встановіть новий.</string>
     <string name="settings_security_autolock_title">Автоблокування</string>
@@ -905,7 +905,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Введіть PIN-код</string>
     <string name="pin_lock_title_unlocked">Розблоковано</string>
-    <string name="pin_lock_subtitle_default">Розблокуйте OverDrive щоб продовжити.</string>
+    <string name="pin_lock_subtitle_default">Розблокуйте Electric Guardian щоб продовжити.</string>
     <string name="pin_lock_subtitle_wrong">Неправильний PIN-код. Спробуйте ще раз.</string>
     <string name="pin_lock_subtitle_locked_out">Забагато спроб. Спробуйте ще раз.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -950,7 +950,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Вітаємо - Overdrive тепер твоя друга пара очей.</string>
+    <string name="dashboard_insight_welcome">Вітаємо - Electric Guardian тепер твоя друга пара очей.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">Підроблено %1$s (Revol%2$s) під час припаркування</string>
     <string name="dashboard_insight_parked_charged">Picked up %1$s while parked</string>

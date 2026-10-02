@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E1013">
+<title>Electric Guardian</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="/logo.svg" alt="" width="32" height="32"><span>Electric Guardian</span></div>
+  <div class="top-right">
+    <select id="device" aria-label="Veículo" hidden></select>
+    <span id="status" class="pill off" role="status">Conectando…</span>
+    <button id="logout" class="ghost" hidden>Sair</button>
+  </div>
+</header>
+
+<main id="dash" hidden>
+  <section class="hero">
+    <div class="card gauge-card">
+      <svg id="socRing" viewBox="0 0 120 120" aria-label="Bateria">
+        <circle cx="60" cy="60" r="52" class="ring-bg"/>
+        <circle id="socArc" cx="60" cy="60" r="52" class="ring-fg" transform="rotate(-90 60 60)"/>
+      </svg>
+      <div class="gauge-text"><b id="soc">--</b><small>% bateria</small></div>
+      <div class="sub"><span id="range">--</span> km de autonomia</div>
+    </div>
+    <div class="card"><div class="label">Velocidade</div><div class="big"><b id="speed">--</b><small>km/h</small></div><div class="sub">Marcha <b id="gear">--</b></div></div>
+    <div class="card"><div class="label">Potência</div><div class="big"><b id="power">--</b><small>kW</small></div><div class="bar"><i id="powerBar"></i></div><div class="sub" id="powerHint">&nbsp;</div></div>
+    <div class="card"><div class="label">Carregamento</div><div class="big"><b id="chgState">--</b></div><div class="sub" id="chgDetail">&nbsp;</div></div>
+  </section>
+
+  <section class="grid">
+    <div class="card"><div class="label">Viagem</div><div class="kv"><span>Distância</span><b id="tripKm">--</b></div><div class="kv"><span>Energia</span><b id="tripKwh">--</b></div><div class="kv"><span>Consumo (50 km)</span><b id="cons">--</b></div></div>
+    <div class="card"><div class="label">Temperaturas</div><div class="kv"><span>Bateria</span><b id="tBatt">--</b></div><div class="kv"><span>Cabine</span><b id="tCabin">--</b></div><div class="kv"><span>Externa</span><b id="tExt">--</b></div></div>
+    <div class="card"><div class="label">Odômetro</div><div class="big"><b id="odo">--</b><small>km</small></div><div class="sub" id="lastSeen">&nbsp;</div></div>
+  </section>
+
+  <section class="grid charts">
+    <div class="card"><div class="label">Bateria (%) — últimos 30 min</div><svg class="spark" id="chSoc" viewBox="0 0 300 80" preserveAspectRatio="none"></svg></div>
+    <div class="card"><div class="label">Velocidade (km/h)</div><svg class="spark" id="chSpeed" viewBox="0 0 300 80" preserveAspectRatio="none"></svg></div>
+    <div class="card"><div class="label">Potência (kW)</div><svg class="spark" id="chPower" viewBox="0 0 300 80" preserveAspectRatio="none"></svg></div>
+  </section>
+
+  <section class="card map-card"><div class="label">Localização <small id="coords"></small></div><iframe id="map" title="Mapa" loading="lazy" referrerpolicy="no-referrer"></iframe></section>
+
+  <details class="card all"><summary>Todos os dados (<span id="allCount">0</span>)</summary>
+    <input id="filter" type="search" placeholder="Filtrar…" aria-label="Filtrar campos">
+    <table><tbody id="allRows"></tbody></table>
+  </details>
+</main>
+
+<div id="login" class="login" hidden>
+  <form id="loginForm" class="card">
+    <img src="/logo.svg" alt="" width="56" height="56">
+    <h1>Electric Guardian</h1>
+    <p>Informe o token de acesso do painel.</p>
+    <input id="token" type="password" autocomplete="current-password" placeholder="Token" required>
+    <button type="submit">Entrar</button>
+    <p id="loginErr" class="err" role="alert"></p>
+  </form>
+</div>
+<div id="empty" class="empty" hidden>Aguardando o primeiro dado do veículo…<br><small>Confira a conexão MQTT do app (tópico <code>electric-guardian/&lt;carro&gt;/telemetry</code>).</small></div>
+<script src="/app.js" type="module"></script>
+</body>
+</html>

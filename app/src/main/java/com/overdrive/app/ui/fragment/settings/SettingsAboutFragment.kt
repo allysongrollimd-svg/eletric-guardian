@@ -390,7 +390,7 @@ class SettingsAboutFragment : Fragment() {
     }
 
     /** Tap → restore. Use SAF open-document when a real picker exists; else
-     *  show an in-app list of backup files found in the public Overdrive
+     *  show an in-app list of backup files found in the public Electric Guardian
      *  folders (the BYD unit's only "picker" is an image gallery). */
     private fun startBackupImport() {
         if (!isAdded) return
@@ -412,7 +412,7 @@ class SettingsAboutFragment : Fragment() {
 
     /**
      * In-app file chooser used when no SAF picker is installed. Scans the
-     * public Overdrive backups folder plus Download for *.json bundles and
+     * public Electric Guardian backups folder plus Download for *.json bundles and
      * lets the user pick one; reads it via direct file I/O. If nothing is
      * found we tell the user where to drop a file.
      */
@@ -450,7 +450,7 @@ class SettingsAboutFragment : Fragment() {
     }
 
     /**
-     * Find candidate backup files: *.json (newest first) under the Overdrive
+     * Find candidate backup files: *.json (newest first) under the Electric Guardian
      * backups dir and the public Download dir. De-duplicated by absolute path.
      */
     private fun scanForBackupFiles(): List<File> {
@@ -495,7 +495,7 @@ class SettingsAboutFragment : Fragment() {
     }
 
     /** Ask the daemon to build the bundle, then save it — via SAF when a real
-     *  document picker exists, else by writing straight to the public Overdrive
+     *  document picker exists, else by writing straight to the public Electric Guardian
      *  backups folder (the BYD head unit ships no DocumentsUI, so SAF
      *  CREATE_DOCUMENT resolves to nothing and would throw). */
     private fun runBackupExport(includeTrips: Boolean) {

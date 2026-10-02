@@ -953,7 +953,7 @@ public final class ScreenDeterrent {
     }
 
     /**
-     * Decode the OverDrive glyph from the APK asset bundle once, cache it
+     * Decode the Electric Guardian glyph from the APK asset bundle once, cache it
      * for subsequent fire() calls, and return null on any failure (caller
      * falls back to the synthetic camera icon).
      *
@@ -1041,10 +1041,10 @@ public final class ScreenDeterrent {
         float minRatio = Math.min((float) dispW / FALLBACK_DISPLAY_W,
                                   (float) dispH / FALLBACK_DISPLAY_H);
 
-        // 1. OverDrive glyph, centered upper-third. Painted INSIDE a white
+        // 1. Electric Guardian glyph, centered upper-third. Painted INSIDE a white
         //    rounded-rectangle "card" so the green glyph has its own surface
         //    against the red deterrent background. The card uses iOS-style
-        //    squircle radius (~22%) to match the OverDrive launcher icon.
+        //    squircle radius (~22%) to match the Electric Guardian launcher icon.
         //
         //    Falls back to a hand-drawn camera icon if the APK asset can't
         //    be loaded (asset path renamed, context lost, OOM on decode)

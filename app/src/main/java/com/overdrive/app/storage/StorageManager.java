@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * StorageManager - SOTA Storage Management for Overdrive
+ * StorageManager - SOTA Storage Management for Electric Guardian
  * 
  * Manages recording and surveillance storage with:
  * - Dedicated directories under /storage/emulated/0/Overdrive/ (internal) or SD card
@@ -204,7 +204,7 @@ public class StorageManager {
         }
     }
     
-    // Base directories for Overdrive files
+    // Base directories for Electric Guardian files
     private static final String INTERNAL_BASE_DIR = "/storage/emulated/0/Overdrive";
 
     // Legacy paths from older app versions. Files here aren't written anymore
@@ -4597,8 +4597,8 @@ public class StorageManager {
     }
     
     /**
-     * SOTA: Auto-enable CDR (BYD dashcam) cleanup when Overdrive uses SD card.
-     * This ensures Overdrive always has space by cleaning up old dashcam files.
+     * SOTA: Auto-enable CDR (BYD dashcam) cleanup when Electric Guardian uses SD card.
+     * This ensures Electric Guardian always has space by cleaning up old dashcam files.
      */
     private void autoEnableCdrCleanup() {
         try {
@@ -4617,7 +4617,7 @@ public class StorageManager {
                 
                 cleaner.setReservedSpaceMb(reservedMb);
                 cleaner.setEnabled(true);
-                logInfo("Auto-enabled CDR cleanup with " + reservedMb + "MB reserved for Overdrive");
+                logInfo("Auto-enabled CDR cleanup with " + reservedMb + "MB reserved for Electric Guardian");
             }
         } catch (Exception e) {
             logWarn("Could not auto-enable CDR cleanup: " + e.getMessage());
@@ -8046,7 +8046,7 @@ public class StorageManager {
             try {
                 ExternalStorageCleaner cleaner = ExternalStorageCleaner.getInstance();
                 if (cleaner.isEnabled()) {
-                    logInfo("Overdrive cleanup insufficient on SD card — triggering CDR cleanup");
+                    logInfo("Electric Guardian cleanup insufficient on SD card — triggering CDR cleanup");
                     cleaner.ensureReservedSpace();
                 }
             } catch (Exception e) {

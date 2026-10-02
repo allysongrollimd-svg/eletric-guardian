@@ -35,7 +35,7 @@ object RoadSenseConfig {
      * still opt-in AND default-OFF (R-CRD-6) — this URL only matters once a user
      * enables upload/download.
      */
-    const val DEFAULT_WORKER_URL = "https://roadsense-edge.yash321sri.workers.dev"
+    const val DEFAULT_WORKER_URL = "" // no shared backend by default; set your own Worker URL to enable
 
     // Keys (also the JSON field names the web settings page reads/writes).
     private const val K_ENABLED = "enabled"

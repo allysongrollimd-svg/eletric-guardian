@@ -31,7 +31,7 @@ public final class GenAiApiHandler {
     private static final int MAX_TOTAL_MESSAGE_CHARS = 64_000;
 
     private static final String AUTOMATION_INSTRUCTIONS =
-            "Create one safe OverDrive automation draft from the conversation. "
+            "Create one safe Electric Guardian automation draft from the conversation. "
             + "Return exactly one JSON object and no Markdown. "
             + "If details required to choose valid trigger/action values are missing, "
             + "return {\"summary\":\"short explanation\",\"questions\":[\"question\"],\"automationJson\":\"\"}. "
@@ -796,7 +796,7 @@ public final class GenAiApiHandler {
                 ? metadata.optString("title", "").trim()
                 : report.optString("title", "").trim();
         if (title.isEmpty()) {
-            title = "OverDrive Incident Evidence Report";
+            title = "Electric Guardian Incident Evidence Report";
         }
         return new JSONObject()
                 .put("success", true)

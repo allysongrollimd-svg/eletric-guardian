@@ -1881,7 +1881,7 @@ public class TelegramBotDaemon {
     // 2-thread pool so two notifyTunnel calls can race in the post-update
     // window: both peek the hint file present, both bypass the throttle,
     // both consume the hint via consumePostUpdateHint() (which delete()s
-    // the file). First call sends the "Overdrive updated to vX.Y" message,
+    // the file). First call sends the "Electric Guardian updated to vX.Y" message,
     // second call sees postUpdateVersion=null and sends a generic "URL
     // changed" — TWO user-facing notifications instead of one. Locking the
     // peek+throttle+consume+send+stamp sequence under one mutex makes the
@@ -1964,7 +1964,7 @@ public class TelegramBotDaemon {
         // startPolling calls surfaceInstallResultOnStartup() first, which
         // CONSUMES (deletes) the hint before this method runs. It was also
         // redundant — that same call sends the owner an explicit
-        // "Overdrive updated to X" message under criticalAlerts (default ON),
+        // "Electric Guardian updated to X" message under criticalAlerts (default ON),
         // so the update is surfaced either way, and forcing an extra
         // bot-online greeting alongside it is exactly the duplication this
         // throttle exists to prevent.

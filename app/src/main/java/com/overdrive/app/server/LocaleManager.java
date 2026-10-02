@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Cross-process locale persistence for the Overdrive daemon.
+ * Cross-process locale persistence for the Electric Guardian daemon.
  *
  * <p>Backed by {@link UnifiedConfigManager} under the {@code nativeShell}
  * section. Both the app process (UID 10xxx, runs the picker dialog) and the

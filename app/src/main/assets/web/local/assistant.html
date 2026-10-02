@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title data-i18n="app.assistant_title">Assistant - OverDrive</title>
+    <title data-i18n="app.assistant_title">Assistant - Electric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
@@ -335,7 +335,7 @@
             </div>
 
             <header class="page-header">
-                <h1 class="page-title" data-i18n="genai.page_title">OverDrive Assistant</h1>
+                <h1 class="page-title" data-i18n="genai.page_title">Electric Guardian Assistant</h1>
                 <div class="header-actions">
                     <span class="status-badge inactive" id="genAiBadge" data-i18n="genai.off">OFF</span>
                 </div>
@@ -411,12 +411,12 @@
                                     <button class="btn btn-secondary ai-icon-button" id="genAiVoiceBtn" type="button" disabled aria-label="Voice unavailable" aria-pressed="false" title="Native realtime voice is unavailable for this provider" data-i18n-attr="aria-label:genai.voice_unavailable;title:genai.voice_unavailable">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 22h8"/></svg>
                                     </button>
-                                    <textarea id="genAiInput" rows="1" maxlength="12000" placeholder="Ask OverDrive…" data-i18n-attr="placeholder:genai.input_placeholder"></textarea>
+                                    <textarea id="genAiInput" rows="1" maxlength="12000" placeholder="Ask Electric Guardian…" data-i18n-attr="placeholder:genai.input_placeholder"></textarea>
                                     <button class="btn btn-primary ai-icon-button" id="genAiSendBtn" type="submit" aria-label="Send" data-i18n-attr="aria-label:genai.aria_send">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
                                     </button>
                                 </form>
-                                <div class="ai-voice-note" id="genAiVoiceNote" data-i18n="genai.voice_note">Voice appears only for providers with native realtime audio; OverDrive does not add speech-to-text fallback.</div>
+                                <div class="ai-voice-note" id="genAiVoiceNote" data-i18n="genai.voice_note">Voice appears only for providers with native realtime audio; Electric Guardian does not add speech-to-text fallback.</div>
                             </div>
                         </div>
                     </div>
@@ -663,7 +663,7 @@
                                 <li data-i18n="genai.privacy_3">Vehicle context is sent only for an explicit grounded action. Context is treated as data, never as provider instructions.</li>
                                 <li data-i18n="genai.privacy_4">Starting voice opens a provider-native realtime session through the daemon. It closes when stopped, when this page leaves the foreground, or after inactivity.</li>
                                 <li data-i18n="genai.privacy_5">When the master switch is off, active calls are cancelled and the provider connection pool and dispatcher are destroyed.</li>
-                                <li data-i18n="genai.privacy_6">Requests re-evaluate the OverDrive proxy route each time. If a Tailscale proxy is expected but unavailable, the request fails closed instead of dialing directly.</li>
+                                <li data-i18n="genai.privacy_6">Requests re-evaluate the Electric Guardian proxy route each time. If a Tailscale proxy is expected but unavailable, the request fails closed instead of dialing directly.</li>
                             </ul>
                             <div class="setting-row">
                                 <div class="setting-info">

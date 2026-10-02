@@ -7999,7 +7999,7 @@ public class GpuSurveillancePipeline {
      * ({@link com.overdrive.app.byd.BydDataCollector#setNativeCameraView}): the
      * broadcast "only sends the OEM view command; it never opens the panorama
      * application" — so no second camera pane appears; only the composed feed
-     * OverDrive is already displaying changes camera.
+     * Electric Guardian is already displaying changes camera.
      *
      * <p>Best-effort + fully detached (same discipline as
      * {@link #emitOverlayCloseState}): a short-lived {@code am broadcast} exec —

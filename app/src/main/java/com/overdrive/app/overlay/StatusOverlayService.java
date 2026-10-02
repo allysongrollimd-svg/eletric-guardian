@@ -2500,7 +2500,7 @@ public class StatusOverlayService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Context textContext = themedContext();
 
-        // Tag with the shared Overdrive group key so DaemonKeepaliveService's
+        // Tag with the shared Electric Guardian group key so DaemonKeepaliveService's
         // group-summary collapses this entry under a single shade row.
         return new Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle(textContext.getString(R.string.status_overlay_notif_title))

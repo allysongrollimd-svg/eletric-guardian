@@ -62,7 +62,7 @@ public final class ClusterViewMirrorService extends Binder {
     private static final String TAG = "ClusterViewMirror";
     private static final DaemonLogger logger = DaemonLogger.getInstance(TAG);
 
-    /** ServiceManager name the app resolves. OverDrive-native; distinct per feature. */
+    /** ServiceManager name the app resolves. ElectricGuardian-native; distinct per feature. */
     public static final String SERVICE_NAME = "overdrive_cluster_view";
     /** Binder interface token. Must stay stable across app updates (a daemon spawned by an
      *  older build keeps enforcing this exact token). */

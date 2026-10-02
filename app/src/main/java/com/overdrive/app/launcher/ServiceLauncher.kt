@@ -217,7 +217,7 @@ class ServiceLauncher(
             "dumpsys deviceidle whitelist +$packageName 2>/dev/null",
             // Method 5: BYD Start Control whitelist — APPEND (merge), never
             // overwrite. The old `settings put ... '$packageName'` clobbered the
-            // whole list to just OverDrive, wiping any co-installed app (e.g. the
+            // whole list to just Electric Guardian, wiping any co-installed app (e.g. the
             // standalone head-unit keep-alive) that had added itself. Read
             // current, add ourselves only if absent, preserve the rest.
             "CUR=\$(settings get global ssc_whitelist 2>/dev/null); [ \"\$CUR\" = null ] && CUR=; case \",\$CUR,\" in *,$packageName,*) ;; *) settings put global ssc_whitelist \"\${CUR:+\$CUR,}$packageName\" 2>/dev/null;; esac",

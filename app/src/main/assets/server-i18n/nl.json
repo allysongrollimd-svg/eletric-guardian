@@ -332,24 +332,24 @@
       "installing": "⏳ *Update installeren…*\n\nDe daemons zullen stoppen, de APK zal worden geïnstalleerd en het apparaat zal opnieuw opstarten. Deze bot zal stil staan gedurende ongeveer 2 minuten. Een nieuw URL bericht zal arriveren zodra het weer online is.",
       "install_service_unreachable": "⚠️ Kan de installatie niet starten omdat de camera daemon niet bereikbaar is.",
       "install_rejected": "⚠️ Installatie geweigerd: {0}",
-      "install_failed": "⚠️ *Overdrive update mislukt*\nHet apparaat is nog steeds op de vorige versie.\nReden: {0}",
+      "install_failed": "⚠️ *Electric Guardian update mislukt*\nHet apparaat is nog steeds op de vorige versie.\nReden: {0}",
       "unknown_reason": "onbekend (zie hoofdeenheid)",
-      "installed": "🔄 *Overdrive geüpdatet naar {0}*",
-      "installed_new_tunnel": "🔄 *Overdrive geüpdatet naar {0}*\nNieuwe tunnel URL:\n{1}\n\n_De cloudflared link draait na elk installatie._",
-      "installed_tunnel_online": "🔄 *Overdrive geüpdatet naar {0}*\nTunnel terug online:\n{1}"
+      "installed": "🔄 *Electric Guardian geüpdatet naar {0}*",
+      "installed_new_tunnel": "🔄 *Electric Guardian geüpdatet naar {0}*\nNieuwe tunnel URL:\n{1}\n\n_De cloudflared link draait na elk installatie._",
+      "installed_tunnel_online": "🔄 *Electric Guardian geüpdatet naar {0}*\nTunnel terug online:\n{1}"
     },
     "backup": {
-      "restore_unavailable": "i *Herstellen is niet beschikbaar via Telegram.\n\nOpen Overdrive op het hoofdscherm of in de app, ga vervolgens naar *Instellingen → Back-up & Herstelling* en selecteer het back-upbestand. Back-ups kunnen alleen worden hersteld op hetzelfde apparaat en vereisen daar een bevestiging.",
+      "restore_unavailable": "i *Herstellen is niet beschikbaar via Telegram.\n\nOpen Electric Guardian op het hoofdscherm of in de app, ga vervolgens naar *Instellingen → Back-up & Herstelling* en selecteer het back-upbestand. Back-ups kunnen alleen worden hersteld op hetzelfde apparaat en vereisen daar een bevestiging.",
       "building_with_trips": "💾 Bouw back-up met instellingen en doorreisgeschiedenis…",
       "building_settings": "💾 Backup…",
       "service_unreachable": "⚠️ Kan de back-up service niet bereiken.\n\nDe camera daemon is mogelijk niet actief. Probeer `/daemon camera start`.",
       "failed": "⚠️ Backup mislukt: {0}",
       "no_data": "⚠️ de back-up heeft geen gegevens teruggegeven.",
       "write_failed": "⚠️ Kan het back-upbestand niet schrijven: {0}",
-      "document_settings": "💾 Overdrive instellingen backup\n\n⚠️ Dit bestand bevat inloggegevens en de apparaat sleutel. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
-      "document_settings_version": "💾 Overdrive instellingen backup · {0}\n\n⚠️ Dit bestand bevat inloggegevens en de apparaat sleutel. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
-      "document_with_trips": "💾 Overdrive backup (instellingen + trip historie: {0})\n\n⚠️ dit bestand bevat inloggegevens, de apparaat sleutel en locatie geschiedenis. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
-      "document_with_trips_version": "💾 Overdrive backup (instellingen + trip historie: {0}) · {1}\n\n⚠️ dit bestand bevat inloggegevens, de apparaatsleutel en locatiegeschiedenis. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
+      "document_settings": "💾 Electric Guardian instellingen backup\n\n⚠️ Dit bestand bevat inloggegevens en de apparaat sleutel. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
+      "document_settings_version": "💾 Electric Guardian instellingen backup · {0}\n\n⚠️ Dit bestand bevat inloggegevens en de apparaat sleutel. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
+      "document_with_trips": "💾 Electric Guardian backup (instellingen + trip historie: {0})\n\n⚠️ dit bestand bevat inloggegevens, de apparaat sleutel en locatie geschiedenis. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
+      "document_with_trips_version": "💾 Electric Guardian backup (instellingen + trip historie: {0}) · {1}\n\n⚠️ dit bestand bevat inloggegevens, de apparaatsleutel en locatiegeschiedenis. Houd het privé. Herstel het met dezelfde hoofdeenheid via Instellingen → Back-up & Herstel.",
       "upload_failed": "⚠️ Kan de back-up niet uploaden naar Telegram."
     },
     "sendlog": {

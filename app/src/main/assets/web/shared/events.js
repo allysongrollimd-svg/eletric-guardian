@@ -1858,7 +1858,7 @@ BYD.events = {
     async createIncidentPack(recordingKey) {
         const rec = this.findRecording(recordingKey);
         if (!rec || !rec.id || !/^[a-f0-9]{32}$/i.test(rec.id)) return;
-        const body = 'OverDrive sends only filtered event metadata to your configured AI provider. '
+        const body = 'Electric Guardian sends only filtered event metadata to your configured AI provider. '
             + 'The video stays local and is added only to the downloaded evidence pack.';
         const confirmed = window.BYD && BYD.utils
                 && BYD.utils.confirmDialog

@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * ExternalStorageCleaner - Aggressive cleanup of external app recordings (BYD CDR/Dashcam)
  * 
- * SOTA: Ensures Overdrive always has reserved space on SD card by
+ * SOTA: Ensures Electric Guardian always has reserved space on SD card by
  * cleaning up oldest files from BYD CDR (built-in dashcam) when needed.
  * 
  * Features:

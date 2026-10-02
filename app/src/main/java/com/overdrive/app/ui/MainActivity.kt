@@ -322,7 +322,7 @@ open class MainActivity : AppCompatActivity() {
         if (!remoteDevSession) setupAdbAuthCallback()
         
         // Log app start
-        logsViewModel.info("App", "OverDrive started")
+        logsViewModel.info("App", "Electric Guardian started")
 
         // Seed out-of-process revival watchdog so the process gets resurrected
         // if it ever gets force-stopped or OOM-killed without an external event.
@@ -513,7 +513,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Deep-link entry for external surfaces (the OverDrive launcher's glance
+     * Deep-link entry for external surfaces (the Electric Guardian launcher's glance
      * widgets, notifications). A plain string extra keeps the contract stable
      * across both APKs without sharing code: `--es navigate_to trips`.
      * The extra is STRIPPED once consumed so an OS task-restore of the same

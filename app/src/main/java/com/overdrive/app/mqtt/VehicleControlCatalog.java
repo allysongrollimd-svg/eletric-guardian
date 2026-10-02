@@ -875,7 +875,7 @@ public final class VehicleControlCatalog {
     }
     // User-facing config-axis values map to Energy operation NORMAL/ECO/SPORT/SNOW = 3/1/2/4.
     private static final List<String> DRIVE_MODES = java.util.Arrays.asList("normal", "eco", "sport", "snow");
-    // Stable OverDrive config axis (see BydDataCollector.setDriveConfigMode):
+    // Stable Electric Guardian config axis (see BydDataCollector.setDriveConfigMode):
     // NORMAL=1, ECO=2, SPORT=3, SNOW=4. This is not the energy setter's public numbering.
     private static int driveModeValue(String payload) {
         String p = payload.trim().toLowerCase();
@@ -1327,7 +1327,7 @@ public final class VehicleControlCatalog {
                     return rotation < 0 ? null : ControlAction.of(
                             new VehicleCommandRouter.InfotainmentRotationCommand(rotation));
         }));
-        // OEM camera-view codes. This controls the native panorama app, not OverDrive's
+        // OEM camera-view codes. This controls the native panorama app, not Electric Guardian's
         // /api/camview SurfaceControl overlay. It sends a view command only and never opens
         // the native panorama UI.
         register(select("native_camera_view", "Native Camera View", "mdi:camera-switch",
@@ -1345,7 +1345,7 @@ public final class VehicleControlCatalog {
         // "operation_mode") as a raw int; bind the state topic there and map the
         // int→word via value_template so the HA select accepts live telemetry.
         // The echo emits the option word directly (in-domain).
-        // drive_mode: op_mode telemetry is normalized onto the OverDrive config axis
+        // drive_mode: op_mode telemetry is normalized onto the Electric Guardian config axis
         // (NORMAL=1, ECO=2, SPORT=3, SNOW=4). BydDataCollector maps the authoritative
         // energy-device getOperationMode value onto this axis and uses getDriveConfig only
         // as a legacy fallback. Echo the word and map int→word using the same values.

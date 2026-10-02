@@ -131,7 +131,7 @@ public class CamViewOwnershipContractTest {
         // happen at the firmware, via the OEM AUTO_VIDEO_BUTTON view command. Per the
         // selector's own documented contract (BydDataCollector.setNativeCameraView),
         // the broadcast "never opens the panorama application" — no second camera
-        // pane appears; only the composed feed OverDrive already displays changes
+        // pane appears; only the composed feed Electric Guardian already displays changes
         // camera. A previous revision removed this on the mistaken premise that it
         // opens the OEM window; do not re-remove it without re-reading that contract.
         int helper = source.indexOf("private void requestPassiveNativeView(int mode)");

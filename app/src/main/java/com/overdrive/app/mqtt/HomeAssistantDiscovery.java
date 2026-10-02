@@ -25,7 +25,7 @@ public final class HomeAssistantDiscovery {
 
     private HomeAssistantDiscovery() {}
 
-    /** HA node id / device identifier derived from the OverDrive device id. */
+    /** HA node id / device identifier derived from the Electric Guardian device id. */
     public static String nodeId(String deviceId) {
         String base = "overdrive_" + (deviceId == null ? "vehicle" : deviceId);
         return base.replaceAll("[^a-zA-Z0-9_-]", "_");
@@ -81,9 +81,9 @@ public final class HomeAssistantDiscovery {
 
             // ----- origin -----
             JSONObject origin = new JSONObject();
-            origin.put("name", "OverDrive");
+            origin.put("name", "Electric Guardian");
             if (swVersion != null && !swVersion.isEmpty()) origin.put("sw", swVersion);
-            origin.put("url", "https://www.overdrive.qd.je");
+            origin.put("url", "https://github.com/allysongrollimd-svg/eletric-guardian");
             bundle.put("o", origin);
 
             // ----- shared availability (reuses the LWT) -----
@@ -196,8 +196,8 @@ public final class HomeAssistantDiscovery {
     }
 
     private static String deviceName(String model, String vin) {
-        if (model != null && !model.isEmpty()) return "OverDrive (" + model + ")";
-        if (vin != null && vin.length() >= 6) return "OverDrive (" + vin.substring(vin.length() - 6) + ")";
-        return "OverDrive Vehicle";
+        if (model != null && !model.isEmpty()) return "Electric Guardian (" + model + ")";
+        if (vin != null && vin.length() >= 6) return "Electric Guardian (" + vin.substring(vin.length() - 6) + ")";
+        return "Electric Guardian Vehicle";
     }
 }

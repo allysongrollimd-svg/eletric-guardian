@@ -221,7 +221,7 @@ window.SafeLocations = {
 
     addSavedZoneToMap(zone) {
         if (!this.map) return;
-        const color = zone.enabled ? '#10b981' : '#6b7280';
+        const color = zone.enabled ? '#47aa0d' : '#6b7280';
 
         const circle = L.circle([zone.lat, zone.lng], {
             radius: zone.radiusM,
@@ -621,7 +621,7 @@ window.SafeLocations = {
 
             // Update map circle color
             if (this.zoneCircles[id]) {
-                const color = enabled ? '#10b981' : '#6b7280';
+                const color = enabled ? '#47aa0d' : '#6b7280';
                 this.zoneCircles[id].setStyle({ color, fillColor: color, dashArray: enabled ? null : '5,5' });
             }
         } catch (e) {

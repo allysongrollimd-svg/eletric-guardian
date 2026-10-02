@@ -331,11 +331,11 @@
       "installing": "⏳ *Güncelleme kuruluyor…*\n\nDaemonlar duracak, APK kurulacak ve aygıt yeniden başlayacak. Bu bot yaklaşık 2 dakika sessiz kalacak. Yeniden çevrimiçi olduğunda yeni bir tünel URL'si mesajı gelecek.",
       "install_service_unreachable": "⚠️ Kamera daemon'ına erişilemediği için kurulum başlatılamadı.",
       "install_rejected": "⚠️ Kurulum reddedildi: {0}",
-      "install_failed": "⚠️ *Overdrive güncellemesi başarısız*\nAygıt hâlâ önceki sürümde.\nNeden: {0}",
+      "install_failed": "⚠️ *Electric Guardian güncellemesi başarısız*\nAygıt hâlâ önceki sürümde.\nNeden: {0}",
       "unknown_reason": "bilinmiyor (kafa ünitesine bakın)",
-      "installed": "🔄 *Overdrive {0} sürümüne güncellendi*",
-      "installed_new_tunnel": "🔄 *Overdrive {0} sürümüne güncellendi*\nYeni tünel URL'si:\n{1}\n\n_cloudflared bağlantısı her kurulumdan sonra değişir._",
-      "installed_tunnel_online": "🔄 *Overdrive {0} sürümüne güncellendi*\nTünel yeniden çevrimiçi:\n{1}"
+      "installed": "🔄 *Electric Guardian {0} sürümüne güncellendi*",
+      "installed_new_tunnel": "🔄 *Electric Guardian {0} sürümüne güncellendi*\nYeni tünel URL'si:\n{1}\n\n_cloudflared bağlantısı her kurulumdan sonra değişir._",
+      "installed_tunnel_online": "🔄 *Electric Guardian {0} sürümüne güncellendi*\nTünel yeniden çevrimiçi:\n{1}"
     },
     "backup": {
       "restore_unavailable": "ℹ️ *Geri yükleme Telegram üzerinden yapılamaz.*\n\nOverdrive'ı kafa ünitesinde veya uygulamada açın, ardından *Ayarlar → Yedekleme ve Geri Yükleme*'ye gidip yedek dosyasını seçin. Yedekler yalnızca aynı aygıtta geri yüklenebilir ve orada onay gerektirir.",
@@ -345,10 +345,10 @@
       "failed": "⚠️ Yedekleme başarısız: {0}",
       "no_data": "⚠️ Yedekleme hiç veri döndürmedi.",
       "write_failed": "⚠️ Yedek dosyası yazılamadı: {0}",
-      "document_settings": "💾 Overdrive ayar yedeği\n\n⚠️ Bu dosya kimlik bilgilerinizi ve aygıt anahtarını içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
-      "document_settings_version": "💾 Overdrive ayar yedeği · {0}\n\n⚠️ Bu dosya kimlik bilgilerinizi ve aygıt anahtarını içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
-      "document_with_trips": "💾 Overdrive yedeği (ayarlar + yolculuk geçmişi: {0})\n\n⚠️ Bu dosya kimlik bilgilerinizi, aygıt anahtarını ve konum geçmişini içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
-      "document_with_trips_version": "💾 Overdrive yedeği (ayarlar + yolculuk geçmişi: {0}) · {1}\n\n⚠️ Bu dosya kimlik bilgilerinizi, aygıt anahtarını ve konum geçmişini içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
+      "document_settings": "💾 Electric Guardian ayar yedeği\n\n⚠️ Bu dosya kimlik bilgilerinizi ve aygıt anahtarını içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
+      "document_settings_version": "💾 Electric Guardian ayar yedeği · {0}\n\n⚠️ Bu dosya kimlik bilgilerinizi ve aygıt anahtarını içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
+      "document_with_trips": "💾 Electric Guardian yedeği (ayarlar + yolculuk geçmişi: {0})\n\n⚠️ Bu dosya kimlik bilgilerinizi, aygıt anahtarını ve konum geçmişini içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
+      "document_with_trips_version": "💾 Electric Guardian yedeği (ayarlar + yolculuk geçmişi: {0}) · {1}\n\n⚠️ Bu dosya kimlik bilgilerinizi, aygıt anahtarını ve konum geçmişini içerir. Gizli tutun. Aynı kafa ünitesinde Ayarlar → Yedekleme ve Geri Yükleme'den geri yükleyin.",
       "upload_failed": "⚠️ Yedek dosyası Telegram'a yüklenemedi."
     },
     "sendlog": {

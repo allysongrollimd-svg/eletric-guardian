@@ -314,7 +314,7 @@ public class SetupGuideDialog {
      * Open the BYD autostart-management activity directly. Falls back through:
      *   1. com.byd.appstartmanagement/.frame.AppStartManagement (canonical deep link)
      *   2. Default launcher intent for com.byd.appstartmanagement
-     *   3. ACTION_APPLICATION_DETAILS_SETTINGS for OverDrive (legacy fallback)
+     *   3. ACTION_APPLICATION_DETAILS_SETTINGS for Electric Guardian (legacy fallback)
      *   4. ACTION_APPLICATION_SETTINGS / ACTION_SETTINGS
      */
     /** BYD AppStartManagement package — the privileged "Deaktiver Autostart" app. */
@@ -325,7 +325,7 @@ public class SetupGuideDialog {
      * (the "Deaktiver Autostart" screen with the per-app switches).
      *
      * Shared with {@code AutoStartEnabler}, which drives this same screen via the
-     * AccessibilityService to auto-flip OverDrive's switch after each reinstall.
+     * AccessibilityService to auto-flip Electric Guardian's switch after each reinstall.
      * Kept in sync with the canonical deep link in {@link #openAutoStartSettings}.
      * Includes FLAG_ACTIVITY_NEW_TASK so it can be launched from a non-Activity
      * context (the a11y service). Throws ActivityNotFoundException at startActivity

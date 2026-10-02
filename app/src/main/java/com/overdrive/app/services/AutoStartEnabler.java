@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Re-enables OverDrive's autostart by driving the BYD "Deaktiver Autostart" dialog.
+ * Re-enables Electric Guardian's autostart by driving the BYD "Deaktiver Autostart" dialog.
  *
  * <p>BYD's DiLink firmware blocks any /data app from autostarting at boot unless
  * its per-app value in {@code com.byd.appstartmanagement} ("Deaktiver Autostart")
@@ -155,7 +155,7 @@ public class AutoStartEnabler {
         ALREADY_OFF,      // switch was already OFF (idempotent no-op)
         NOT_THIS_FIRMWARE,// appstartmanagement activity missing -> abort, no retry
         NO_DIALOG,        // dialog window never surfaced
-        NO_ROW,           // OverDrive row / switch not found
+        NO_ROW,           // Electric Guardian row / switch not found
         FLIP_UNCONFIRMED  // clicked but state didn't confirm OFF
     }
 
@@ -167,7 +167,7 @@ public class AutoStartEnabler {
             return Result.NO_DIALOG;
         }
 
-        // (b) Launch the BYD dialog (reuse OverDrive's canonical intent).
+        // (b) Launch the BYD dialog (reuse Electric Guardian's canonical intent).
         try {
             Intent intent = SetupGuideDialog.buildAppStartManagementIntent();
             service.startActivity(intent);
@@ -191,16 +191,16 @@ public class AutoStartEnabler {
         dialogClosed = false;   // a fresh dialog needs its own BACK
         log("dialog root acquired: pkg=" + dialogRoot.getPackageName());
 
-        // (e) Find OverDrive's row + its Switch (scrolling if needed).
+        // (e) Find Electric Guardian's row + its Switch (scrolling if needed).
         AccessibilityNodeInfo overdriveSwitch = findOverDriveSwitch(dialogRoot);
         if (overdriveSwitch == null) {
-            log("OverDrive switch NOT found in dialog (after scroll search)");
+            log("Electric Guardian switch NOT found in dialog (after scroll search)");
             return Result.NO_ROW;
         }
 
         // (f) Read + flip.
         boolean checkedBefore = overdriveSwitch.isChecked();
-        log("OverDrive switch found: isChecked(before)=" + checkedBefore
+        log("Electric Guardian switch found: isChecked(before)=" + checkedBefore
                 + " (ON=blocked, OFF=autostart-allowed)");
         if (!checkedBefore) {
             log("switch already OFF — autostart already allowed, no-op");
@@ -225,7 +225,7 @@ public class AutoStartEnabler {
         AccessibilityNodeInfo freshSwitch = (freshRoot != null) ? findOverDriveSwitch(freshRoot) : null;
         if (freshSwitch != null) {
             boolean checkedAfter = freshSwitch.isChecked();
-            log("OverDrive switch isChecked(after re-scan)=" + checkedAfter);
+            log("Electric Guardian switch isChecked(after re-scan)=" + checkedAfter);
             if (!checkedAfter) {
                 return Result.SUCCESS;
             }
@@ -296,7 +296,7 @@ public class AutoStartEnabler {
     }
 
     /**
-     * Find OverDrive's row Switch. Searches for the app-label text node, climbs to
+     * Find Electric Guardian's row Switch. Searches for the app-label text node, climbs to
      * its row container and looks for a Switch descendant. If the row isn't
      * realized (RecyclerView virtualization), scrolls forward and retries until
      * found or the list can't advance.
@@ -316,25 +316,25 @@ public class AutoStartEnabler {
             }
             AccessibilityNodeInfo sw = locateSwitchForLabel(current, label);
             if (sw != null) {
-                if (scroll > 0) log("OverDrive switch located after " + scroll + " scroll(s)");
+                if (scroll > 0) log("Electric Guardian switch located after " + scroll + " scroll(s)");
                 return sw;
             }
             // Not visible yet — try to scroll the list forward.
             AccessibilityNodeInfo scrollable = findScrollable(current);
             if (scrollable == null) {
-                log("no scrollable container found and OverDrive row not visible");
+                log("no scrollable container found and Electric Guardian row not visible");
                 return null;
             }
             boolean advanced = scrollable.performAction(
                     AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
             log("scroll forward (" + (scroll + 1) + ") advanced=" + advanced);
             if (!advanced) {
-                log("scroll could not advance further — OverDrive row not present");
+                log("scroll could not advance further — Electric Guardian row not present");
                 return null;
             }
             sleep(400L);
         }
-        log("exhausted MAX_SCROLLS (" + MAX_SCROLLS + ") without finding OverDrive row");
+        log("exhausted MAX_SCROLLS (" + MAX_SCROLLS + ") without finding Electric Guardian row");
         return null;
     }
 
@@ -359,7 +359,7 @@ public class AutoStartEnabler {
         return current;
     }
 
-    /** From every "OverDrive" label node, climb ancestors and find a Switch. */
+    /** From every "Electric Guardian" label node, climb ancestors and find a Switch. */
     private AccessibilityNodeInfo locateSwitchForLabel(AccessibilityNodeInfo root, String label) {
         List<AccessibilityNodeInfo> labels = root.findAccessibilityNodeInfosByText(label);
         if (labels == null || labels.isEmpty()) {
@@ -537,7 +537,7 @@ public class AutoStartEnabler {
             }
         } catch (Throwable ignored) {
         }
-        return "OverDrive";
+        return "Electric Guardian";
     }
 
     private void sleep(long ms) {

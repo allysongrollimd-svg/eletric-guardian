@@ -332,24 +332,24 @@
       "installing": "⏳ *Instalando actualización...*\n\nLos daemons se detendrán, se instalará el APK y el dispositivo se reiniciará. Este bot permanecerá en silencio durante unos 2 minutos. Recibirás un nuevo mensaje con la URL del túnel cuando vuelva a estar en línea.",
       "install_service_unreachable": "⚠️ No se pudo iniciar la instalación porque no se puede acceder al daemon de cámara.",
       "install_rejected": "⚠️ Instalación rechazada: {0}",
-      "install_failed": "⚠️ *Falló la actualización de OverDrive*\nEl dispositivo sigue usando la versión anterior.\nMotivo: {0}",
+      "install_failed": "⚠️ *Falló la actualización de Electric Guardian*\nEl dispositivo sigue usando la versión anterior.\nMotivo: {0}",
       "unknown_reason": "desconocido (consulta la unidad principal)",
-      "installed": "🔄 *OverDrive se actualizó a {0}*",
-      "installed_new_tunnel": "🔄 *Overdrive se actualizó a {0}*\nNueva URL del túnel:\n{1}\n\n_El enlace de cloudflared cambia después de cada instalación._",
-      "installed_tunnel_online": "🔄 *OverDrive se actualizó a {0}*\nEl túnel volvió a estar en línea:\n{1}"
+      "installed": "🔄 *Electric Guardian se actualizó a {0}*",
+      "installed_new_tunnel": "🔄 *Electric Guardian se actualizó a {0}*\nNueva URL del túnel:\n{1}\n\n_El enlace de cloudflared cambia después de cada instalación._",
+      "installed_tunnel_online": "🔄 *Electric Guardian se actualizó a {0}*\nEl túnel volvió a estar en línea:\n{1}"
     },
     "backup": {
-      "restore_unavailable": "ℹ️ *La restauración no está disponible a través de Telegram.*\n\nAbre Overdrive en la unidad principal o en la app, luego ve a *Ajustes → Copia de seguridad y restauración* y selecciona el archivo de copia de seguridad. Las copias de seguridad solo pueden restaurarse en el mismo dispositivo y requieren confirmación en ese dispositivo.",
+      "restore_unavailable": "ℹ️ *La restauración no está disponible a través de Telegram.*\n\nAbre Electric Guardian en la unidad principal o en la app, luego ve a *Ajustes → Copia de seguridad y restauración* y selecciona el archivo de copia de seguridad. Las copias de seguridad solo pueden restaurarse en el mismo dispositivo y requieren confirmación en ese dispositivo.",
       "building_with_trips": "💾 Creando una copia de seguridad de la configuración y el historial de viajes...",
       "building_settings": "💾 Creando una copia de seguridad de la configuración...",
       "service_unreachable": "⚠️ No se pudo acceder al servicio de copias de seguridad.\n\nEs posible que el daemon de la cámara no esté en ejecución. Prueba  `/daemon camera start`.",
       "failed": "⚠️ Falló la copia de seguridad: {0}",
       "no_data": "⚠️ La copia de seguridad no devolvió datos.",
       "write_failed": "⚠️ No se pudo escribir el archivo de copia de seguridad: {0}",
-      "document_settings": "💾 Copia de seguridad de la configuración de Overdrive\n⚠️ Este archivo contiene credenciales y la clave del dispositivo. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
-      "document_settings_version": "💾 Copia de seguridad de la configuración de Overdrive · {0}\n\n⚠️ Este archivo contiene credenciales y la clave del dispositivo. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
-      "document_with_trips": "💾 Copia de seguridad de Overdrive (configuración + historial de viajes: {0})\n\n⚠️ Este archivo contiene credenciales, la clave del dispositivo y el historial de ubicaciones. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
-      "document_with_trips_version": "💾 Copia de seguridad de Overdrive (configuración + historial de viajes: {0}) · {1}\n\n⚠️ Este archivo contiene credenciales, la clave del dispositivo y el historial de ubicaciones. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
+      "document_settings": "💾 Copia de seguridad de la configuración de Electric Guardian\n⚠️ Este archivo contiene credenciales y la clave del dispositivo. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
+      "document_settings_version": "💾 Copia de seguridad de la configuración de Electric Guardian · {0}\n\n⚠️ Este archivo contiene credenciales y la clave del dispositivo. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
+      "document_with_trips": "💾 Copia de seguridad de Electric Guardian (configuración + historial de viajes: {0})\n\n⚠️ Este archivo contiene credenciales, la clave del dispositivo y el historial de ubicaciones. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
+      "document_with_trips_version": "💾 Copia de seguridad de Electric Guardian (configuración + historial de viajes: {0}) · {1}\n\n⚠️ Este archivo contiene credenciales, la clave del dispositivo y el historial de ubicaciones. Mantenlo privado. Restáuralo en esta misma unidad principal desde Ajustes → Copia de seguridad y restauración.",
       "upload_failed": "⚠️ No se pudo subir el archivo de copia de seguridad a Telegram."
     },
     "sendlog": {

@@ -39,7 +39,7 @@
         margin: 0 0 10px 0;
         font-size: 11px; font-weight: 700;
         letter-spacing: 1.5px; text-transform: uppercase;
-        color: #00D4AA;
+        color: #4ED400;
     }
     .panel-row {
         display: flex; align-items: center; justify-content: space-between;
@@ -65,8 +65,8 @@
         border-radius: 50%;
         transition: all .15s;
     }
-    .toggle.on { background: rgba(0,212,170,0.25); }
-    .toggle.on::after { left: 20px; background: #00D4AA; }
+    .toggle.on { background: rgba(78, 212, 0,0.25); }
+    .toggle.on::after { left: 20px; background: #4ED400; }
 
     .seg {
         display: inline-flex;
@@ -82,7 +82,7 @@
         letter-spacing: 0.5px;
         border-radius: 4px;
     }
-    .seg button.on { background: rgba(0,212,170,0.18); color: #00D4AA; }
+    .seg button.on { background: rgba(78, 212, 0,0.18); color: #4ED400; }
 
     .legend {
         margin-top: 10px;
@@ -120,14 +120,14 @@
         width: 14px; height: 14px;
         margin-top: -6px;
         border-radius: 50%;
-        background: #00D4AA;
+        background: #4ED400;
         cursor: pointer;
-        box-shadow: 0 0 8px rgba(0,212,170,0.4);
+        box-shadow: 0 0 8px rgba(78, 212, 0,0.4);
     }
     .slider::-moz-range-thumb {
         width: 14px; height: 14px;
         border-radius: 50%;
-        background: #00D4AA;
+        background: #4ED400;
         cursor: pointer;
         border: 0;
     }
@@ -350,7 +350,7 @@ const SyntheticMosaic = (function() {
         front: '#0c2233',
         right: '#1f1a2c',
         rear:  '#221a0e',
-        left:  '#0e2419'
+        left:  '#0e1709'
     };
 
     function drawQuadrant(label, accent, x, y, w, h) {
@@ -378,9 +378,9 @@ const SyntheticMosaic = (function() {
             const t = (frame * 0.012) % (Math.PI * 2);
             const px = x + w * (0.5 + 0.4 * Math.sin(t));
             const py = y + h * 0.7;
-            cx.fillStyle = '#00D4AA';
+            cx.fillStyle = '#4ED400';
             cx.beginPath(); cx.arc(px, py, 24, 0, Math.PI * 2); cx.fill();
-            cx.shadowColor = '#00D4AA'; cx.shadowBlur = 25;
+            cx.shadowColor = '#4ED400'; cx.shadowBlur = 25;
             cx.beginPath(); cx.arc(px, py, 12, 0, Math.PI * 2); cx.fill();
             cx.shadowBlur = 0;
         } else if (pattern === 'parking') {
@@ -438,7 +438,7 @@ const SyntheticMosaic = (function() {
         cx.fillText('▶R', x + w - 16, y + 32);
 
         // Quadrant border for sanity
-        cx.strokeStyle = 'rgba(0,212,170,0.35)';
+        cx.strokeStyle = 'rgba(78, 212, 0,0.35)';
         cx.lineWidth = 2;
         cx.strokeRect(x + 1, y + 1, w - 2, h - 2);
     }

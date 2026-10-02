@@ -1125,7 +1125,7 @@ class TailscaleLauncher(
     }
 
     /**
-     * Withdraw only an HTTPS rule that the read-back parser proved belongs to Overdrive.
+     * Withdraw only an HTTPS rule that the read-back parser proved belongs to Electric Guardian.
      *
      * The legacy command is kept solely for upgrading installations that already persisted
      * the old TLS-terminated TCP rule. Unrelated port-443 rules are never changed.

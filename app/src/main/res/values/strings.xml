@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
 
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Keeps Overdrive vehicle monitoring active in the background. This service does not read or interact with screen content.</string>
+    <string name="accessibility_service_description">Keeps Electric Guardian vehicle monitoring active in the background. This service does not read or interact with screen content.</string>
 
     <!-- Recording Mode Labels -->
 
@@ -200,7 +200,7 @@
 
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">OEM Dashcam Camera ID</string>
-    <string name="camera_oem_dashcam_hint">Pick the AVMCamera id that points at the forward dashcam sensor. Dashcam is the OPPOSITE of pano: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Leave on Auto to let OverDrive pick.</string>
+    <string name="camera_oem_dashcam_hint">Pick the AVMCamera id that points at the forward dashcam sensor. Dashcam is the OPPOSITE of pano: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Leave on Auto to let Electric Guardian pick.</string>
     <string name="camera_oem_dashcam_auto_resolved">Auto — using id %1$d (pano is id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Auto — pano id is %1$d, can\'t infer dashcam</string>
     <string name="camera_oem_dashcam_save">Save</string>
@@ -274,7 +274,7 @@
     <string name="camera_mapping_summary_probing">Panoramic stream: Legacy auto-detect / probing</string>
     <string name="camera_mapping_current_format">Current mapping: %1$s</string>
     <string name="camera_mapping_current_none">Current mapping: Auto / default</string>
-    <string name="camera_mapping_hint">OverDrive keeps the legacy startup behavior by default, but now lets you calibrate the merged panoramic strip properly. Preview each raw merged slice, map the logical 360 roles to the slice that actually shows front/right/rear/left on your vehicle, and the daemon will reuse that layout for recording, streaming, and AI after restart.</string>
+    <string name="camera_mapping_hint">Electric Guardian keeps the legacy startup behavior by default, but now lets you calibrate the merged panoramic strip properly. Preview each raw merged slice, map the logical 360 roles to the slice that actually shows front/right/rear/left on your vehicle, and the daemon will reuse that layout for recording, streaming, and AI after restart.</string>
 
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Scan to Connect</string>
@@ -294,10 +294,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Pick Your Language</string>
-    <string name="setup_language_body">Defaults to your head unit\'s language. Tap to choose a different one for the OverDrive app and the web tunnel.</string>
+    <string name="setup_language_body">Defaults to your head unit\'s language. Tap to choose a different one for the Electric Guardian app and the web tunnel.</string>
     <string name="setup_language_button">Choose Language</string>
     <string name="setup_autostart_title">Disable Auto-Start Restriction</string>
-    <string name="setup_autostart_body">Tap below to open BYD Auto-Start. Find OverDrive in the list and uncheck the box. BYD wipes this on every install — you\'ll redo it after updates.</string>
+    <string name="setup_autostart_body">Tap below to open BYD Auto-Start. Find Electric Guardian in the list and uncheck the box. BYD wipes this on every install — you\'ll redo it after updates.</string>
     <string name="setup_autostart_button">Open BYD Auto-Start</string>
     <string name="setup_autostart_enabling">Enabling autostart…</string>
     <string name="setup_autostart_enabled">Autostart enabled ✓</string>
@@ -306,7 +306,7 @@
     <string name="setup_overlay_body">Enable this to show a floating status indicator for recording and trip tracking on top of other apps.</string>
     <string name="setup_overlay_button">Open Overlay Settings</string>
 
-    <!-- Onboarding guide (novice track). Parked-only, glanceable. Overdrive is a
+    <!-- Onboarding guide (novice track). Parked-only, glanceable. Electric Guardian is a
          protected brand name — keep it verbatim. -->
     <!-- Shared button labels -->
     <string name="onboarding_next">Next</string>
@@ -318,8 +318,8 @@
     <string name="onboarding_done_short">Got it</string>
 
     <!-- Step 0: authorize the daemon (system ADB popup) -->
-    <string name="onboarding_authorize_title">Wake up Overdrive</string>
-    <string name="onboarding_authorize_body">Overdrive runs your cameras through a small on-device helper. Android will ask once to allow USB debugging — tap <b>Allow</b> and check <b>Always allow from this device</b> so it stays on after every restart.</string>
+    <string name="onboarding_authorize_title">Wake up Electric Guardian</string>
+    <string name="onboarding_authorize_body">Electric Guardian runs your cameras through a small on-device helper. Android will ask once to allow USB debugging — tap <b>Allow</b> and check <b>Always allow from this device</b> so it stays on after every restart.</string>
     <string name="onboarding_authorize_button">Allow access</string>
     <string name="onboarding_authorize_waiting_title">Waiting for permission…</string>
     <string name="onboarding_authorize_waiting_body">Accept the Android popup. If you don\'t see it, it may already be granted — this will continue on its own.</string>
@@ -328,15 +328,15 @@
     <string name="onboarding_authorize_retry_button">Try again</string>
 
     <!-- Step: choose operating mode (Vehicle ON+OFF vs ON only) -->
-    <string name="onboarding_mode_title">When should Overdrive run?</string>
-    <string name="onboarding_mode_body">Choose how Overdrive behaves after you turn the car off.\n\n<b>On &amp; Off</b> keeps watching while parked — surveillance and background monitoring stay active, so the car draws a little power overnight.\n\n<b>On Only</b> fully shuts Overdrive down once you leave. Dashcam, trips and charging still work while you\'re driving, and everything starts back up automatically when you switch the car on. You can change this any time in Settings.</string>
+    <string name="onboarding_mode_title">When should Electric Guardian run?</string>
+    <string name="onboarding_mode_body">Choose how Electric Guardian behaves after you turn the car off.\n\n<b>On &amp; Off</b> keeps watching while parked — surveillance and background monitoring stay active, so the car draws a little power overnight.\n\n<b>On Only</b> fully shuts Electric Guardian down once you leave. Dashcam, trips and charging still work while you\'re driving, and everything starts back up automatically when you switch the car on. You can change this any time in Settings.</string>
     <string name="onboarding_mode_on_off_button">On &amp; Off</string>
     <string name="onboarding_mode_on_only_button">On Only</string>
 
     <!-- Camera mapping chapter -->
     <string name="onboarding_camera_step_label">Camera · step %1$d of %2$d</string>
     <string name="onboarding_camera_intro_title">Set up your cameras</string>
-    <string name="onboarding_camera_intro_body">Let\'s tell Overdrive which camera is your 360 view and which is your dashcam. It takes about a minute, and you can change it later.</string>
+    <string name="onboarding_camera_intro_body">Let\'s tell Electric Guardian which camera is your 360 view and which is your dashcam. It takes about a minute, and you can change it later.</string>
     <string name="onboarding_camera_intro_primary">Start</string>
     <string name="onboarding_camera_opening_title">Opening camera setup…</string>
     <string name="onboarding_camera_opening_body">Loading a live preview from your cameras. This can take a few seconds.</string>
@@ -345,7 +345,7 @@
     <string name="onboarding_camera_dashcam_title">Now find the road-ahead camera</string>
     <string name="onboarding_camera_dashcam_body">Step through the cameras with the arrows and stop on the one showing the windshield / forward view. Note its number — you\'ll pick it next.</string>
     <string name="onboarding_camera_pick_title">Pick your 360 camera</string>
-    <string name="onboarding_camera_pick_body">In the top card, choose the number for your 360 / normal camera. Not sure? Leave it on AUTO and Overdrive figures it out.</string>
+    <string name="onboarding_camera_pick_body">In the top card, choose the number for your 360 / normal camera. Not sure? Leave it on AUTO and Electric Guardian figures it out.</string>
     <string name="onboarding_camera_pick_primary">Next</string>
     <string name="onboarding_camera_pick_dash_title">Pick your dashcam camera</string>
     <string name="onboarding_camera_pick_dash_body">In this card, choose the dashcam number you found earlier — or leave it on AUTO.</string>
@@ -362,7 +362,7 @@
     <string name="onboarding_camera_windshield_skip">No thanks</string>
 
     <!-- Vehicle profile chapter -->
-    <string name="onboarding_vehicle_title">Tell Overdrive your battery</string>
+    <string name="onboarding_vehicle_title">Tell Electric Guardian your battery</string>
     <string name="onboarding_vehicle_body">Pick your model and we fill in the kWh, or type it yourself (5–120). This makes range and charging estimates accurate. You can skip and set it later.</string>
     <string name="onboarding_vehicle_primary">Set battery</string>
 
@@ -596,7 +596,7 @@
     <!-- Subtitle on the Daemons hero header. %1$d running, %2$d total. -->
     <string name="daemons_count_fmt">%1$d of %2$d running</string>
     <string name="daemons_wifi_auto_enable_title">Wi&#8209;Fi</string>
-    <string name="daemons_wifi_auto_enable_subtitle">Turns Wi&#8209;Fi on or off now. When off, OverDrive’s sentry daemons will not turn it back on.</string>
+    <string name="daemons_wifi_auto_enable_subtitle">Turns Wi&#8209;Fi on or off now. When off, Electric Guardian’s sentry daemons will not turn it back on.</string>
     <string name="daemons_wifi_auto_enable_save_failed">Could not change the Wi&#8209;Fi state.</string>
 
     <!-- dialog_time_window -->
@@ -690,7 +690,7 @@
     <string name="update_picker_current_suffix">%1$s (installed)</string>
     <string name="update_picker_older_suffix">%1$s (older)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Updating Overdrive</string>
+    <string name="update_progress_title">Updating Electric Guardian</string>
     <string name="update_step_downloading">Downloading update…</string>
     <string name="update_step_verifying">Verifying download…</string>
     <string name="update_step_stopping">Stopping daemons…</string>
@@ -713,9 +713,9 @@
     <string name="settings_update_channel_save_failed">Could not save the update channel</string>
     <string name="settings_update_channel_braveheart_toast">Switched to Braveheart. Builds may be unstable — if something breaks, send the daemon log and report it on Discord/GitHub/WhatsApp.</string>
     <!-- Community / report-a-bug links -->
-    <string name="community_discord_url" translatable="false">https://discord.gg/PZutk9fg4h</string>
-    <string name="community_github_issues_url" translatable="false">https://github.com/yash-srivastava/Overdrive-release/issues</string>
-    <string name="community_whatsapp_url" translatable="false">https://chat.whatsapp.com/HChmriCWgr9KwAtE6OEkiM</string>
+    <string name="community_discord_url" translatable="false">https://github.com/allysongrollimd-svg/eletric-guardian/discussions</string>
+    <string name="community_github_issues_url" translatable="false">https://github.com/allysongrollimd-svg/eletric-guardian/issues</string>
+    <string name="community_whatsapp_url" translatable="false">https://github.com/allysongrollimd-svg/eletric-guardian/discussions</string>
 
     <string name="toast_storage_permission_required">Storage permission required for recordings</string>
     <string name="toast_url_copied_short">URL copied!</string>
@@ -909,7 +909,7 @@
     <string name="dialog_delete_recording_title">Delete Recording</string>
     <string name="dialog_delete_recording_message">Delete %1$s?\nThis cannot be undone.</string>
     <string name="dialog_create_evidence_pack_title">Create evidence pack?</string>
-    <string name="dialog_create_evidence_pack_message">OverDrive sends only filtered event metadata to your configured AI provider. The video stays local and is added only to the downloaded evidence pack.</string>
+    <string name="dialog_create_evidence_pack_message">Electric Guardian sends only filtered event metadata to your configured AI provider. The video stays local and is added only to the downloaded evidence pack.</string>
     <string name="toast_evidence_pack_creating">Creating evidence pack…</string>
     <string name="toast_evidence_pack_ready">Evidence pack ready</string>
     <string name="toast_evidence_pack_unavailable">This recording is not indexed yet</string>
@@ -927,7 +927,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Tips &amp; troubleshooting</string>
     <string name="setup_traffic_title">Disable BYD Traffic Monitor</string>
-    <string name="setup_traffic_body">The BYD Traffic Monitor blocks third-party apps from reaching the internet. Disabling it lets OverDrive and any other apps you install actually use the network. A hard reboot is required afterwards.</string>
+    <string name="setup_traffic_body">The BYD Traffic Monitor blocks third-party apps from reaching the internet. Disabling it lets Electric Guardian and any other apps you install actually use the network. A hard reboot is required afterwards.</string>
     <string name="setup_traffic_button">Open Traffic Monitor</string>
     <string name="setup_camera_fix_title">Camera feeds black or incorrect?</string>
     <string name="setup_camera_fix_body">Camera probe, set Camera ID to 0, tap Save, then restart the camera daemon. If the feeds are still wrong, repeat with Camera ID 1. Leave the mapping section untouched.</string>
@@ -958,17 +958,17 @@
     <string name="nav_page_assistant">Assistant</string>
 
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">OverDrive Status</string>
+    <string name="status_overlay_notif_title">Electric Guardian Status</string>
     <string name="status_overlay_notif_text">Status overlay active</string>
 
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">Overdrive Active</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian Active</string>
     <string name="daemon_keepalive_notif_text">Monitoring vehicle systems</string>
-    <string name="overdrive_status_summary_title">Overdrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">Background services running</string>
 
     <!-- ============================================================== -->
@@ -1015,7 +1015,7 @@
     <string name="remote_voice_mute">Mute remote voice</string>
     <string name="remote_voice_unmute">Unmute remote voice</string>
     <string name="remote_voice_notification_title">Remote voice active</string>
-    <string name="remote_voice_notification_text">Receiving live audio from an authenticated OverDrive session</string>
+    <string name="remote_voice_notification_text">Receiving live audio from an authenticated Electric Guardian session</string>
     <string name="settings_remote_communication_title">Remote communication</string>
     <string name="settings_remote_communication_subtitle">Enable voice, cabin listening, and messages from the web console. If Overlay permission says Permission required, tap it and allow Display over other apps.</string>
     <string name="settings_remote_voice_title">Enable remote voice</string>
@@ -1061,7 +1061,7 @@
     <string name="settings_privacy_body">Reset clears recordings index, cached credentials, daemon state, and on-device preferences. The action cannot be undone.</string>
 
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">About OverDrive</string>
+    <string name="settings_about_title">About Electric Guardian</string>
     <string name="settings_about_version_label">Version</string>
     <string name="settings_about_package_label">Build</string>
     <string name="settings_about_vehicle_title">Vehicle &amp; head unit</string>
@@ -1097,13 +1097,13 @@
     <string name="settings_backup_pick_file">Pick a backup to restore</string>
     <string name="settings_backup_no_files">No backup files found. Export one first, or copy a backup .json into %1$s, then try again.</string>
     <string name="settings_backup_read_failed">Could not read the file</string>
-    <string name="settings_backup_invalid_file">That file is not a valid Overdrive backup</string>
+    <string name="settings_backup_invalid_file">That file is not a valid Electric Guardian backup</string>
     <string name="settings_backup_restoring">Restoring…</string>
     <string name="settings_backup_restored">Settings restored</string>
     <string name="settings_backup_restore_failed">Restore failed</string>
     <string name="settings_backup_daemon_down">The camera service must be running to back up or restore. Start it from Daemons, then try again.</string>
     <string name="settings_backup_restore_confirm_title">Restore settings?</string>
-    <string name="settings_backup_restore_confirm_msg">This replaces your current Overdrive settings with the backup and reloads services. It only works on the same head unit the backup was made on.</string>
+    <string name="settings_backup_restore_confirm_msg">This replaces your current Electric Guardian settings with the backup and reloads services. It only works on the same head unit the backup was made on.</string>
     <string name="settings_backup_restore_confirm_btn">Restore</string>
     <string name="settings_backup_restart_hint">Settings restored. Restart the camera daemon (Daemons → Camera → Restart) to make sure every restored setting is applied.</string>
     <string name="settings_backup_trips_prompt">Include your trip history (distance, energy, cost, scores, start/end locations)? Detailed per-trip telemetry is not included. The file will contain your location history — keep it private.</string>
@@ -1115,9 +1115,9 @@
     <string name="settings_about_support_section">Powered by people like you</string>
 
     <string name="settings_about_support_share_title">Tell a fellow owner</string>
-    <string name="settings_about_support_share_value">Every shared link helps another BYD owner discover Overdrive.</string>
-    <string name="settings_about_support_share_message">Check out Overdrive — open-source surveillance &amp; dashcam for BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Share Overdrive</string>
+    <string name="settings_about_support_share_value">Every shared link helps another BYD owner discover Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Check out Electric Guardian — open-source surveillance &amp; dashcam for BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Share Electric Guardian</string>
     <string name="settings_about_open_link_failed">Couldn\'t open link.</string>
     <string name="settings_about_open_link_copied">No browser found. URL copied: %1$s</string>
 
@@ -1127,12 +1127,12 @@
     <string name="settings_about_license_title">License</string>
     <string name="settings_about_license_value">MIT — open source. Tap to view full text.</string>
     <string name="settings_about_source_title">Source code</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
-    <string name="settings_about_license_url" translatable="false">https://github.com/yash-srivastava/Overdrive-release/blob/main/LICENSE</string>
-    <string name="settings_about_source_url" translatable="false">https://github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_license_url" translatable="false">https://github.com/allysongrollimd-svg/eletric-guardian/blob/main/LICENSE</string>
+    <string name="settings_about_source_url" translatable="false">https://github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Star us on GitHub</string>
     <string name="settings_about_star_value">Takes a second. Means a lot.</string>
-    <string name="settings_about_star_url" translatable="false">https://github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_star_url" translatable="false">https://github.com/allysongrollimd-svg/eletric-guardian</string>
 
     <string name="settings_about_thanks_title">Thanks</string>
     <string name="settings_about_thanks_subtitle">Built with the help of contributors and supporters.</string>
@@ -1276,7 +1276,7 @@
 
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Integrations</string>
-    <string name="integrations_hero_subtitle">Connect Overdrive to your services.</string>
+    <string name="integrations_hero_subtitle">Connect Electric Guardian to your services.</string>
     <string name="integrations_status_unknown">Tap to configure</string>
     <string name="integrations_status_configured">Configured</string>
     <string name="integrations_status_not_set_up">Not set up</string>
@@ -1291,7 +1291,7 @@
     <string name="settings_action_reset_data">Reset data…</string>
 
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
 
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
@@ -1373,12 +1373,12 @@
     <string name="settings_section_daemons_subtitle">Cloudflared, Zrok, Telegram, MQTT runners.</string>
 
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">About OverDrive</string>
+    <string name="settings_about_row_title">About Electric Guardian</string>
     <string name="settings_about_row_subtitle">Version, license, support development.</string>
     <string name="settings_reset_row_subtitle">Clear recordings, events, or all caches.</string>
 
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
 
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
@@ -1398,7 +1398,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">On-device by default</string>
-    <string name="settings_privacy_stance_body">OverDrive runs entirely on the head unit. No telemetry leaves your car except via the tunnels and integrations you explicitly configure.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian runs entirely on the head unit. No telemetry leaves your car except via the tunnels and integrations you explicitly configure.</string>
     <string name="settings_privacy_overline_storage">LOCAL STORAGE</string>
     <string name="settings_privacy_overline_reset">DATA RESET</string>
     <string name="settings_privacy_storage_clips_label">Clips on disk</string>
@@ -1434,18 +1434,18 @@
     <string name="settings_screenshot_privacy_save_failed">Could not save screenshot privacy mode.</string>
 
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Security</string>
-    <string name="settings_security_subtitle">Lock the OverDrive app so passengers and valets can\'t open it without your PIN.</string>
+    <string name="settings_security_subtitle">Lock the Electric Guardian app so passengers and valets can\'t open it without your PIN.</string>
     <string name="settings_security_stance_title">UI lock only</string>
-    <string name="settings_security_stance_body">Surveillance, recording, deterrent, alerts, and background services keep running while the app is locked. The PIN gates the OverDrive interface, nothing else.</string>
+    <string name="settings_security_stance_body">Surveillance, recording, deterrent, alerts, and background services keep running while the app is locked. The PIN gates the Electric Guardian interface, nothing else.</string>
     <string name="settings_security_overline_lock">App lock</string>
     <string name="settings_security_overline_recovery">If you forget your PIN</string>
     <string name="settings_security_toggle_title">Require PIN</string>
-    <string name="settings_security_toggle_subtitle_off">Off — anyone can open OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">On — PIN required to open OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">Off — anyone can open Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">On — PIN required to open Electric Guardian.</string>
     <string name="settings_security_change_title">Change PIN</string>
     <string name="settings_security_change_subtitle">Confirm current PIN, then set a new one.</string>
     <string name="settings_security_autolock_title">Auto-lock</string>
@@ -1484,7 +1484,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Enter PIN</string>
     <string name="pin_lock_title_unlocked">Unlocked</string>
-    <string name="pin_lock_subtitle_default">Unlock OverDrive to continue.</string>
+    <string name="pin_lock_subtitle_default">Unlock Electric Guardian to continue.</string>
     <string name="pin_lock_subtitle_wrong">Wrong PIN. Try again.</string>
     <string name="pin_lock_subtitle_locked_out">Too many attempts. Try again shortly.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -1533,7 +1533,7 @@
          (do not spell out the digits). -->
 
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Welcome — Overdrive is now your second pair of eyes.</string>
+    <string name="dashboard_insight_welcome">Welcome — Electric Guardian is now your second pair of eyes.</string>
 
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">Picked up %1$s (≈%2$s) while parked</string>
@@ -1566,12 +1566,12 @@
 
     <!-- Process uptime. Days form takes (days, hours); hours form takes hours only. -->
     <plurals name="dashboard_insight_uptime_days_hours">
-        <item quantity="one">Overdrive online for %1$d day, %2$d hr</item>
-        <item quantity="other">Overdrive online for %1$d days, %2$d hr</item>
+        <item quantity="one">Electric Guardian online for %1$d day, %2$d hr</item>
+        <item quantity="other">Electric Guardian online for %1$d days, %2$d hr</item>
     </plurals>
     <plurals name="dashboard_insight_uptime_hours">
-        <item quantity="one">Overdrive online for %1$d hour</item>
-        <item quantity="other">Overdrive online for %1$d hours</item>
+        <item quantity="one">Electric Guardian online for %1$d hour</item>
+        <item quantity="other">Electric Guardian online for %1$d hours</item>
     </plurals>
 
     <!-- Duration helpers used inside insights (last_charge etc.). -->

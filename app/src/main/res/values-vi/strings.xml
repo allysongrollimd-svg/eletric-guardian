@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OverDrive</string>
+    <string name="app_name">Electric Guardian</string>
     <!-- Accessibility Service -->
-    <string name="accessibility_service_description">Giữ Overdrive giám sát xe hoạt động trong nền. Dịch vụ này không đọc hoặc tương tác với nội dung màn hình.</string>
+    <string name="accessibility_service_description">Giữ Electric Guardian giám sát xe hoạt động trong nền. Dịch vụ này không đọc hoặc tương tác với nội dung màn hình.</string>
     <!-- Recording Mode Labels -->
     <!-- Proximity Guard Settings Labels -->
     <!-- Quality Settings Labels -->
@@ -155,7 +155,7 @@
     <string name="camera_selection_hint">Tự động chọn camera phù hợp cho phiên bản của bạn ở mỗi lần khởi động. Camera 1 = BYD Seal, Camera 0 = phiên bản Atto. Khởi động lại daemon sau khi thay đổi ID camera để cài đặt có hiệu lực.</string>
     <!-- OEM Dashcam camera ID picker (Phase 5: separate forward-sensor pipeline) -->
     <string name="camera_oem_dashcam_title">ID camera OEM Dashcam</string>
-    <string name="camera_oem_dashcam_hint">Chọn AVMCamera id trỏ đến cảm biến dashcam phía trước. Dashcam NGƯỢC với pano: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Để ở Auto để OverDrive tự chọn.</string>
+    <string name="camera_oem_dashcam_hint">Chọn AVMCamera id trỏ đến cảm biến dashcam phía trước. Dashcam NGƯỢC với pano: Seal/Han pano = 1 → dashcam = 0; Atto / Tang pano = 0 → dashcam = 1. Để ở Auto để Electric Guardian tự chọn.</string>
     <string name="camera_oem_dashcam_auto_resolved">Tự động — dùng id %1$d (pano là id %2$d)</string>
     <string name="camera_oem_dashcam_auto_unavailable">Tự động — id pano là %1$d, không thể suy ra dashcam</string>
     <string name="camera_oem_dashcam_save">Lưu</string>
@@ -185,7 +185,7 @@
     <string name="camera_mapping_summary_probing">Luồng toàn cảnh: Tự phát hiện kiểu cũ / đang dò</string>
     <string name="camera_mapping_current_format">Ánh xạ hiện tại: %1$s</string>
     <string name="camera_mapping_current_none">Ánh xạ hiện tại: Tự động / mặc định</string>
-    <string name="camera_mapping_hint">OverDrive giữ hành vi khởi động kiểu cũ theo mặc định, nhưng giờ cho phép bạn hiệu chỉnh dải toàn cảnh hợp nhất đúng cách. Xem trước từng lát hợp nhất thô, ánh xạ các vai trò 360 logic tới lát thực sự hiển thị trước/phải/sau/trái trên xe của bạn, và daemon sẽ tái sử dụng bố cục đó cho ghi hình, phát trực tuyến và AI sau khi khởi động lại.</string>
+    <string name="camera_mapping_hint">Electric Guardian giữ hành vi khởi động kiểu cũ theo mặc định, nhưng giờ cho phép bạn hiệu chỉnh dải toàn cảnh hợp nhất đúng cách. Xem trước từng lát hợp nhất thô, ánh xạ các vai trò 360 logic tới lát thực sự hiển thị trước/phải/sau/trái trên xe của bạn, và daemon sẽ tái sử dụng bố cục đó cho ghi hình, phát trực tuyến và AI sau khi khởi động lại.</string>
     <!-- fragment_dashboard -->
     <string name="dashboard_scan_to_connect">Scan để kết nối</string>
     <string name="dashboard_qr_waiting">Chờ đường hầm...</string>
@@ -202,10 +202,10 @@
     <string name="setup_step_two_label">2</string>
     <string name="setup_step_three_label">3</string>
     <string name="setup_language_title">Chọn ngôn ngữ</string>
-    <string name="setup_language_body">Mặc định theo ngôn ngữ của màn hình xe. Nhấn để chọn ngôn ngữ khác cho ứng dụng OverDrive và đường hầm web.</string>
+    <string name="setup_language_body">Mặc định theo ngôn ngữ của màn hình xe. Nhấn để chọn ngôn ngữ khác cho ứng dụng Electric Guardian và đường hầm web.</string>
     <string name="setup_language_button">Chọn ngôn ngữ</string>
     <string name="setup_autostart_title">Tắt hạn chế tự khởi động</string>
-    <string name="setup_autostart_body">Nhấn bên dưới để mở BYD Auto-Start. Tìm OverDrive trong danh sách và bỏ chọn ô. BYD xóa cài đặt này ở mỗi lần cài đặt — bạn sẽ phải làm lại sau khi cập nhật.</string>
+    <string name="setup_autostart_body">Nhấn bên dưới để mở BYD Auto-Start. Tìm Electric Guardian trong danh sách và bỏ chọn ô. BYD xóa cài đặt này ở mỗi lần cài đặt — bạn sẽ phải làm lại sau khi cập nhật.</string>
     <string name="setup_autostart_button">Mở BYD Auto-Start</string>
     <string name="setup_overlay_title">Cho phép hiển thị trên các ứng dụng khác</string>
     <string name="setup_overlay_body">Bật tùy chọn này để hiển thị một chỉ báo trạng thái nổi cho ghi hình và theo dõi chuyến đi trên các ứng dụng khác.</string>
@@ -417,7 +417,7 @@
     <string name="update_picker_current_suffix">%1$s (đã cài đặt)</string>
     <string name="update_picker_older_suffix">%1$s (cũ hơn)</string>
     <!-- Update progress (title + per-step status; no emoji — state icon carries the cue) -->
-    <string name="update_progress_title">Đang cập nhật Overdrive</string>
+    <string name="update_progress_title">Đang cập nhật Electric Guardian</string>
     <string name="update_step_downloading">Đang tải xuống bản cập nhật…</string>
     <string name="update_step_verifying">Đang xác minh tải xuống…</string>
     <string name="update_step_stopping">Đang dừng các daemon…</string>
@@ -607,7 +607,7 @@
     <string name="dialog_delete_recording_title">Xóa bản ghi</string>
     <string name="dialog_delete_recording_message">Xóa %1$s?\nĐiều này không thể hủy bỏ được.</string>
     <string name="dialog_create_evidence_pack_title">Tạo gói bằng chứng?</string>
-    <string name="dialog_create_evidence_pack_message">OverDrive chỉ gửi siêu dữ liệu sự kiện đã được lọc tới nhà cung cấp AI bạn đã cấu hình. Video vẫn nằm trên máy và chỉ được thêm vào gói bằng chứng khi tải xuống.</string>
+    <string name="dialog_create_evidence_pack_message">Electric Guardian chỉ gửi siêu dữ liệu sự kiện đã được lọc tới nhà cung cấp AI bạn đã cấu hình. Video vẫn nằm trên máy và chỉ được thêm vào gói bằng chứng khi tải xuống.</string>
     <string name="toast_evidence_pack_creating">Đang tạo gói bằng chứng…</string>
     <string name="toast_evidence_pack_ready">Gói bằng chứng đã sẵn sàng</string>
     <string name="toast_evidence_pack_unavailable">Bản ghi này chưa được lập chỉ mục</string>
@@ -623,7 +623,7 @@
     <!-- Setup guide — post-setup tips section -->
     <string name="setup_tips_header">Mẹo &amp; giải quyết các vấn đề</string>
     <string name="setup_traffic_title">Tắt BYD Traffic Monitor</string>
-    <string name="setup_traffic_body">BYD Traffic Monitor chặn các ứng dụng bên thứ ba truy cập internet. Tắt nó cho phép OverDrive và bất kỳ ứng dụng nào bạn cài thực sự dùng được mạng. Cần khởi động lại cứng sau đó.</string>
+    <string name="setup_traffic_body">BYD Traffic Monitor chặn các ứng dụng bên thứ ba truy cập internet. Tắt nó cho phép Electric Guardian và bất kỳ ứng dụng nào bạn cài thực sự dùng được mạng. Cần khởi động lại cứng sau đó.</string>
     <string name="setup_traffic_button">Mở Traffic Monitor</string>
     <string name="setup_camera_fix_title">Camera đen hoặc sai?</string>
     <string name="setup_camera_fix_body">Dò camera, đặt Camera ID thành 0, nhấn Lưu, rồi khởi động lại daemon camera. Nếu khung hình vẫn sai, lặp lại với Camera ID 1. Để nguyên phần ánh xạ.</string>
@@ -647,16 +647,16 @@
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
-    <string name="status_overlay_notif_title">Trạng thái OverDrive</string>
+    <string name="status_overlay_notif_title">Trạng thái Electric Guardian</string>
     <string name="status_overlay_notif_text">Lớp phủ trạng thái đang hoạt động</string>
     <!-- DaemonKeepaliveService persistent notification (foreground service)
-         and the group-summary row that collapses Overdrive's three FGS
+         and the group-summary row that collapses Electric Guardian's three FGS
          notifications into one shade entry. The summary text is intentionally
          generic so it stays accurate whether all three services are running
          or only the keepalive survived an OOM respawn. -->
-    <string name="daemon_keepalive_notif_title">Overdrive đang hoạt động</string>
+    <string name="daemon_keepalive_notif_title">Electric Guardian đang hoạt động</string>
     <string name="daemon_keepalive_notif_text">Đang giám sát hệ thống xe</string>
-    <string name="overdrive_status_summary_title">Overdrive</string>
+    <string name="overdrive_status_summary_title">Electric Guardian</string>
     <string name="overdrive_status_summary_text">Dịch vụ nền đang chạy</string>
     <!-- ============================================================== -->
     <!-- M3 Revamp: navigation rail + settings sub-rail + theme picker  -->
@@ -696,7 +696,7 @@
     <string name="settings_privacy_title">Bảo mật &amp; dữ liệu</string>
     <string name="settings_privacy_body">Đặt lại sẽ xóa chỉ mục bản ghi, thông tin đăng nhập đã lưu, trạng thái daemon và tùy chọn trên thiết bị. Không thể hoàn tác.</string>
     <!-- Settings → About pane copy -->
-    <string name="settings_about_title">Về OverDrive</string>
+    <string name="settings_about_title">Về Electric Guardian</string>
     <string name="settings_about_version_label">Phiên bản</string>
     <string name="settings_about_package_label">Bản dựng</string>
     <string name="settings_about_check_update_value">Kiểm tra bản phát hành GitHub mới nhất và cài đặt nếu mới hơn.</string>
@@ -705,9 +705,9 @@
          personality without being corny — short, warm, specific. -->
     <string name="settings_about_support_section">Được hỗ trợ bởi những người như bạn</string>
     <string name="settings_about_support_share_title">Hãy nói với chủ xe khác</string>
-    <string name="settings_about_support_share_value">Mỗi liên kết được chia sẻ giúp một chủ sở hữu BYD khác khám phá Overdrive.</string>
-    <string name="settings_about_support_share_message">Khám phá Overdrive — giám sát &amp; camera hành trình mã nguồn mở cho BYD: https://overdrive-5lc.pages.dev/</string>
-    <string name="settings_about_support_share_chooser">Chia sẻ Overdrive</string>
+    <string name="settings_about_support_share_value">Mỗi liên kết được chia sẻ giúp một chủ sở hữu BYD khác khám phá Electric Guardian.</string>
+    <string name="settings_about_support_share_message">Khám phá Electric Guardian — giám sát &amp; camera hành trình mã nguồn mở cho BYD: https://github.com/allysongrollimd-svg/eletric-guardian</string>
+    <string name="settings_about_support_share_chooser">Chia sẻ Electric Guardian</string>
     <string name="settings_about_open_link_failed">Không thể mở liên kết.</string>
     <string name="settings_about_open_link_copied">Không tìm thấy trình duyệt. URL sao chép: %1$s</string>
     <string name="settings_about_support_kofi_title">Tiếp sức cho bản phát hành tiếp theo</string>
@@ -715,7 +715,7 @@
     <string name="settings_about_license_title">Giấy phép</string>
     <string name="settings_about_license_value">MIT — mã nguồn mở. Nhấn để xem toàn văn.</string>
     <string name="settings_about_source_title">Mã nguồn</string>
-    <string name="settings_about_source_value">github.com/yash-srivastava/Overdrive-release</string>
+    <string name="settings_about_source_value">github.com/allysongrollimd-svg/eletric-guardian</string>
     <string name="settings_about_star_title">Gắn sao cho chúng tôi trên GitHub</string>
     <string name="settings_about_star_value">Chỉ mất một giây. Ý nghĩa rất nhiều.</string>
     <string name="settings_about_thanks_title">Cảm ơn</string>
@@ -785,7 +785,7 @@
     <string name="diagnostics_settings_subtitle">Ưu tiên ứng dụng, chủ đề và ngôn ngữ.</string>
     <!-- SOTA Integrations page -->
     <string name="integrations_hero_title">Tích hợp</string>
-    <string name="integrations_hero_subtitle">Kết nối Overdrive với dịch vụ của bạn.</string>
+    <string name="integrations_hero_subtitle">Kết nối Electric Guardian với dịch vụ của bạn.</string>
     <string name="integrations_status_unknown">Nhấn để cấu hình</string>
     <string name="integrations_status_configured">Đã cấu hình</string>
     <string name="integrations_status_not_set_up">Không được thiết lập</string>
@@ -798,7 +798,7 @@
     <string name="settings_action_check_update">Kiểm tra các bản cập nhật</string>
     <string name="settings_action_reset_data">Đặt lại dữ liệu...</string>
     <!-- Content descriptions for rail / segmented controls -->
-    <string name="cd_brand_logo">OverDrive</string>
+    <string name="cd_brand_logo">Electric Guardian</string>
     <!-- ============================================================== -->
     <!-- Dashboard SOTA revamp                                            -->
     <!-- ============================================================== -->
@@ -864,11 +864,11 @@
     <string name="settings_section_surveillance_subtitle">Khu vực phát hiện, lịch trình, độ nhạy chuyển động.</string>
     <string name="settings_section_daemons_subtitle">Bộ chạy Cloudflared, Zrok, Telegram, MQTT.</string>
     <!-- About / data row subtitles -->
-    <string name="settings_about_row_title">Về OverDrive</string>
+    <string name="settings_about_row_title">Về Electric Guardian</string>
     <string name="settings_about_row_subtitle">Phiên bản, giấy phép, hỗ trợ phát triển.</string>
     <string name="settings_reset_row_subtitle">Xóa bản ghi, sự kiện, hoặc toàn bộ bộ nhớ đệm.</string>
     <!-- Footer -->
-    <string name="settings_footer_format">OverDrive %1$s · %2$s</string>
+    <string name="settings_footer_format">Electric Guardian %1$s · %2$s</string>
     <!-- ============================================================ -->
     <!-- Appearance pane — SOTA visual theme picker                    -->
     <!-- ============================================================ -->
@@ -885,7 +885,7 @@
     <!-- Privacy pane — stance + storage summary + reset               -->
     <!-- ============================================================ -->
     <string name="settings_privacy_stance_title">Trên thiết bị theo mặc định</string>
-    <string name="settings_privacy_stance_body">OverDrive chạy hoàn toàn trên màn hình xe. Không có dữ liệu nào rời khỏi xe của bạn ngoại trừ qua các đường hầm và tích hợp mà bạn thiết lập rõ ràng.</string>
+    <string name="settings_privacy_stance_body">Electric Guardian chạy hoàn toàn trên màn hình xe. Không có dữ liệu nào rời khỏi xe của bạn ngoại trừ qua các đường hầm và tích hợp mà bạn thiết lập rõ ràng.</string>
     <string name="settings_privacy_overline_storage">LƯU TRỮ CỤC BỘ</string>
     <string name="settings_privacy_overline_reset">ĐẶT LẠI DỮ LIỆU</string>
     <string name="settings_privacy_storage_clips_label">Các clip trên đĩa</string>
@@ -895,18 +895,18 @@
     <string name="settings_privacy_storage_count_format_plural">%1$d clip</string>
     <string name="settings_privacy_reset_subtitle">Chọn danh mục: bản ghi, sự kiện, cấu hình daemon, telemetry đã lưu đệm…</string>
     <!-- Settings → Security pane copy + PIN unlock screen.
-         The lock guards the OverDrive UI only. Cam daemon, AccSentry,
+         The lock guards the Electric Guardian UI only. Cam daemon, AccSentry,
          surveillance, recording, Telegram alerts, status overlay, and the
          deterrent screen all run independently regardless of this state. -->
     <string name="settings_security_title">Bảo mật</string>
-    <string name="settings_security_subtitle">Khóa ứng dụng OverDrive để hành khách và nhân viên đỗ xe không thể mở nếu không có PIN của bạn.</string>
+    <string name="settings_security_subtitle">Khóa ứng dụng Electric Guardian để hành khách và nhân viên đỗ xe không thể mở nếu không có PIN của bạn.</string>
     <string name="settings_security_stance_title">Chỉ khóa giao diện</string>
-    <string name="settings_security_stance_body">Giám sát, ghi hình, răn đe, cảnh báo và dịch vụ nền vẫn chạy khi ứng dụng bị khóa. PIN chỉ chặn giao diện OverDrive, không gì khác.</string>
+    <string name="settings_security_stance_body">Giám sát, ghi hình, răn đe, cảnh báo và dịch vụ nền vẫn chạy khi ứng dụng bị khóa. PIN chỉ chặn giao diện Electric Guardian, không gì khác.</string>
     <string name="settings_security_overline_lock">Khóa ứng dụng</string>
     <string name="settings_security_overline_recovery">Nếu bạn quên PIN</string>
     <string name="settings_security_toggle_title">Yêu cầu mã PIN</string>
-    <string name="settings_security_toggle_subtitle_off">Tắt — bất kỳ ai cũng có thể mở OverDrive.</string>
-    <string name="settings_security_toggle_subtitle_on">Bật — cần PIN để mở OverDrive.</string>
+    <string name="settings_security_toggle_subtitle_off">Tắt — bất kỳ ai cũng có thể mở Electric Guardian.</string>
+    <string name="settings_security_toggle_subtitle_on">Bật — cần PIN để mở Electric Guardian.</string>
     <string name="settings_security_change_title">Đổi PIN</string>
     <string name="settings_security_change_subtitle">Xác nhận PIN hiện tại, sau đó đặt PIN mới.</string>
     <string name="settings_security_autolock_title">Tự động khóa</string>
@@ -943,7 +943,7 @@
          the app lock is enabled and the session isn\'t fresh. -->
     <string name="pin_lock_title">Nhập PIN</string>
     <string name="pin_lock_title_unlocked">Đã mở khóa</string>
-    <string name="pin_lock_subtitle_default">Mở khóa OverDrive để tiếp tục.</string>
+    <string name="pin_lock_subtitle_default">Mở khóa Electric Guardian để tiếp tục.</string>
     <string name="pin_lock_subtitle_wrong">PIN sai. Vui lòng thử lại.</string>
     <string name="pin_lock_subtitle_locked_out">Quá nhiều lần thử. Hãy thử lại trong chốc lát.</string>
     <!-- %1$s is a formatted countdown like "30s" or "2:45". -->
@@ -985,7 +985,7 @@
          provider, so translators should keep numeric placeholders intact
          (do not spell out the digits). -->
     <!-- First-launch welcome — only shown on the very first dashboard visit. -->
-    <string name="dashboard_insight_welcome">Chào mừng — Overdrive giờ là đôi mắt thứ hai của bạn.</string>
+    <string name="dashboard_insight_welcome">Chào mừng — Electric Guardian giờ là đôi mắt thứ hai của bạn.</string>
     <!-- Parking delta. %1$s = absolute SOC delta string ("8%"); %2$s = absolute kWh string ("4 kWh"). -->
     <string name="dashboard_insight_parked_charged_kwh">Nạp thêm %1$s (≈%2$s) khi đỗ xe</string>
     <string name="dashboard_insight_parked_charged">Nạp thêm %1$s khi đỗ xe</string>
@@ -1226,9 +1226,9 @@
     <string name="onboarding_authorize_waiting_body">Hãy chấp nhận cửa sổ bật lên của Android. Nếu bạn không thấy nó, có thể quyền đã được cấp — quá trình này sẽ tự tiếp tục.</string>
     <string name="onboarding_authorize_waiting_title">Đang chờ cấp quyền…</string>
     <string name="settings_backup_restore_failed">Khôi phục thất bại</string>
-    <string name="onboarding_authorize_title">Đánh thức Overdrive</string>
+    <string name="onboarding_authorize_title">Đánh thức Electric Guardian</string>
     <string name="onboarding_expert_integrations_body">Kết nối cảnh báo Telegram, A Better Routeplanner, MQTT hoặc BYD Cloud. Mỗi thẻ mở phần thiết lập của nó bên trong ứng dụng. Viên thuốc ở trên cùng chuyển sang màu xanh lá khi mọi thứ đã được liên kết.</string>
-    <string name="settings_backup_restore_confirm_msg">Thao tác này thay thế cài đặt Overdrive hiện tại của bạn bằng bản sao lưu và tải lại các dịch vụ. Nó chỉ hoạt động trên cùng head-unit nơi bản sao lưu được tạo.</string>
+    <string name="settings_backup_restore_confirm_msg">Thao tác này thay thế cài đặt Electric Guardian hiện tại của bạn bằng bản sao lưu và tải lại các dịch vụ. Nó chỉ hoạt động trên cùng head-unit nơi bản sao lưu được tạo.</string>
     <string name="onboarding_camera_dashcam_body">Lướt qua các camera bằng mũi tên và dừng lại ở camera hiển thị kính chắn gió / góc nhìn phía trước. Ghi nhớ số của nó — bạn sẽ chọn nó ở bước tiếp theo.</string>
     <string name="onboarding_later">Để sau</string>
     <string name="onboarding_camera_pano_body">Dùng các mũi tên để tìm hình ghép 4 khung. Đọc từ phía DƯỚI: dưới-trái là PHÍA SAU, dưới-phải là phía BÊN TRÁI.</string>
@@ -1251,7 +1251,7 @@
     <string name="onboarding_camera_pick_primary">Tiếp</string>
     <string name="onboarding_help_cd">Hướng dẫn có dẫn dắt</string>
     <string name="onboarding_dash_tiles_body">Các thẻ này là nút bấm — nhấn để mở Camera trực tiếp, Bản ghi, Dịch vụ hoặc Xe của bạn.</string>
-    <string name="onboarding_vehicle_title">Cho Overdrive biết pin của bạn</string>
+    <string name="onboarding_vehicle_title">Cho Electric Guardian biết pin của bạn</string>
     <string name="onboarding_expert_security_title">Khóa bằng mã PIN</string>
     <string name="settings_backup_restoring">Đang khôi phục…</string>
     <string name="onboarding_expert_surveillance_title">Giám sát &amp; ghi hình</string>
@@ -1313,9 +1313,9 @@
     <string name="onboarding_expert_vehicle_body">Nhấn vào thẻ Xe để đặt dung lượng pin và model của bạn — nó hỗ trợ ước tính quãng đường và sức khỏe pin chính xác.</string>
     <string name="onboarding_expert_camprobe_body">Mục này ánh xạ lại camera vật lý nào cấp khung hình cho mỗi vai trò và khởi động lại camera. Chỉ thay đổi nếu một khung hình trông sai — bạn đã thiết lập điều này trước đó trong hướng dẫn.</string>
     <string name="onboarding_done_title">Buồng lái đã sẵn sàng</string>
-    <string name="onboarding_authorize_body">Overdrive vận hành camera của bạn qua một trợ lý nhỏ trên thiết bị. Android sẽ hỏi một lần để cho phép gỡ lỗi USB — hãy nhấn <b>Cho phép</b> và đánh dấu <b>Luôn cho phép từ thiết bị này</b> để nó vẫn bật sau mỗi lần khởi động lại.</string>
-    <string name="onboarding_camera_intro_body">Hãy cho Overdrive biết camera nào là góc nhìn 360 và camera nào là dashcam. Việc này mất khoảng một phút và bạn có thể thay đổi sau.</string>
-    <string name="settings_backup_invalid_file">Tệp đó không phải bản sao lưu Overdrive hợp lệ</string>
+    <string name="onboarding_authorize_body">Electric Guardian vận hành camera của bạn qua một trợ lý nhỏ trên thiết bị. Android sẽ hỏi một lần để cho phép gỡ lỗi USB — hãy nhấn <b>Cho phép</b> và đánh dấu <b>Luôn cho phép từ thiết bị này</b> để nó vẫn bật sau mỗi lần khởi động lại.</string>
+    <string name="onboarding_camera_intro_body">Hãy cho Electric Guardian biết camera nào là góc nhìn 360 và camera nào là dashcam. Việc này mất khoảng một phút và bạn có thể thay đổi sau.</string>
+    <string name="settings_backup_invalid_file">Tệp đó không phải bản sao lưu Electric Guardian hợp lệ</string>
     <string name="onboarding_camera_verify_body">Góc nhìn 360 có hiển thị hình ghép và dashcam có hiển thị đường phía trước không? Nếu một khung hình trông sai, hãy nhấn Chọn lại — không có gì hỏng cả.</string>
     <string name="onboarding_expert_bydcloud_body">Liên kết tài khoản BYD của bạn tại đây để bật khóa, nháy đèn và còi từ xa qua điện thoại. Hãy coi tài khoản đã liên kết và mã truy cập là thông tin nhạy cảm.</string>
     <string name="settings_backup_restored">Đã khôi phục cài đặt</string>
@@ -1332,8 +1332,8 @@
     <string name="settings_backup_daemon_down">Dịch vụ camera phải đang chạy để sao lưu hoặc khôi phục. Hãy khởi động nó từ Daemon, rồi thử lại.</string>
     <string name="onboarding_expert_menu_title">Hướng dẫn có dẫn dắt</string>
     <string name="onboarding_authorize_retry_button">Thử lại</string>
-    <string name="onboarding_mode_title">Overdrive nên chạy khi nào?</string>
-    <string name="onboarding_mode_body">Chọn cách Overdrive hoạt động sau khi bạn tắt máy xe.\n\n<b>Bật &amp; Tắt</b> vẫn tiếp tục theo dõi khi đỗ xe — giám sát và theo dõi nền luôn hoạt động, nên xe tiêu thụ một chút điện qua đêm.\n\n<b>Chỉ bật</b> sẽ tắt hoàn toàn Overdrive khi bạn rời đi. Dashcam, hành trình và sạc vẫn hoạt động khi bạn đang lái, và mọi thứ sẽ tự động khởi động lại khi bạn bật máy xe. Bạn có thể thay đổi điều này bất cứ lúc nào trong Cài đặt.</string>
+    <string name="onboarding_mode_title">Electric Guardian nên chạy khi nào?</string>
+    <string name="onboarding_mode_body">Chọn cách Electric Guardian hoạt động sau khi bạn tắt máy xe.\n\n<b>Bật &amp; Tắt</b> vẫn tiếp tục theo dõi khi đỗ xe — giám sát và theo dõi nền luôn hoạt động, nên xe tiêu thụ một chút điện qua đêm.\n\n<b>Chỉ bật</b> sẽ tắt hoàn toàn Electric Guardian khi bạn rời đi. Dashcam, hành trình và sạc vẫn hoạt động khi bạn đang lái, và mọi thứ sẽ tự động khởi động lại khi bạn bật máy xe. Bạn có thể thay đổi điều này bất cứ lúc nào trong Cài đặt.</string>
     <string name="onboarding_mode_on_off_button">Bật &amp; Tắt</string>
     <string name="onboarding_mode_on_only_button">Chỉ bật</string>
     <string name="onboarding_expert_trips_title">Lịch sử hành trình</string>
@@ -1341,7 +1341,7 @@
     <string name="settings_backup_read_failed">Không thể đọc tệp</string>
     <string name="onboarding_expert_daemons_title">Dịch vụ — xử lý cẩn thận</string>
     <string name="onboarding_done_short">Đã hiểu</string>
-    <string name="onboarding_camera_pick_body">Trong thẻ trên cùng, chọn số cho camera 360 / camera thường của bạn. Không chắc? Để ở chế độ AUTO và Overdrive sẽ tự xác định.</string>
+    <string name="onboarding_camera_pick_body">Trong thẻ trên cùng, chọn số cho camera 360 / camera thường của bạn. Không chắc? Để ở chế độ AUTO và Electric Guardian sẽ tự xác định.</string>
     <string name="recording_lib_storage_filter_internal">Bộ nhớ trong</string>
     <string name="recording_lib_storage_internal">TRONG</string>
     <string name="onboarding_camera_windshield_body">Đối với bố cục dashcam OEM — camera kính chắn gió dạng dải nằm trên đầu bản ghi của bạn — chọn Kính chắn gió trong menu vai trò, chọn camera phía trước, và Lưu. Hầu hết chủ xe có thể bỏ qua bước này.</string>
@@ -1411,7 +1411,7 @@
     <string name="recording_lib_index_down_body">Các bản ghi của bạn vẫn an toàn trên đĩa, nhưng chỉ mục thư viện đang gặp sự cố. Đang tự động thử lại…</string>
     <string name="recording_lib_type_replay">PHÁT LẠI</string>
     <string name="daemons_wifi_auto_enable_title">Wi&#8209;Fi</string>
-    <string name="daemons_wifi_auto_enable_subtitle">Bật hoặc tắt Wi&#8209;Fi ngay. Khi tắt, các daemon giám sát của OverDrive sẽ không tự bật lại.</string>
+    <string name="daemons_wifi_auto_enable_subtitle">Bật hoặc tắt Wi&#8209;Fi ngay. Khi tắt, các daemon giám sát của Electric Guardian sẽ không tự bật lại.</string>
     <string name="daemons_wifi_auto_enable_save_failed">Không thể thay đổi trạng thái Wi&#8209;Fi.</string>
     <string name="dashboard_tunnel_failed">Lỗi đường hầm</string>
     <string name="dashboard_tunnel_stopping">Đang dừng đường hầm…</string>
@@ -1427,7 +1427,7 @@
     <string name="remote_voice_mute">Tắt tiếng giọng nói từ xa</string>
     <string name="remote_voice_unmute">Bật tiếng giọng nói từ xa</string>
     <string name="remote_voice_notification_title">Giọng nói từ xa đang hoạt động</string>
-    <string name="remote_voice_notification_text">Đang nhận âm thanh trực tiếp từ một phiên OverDrive đã xác thực</string>
+    <string name="remote_voice_notification_text">Đang nhận âm thanh trực tiếp từ một phiên Electric Guardian đã xác thực</string>
     <string name="settings_remote_communication_title">Liên lạc từ xa</string>
     <string name="settings_remote_communication_subtitle">Bật khả năng truyền giọng nói, nghe khoang lái và gửi tin nhắn từ bảng điều khiển web. Nếu mục Quyền hiển thị trên ứng dụng khác báo Cần cấp quyền, hãy nhấn vào đó và cấp quyền trong cài đặt hệ thống.</string>
     <string name="settings_remote_voice_title">Bật giọng nói từ xa</string>

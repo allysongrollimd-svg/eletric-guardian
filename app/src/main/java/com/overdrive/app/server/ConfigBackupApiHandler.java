@@ -94,7 +94,7 @@ public class ConfigBackupApiHandler {
             // Body is the bundle JSON directly (the UI POSTs the parsed file).
             bundle = new JSONObject(body);
         } catch (Exception e) {
-            HttpResponse.sendJsonError(out, "File is not a valid Overdrive backup.");
+            HttpResponse.sendJsonError(out, "File is not a valid Electric Guardian backup.");
             return;
         }
 
