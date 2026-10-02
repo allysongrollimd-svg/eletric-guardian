@@ -132,7 +132,7 @@ export function createBilling({ db, accounts, cfg = {}, secret, now = () => Date
       }
     },
     /** Credits an invoice exactly once and extends the chassis' access. */
-    applyPayment(id, { transactionNsu = null, slug = null, captureMethod = null, paidAmountCents = null, receiptUrl = null, source, note = null, adminId = null } = {}) {
+    applyPayment(id, { transactionNsu = null, slug = null, captureMethod = null, paidAmountCents = null, receiptUrl = null, source, note = null, adminId = null, via = null } = {}) {
       const inv = q.inv.get(id);
       if (!inv) throw new AccountError('not_found', 'Fatura não encontrada.', 404);
       if (inv.status === 'paid') return { already: true, invoice: publicInvoice(inv) };
@@ -150,14 +150,14 @@ export function createBilling({ db, accounts, cfg = {}, secret, now = () => Date
         }
         db.exec('COMMIT');
       } catch (e) { db.exec('ROLLBACK'); throw e; }
-      log('payment', { id, vin: inv.vin, plan: inv.plan_id, amountCents: inv.amount_cents, source: source || 'infinitepay', transactionNsu }, { userId: adminId || inv.user_id, deviceId: inv.device_id });
+      log('payment', { id, vin: inv.vin, plan: inv.plan_id, amountCents: inv.amount_cents, source: source || 'infinitepay', via, transactionNsu }, { userId: adminId || inv.user_id, deviceId: inv.device_id });
       return { already: false, invoice: publicInvoice(q.inv.get(id)) };
     },
     /**
      * Webhook / return-page entry: never trust the body, ask InfinitePay. Throws retryable ProviderError when the
      * provider cannot be reached (so the webhook answers 5xx and InfinitePay retries).
      */
-    async settleFromProvider(id, { transactionNsu, slug, captureMethod, receiptUrl }) {
+    async settleFromProvider(id, { transactionNsu, slug, captureMethod, receiptUrl, via = 'provider' }) {
       const inv = q.inv.get(String(id));
       if (!inv) throw new AccountError('not_found', 'Fatura não encontrada.', 404);
       if (inv.status === 'paid') return { already: true, invoice: publicInvoice(inv) };
@@ -167,7 +167,7 @@ export function createBilling({ db, accounts, cfg = {}, secret, now = () => Date
         log('payment_short', { id: inv.id, expected: inv.amount_cents, got: chk.paidAmountCents }, { userId: inv.user_id });
         throw new AccountError('amount_mismatch', 'Valor pago menor que o da fatura.', 409);
       }
-      return api.applyPayment(inv.id, { transactionNsu: transactionNsu || null, slug: slug || null, captureMethod: chk.captureMethod || captureMethod || null, paidAmountCents: chk.paidAmountCents, receiptUrl: receiptUrl || null, source: 'infinitepay' });
+      return api.applyPayment(inv.id, { transactionNsu: transactionNsu || null, slug: slug || null, captureMethod: chk.captureMethod || captureMethod || null, paidAmountCents: chk.paidAmountCents, receiptUrl: receiptUrl || null, source: 'infinitepay', via });
     },
     cancelInvoice(id, adminId) { const r = q.cancel.run(String(id)); if (r.changes) log('invoice_cancelled', { id }, { userId: adminId }); return !!r.changes; },
     /** Admin: manual settlement (bank transfer, cash, courtesy). */

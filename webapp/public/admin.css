@@ -34,3 +34,4 @@
   .tbl td[data-l=""]::before{display:none}.tbl td[data-l=""]{justify-content:flex-end}
   .tbl .num{text-align:right}
 }
+.wrap{display:block;max-width:520px;overflow-wrap:anywhere;font:12px ui-monospace,Menlo,monospace;color:var(--muted)}

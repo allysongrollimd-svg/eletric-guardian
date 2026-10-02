@@ -80,7 +80,7 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
         const key = new URL(req.url, 'http://x').searchParams.get('k');
         if (!billing.verifyWebhookKey(id, key)) return send(403, { success: false, message: 'forbidden' }), true;
         try {
-          await billing.settleFromProvider(id, { transactionNsu: b.transaction_nsu, slug: b.invoice_slug || b.slug, captureMethod: b.capture_method, receiptUrl: b.receipt_url });
+          await billing.settleFromProvider(id, { transactionNsu: b.transaction_nsu, slug: b.invoice_slug || b.slug, captureMethod: b.capture_method, receiptUrl: b.receipt_url, via: 'webhook' });
           return send(200, { success: true, message: null }), true;
         } catch (e) {
           if (e instanceof ProviderError) return send(503, { success: false, message: 'provider unavailable, retry' }), true;
@@ -156,7 +156,7 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
         const i = billing.invoice(String(b.order ?? ''));
         if (!i || i.user_id !== user.id) return send(404, { error: 'Fatura não encontrada.' }), true;
         try {
-          const r = await billing.settleFromProvider(i.id, { transactionNsu: b.transaction_nsu, slug: b.slug, captureMethod: b.capture_method, receiptUrl: b.receipt_url });
+          const r = await billing.settleFromProvider(i.id, { transactionNsu: b.transaction_nsu, slug: b.slug, captureMethod: b.capture_method, receiptUrl: b.receipt_url, via: 'retorno' });
           return send(200, { invoice: r.invoice, billing: billing.state(i.vin) }), true;
         } catch (e) {
           if (e instanceof ProviderError) return send(503, { error: 'Não foi possível confirmar agora. Tente de novo em instantes.' }), true;

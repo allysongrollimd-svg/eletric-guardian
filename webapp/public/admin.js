@@ -148,7 +148,7 @@ const views = {
     const { events } = await api('audit?limit=200');
     main.append(table([
       { h: 'Quando', f: (e) => when(e.t) }, { h: 'Quem', f: (e) => e.user || '—' }, { h: 'Evento', f: (e) => e.event },
-      { h: 'Detalhe', f: (e) => (e.detail ? JSON.stringify(e.detail) : '') },
+      { h: 'Detalhe', f: (e) => { const d = el('span', 'wrap', e.detail ? JSON.stringify(e.detail) : ''); return d; } },
     ], events));
   },
 };
