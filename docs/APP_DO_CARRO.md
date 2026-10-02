@@ -116,7 +116,7 @@ Roteiro do técnico:
 1. Carro desbloqueado e ADB acessível (já é o serviço dele).
 2. Instalar o APK.
 3. Abrir o app, aceitar a chave ADB (uma vez) e esperar a checklist ficar toda verde.
-4. **Se o Electro estiver instalado:** desligar o **início automático do Electro** (ele volta a ligar sozinho a cada reinicialização da central — conferir de novo depois de reiniciar). O início automático **do nosso app já vem ligado**; os dois juntos disputam câmeras/acesso.
+4. O início automático **do nosso app já vem ligado**.
 5. Ler o QR com o celular do cliente, criar a conta e vincular; conferir no `/admin` que o carro aparece com "Ao vivo" ✔.
 6. Reiniciar a central uma vez e confirmar que o app volta sozinho.
 
@@ -130,16 +130,13 @@ Tela única para o técnico (e o mesmo relatório enviado ao `/admin`):
 6. Telemetria lendo o carro (SoC, velocidade, GPS — com o carro ligado).
 7. Nuvem: registrado, **VIN recebido**, MQTT conectado, túnel ativo.
 8. Armazenamento com espaço e destino de gravação.
-9. **Conflito com o Electro** (quando o pacote dele estiver instalado/rodando): aviso para desligar o início automático dele.
-10. Início automático do nosso app: ligado.
+9. Início automático do nosso app: ligado.
 
 ## 8. Tela do carro para o cliente (modo cliente)
-Referência: a tela do Electro. Estrutura:
+Referência de estrutura (apenas inspiração, sem copiar marca ou textos): uma tela simples com QR, configurações e dono vinculado.
 - **Principal:** endereço do webapp, **Gerar QR Code**, **Configurações**, lista do dono vinculado com **Remover** (desvincula o carro), e uma faixa de status.
 - **Configurações:** início automático e a checklist da seção 7.
 - Todo o resto escondido; o **PIN do técnico** abre o app completo.
 
 ## 9. Em aberto
-- Nome do pacote do Electro (para detectar e avisar).
-- Confirmar o que acontece quando os dois rodam juntos.
 - Provedor de alertas (push/e-mail) — recomendado: Web Push do webapp.

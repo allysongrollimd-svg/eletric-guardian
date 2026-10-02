@@ -60,6 +60,13 @@
                     <div class="eg-err" id="egErr" role="alert"></div>
                 </div>
 
+
+                <div class="card" id="egCheckCard">
+                    <div class="card-header"><div class="card-title"><span>Verificação da instalação</span></div><span class="eg-pill" id="egCheckSummary">…</span></div>
+                    <div id="egChecks"></div>
+                    <div class="eg-hint">Tudo precisa estar verde antes de entregar o carro. Itens de câmera e telemetria dependem do carro ligado.</div>
+                </div>
+
                 <div class="card" id="egPairCard">
                     <div class="card-header"><div class="card-title"><span>Vínculo com a sua conta</span></div><span class="eg-pill" id="egState">…</span></div>
                     <div id="egPending" style="display:none;">
@@ -138,8 +145,31 @@
                 $('egStatusErr').textContent = s.error || '';
             }
 
+
+            function renderChecks(s) {
+                var m = s.mqtt || {};
+                var items = [
+                    { ok: !!s.enabled && !!s.serverUrl, label: 'Nuvem ativada com endereço do servidor', fix: 'Ative a conexão e informe o endereço acima.' },
+                    { ok: !!s.vinKnown, label: 'Chassi (VIN) lido do carro' + (s.vinKnown ? ' (final ' + s.vinLast4 + ')' : ''), fix: 'Ligue o carro e aguarde; o chassi vem do próprio carro.' },
+                    { ok: s.state === 'claimed', label: 'Carro vinculado a uma conta', fix: 'Leia o QR com o celular do cliente e toque em Vincular.' },
+                    { ok: !!s.tunnel, label: 'Câmeras e páginas do carro (túnel) conectados', fix: 'Verifique a internet do carro; a conexão é refeita sozinha.' },
+                    { ok: !!m.connected, label: 'Telemetria (MQTT) conectada', fix: m.lastError ? 'Último erro: ' + m.lastError : 'Aguarde a reconexão automática.' },
+                    { ok: (m.publishes || 0) > 0, label: 'Dados do carro chegando ao servidor' + ((m.publishes || 0) > 0 ? ' (' + m.publishes + ' envios)' : ''), fix: 'Ligue o carro; sem envios o painel do cliente fica vazio.' }
+                ];
+                var html = '', good = 0;
+                items.forEach(function (it) {
+                    if (it.ok) good++;
+                    html += '<div class="eg-row"><div><div style="font-size:14px;">' + it.label + '</div>' +
+                        (it.ok ? '' : '<div class="eg-hint">' + it.fix + '</div>') + '</div><span class="eg-pill ' + (it.ok ? 'ok' : 'warn') + '">' + (it.ok ? 'OK' : 'Pendente') + '</span></div>';
+                });
+                $('egChecks').innerHTML = html;
+                var sum = $('egCheckSummary');
+                sum.textContent = good + ' de ' + items.length;
+                sum.className = 'eg-pill ' + (good === items.length ? 'ok' : 'warn');
+            }
+
             function poll() {
-                fetch('/api/cloud/status').then(function (r) { return r.json(); }).then(render).catch(function () {});
+                fetch('/api/cloud/status').then(function (r) { return r.json(); }).then(function (s) { render(s); renderChecks(s); }).catch(function () {});
             }
 
             $('egSave').addEventListener('click', function () {
