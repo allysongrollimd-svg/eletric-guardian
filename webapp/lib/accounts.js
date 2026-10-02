@@ -171,14 +171,21 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
 
     /** The owner's side: bind a car (by the code on its screen) to this account and a VIN. */
     claim(userId, { vin, code, name }) {
-      const v = normalizeVin(vin);
-      if (!isValidVin(v)) throw new AccountError('bad_vin', 'Chassi (VIN) inválido: são 17 caracteres, sem I, O ou Q.');
       const c = String(code ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
       const p = q.pairByCode.get(c);
       if (!p || p.expires_at <= now()) throw new AccountError('bad_code', 'Código inválido ou expirado. Gere um novo na tela do carro.', 404);
       const d = q.dev.get(p.device_id);
       if (d.owner_id) throw new AccountError('already_claimed', 'Este carro já está vinculado.', 409);
-      if (d.reported_vin && d.reported_vin !== v) throw new AccountError('vin_mismatch', 'O chassi informado não confere com o que o carro reportou.', 409);
+      // The chassis comes from the car itself (APK). A typed VIN is only accepted when the car has not reported one.
+      let v;
+      if (d.reported_vin) {
+        v = d.reported_vin;
+        if (vin && normalizeVin(vin) !== v) throw new AccountError('vin_mismatch', 'O chassi informado não confere com o que o carro reportou.', 409);
+      } else {
+        v = normalizeVin(vin);
+        if (!v) throw new AccountError('vin_pending', 'O carro ainda não informou o chassi. Aguarde alguns segundos e tente de novo.', 409);
+        if (!isValidVin(v)) throw new AccountError('bad_vin', 'Chassi (VIN) inválido: são 17 caracteres, sem I, O ou Q.');
+      }
       const holder = q.devByVin.get(v);
       if (holder && holder.owner_id !== userId) throw new AccountError('vin_taken', 'Este chassi já está vinculado a outra conta. Peça a liberação ao suporte.', 409);
       if (holder && holder.owner_id === userId) { q.release.run(holder.id); log('rebind', { userId, deviceId: holder.id }); }   // same owner reinstalled the app

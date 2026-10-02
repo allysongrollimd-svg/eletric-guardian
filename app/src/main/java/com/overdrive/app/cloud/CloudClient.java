@@ -102,6 +102,8 @@ public final class CloudClient {
         }
     }
 
+    private volatile String sentVin;
+
     private void step() throws Exception {
         CloudConfig cfg = CloudConfig.load();
         if (!cfg.enabled || cfg.serverUrl.isEmpty()) {
@@ -112,7 +114,9 @@ public final class CloudClient {
         }
         if (!cfg.ensureIdentity()) throw new IllegalStateException("could not persist device identity");
 
-        JSONObject st = registered ? status(cfg) : register(cfg);
+        String vinNow = currentVin();
+        boolean vinNew = vinNow != null && !vinNow.equals(sentVin);   // VIN learned after the first registration
+        JSONObject st = (registered && !vinNew) ? status(cfg) : register(cfg);
         if (st == null) {                       // 401: the server does not know us (yet): register again
             registered = false;
             st = register(cfg);
@@ -147,6 +151,7 @@ public final class CloudClient {
         body.put("deviceKey", cfg.deviceKey);
         String vin = currentVin();
         if (vin != null) body.put("vin", vin);
+        sentVin = vin;
         body.put("appVersion", com.overdrive.app.BuildConfig.VERSION_NAME);
         Request req = new Request.Builder().url(cfg.serverUrl + "/api/device/register")
                 .post(RequestBody.create(body.toString(), JSON)).build();

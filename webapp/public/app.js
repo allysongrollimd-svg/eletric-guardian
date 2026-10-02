@@ -239,6 +239,7 @@ async function boot() {
     $('login').hidden = true; $('auth').hidden = true; $('logout').hidden = false;
     if (state.mode === 'accounts') { $('carsBtn').hidden = false; $('camsTab').hidden = false; }
     connect();
+    if (state.mode === 'accounts') cloud.maybePair();
   } catch (e) {
     if (e.code === 401) {
       $('dash').hidden = true; $('logout').hidden = true; $('tabs').hidden = true; $('status').textContent = 'Acesso restrito';

@@ -56,7 +56,7 @@ export function initCloud({ getCars, getCurrent, onAuthChanged, onCarsChanged })
   $('carsClose').addEventListener('click', () => $('carsDlg').close());
   $('claimForm').addEventListener('submit', async (ev) => {
     ev.preventDefault(); $('claimErr').textContent = '';
-    const r = await post('/api/cars/claim', { name: $('claimName').value, vin: $('claimVin').value, code: $('claimCode').value });
+    const r = await post('/api/cars/claim', { name: $('claimName').value, vin: $('claimVin').value || undefined, code: $('claimCode').value });
     if (r.ok) { $('claimForm').reset(); $('carsDlg').close(); onCarsChanged(); }
     else $('claimErr').textContent = (await r.json().catch(() => ({}))).error || `Erro ${r.status}`;
   });
@@ -82,5 +82,21 @@ export function initCloud({ getCars, getCurrent, onAuthChanged, onCarsChanged })
   }
   async function logout() { await post('/api/auth/logout'); location.reload(); }
 
-  return { showAuth, openCars, renderCams, logout, cfg: () => cfg };
+  // ---------------- QR pairing: /pair?code=XXXXXXXX (the VIN comes from the car, never typed) ----------------
+  function maybePair() {
+    if (location.pathname !== '/pair') return;
+    const code = (new URLSearchParams(location.search).get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const done = () => { history.replaceState(null, '', '/'); if ($('pairDlg').open) $('pairDlg').close(); };
+    if (!code) return done();
+    $('pairErr').textContent = ''; $('pairDlg').showModal();
+    $('pairCancel').onclick = done;
+    $('pairForm').onsubmit = async (ev) => {
+      ev.preventDefault(); $('pairErr').textContent = '';
+      const r = await post('/api/cars/claim', { name: $('pairName').value, code });
+      if (r.ok) { done(); onCarsChanged(); }
+      else $('pairErr').textContent = (await r.json().catch(() => ({}))).error || `Erro ${r.status}`;
+    };
+  }
+
+  return { showAuth, maybePair, openCars, renderCams, logout, cfg: () => cfg };
 }

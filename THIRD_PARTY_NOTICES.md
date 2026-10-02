@@ -22,6 +22,12 @@ own license — those licenses, not MIT, govern those components.
 | sing-box | https://github.com/SagerNet/sing-box | see upstream | **GPL-3.0-or-later** | No |
 | tailscale | https://github.com/tailscale/tailscale | v1.96.4 | BSD-3-Clause | **Yes** — see "Modifications" below |
 
+## Bundled web libraries (`app/src/main/assets/web/shared/`)
+
+| Component | Upstream | Version | License |
+|-----------|----------|---------|---------|
+| qrcode-generator (`qrcode.js`, unmodified) | https://github.com/kazuhikoarase/qrcode-generator | 2.0.4 | MIT (© Kazuhiko Arase) |
+
 ## Machine-learning models (`app/src/main/assets/models/`)
 
 | Component | Upstream | License |

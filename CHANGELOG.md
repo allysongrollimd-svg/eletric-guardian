@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+- Vínculo por QR code (`/pair?code=`): o chassi vem do APK, o cliente não digita. `deploy/install.sh` para a VPS.
+
 ## Electric Guardian
 
 - Rebrand of the upstream OverDrive project (name, strings in all locales, M3 palette lime/graphite, new shield+bolt logo and icons, PWA manifest).

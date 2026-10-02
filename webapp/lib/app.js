@@ -179,7 +179,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
 
       // ---- Static dashboard (public: the login screen must load; data is behind the API) ----
       if (req.method !== 'GET' && req.method !== 'HEAD') return json(res, 405, { error: 'method not allowed' });
-      const rel = path === '/' ? 'index.html' : normalize(decodeURIComponent(path)).replace(/^([/\\])+/, '');
+      const rel = path === '/' || path === '/pair' ? 'index.html' : normalize(decodeURIComponent(path)).replace(/^([/\\])+/, '');
       const file = join(PUBLIC_DIR, rel);
       if (!file.startsWith(PUBLIC_DIR) || !TYPES[extname(file)]) return json(res, 404, { error: 'not found' });
       try {

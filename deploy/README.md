@@ -52,3 +52,15 @@ Para cadastro aberto: `ALLOW_SIGNUP=1` no `.env`.
 
 ## 7. Atualizar
 `git pull && docker compose up -d --build` (os dados ficam no volume).
+
+## Instalação em um comando (VPS Debian/Ubuntu)
+
+```bash
+git clone <este repositório> && cd <repo>
+sudo APP_HOST=guardian.allysongrolli.com.br VIEW_HOST=cam.guardian.allysongrolli.com.br \
+     ACME_EMAIL=voce@email.com ADMIN_EMAIL=voce@email.com bash deploy/install.sh
+```
+
+DNS: crie registros A para `guardian…` e `cam.guardian…` apontando para o IP da VPS (portas 80/443 abertas).
+No carro: Nuvem → endereço `https://guardian.allysongrolli.com.br` → aparece um **QR code**; o cliente o lê,
+entra na conta e toca em *Vincular*. O chassi é enviado pelo próprio app do carro.

@@ -102,14 +102,24 @@
   </div>
 </div>
 
+<dialog id="pairDlg" class="dlg">
+  <h2>Vincular carro</h2>
+  <p class="sub">Você escaneou o QR do carro. O chassi é enviado pelo próprio aplicativo do carro — não precisa digitar.</p>
+  <form id="pairForm">
+    <input id="pairName" type="text" placeholder="Apelido (ex.: Dolphin GS)" maxlength="60">
+    <p id="pairErr" class="err" role="alert"></p>
+    <div class="dlg-actions"><button type="button" class="ghost" id="pairCancel">Cancelar</button><button type="submit">Vincular a minha conta</button></div>
+  </form>
+</dialog>
+
 <dialog id="carsDlg" class="dlg wide">
   <h2>Meus carros</h2>
   <div id="carList"></div>
   <h3>Vincular um carro</h3>
-  <p class="sub">No carro, abra o Electric Guardian → <b>Nuvem</b> e leia o código de 8 caracteres. Informe também o chassi (VIN) do carro.</p>
+  <p class="sub">No carro, abra o Electric Guardian → <b>Nuvem</b> e leia o código de 8 caracteres. Ou, mais fácil: escaneie o QR code mostrado no carro com a câmera do celular. O chassi é lido do próprio carro; só preencha abaixo se o carro ainda não o tiver informado.</p>
   <form id="claimForm">
     <input id="claimName" type="text" placeholder="Apelido (ex.: Dolphin GS)" maxlength="60">
-    <input id="claimVin" type="text" placeholder="Chassi (VIN) — 17 caracteres" maxlength="20" autocapitalize="characters" required>
+    <input id="claimVin" type="text" placeholder="Chassi (VIN) — só se o carro não informou" maxlength="20" autocapitalize="characters">
     <input id="claimCode" type="text" placeholder="Código do carro (8 caracteres)" maxlength="12" autocapitalize="characters" required>
     <p id="claimErr" class="err" role="alert"></p>
     <div class="dlg-actions"><button type="button" class="ghost" id="carsClose">Fechar</button><button type="submit">Vincular</button></div>

@@ -64,10 +64,11 @@
                     <div class="card-header"><div class="card-title"><span>Vínculo com a sua conta</span></div><span class="eg-pill" id="egState">…</span></div>
                     <div id="egPending" style="display:none;">
                         <div class="eg-code" id="egCode">--------</div>
+                        <div id="egQr" style="width:220px;max-width:70%;margin:8px auto;background:#fff;padding:10px;border-radius:12px;"></div>
                         <ol class="eg-steps">
-                            <li>No celular ou computador, abra <b id="egSiteName">o painel</b> e entre na sua conta.</li>
-                            <li>Toque em <b>Carros → Vincular um carro</b>.</li>
-                            <li>Digite o código acima e o chassi (VIN) do carro<span id="egVinHint"></span>.</li>
+                            <li>Escaneie o QR code acima com a câmera do celular.</li>
+                            <li>Entre (ou crie) a sua conta em <b id="egSiteName">o painel</b> e toque em <b>Vincular</b>.</li>
+                            <li>O chassi é enviado por este aplicativo<span id="egVinHint"></span>; você não precisa digitar nada. Sem o QR, digite o código acima em <b>Carros → Vincular um carro</b>.</li>
                         </ol>
                         <div class="eg-hint" id="egExpiry"></div>
                     </div>
@@ -84,6 +85,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div id="toastContainer" class="toast-container"></div>
 
+    <script src="../shared/qrcode.js"></script>
     <script src="../shared/auth.js"></script>
     <script src="../shared/core.js?v=20"></script>
     <script>
@@ -93,7 +95,7 @@
         }
         (function () {
             var $ = function (id) { return document.getElementById(id); };
-            var formLoaded = false;
+            var formLoaded = false, lastLink = '';
 
             function fmtCode(c) { return c && c.length === 8 ? c.slice(0, 4) + '-' + c.slice(4) : (c || '--------'); }
             function show(id, on) { $(id).style.display = on ? '' : 'none'; }
@@ -109,8 +111,14 @@
                 if (s.state === 'pending') {
                     st.textContent = 'Aguardando vínculo'; st.classList.add('warn');
                     $('egCode').textContent = fmtCode(s.code);
+                    var link = s.serverUrl && s.code ? s.serverUrl.replace(/\/+$/, '') + '/pair?code=' + s.code : '';
+                    if (link !== lastLink) {
+                        lastLink = link; $('egQr').innerHTML = '';
+                        if (link && window.qrcode) { var q = qrcode(0, 'M'); q.addData(link); q.make(); $('egQr').innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); }
+                    }
+                    $('egQr').style.display = link ? '' : 'none';
                     $('egSiteName').textContent = s.serverUrl ? s.serverUrl.replace(/^https?:\/\//, '') : 'o painel';
-                    $('egVinHint').textContent = s.vinKnown ? ' (termina em ' + s.vinLast4 + ')' : '';
+                    $('egVinHint').textContent = s.vinKnown ? ' (detectado: final ' + s.vinLast4 + ')' : ' (ainda lendo o chassi do carro…)';
                     var left = s.codeExpiresAt ? Math.max(0, Math.round((s.codeExpiresAt - Date.now()) / 60000)) : 0;
                     $('egExpiry').textContent = left > 0 ? 'O código expira em ~' + left + ' min e é renovado automaticamente.' : '';
                 } else if (s.state === 'claimed') {

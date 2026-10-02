@@ -151,3 +151,16 @@ test('telemetry-reported VIN is stored and drives the verified flag', async () =
   const c = acc.listCars(a.id)[0];
   assert.equal(c.vinVerified, true); assert.equal(c.appVersion, '50.1'); assert.ok(c.lastSeen);
 });
+
+test('claim without typing the VIN uses the one the car reported; falls back to typed VIN only if none', async () => {
+  const { acc } = make();
+  const a = await acc.signup({ email: 'qr@x.com', password: 'senha-forte-123', name: 'Q' });
+  const d1 = { ...dev(7), vin: VIN };
+  const code = acc.registerDevice(d1).code;
+  assert.equal(acc.claim(a.id, { code }).vin, VIN);
+  const d2 = dev(8);                                                                    // car that has not reported a VIN yet
+  const c2 = acc.registerDevice(d2).code;
+  await throwsCode(() => acc.claim(a.id, { code: c2 }), 'vin_pending');
+  acc.registerDevice({ ...d2, vin: VIN2 });                                             // VIN learned later: re-register is idempotent
+  assert.equal(acc.claim(a.id, { code: acc.pairingState(d2.deviceId).code }).vin, VIN2);
+});
