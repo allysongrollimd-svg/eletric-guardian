@@ -61,6 +61,7 @@ class IntegrationsFragment : Fragment() {
     private var abrpConnected: Boolean = false
     private var mqttConnected: Boolean = false
     private var bydCloudConfigured: Boolean = false
+    private var cloudLinked: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +82,9 @@ class IntegrationsFragment : Fragment() {
         }
         view.findViewById<View>(R.id.cardBydCloud).setOnClickListener {
             findNavController().navigateDrillDown(R.id.bydCloudFragment)
+        }
+        view.findViewById<View>(R.id.cardCloud).setOnClickListener {
+            findNavController().navigateDrillDown(R.id.cloudFragment)
         }
     }
 
@@ -124,16 +128,19 @@ class IntegrationsFragment : Fragment() {
             val abrp = fetchAbrpRunning()
             val mqtt = fetchMqttAnyConnected()
             val bydCloud = fetchBydCloudConfigured()
+            val cloudLinkedNow = fetchCloudLinked()
             mainHandler.post {
                 val v = view ?: return@post
                 telegramConfigured = telegram
                 abrpConnected = abrp
                 mqttConnected = mqtt
                 bydCloudConfigured = bydCloud
+                cloudLinked = cloudLinkedNow
                 bindStatus(v, R.id.dotTelegram, R.id.tvTelegramStatus, telegramConfigured)
                 bindStatus(v, R.id.dotAbrp, R.id.tvAbrpStatus, abrpConnected)
                 bindStatus(v, R.id.dotMqtt, R.id.tvMqttStatus, mqttConnected)
                 bindStatus(v, R.id.dotBydCloud, R.id.tvBydCloudStatus, bydCloudConfigured)
+                bindStatus(v, R.id.dotCloud, R.id.tvCloudStatus, cloudLinked)
                 bindHero(v)
             }
         }
@@ -195,6 +202,12 @@ class IntegrationsFragment : Fragment() {
         if (!json.optBoolean("success", false)) return false
         val status = json.optJSONObject("status") ?: return false
         return status.optBoolean("configured", false)
+    }
+
+    /** Electric Guardian cloud: "configured" means the car is paired with an account (state = claimed). */
+    private fun fetchCloudLinked(): Boolean {
+        val json = fetchDaemonJson("/api/cloud/status") ?: return false
+        return json.optString("state") == "claimed"
     }
 
     private fun fetchDaemonJson(path: String): JSONObject? {

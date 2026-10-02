@@ -205,6 +205,17 @@
     </fragment>
 
     <fragment
+        android:id="@+id/cloudFragment"
+        android:name="com.overdrive.app.ui.fragment.WebViewFragment"
+        android:label="@string/nav_page_cloud"
+        tools:layout="@layout/fragment_webview">
+        <argument
+            android:name="page_path"
+            app:argType="string"
+            android:defaultValue="/cloud" />
+    </fragment>
+
+    <fragment
         android:id="@+id/bydCloudFragment"
         android:name="com.overdrive.app.ui.fragment.WebViewFragment"
         android:label="@string/nav_page_byd_cloud"

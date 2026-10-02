@@ -718,6 +718,7 @@
     <string name="nav_page_abrp">ABRP</string>
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
+    <string name="nav_page_cloud">Nuvem</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
     <string name="status_overlay_notif_title">Status do Electric Guardian</string>
     <string name="status_overlay_notif_text">Sobreposição de status ativa</string>
@@ -899,6 +900,7 @@
     <string name="integrations_abrp_desc">Envie dados da bateria e da rota ao vivo para o A Better Routeplanner para previsões de carregamento.</string>
     <string name="integrations_mqtt_desc">Publique a telemetria do veículo no Home Assistant ou qualquer broker MQTT.</string>
     <string name="integrations_byd_cloud_desc">Conecte a conta do seu aplicativo BYD para ativar comandos remotos como trancamento de portas, piscar faróis e buzina.</string>
+    <string name="integrations_cloud_desc">Painel em tempo real, câmeras ao vivo, gravações e controle remoto fora do carro, vinculado à sua conta pelo chassi (VIN).</string>
     <string name="integrations_configure_button">Configurar</string>
     <!-- Settings → About / Privacy actions (rows) -->
     <string name="settings_action_check_update">Verificar atualizações</string>

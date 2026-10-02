@@ -1756,6 +1756,7 @@ open class MainActivity : AppCompatActivity() {
                     R.id.abrpSettingsFragment,
                     R.id.mqttFragment,
                     R.id.bydCloudFragment,
+                    R.id.cloudFragment,
                 )),
             RailItem(NavigationRailCatalog.NETWORK, R.id.railDestNetwork,
                 R.id.networkFragment,

@@ -955,6 +955,7 @@
     <string name="nav_page_abrp">ABRP</string>
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
+    <string name="nav_page_cloud">Cloud</string>
     <string name="nav_page_assistant">Assistant</string>
 
     <!-- StatusOverlayService persistent notification (foreground service) -->
@@ -1284,6 +1285,7 @@
     <string name="integrations_abrp_desc">Push live battery and route data to A Better Routeplanner for charging predictions.</string>
     <string name="integrations_mqtt_desc">Publish vehicle telemetry to Home Assistant or any MQTT broker.</string>
     <string name="integrations_byd_cloud_desc">Connect your BYD app account to enable remote commands like door lock, flash lights, and horn.</string>
+    <string name="integrations_cloud_desc">Live dashboard, cameras, recordings and remote control away from the car, linked to your account by chassis (VIN).</string>
     <string name="integrations_configure_button">Configure</string>
 
     <!-- Settings → About / Privacy actions (rows) -->
