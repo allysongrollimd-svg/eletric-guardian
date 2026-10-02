@@ -229,6 +229,7 @@ public final class CloudClient {
             j.put("parkedIntervalSeconds", 30);                          // parked: slower, saves the car's mobile data
             j.put("chargingIntervalSeconds", 10);
             j.put("changeOnly", true);
+            j.put("liveIntervalMs", 250);                                // driving stream: speed, power, torque ~4x/s
             j.put("trustAllCerts", false);
             if (existing == null) {
                 mgr.addConnection(j);
@@ -281,7 +282,7 @@ public final class CloudClient {
         return !url.equals(c.brokerUrl) || !topic.equals(c.topic) || !cfg.deviceId.equals(c.username)
                 || !cfg.deviceKey.equals(c.password) || c.allowControl != cfg.allowControl
                 || !c.enabled || !c.homeAssistantDiscovery
-                || c.maxIntervalSeconds != 10 || c.parkedIntervalSeconds != 30 || c.chargingIntervalSeconds != 10;
+                || c.liveIntervalMs != 250 || c.maxIntervalSeconds != 10 || c.parkedIntervalSeconds != 30 || c.chargingIntervalSeconds != 10;
     }
 
     // ---------------------------------------------------------------- tunnel

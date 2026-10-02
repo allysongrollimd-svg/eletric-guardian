@@ -48,6 +48,8 @@ public class MqttConnectionManager {
 
     // Per-connection schedulers: connectionId → scheduler
     private final ConcurrentHashMap<String, ScheduledExecutorService> schedulers = new ConcurrentHashMap<>();
+    // Optional fast driving stream per connection (liveIntervalMs > 0)
+    private final ConcurrentHashMap<String, ScheduledExecutorService> liveSchedulers = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
 
     // Serial executor for connection lifecycle (connect/disconnect). Paho's connect blocks up to
@@ -203,6 +205,9 @@ public class MqttConnectionManager {
             }
             schedulers.clear();
 
+            for (ScheduledExecutorService live : liveSchedulers.values()) live.shutdownNow();
+            liveSchedulers.clear();
+
             for (Map.Entry<String, MqttPublisherService> entry : publishers.entrySet()) {
                 entry.getValue().disconnect();
             }
@@ -256,11 +261,50 @@ public class MqttConnectionManager {
             });
             schedulers.put(config.id, scheduler);
 
+            startLiveStream(config, publisher);
+
             // Schedule publish loop at the min-interval floor.
             long cadenceDelayMs = Math.max(1, config.minIntervalSeconds) * 1000L;
             scheduleNext(config.id, scheduler,
                     Math.min(cadenceDelayMs, currentCabinExpiryDelayMs()));
         }
+    }
+
+    /**
+     * Fast driving stream: while the car is on, publishes a compact JSON (speed, pedals, motor
+     * power / rpm / torque) to the connection's aggregate topic every {@code liveIntervalMs}.
+     * The regular change-gated cycle keeps its 1 s floor; this is an extra, tiny message that the
+     * server merges into the car state, so the app sees the dynamics in near real time.
+     */
+    private void startLiveStream(MqttConnectionConfig config, MqttPublisherService publisher) {
+        if (config.liveIntervalMs <= 0) return;
+        final long period = Math.max(100L, config.liveIntervalMs);
+        ScheduledExecutorService live = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "MQTT-live-" + config.id);
+            t.setDaemon(true);
+            return t;
+        });
+        liveSchedulers.put(config.id, live);
+        final String[] last = {null};
+        final long[] lastAt = {0L};
+        live.scheduleWithFixedDelay(() -> {
+            try {
+                if (!com.overdrive.app.monitor.AccMonitor.isAccOn()) { last[0] = null; return; }
+                BydDataCollector collector = BydDataCollector.getInstance();
+                if (collector == null) return;
+                JSONObject sample = collector.readLiveSample();
+                if (sample.length() == 0) return;
+                String body = sample.toString();
+                long now = System.currentTimeMillis();
+                if (body.equals(last[0]) && now - lastAt[0] < 2000L) return;   // unchanged: skip, resend every 2 s
+                if (publisher.publishToTopic("/" + config.topic, body, false)) {
+                    last[0] = body;
+                    lastAt[0] = now;
+                }
+            } catch (Throwable t) {
+                logger.debug("live stream error: " + t.getMessage());
+            }
+        }, period, period, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -273,6 +317,8 @@ public class MqttConnectionManager {
 
             ScheduledExecutorService scheduler = schedulers.remove(connectionId);
             if (scheduler != null) scheduler.shutdownNow();
+            ScheduledExecutorService live = liveSchedulers.remove(connectionId);
+            if (live != null) live.shutdownNow();
 
             MqttPublisherService publisher = publishers.remove(connectionId);
             if (publisher != null) publisher.disconnect();

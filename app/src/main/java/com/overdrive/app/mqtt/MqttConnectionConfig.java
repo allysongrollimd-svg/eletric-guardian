@@ -35,6 +35,7 @@ public class MqttConnectionConfig {
     // Report-by-exception window (the two sliders)
     public int minIntervalSeconds;       // Floor: never publish more often than this
     public int maxIntervalSeconds;       // Heartbeat ceiling: always publish at least this often
+    public int liveIntervalMs;           // >0: extra fast driving stream (speed/power/torque) at this period; 0 = off
     public boolean changeOnly;           // If true, only publish when a backing value changed
 
     // Per-state heartbeat overrides. When > 0, they replace maxIntervalSeconds (the heartbeat
@@ -245,6 +246,7 @@ public class MqttConnectionConfig {
             json.put("minIntervalSeconds", minIntervalSeconds);
             json.put("maxIntervalSeconds", maxIntervalSeconds);
             json.put("changeOnly", changeOnly);
+            json.put("liveIntervalMs", liveIntervalMs);
             json.put("homeAssistantDiscovery", homeAssistantDiscovery);
             json.put("discoveryPrefix", discoveryPrefix);
             json.put("allowControl", allowControl);
@@ -301,6 +303,7 @@ public class MqttConnectionConfig {
                 json.optInt("publishIntervalSeconds", DEFAULT_MIN_INTERVAL));
         config.maxIntervalSeconds = json.optInt("maxIntervalSeconds", DEFAULT_MAX_INTERVAL);
         config.changeOnly = json.optBoolean("changeOnly", DEFAULT_CHANGE_ONLY);
+        config.liveIntervalMs = Math.max(0, json.optInt("liveIntervalMs", 0));
         config.homeAssistantDiscovery = json.optBoolean("homeAssistantDiscovery", DEFAULT_HA_DISCOVERY);
         config.discoveryPrefix = json.optString("discoveryPrefix", DEFAULT_DISCOVERY_PREFIX);
         config.allowControl = json.optBoolean("allowControl", DEFAULT_ALLOW_CONTROL);

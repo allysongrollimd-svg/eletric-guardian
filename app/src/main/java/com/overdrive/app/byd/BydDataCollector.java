@@ -2033,6 +2033,54 @@ public class BydDataCollector {
     }
 
     /**
+     * One cheap live read of the driving signals for the cloud "live" stream (speed, pedals, motor
+     * power / rpm / torque), taken straight from the HAL so it does not depend on the 5 s snapshot
+     * poll. Keys follow the telemetry field names. Missing readings are simply left out.
+     */
+    public org.json.JSONObject readLiveSample() {
+        org.json.JSONObject o = new org.json.JSONObject();
+        try {
+            double speed = Double.NaN;
+            int accel = BydVehicleData.UNAVAILABLE, brake = BydVehicleData.UNAVAILABLE;
+            if (isDiLink5Vehicle()) {
+                speed = readSpeedNowKmh(); accel = readAccelNow(); brake = readBrakeNow();
+            } else if (speedDevice != null) {
+                speed = readSdkSpeedKmh();
+                accel = normalizePedalPercent(BydDeviceHelper.callGetter(speedDevice, "getAccelerateDeepness"));
+                brake = normalizePedalPercent(BydDeviceHelper.callGetter(speedDevice, "getBrakeDeepness"));
+            }
+            BydVehicleData snap = snapshot.get();
+            if (Double.isNaN(speed) && snap != null) speed = snap.speedKmh;
+            if (!Double.isNaN(speed) && speed >= 0 && speed < 400) o.put("speed", Math.round(speed * 10.0) / 10.0);
+            if (accel != BydVehicleData.UNAVAILABLE && accel >= 0 && accel <= 100) o.put("accel_pct", accel);
+            if (brake != BydVehicleData.UNAVAILABLE && brake >= 0 && brake <= 100) o.put("brake_pct", brake);
+            Object eng = engineDevice;
+            if (eng != null) {
+                Object pv = BydDeviceHelper.callGet(eng, BydFeatureIds.ENGINE_POWER, Double.class);
+                if (pv != null) {
+                    double raw = BydDeviceHelper.getDoubleValue(pv);
+                    double kw = scaleEnginePowerKw(raw);
+                    if (!Double.isNaN(raw) && raw >= -200.0 && raw <= 400.0 && !isEnginePowerSentinel(kw)) {
+                        o.put("power", Math.round(kw * 10.0) / 10.0);
+                    }
+                }
+                Object fms = BydDeviceHelper.callGet(eng, BydFeatureIds.ENGINE_FRONT_MOTOR_SPEED, Integer.class);
+                if (fms != null) { int v = BydDeviceHelper.getIntValue(fms); if (isPlausibleMotorRpm(v)) o.put("motor_front_rpm", -v); }
+                Object rms = BydDeviceHelper.callGet(eng, BydFeatureIds.ENGINE_REAR_MOTOR_SPEED, Integer.class);
+                if (rms != null) { int v = BydDeviceHelper.getIntValue(rms); if (isPlausibleMotorRpm(v)) o.put("motor_rear_rpm", v); }
+                Object fmt = BydDeviceHelper.callGet(eng, BydFeatureIds.ENGINE_FRONT_MOTOR_TORQUE, Double.class);
+                if (fmt != null) {
+                    double t = BydDeviceHelper.getDoubleValue(fmt);
+                    if (!Double.isNaN(t) && Math.abs(t) <= 2000.0) o.put("motor_front_torque", Math.round(-t));
+                }
+            }
+        } catch (Throwable t) {
+            logger.debug("readLiveSample error: " + t.getMessage());
+        }
+        return o;
+    }
+
+    /**
      * Current vehicle speed in km/h for the cluster speed badge — self-contained, so
      * it does NOT depend on RoadSense's {@link #startFastDynamicsPoll() fast poll}
      * being active (that poll only runs while RoadSense is enabled + driving).

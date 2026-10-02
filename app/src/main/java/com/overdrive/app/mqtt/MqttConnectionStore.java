@@ -189,6 +189,7 @@ public class MqttConnectionStore {
             if (updates.has("trustAllCerts")) existing.trustAllCerts = updates.optBoolean("trustAllCerts");
             if (updates.has("minIntervalSeconds")) existing.minIntervalSeconds = updates.optInt("minIntervalSeconds");
             if (updates.has("maxIntervalSeconds")) existing.maxIntervalSeconds = updates.optInt("maxIntervalSeconds");
+            if (updates.has("liveIntervalMs")) existing.liveIntervalMs = Math.max(0, updates.optInt("liveIntervalMs"));
             if (updates.has("changeOnly")) existing.changeOnly = updates.optBoolean("changeOnly");
             if (updates.has("homeAssistantDiscovery")) existing.homeAssistantDiscovery = updates.optBoolean("homeAssistantDiscovery");
             if (updates.has("discoveryPrefix")) existing.discoveryPrefix = updates.optString("discoveryPrefix");
