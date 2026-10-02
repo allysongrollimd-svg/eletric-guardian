@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title data-i18n="app.seat_positions_title">Seat Positions - OverDrive</title>
+    <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="../shared/app-icon-dark.webp">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#00876C">
+    <script src="../shared/theme.js?v=8"></script>
+    <script src="../shared/app-shell.js?v=7"></script>
+    <script src="../shared/skeleton.js?v=4"></script>
+    <link rel="stylesheet" href="../shared/styles.css?v=34">
+    <link rel="stylesheet" href="../shared/seat-positions.css?v=9">
+</head>
+<body>
+    <div class="app-layout">
+        <div id="app-shell-mount"></div>
+        <main class="main-content">
+            <div class="mobile-header">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+                    </svg>
+                </button>
+                <span style="font-weight:600;" data-i18n="nav.seat_positions">Seat Positions</span>
+                <div style="width:40px;"></div>
+            </div>
+
+            <!-- Hidden in the Android shell (the toolbar already names the page).
+                 Kept for the standalone / tunnel session. -->
+            <header class="page-header">
+                <h1 class="page-title" data-i18n="seatpos.page_title">Seat Positions</h1>
+            </header>
+
+            <div class="page-body">
+
+                <div class="card sp-now">
+                    <div class="card-body sp-now-body">
+                        <div class="sp-now-art" id="spCurrentGlyph" data-sk-real="seatCurrent"></div>
+                        <div class="sk sp-sk-art" data-sk-group="seatCurrent"></div>
+                        <div class="sp-now-main">
+                            <div class="sp-now-eyebrow" data-i18n="seatpos.current">Current position</div>
+                            <div class="sp-match" id="spCurrentMatch" data-sk-real="seatCurrent"></div>
+                            <div id="spCurrentAxes" data-sk-real="seatCurrent"></div>
+                            <div class="sp-sk-main" data-sk-group="seatCurrent">
+                                <div class="sk sk-line sp-sk-match"></div>
+                                <div class="sk sk-line sp-sk-axes"></div>
+                            </div>
+                        </div>
+                        <div class="sp-now-actions">
+                            <button class="btn btn-primary" id="spSaveNew">
+                                <span data-i18n="seatpos.save_as_new">Save as new</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Priority order lives in renderGate(): unpowered motors first
+                         (a write is accepted and does nothing), then gear-out-of-P,
+                         then an unconfirmed axis map. -->
+                    <div class="sp-status" id="spStatus" data-state="off">
+                        <span class="sp-status-dot" aria-hidden="true"></span>
+                        <span class="sp-status-text" id="spStatusText" data-i18n="seatpos.gate_acc_off">The car is off, so the seat motors have no power. Apply and save will do nothing until you turn it on.</span>
+                    </div>
+                    <div class="sp-batches" id="spBatches" style="display:none;">
+                        <span class="sp-batch" id="spBatch1"><span class="led"></span>batch 1 � mirrors</span>
+                        <span class="sp-batch" id="spBatch2"><span class="led"></span>batch 2 � seat</span>
+                    </div>
+                </div>
+
+                <div id="spList" data-sk-real="seatList"></div>
+
+                <div class="card sp-sk-list" data-sk-group="seatList">
+                    <div class="card-body">
+                        <div class="sk sk-line sp-sk-row"></div>
+                        <div class="sk sk-line sp-sk-row"></div>
+                        <div class="sk sk-line sp-sk-row"></div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div class="modal-backdrop" id="spScrim" style="display:none;">
+        <div class="modal-card sp-dialog" role="dialog" aria-modal="true" aria-labelledby="spDialogTitle">
+            <h3 id="spDialogTitle" class="sp-dialog-title"></h3>
+            <p id="spDialogBody" class="sp-dialog-body"></p>
+            <div id="spDialogHtml"></div>
+            <input type="text" id="spDialogInput" class="input" maxlength="60">
+            <div class="sp-dialog-actions">
+                <button class="btn sp-dialog-cancel" id="spDialogCancel" data-i18n="common.cancel">Cancel</button>
+                <button class="btn btn-primary" id="spDialogConfirm"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../shared/auth.js"></script>
+    <script src="../shared/pwa-init.js?v=index1"></script>
+    <script src="../shared/core.js?v=20"></script>
+    <script src="../shared/seat-positions.js?v=8"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            BYD.i18n.init().then(function () {
+                BYD.core.init();
+                SeatPositions.init();
+            });
+        });
+    </script>
+</body>
+</html>

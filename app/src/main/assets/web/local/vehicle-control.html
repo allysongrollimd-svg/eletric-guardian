@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title data-i18n="app.vehicle_control_title">Vehicle Control - OverDrive</title>
+    <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="../shared/app-icon-dark.webp">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#00876C">
+    <script src="../shared/theme.js?v=8"></script>
+    <script src="../shared/skeleton.js?v=4"></script>
+    <!-- View-mode bootstrap. Runs before first paint so the lite/immersive
+         chrome renders without flicker. 'lite' (default) boots controls-only:
+         no three.js/gsap/loaders/SotaPlayer, no GLB download, no WebGL
+         context — the ~2.4 MB immersive stack loads only when the saved
+         preference is 'immersive' (persisted via the view-mode toggle in the
+         status bar). html.vc-mode-* scopes the CSS for each mode. -->
+    <script>
+        (function () {
+            var mode = null;
+            try { mode = localStorage.getItem('vc.viewMode'); } catch (e) {}
+            window.VC_LITE = (mode !== 'immersive');
+            document.documentElement.className +=
+                window.VC_LITE ? ' vc-mode-lite' : ' vc-mode-immersive';
+            if (typeof window.AndroidBridge !== 'undefined') {
+                document.documentElement.className += ' is-app-webview';
+            }
+        })();
+    </script>
+    <script src="../shared/app-shell.js?v=7"></script>
+    <link rel="stylesheet" href="../shared/styles.css?v=34">
+    <link rel="stylesheet" href="../shared/vehicle-control.css?v=47">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar (hidden by WebViewFragment injection, but kept for standalone browser access) -->
+        <!-- App shell sidebar (rendered by ../shared/app-shell.js) -->
+        <div id="app-shell-mount"></div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="vc-container">
+
+                <!-- 3D Viewport -->
+                <div class="vc-viewport">
+                    <canvas id="vehicleCanvas"></canvas>
+
+                    <div class="vc-loading" id="vcLoading">
+                        <div class="vc-loading-spinner"></div>
+                        <div class="vc-loading-text" data-i18n="vehicle.loading_model">Loading model...</div>
+                        <button class="vc-loading-retry" id="vcLoadingRetry" style="display:none" data-i18n="common.retry">Retry</button>
+                    </div>
+
+                    <!-- Lite-mode hero: the same VehicleArt render the
+                         Dashboard uses, served by /api/models/art. Unset /
+                         unknown ids resolve to vehicle_fallback — no icon. -->
+                    <div class="vc-lite-hero" id="vcLiteHero" aria-hidden="true">
+                        <img id="vcLiteHeroImg" alt="" />
+                    </div>
+
+                    <!-- Floating mobile nav button -->
+                    <button class="vc-nav-btn" onclick="toggleSidebar()" title="Menu">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/>
+                        </svg>
+                    </button>
+
+                    <div class="vc-status-bar">
+                        <div class="vc-status-slot vc-status-slot--start">
+                            <div class="vc-pill compact-status-pill is-sk">
+                                <span class="dot grey compact-status-pill__dot"></span><span id="lockStatus" data-i18n="vehicle.tyre_no_data">NO DATA</span>
+                                <div class="sk sk-cover vc-sk-pill" data-sk-group="vcLock"></div>
+                            </div>
+                        </div>
+                        <div class="vc-status-slot vc-status-slot--mid">
+                            <div class="vc-colors" id="colorPicker"></div>
+                            <div class="vc-model-menu" id="modelMenu">
+                                <select class="vc-model-select" id="modelPicker" title="Vehicle model">
+                                    <option value="seal">BYD Seal</option>
+                                </select>
+                                <button type="button" class="vc-model-menu__trigger" id="modelMenuTrigger"
+                                        aria-haspopup="listbox" aria-expanded="false" title="Vehicle model">
+                                    <span class="vc-model-menu__value" id="modelMenuValue">BYD Seal</span>
+                                    <span class="vc-model-menu__stale" id="modelMenuStale" aria-hidden="true"></span>
+                                    <svg class="vc-model-menu__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                                </button>
+                                <div class="vc-model-menu__list" id="modelMenuList" role="listbox"></div>
+                            </div>
+                            <button class="vc-3d-btn" id="btn3dView" title="Toggle 3D Surround View">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                                <span>3D</span>
+                            </button>
+                            <button class="vc-3d-btn" id="btnViewMode" title="Switch view mode">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>
+                                <span class="vc-view-to-3d" data-i18n="vehicle.view_mode_3d">3D</span>
+                                <span class="vc-view-to-lite" data-i18n="vehicle.view_mode_lite">Lite</span>
+                            </button>
+                        </div>
+                        <div class="vc-status-slot vc-status-slot--end">
+                            <div class="vc-pill compact-status-pill is-sk" id="cloudStatus">
+                                <span class="dot amber compact-status-pill__dot"></span><span id="cloudStatusText" data-i18n="vehicle.checking">Checking...</span>
+                                <div class="sk sk-cover vc-sk-pill" data-sk-group="vcCloud"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Required Modal -->
+                    <div class="vc-modal-overlay" id="cloudModal">
+                        <div class="vc-modal">
+                            <div class="vc-modal-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                                </svg>
+                            </div>
+                            <div class="vc-modal-title" data-i18n="vehicle.cloud_required">Cloud Account Required</div>
+                            <div class="vc-modal-text" data-i18n="vehicle.cloud_required_text">
+                                This control needs a connected BYD account.
+                            </div>
+                            <div class="vc-modal-actions">
+                                <button class="vc-modal-btn" id="cloudModalDismiss" data-i18n="vehicle.got_it">Got it</button>
+                                <button class="vc-modal-btn primary" id="cloudModalConnect" data-i18n="vehicle.cloud_connect_cta">Connect BYD Cloud</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom paint picker. Phones get their native colour
+                         surface; the hex field remains the head-unit fallback. -->
+                    <div class="vc-modal-overlay" id="colorModal">
+                        <div class="vc-modal" role="dialog" aria-modal="true" aria-labelledby="colorModalTitle">
+                            <div class="vc-modal-title" id="colorModalTitle" data-i18n="vehicle.color_custom">Custom color</div>
+                            <div class="vc-color-spectrum" id="colorModalSpectrum"
+                                 role="slider" tabindex="0" aria-labelledby="colorModalTitle"
+                                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                <span class="vc-color-spectrum-thumb" id="colorModalSpectrumThumb" aria-hidden="true"></span>
+                            </div>
+                            <input type="range" class="vc-color-hue" id="colorModalHue"
+                                   min="0" max="360" step="1" value="0"
+                                   aria-labelledby="colorModalTitle" />
+                            <div class="vc-color-hex-row">
+                                <span class="vc-color-preview" id="colorModalPreview" aria-hidden="true"></span>
+                                <input type="text" class="vc-color-hex" id="colorModalHex"
+                                       maxlength="7" spellcheck="false" autocomplete="off"
+                                       value="#E8E8EC" aria-labelledby="colorModalTitle" />
+                            </div>
+                            <div class="vc-color-grid" id="colorModalGrid"></div>
+                            <div class="vc-modal-actions">
+                                <button class="vc-modal-btn" id="colorModalCancel" data-i18n="common.cancel">Cancel</button>
+                                <button class="vc-modal-btn primary" id="colorModalApply" data-i18n="common.apply">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Control Bar — Tabbed Expandable -->
+                <div class="vc-bar">
+                    <div id="toastContainer" class="toast-container"></div>
+
+                    <!-- Tyre pressure, one cell per corner. -->
+                    <div class="vc-tyre-strip" id="vcTyreOverlay">
+                        <div class="vc-tyre-cell is-sk" data-corner="fl" data-state="muted" id="tyreFL">
+                            <div class="vc-tyre-head compact-status-pill"><span class="vc-tyre-dot compact-status-pill__dot"></span><span class="vc-tyre-label" data-i18n="vehicle.pos_front_left">Front left</span><span class="vc-tyre-state">—</span></div>
+                            <div class="vc-tyre-psi"><span class="vc-tyre-psi-val">—</span><span class="vc-tyre-psi-unit">PSI</span></div>
+                            <div class="vc-tyre-sub"><span class="vc-tyre-kpa">— kPa</span><span class="vc-tyre-temp"><span class="vc-tyre-temp-val">—</span><span class="vc-tyre-temp-unit">°C</span></span></div>
+                            <div class="sk sk-cover vc-sk-tyre-fill" data-sk-group="vcTyres"></div>
+                        </div>
+                        <div class="vc-tyre-cell is-sk" data-corner="fr" data-state="muted" id="tyreFR">
+                            <div class="vc-tyre-head compact-status-pill"><span class="vc-tyre-dot compact-status-pill__dot"></span><span class="vc-tyre-label" data-i18n="vehicle.pos_front_right">Front right</span><span class="vc-tyre-state">—</span></div>
+                            <div class="vc-tyre-psi"><span class="vc-tyre-psi-val">—</span><span class="vc-tyre-psi-unit">PSI</span></div>
+                            <div class="vc-tyre-sub"><span class="vc-tyre-kpa">— kPa</span><span class="vc-tyre-temp"><span class="vc-tyre-temp-val">—</span><span class="vc-tyre-temp-unit">°C</span></span></div>
+                            <div class="sk sk-cover vc-sk-tyre-fill" data-sk-group="vcTyres"></div>
+                        </div>
+                        <div class="vc-tyre-cell is-sk" data-corner="rl" data-state="muted" id="tyreRL">
+                            <div class="vc-tyre-head compact-status-pill"><span class="vc-tyre-dot compact-status-pill__dot"></span><span class="vc-tyre-label" data-i18n="vehicle.pos_rear_left">Rear left</span><span class="vc-tyre-state">—</span></div>
+                            <div class="vc-tyre-psi"><span class="vc-tyre-psi-val">—</span><span class="vc-tyre-psi-unit">PSI</span></div>
+                            <div class="vc-tyre-sub"><span class="vc-tyre-kpa">— kPa</span><span class="vc-tyre-temp"><span class="vc-tyre-temp-val">—</span><span class="vc-tyre-temp-unit">°C</span></span></div>
+                            <div class="sk sk-cover vc-sk-tyre-fill" data-sk-group="vcTyres"></div>
+                        </div>
+                        <div class="vc-tyre-cell is-sk" data-corner="rr" data-state="muted" id="tyreRR">
+                            <div class="vc-tyre-head compact-status-pill"><span class="vc-tyre-dot compact-status-pill__dot"></span><span class="vc-tyre-label" data-i18n="vehicle.pos_rear_right">Rear right</span><span class="vc-tyre-state">—</span></div>
+                            <div class="vc-tyre-psi"><span class="vc-tyre-psi-val">—</span><span class="vc-tyre-psi-unit">PSI</span></div>
+                            <div class="vc-tyre-sub"><span class="vc-tyre-kpa">— kPa</span><span class="vc-tyre-temp"><span class="vc-tyre-temp-val">—</span><span class="vc-tyre-temp-unit">°C</span></span></div>
+                            <div class="sk sk-cover vc-sk-tyre-fill" data-sk-group="vcTyres"></div>
+                        </div>
+                    </div>
+
+                    <div class="vc-dock" id="vcDock">
+                    <!-- Expanded panel (shows controls for active tab) -->
+                    <div class="vc-panel" id="vcPanel">
+                        <!-- Security controls -->
+                        <div class="vc-panel-row" id="panelSecurity" style="display:none;">
+                            <button class="vc-tile" id="btnLock" title="Lock" data-requires-cloud="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <span data-i18n="vehicle.lock">Lock</span>
+                            </button>
+                            <button class="vc-tile" id="btnUnlock" title="Unlock" data-i18n-attr="title:vehicle.unlock" data-requires-cloud="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 5-5 5 5 0 0 1 5 5"/></svg>
+                                <span data-i18n="vehicle.unlock">Unlock</span>
+                            </button>
+                            <button class="vc-tile" id="btnFlash" title="Flash" data-i18n-attr="title:vehicle.flash" data-requires-cloud="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                <span data-i18n="vehicle.flash">Flash</span>
+                            </button>
+                            <button class="vc-tile" id="btnFindCar" title="Find car" data-i18n-attr="title:vehicle_control.find_car_label" data-requires-cloud="true">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1c.61 0 1.1-.49 1.1-1.1s-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg>
+                                <span data-i18n="vehicle_control.find_car_label">Find car</span>
+                            </button>
+                        </div>
+                        <!-- Trunk controls -->
+                        <div class="vc-panel-row" id="panelTrunk" style="display:none;">
+                            <button class="vc-tile" id="btnTrunkOpen" title="Open Trunk">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 21H2"/><path d="M10 4a2 2 0 0 1 2.36-1.968l5.41.992A1.5 1.5 0 0 1 19 4.5V21l-7.876.992A1 1 0 0 1 10 21z"/><path d="M10.268 3H7a2 2 0 0 0-2 2v16"/><path d="M14 12h.01"/><path d="M22 21h-3"/></svg>
+                                <span data-i18n="vehicle.open">Open</span>
+                            </button>
+                            <button class="vc-tile" id="btnTrunkClose" title="Close Trunk" data-i18n-attr="title:vehicle.close_trunk">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M2 21h20"/><path d="M9 12h.01"/></svg>
+                                <span data-i18n="common.close">Close</span>
+                            </button>
+                        </div>
+                        <!-- Climate controls -->
+                        <div class="vc-panel-row" id="panelClimate" style="display:none;">
+                            <button class="vc-tile" id="btnAcOn" title="AC On">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                                <span data-i18n="vehicle.ac_on">AC On</span>
+                            </button>
+                            <button class="vc-tile" id="btnAcOff" title="AC Off" data-i18n-attr="title:vehicle.ac_off">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="5" y1="5" x2="19" y2="19"/></svg>
+                                <span data-i18n="vehicle.ac_off">AC Off</span>
+                            </button>
+                            <button class="vc-tile" id="btnBatteryHeat" title="Battery heat" data-i18n-attr="title:vehicle_control.battery_heat_label" data-requires-cloud="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="16" height="10" x="2" y="7" rx="2" ry="2"/>
+                                    <line x1="22" x2="22" y1="11" y2="13"/>
+                                    <path d="M6 11v2"/><path d="M10 11v2"/>
+                                </svg>
+                                <span data-i18n="vehicle_control.battery_heat_label">Battery heat</span>
+                            </button>
+                            <div class="vc-block-row">
+                                <div class="vc-block vc-block--stepper">
+                                    <span class="vc-block-title" data-i18n="vehicle.temperature">Temperature</span>
+                                    <div class="vc-stepper">
+                                        <button class="vc-mini" id="btnTempDown" title="Temp Down">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        </button>
+                                        <span class="vc-readout" id="acTemp">22&deg;</span>
+                                        <button class="vc-mini" id="btnTempUp" title="Temp Up">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="vc-block vc-block--stepper">
+                                    <span class="vc-block-title" data-i18n="vehicle.fan">Fan</span>
+                                    <div class="vc-stepper">
+                                        <button class="vc-mini" id="btnFanDown" title="Fan Down">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        </button>
+                                        <span class="vc-readout" id="acFan">3</span>
+                                        <button class="vc-mini" id="btnFanUp" title="Fan Up">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ── Remote preconditioning (cloud BOOKINGAIR) ──
+                                 One scheduled remote-AC session: time, temperature and one of
+                                 the OEM's five session lengths. Cloud-only — there is no local
+                                 equivalent. A single booking is edited in place; Clear removes
+                                 it. Hidden until the cloud reports the feature. -->
+                            <section class="vc-block vc-block--full vc-block--divider vc-climate-schedule" id="climateScheduleSection" style="display:none;">
+                                <div class="vc-block-head">
+                                    <span class="vc-block-title" data-i18n="vehicle.precondition">Precondition</span>
+                                </div>
+                                <div class="vc-block-row">
+                                    <div class="vc-block vc-block--stepper">
+                                        <span class="vc-block-title" data-i18n="vehicle.precondition_time">Start</span>
+                                        <input type="time" id="climateBookingTime" class="vc-time" value="07:30" aria-label="Preconditioning time" />
+                                    </div>
+                                    <div class="vc-block vc-block--stepper vc-block--wide">
+                                        <span class="vc-block-title" data-i18n="common.duration">Duration</span>
+                                        <div class="vc-segmented" id="climateDurationSegmented" title="Remote session length" data-i18n-attr="title:vehicle.remote_session_length">
+                                            <button class="vc-seg" data-duration="10">10</button>
+                                            <button class="vc-seg" data-duration="15">15</button>
+                                            <button class="vc-seg" data-duration="20">20</button>
+                                            <button class="vc-seg" data-duration="25">25</button>
+                                            <button class="vc-seg" data-duration="30">30</button>
+                                        </div>
+                                    </div>
+                                    <div class="vc-block vc-block--stepper">
+                                        <span class="vc-block-title" data-i18n="vehicle.temperature">Temperature</span>
+                                        <div class="vc-stepper">
+                                            <button class="vc-mini" id="btnBookingTempDown" title="Lower preconditioning temperature" data-i18n-attr="title:vehicle.precondition_temp_down">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            </button>
+                                            <span class="vc-readout" id="climateBookingTemp">22&deg;</span>
+                                            <button class="vc-mini" id="btnBookingTempUp" title="Raise preconditioning temperature" data-i18n-attr="title:vehicle.precondition_temp_up">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="vc-block vc-block--stepper">
+                                        <span class="vc-block-title vc-block-title--ghost" aria-hidden="true">&nbsp;</span>
+                                        <div class="vc-climate-actions">
+                                            <button class="vc-charge-action" id="btnClimateScheduleClear" title="Clear preconditioning schedule" data-i18n-attr="title:vehicle.precondition_clear" data-requires-cloud="true" style="display:none;">
+                                                <span data-i18n="common.clear">Clear</span>
+                                            </button>
+                                            <button class="vc-charge-save" id="btnClimateScheduleSave" title="Save preconditioning schedule" data-i18n-attr="title:vehicle.precondition_save" data-requires-cloud="true">
+                                                <span data-i18n="vehicle_control.save">Save</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="vc-block-caption" id="climateScheduleNote" style="display:none;"></div>
+                            </section>
+                        </div>
+                        <!-- Exterior speaker (AVAS) controls — factory tone
+                             patterns + engine-sound simulator presets. These
+                             drive the exterior "pedestrian" speaker via the
+                             MCU AVAH tone generator; custom audio can't route
+                             there, so only presets/tones are offered. -->
+                        <div class="vc-panel-row" id="panelSound" style="display:none;">
+                            <button class="vc-tile" id="btnAvasTone0" title="Ding-dong" data-avas-pattern="0">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                                <span data-i18n="vehicle.avas_ding_dong">Ding-dong</span>
+                            </button>
+                            <button class="vc-tile" id="btnAvasTone2" title="Triple beep" data-avas-pattern="2">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="9" x2="6" y2="15"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="18" y1="9" x2="18" y2="15"/></svg>
+                                <span data-i18n="vehicle.avas_triple_beep">Triple beep</span>
+                            </button>
+                            <button class="vc-tile" id="btnAvasTone4" title="Chime" data-avas-pattern="4">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                <span data-i18n="vehicle.avas_chime">Chime</span>
+                            </button>
+                            <button class="vc-tile" id="btnAvasTone6" title="Alarm" data-avas-pattern="6">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+                                <span data-i18n="vehicle.avas_alarm">Alarm</span>
+                            </button>
+                            <button class="vc-tile" id="btnAvasStop" title="Stop" data-i18n-attr="title:vehicle.avas_stop">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+                                <span data-i18n="vehicle.avas_stop">Stop</span>
+                            </button>
+                            <!-- Engine-sound simulator: toggle + preset stepper.
+                                 Hidden unless the vehicle reports support. -->
+                            <div class="vc-sound-engine" id="engineSoundRow" style="display:none;">
+                                <button class="vc-tile" id="btnEngineToggle" title="Engine sound">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h4l2-3 3 6 2-3h1"/><rect x="2" y="7" width="20" height="10" rx="2"/></svg>
+                                    <span data-i18n="vehicle.engine_sound">Engine sound</span>
+                                </button>
+                                <button class="vc-mini" id="btnEnginePrev" title="Previous preset">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                </button>
+                                <span class="vc-readout" id="enginePreset">1</span>
+                                <button class="vc-mini" id="btnEngineNext" title="Next preset">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                </button>
+                            </div>
+                            <div class="vc-sound-hint" id="avasUnavailableHint" style="display:none;">
+                                <span data-i18n="vehicle.avas_unavailable">Exterior speaker unavailable — enable AVAS in vehicle settings and wake the car.</span>
+                            </div>
+                        </div>
+                        <!-- Head-unit system controls. Reboot is confirmed client-side and
+                             independently rejected server-side unless the vehicle is parked. -->
+                        <div class="vc-panel-row" id="panelSystem" style="display:none;">
+                            <button class="vc-tile" id="btnIviReboot"
+                                    title="Reboot IVI (parked only)"
+                                    style="color:var(--status-danger);border-color:var(--status-danger);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 11a8.1 8.1 0 1 1-2.3-5.7"/>
+                                    <path d="M20 4v7h-7"/>
+                                </svg>
+                                <span>Reboot IVI</span>
+                            </button>
+                        </div>
+                        <!-- Seats controls -->
+                        <div class="vc-panel-row" id="panelSeats" style="display:none;">
+                            <button class="vc-tile heat" id="btnSeatHeat1" title="Left seat heat" data-i18n-attr="title:vehicle.driver_heat">
+                                <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="m801-458-66-44 13-21q6-9 9-18.5t3-20.5q0-14-5-27t-15-23q-21-21-32.5-48.5T696-718q0-23 6.5-44t18.5-40l13-20 67 44-14 21q-6 9-8.5 18.5T776-718q0 14 5 27t15 23q21 21 32.5 48.5T840-562q0 23-6.5 44T815-478l-14 20Zm-168 0-66-44 13-21q6-9 9-18.5t3-20.5q0-14-5-27t-15-23q-21-21-32.5-48.5T528-718q0-23 6.5-44t18.5-40l13-20 67 44-14 21q-6 9-8.5 18.5T608-718q0 14 5 27t15 23q21 21 32.5 48.5T672-562q0 23-6.5 44T647-478l-14 20Zm-167 0-67-44 14-21q6-9 9-18.5t3-20.5q0-14-5.5-27T404-612q-21-21-32.5-48.5T360-718q0-23 6-44t19-40l14-20 67 44-14 21q-6 8-9 18t-3 21q0 14 5 27t15 23q21 21 32.5 48.5T504-562q0 23-6.5 44T479-478l-13 20ZM302-120q-27 0-48-16.5T225-179l-96-373q-4-15-6.5-30.5T120-614q0-28 6.5-55t19.5-52q9-18 25.5-28.5T208-760q23 0 40 17t17 40q0 11-4 21t-12 18q-19 20-22.5 46.5T234-566l20 42q29 63 47.5 130T320-257v44q17-11 36-19t40-8h204q34 0 57.5 23.5T681-160v40H302Z"/></svg>
+                                <span data-i18n="vehicle.driver_heat">Left heat</span>
+                            </button>
+                            <button class="vc-tile cool" id="btnSeatCool1" title="Left seat cool" data-i18n-attr="title:vehicle.driver_cool">
+                                <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M302-120q-27 0-48-16.5T225-179l-96-373q-4-15-6.5-30.5T120-614q0-28 6.5-55t19.5-52q9-18 25.5-28.5T208-760q23 0 40 17t17 40q0 11-4 21t-12 18q-19 20-22.5 46.5T234-566l20 42q29 63 47.5 130T320-257v44q17-11 36-19t40-8h204q34 0 57.5 23.5T681-160v40H302Zm268-240v-88l-69 69-42-42 111-111v-38h-38L421-459l-42-42 69-69h-88v-60h88l-69-69 42-42 111 111h38v-38L459-779l42-42 69 69v-88h60v88l69-69 42 42-111 111v38h38l111-111 42 42-69 69h88v60h-88l69 69-42 42-111-111h-38v38l111 111-42 42-69-69v88h-60Z"/></svg>
+                                <span data-i18n="vehicle.driver_cool">Left cool</span>
+                            </button>
+                            <button class="vc-tile heat" id="btnSeatHeat2" title="Right seat heat" data-i18n-attr="title:vehicle.passenger_heat">
+                                <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="m561-458-66-44 13-21q6-9 9-18.5t3-20.5q0-14-5.5-27T499-612q-21-21-32-48.5T456-718q0-23 6.5-44t18.5-40l13-20 67 44-14 21q-6 9-9 18.5t-3 20.5q0 14 5.5 27t15.5 23q21 21 32 48.5t11 57.5q0 23-6 44t-18 40l-14 20Zm-168 0-66-44 13-21q6-9 9-18.5t3-20.5q0-14-5.5-27T331-612q-21-21-32-48.5T288-718q0-23 6.5-44t18.5-40l13-20 67 44-14 21q-6 9-9 18.5t-3 20.5q0 14 5.5 27t15.5 23q21 21 32 48.5t11 57.5q0 23-6 44t-18 40l-14 20Zm-168 0-66-44 14-21q6-9 8.5-18.5T184-562q0-14-5-27t-15-23q-21-21-32.5-48.5T120-718q0-23 6-44t19-40l14-20 66 44-14 21q-6 8-9 18t-3 21q0 14 5.5 27t15.5 23q21 21 32.5 48.5T264-562q0 23-6.5 44T239-478l-14 20Zm54 338v-40q0-33 23-56.5t57-23.5h204q21 0 40 8t36 19v-44q0-70 19-137t48-130l19-42q11-25 8-51.5T711-664q-8-8-12-18t-4-21q0-23 16.5-40t39.5-17q20 0 37 10.5t26 28.5q13 25 19.5 52t6.5 55q0 16-2 31.5t-7 30.5l-96 373q-8 26-29.5 42.5T657-120H279Z"/></svg>
+                                <span data-i18n="vehicle.passenger_heat">Right heat</span>
+                            </button>
+                            <button class="vc-tile cool" id="btnSeatCool2" title="Right seat cool" data-i18n-attr="title:vehicle.passenger_cool">
+                                <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M279-120v-40q0-33 23.5-56.5T360-240h203q21 0 40.5 8t36.5 19v-44q0-70 18.5-137T706-524l20-42q11-25 7.5-51.5T711-664q-8-8-12-18t-4-21q0-23 16.5-40t39.5-17q20 0 37 10.5t26 28.5q13 25 19.5 52t6.5 55q0 16-2 31.5t-7 30.5l-96 373q-8 26-29 42.5T658-120H279Zm51-240v-88l-69 69-43-42 112-111v-38h-38L181-459l-43-42 69-69h-87v-60h87l-69-69 43-42 111 111h38v-38L218-779l43-42 69 69v-88h60v88l68-69 43 42-111 111v38h37l111-111 43 42-69 69h88v60h-88l69 69-43 42-111-111h-37v38l111 111-43 42-68-69v88h-60Z"/></svg>
+                                <span data-i18n="vehicle.passenger_cool">Right cool</span>
+                            </button>
+                            <!-- Steering-wheel heater — SDK-first with a composite cloud
+                                 fallback. Deliberately NOT cloud-marked: the local write is
+                                 the preferred path and works without an account, exactly like
+                                 the seat tiles beside it. Marking it would dash the tile out
+                                 as unavailable on a car where it works fine. -->
+                            <button class="vc-tile heat" id="btnSteeringHeat" title="Steering wheel heater" data-i18n-attr="title:vehicle.steering_heat">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9"/>
+                                    <circle cx="12" cy="12" r="2"/>
+                                    <path d="M12 14v6"/>
+                                    <path d="M6.2 8.4 12 12l5.8-3.6"/>
+                                </svg>
+                                <span data-i18n="vehicle.steering_heat_short">Wheel</span>
+                            </button>
+                            <button class="vc-tile memory" id="btnSeatMemory1" title="Position 1 — tap to recall, hold to save" data-i18n-attr="title:vehicle.seat_pos_1_title">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.35 5.64c-.9-.64-1.12-1.88-.49-2.79.63-.9 1.88-1.12 2.79-.49.9.64 1.12 1.88.49 2.79-.64.9-1.88 1.12-2.79.49zM16 19H8.93c-1.48 0-2.74-1.08-2.96-2.54L4 7H2l1.99 9.76C4.37 19.2 6.47 21 8.94 21H16v-2zm.23-4h-4.88l-1.03-4.1c1.58.89 3.28 1.54 5.15 1.22V9.99c-1.63.31-3.44-.27-4.69-1.25L9.14 7.47c-.23-.18-.49-.3-.76-.38-.32-.09-.66-.12-.99-.06h-.02c-1.23.22-2.05 1.39-1.84 2.61l1.35 5.92C7.16 16.98 8.39 18 9.83 18h6.85l3.82 3 1.5-1.5-5.77-4.5z"/></svg>
+                                <span data-i18n="vehicle.seat_pos_1">Pos 1</span>
+                            </button>
+                            <button class="vc-tile memory" id="btnSeatMemory2" title="Position 2 — tap to recall, hold to save" data-i18n-attr="title:vehicle.seat_pos_2_title">
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.35 5.64c-.9-.64-1.12-1.88-.49-2.79.63-.9 1.88-1.12 2.79-.49.9.64 1.12 1.88.49 2.79-.64.9-1.88 1.12-2.79.49zM16 19H8.93c-1.48 0-2.74-1.08-2.96-2.54L4 7H2l1.99 9.76C4.37 19.2 6.47 21 8.94 21H16v-2zm.23-4h-4.88l-1.03-4.1c1.58.89 3.28 1.54 5.15 1.22V9.99c-1.63.31-3.44-.27-4.69-1.25L9.14 7.47c-.23-.18-.49-.3-.76-.38-.32-.09-.66-.12-.99-.06h-.02c-1.23.22-2.05 1.39-1.84 2.61l1.35 5.92C7.16 16.98 8.39 18 9.83 18h6.85l3.82 3 1.5-1.5-5.77-4.5z"/></svg>
+                                <span data-i18n="vehicle.seat_pos_2">Pos 2</span>
+                            </button>
+                        </div>
+                        <!-- Windows controls — one card per aperture, each with
+                             its own position readout and preset row. -->
+                        <div class="vc-panel-row vc-window-grid" id="panelWindows" style="display:none;">
+                            <div class="vc-window-row" data-area="lf" data-area-num="1">
+                                <div class="vc-window-label"><span class="label-area" data-i18n="vehicle.pos_front_left">Front left</span><span class="label-pct" id="winLabel_lf">—%</span></div>
+                                <div class="vc-window-presets">
+                                    <button class="vc-preset" data-preset="0" title="Closed">0%</button>
+                                    <button class="vc-preset" data-preset="25" title="25% open">25%</button>
+                                    <button class="vc-preset" data-preset="50" title="Half open">50%</button>
+                                    <button class="vc-preset" data-preset="75" title="75% open">75%</button>
+                                    <button class="vc-preset" data-preset="100" title="Fully open">100%</button>
+                                </div>
+                            </div>
+                            <div class="vc-window-row" data-area="rf" data-area-num="2">
+                                <div class="vc-window-label"><span class="label-area" data-i18n="vehicle.pos_front_right">Front right</span><span class="label-pct" id="winLabel_rf">—%</span></div>
+                                <div class="vc-window-presets">
+                                    <button class="vc-preset" data-preset="0" title="Closed">0%</button>
+                                    <button class="vc-preset" data-preset="25" title="25% open">25%</button>
+                                    <button class="vc-preset" data-preset="50" title="Half open">50%</button>
+                                    <button class="vc-preset" data-preset="75" title="75% open">75%</button>
+                                    <button class="vc-preset" data-preset="100" title="Fully open">100%</button>
+                                </div>
+                            </div>
+                            <div class="vc-window-row" data-area="lr" data-area-num="3">
+                                <div class="vc-window-label"><span class="label-area" data-i18n="vehicle.pos_rear_left">Rear left</span><span class="label-pct" id="winLabel_lr">—%</span></div>
+                                <div class="vc-window-presets">
+                                    <button class="vc-preset" data-preset="0" title="Closed">0%</button>
+                                    <button class="vc-preset" data-preset="25" title="25% open">25%</button>
+                                    <button class="vc-preset" data-preset="50" title="Half open">50%</button>
+                                    <button class="vc-preset" data-preset="75" title="75% open">75%</button>
+                                    <button class="vc-preset" data-preset="100" title="Fully open">100%</button>
+                                </div>
+                            </div>
+                            <div class="vc-window-row" data-area="rr" data-area-num="4">
+                                <div class="vc-window-label"><span class="label-area" data-i18n="vehicle.pos_rear_right">Rear right</span><span class="label-pct" id="winLabel_rr">—%</span></div>
+                                <div class="vc-window-presets">
+                                    <button class="vc-preset" data-preset="0" title="Closed">0%</button>
+                                    <button class="vc-preset" data-preset="25" title="25% open">25%</button>
+                                    <button class="vc-preset" data-preset="50" title="Half open">50%</button>
+                                    <button class="vc-preset" data-preset="75" title="75% open">75%</button>
+                                    <button class="vc-preset" data-preset="100" title="Fully open">100%</button>
+                                </div>
+                            </div>
+                            <div class="vc-window-row vc-window-row-wide">
+                                <div class="vc-window-label"><span class="label-area" data-i18n="vehicle.all_windows">All Windows</span></div>
+                                <div class="vc-window-presets">
+                                    <button class="vc-preset" id="btnWinAllClose" title="All Windows Closed">0%</button>
+                                    <button class="vc-preset" id="btnWinAllOpen" title="All Windows Open">100%</button>
+                                    <!-- Hybrid vent: local closed-loop 15% while awake, BYD
+                                         OPENWINDOW through cloud when the vehicle is remote. -->
+                                    <button class="vc-preset" id="btnWinAllVent" title="Vent all windows" data-i18n-attr="title:vehicle.vent_all_windows" data-i18n="vehicle.vent">Vent</button>
+                                </div>
+                            </div>
+                            <div class="vc-window-row" data-area="sunroof" data-area-num="5">
+                                <div class="vc-window-label"><span class="label-area" data-i18n="vehicle.sunroof">Sunroof</span><span class="label-pct" id="winLabel_sunroof">—%</span></div>
+                                <div class="vc-window-presets">
+                                    <button class="vc-preset" data-preset="0" title="Closed">0%</button>
+                                    <button class="vc-preset" data-preset="25" title="25% open">25%</button>
+                                    <button class="vc-preset" data-preset="50" title="Half open">50%</button>
+                                    <button class="vc-preset" data-preset="75" title="75% open">75%</button>
+                                    <button class="vc-preset" data-preset="100" title="Fully open">100%</button>
+                                </div>
+                            </div>
+                            <div class="vc-window-row" data-area="sunshade" data-area-num="6">
+                                <div class="vc-window-label"><span class="label-area" data-i18n="vehicle.sunshade">Sunshade</span><span class="label-pct" id="winLabel_sunshade">—%</span></div>
+                                <div class="vc-window-presets">
+                                    <button class="vc-preset" data-preset="0" title="Closed">0%</button>
+                                    <button class="vc-preset" data-preset="25" title="25% open">25%</button>
+                                    <button class="vc-preset" data-preset="50" title="Half open">50%</button>
+                                    <button class="vc-preset" data-preset="75" title="75% open">75%</button>
+                                    <button class="vc-preset" data-preset="100" title="Fully open">100%</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lights controls -->
+                        <div class="vc-panel-row vc-stack-grid" id="panelLights" style="display:none;">
+                            <div class="vc-stack-row">
+                                <button class="vc-tile" id="btnDRL" title="Daytime running lights" data-i18n-attr="title:vehicle.btn_drl_title">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 7H8a5 5 0 0 0 0 10h2Z"/><circle cx="14" cy="8" r=".6"/><circle cx="14" cy="12" r=".6"/><circle cx="14" cy="16" r=".6"/><circle cx="17.5" cy="8" r=".4"/><circle cx="17.5" cy="12" r=".4"/><circle cx="17.5" cy="16" r=".4"/><circle cx="21" cy="8" r=".2"/><circle cx="21" cy="12" r=".2"/><circle cx="21" cy="16" r=".2"/></svg>
+                                    <span data-i18n="vehicle.btn_drl">DRL</span>
+                                </button>
+                            </div>
+                            <div class="ambient-wrapper">
+                                <div class="ambient-head">
+                                    <span class="ambient-title" data-i18n="vehicle.ambient_lights">Ambient Lights</span>
+                                </div>
+                                <div class="ambient-track">
+                                    <input type="range" id="ambientColourSlider" class="vc-ambient-slider" min="1" max="31" step="1" value="1" aria-label="Ambient Colour" />
+                                    <span class="ambient-thumb" id="ambientThumb" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ADAS controls -->
+                        <div class="vc-panel-row" id="panelAdas" style="display:none;">
+                            <button class="vc-tile" id="btnSLW" title="Speed limit warning" data-i18n-attr="title:vehicle.btn_slw_title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 17.5a8.5 8.5 0 1 1 15-5.5m-15 5.5 2-1m-4-4.5h2m0-5.5L7 8m4.5-4v2m6 .5L16 8m4.5 4h-2"/><path d="m13 12 3-4" stroke-width="1"/><circle cx="12" cy="14" r="1"/><path d="m12.9 16-2 1.6H9.3V20h1.6l2 1.6zm2 1.6 2.4 2.4m0-2.4L14.9 20" stroke-width="1"/></svg>
+                                <span data-i18n="vehicle.btn_slw">SLW</span>
+                            </button>
+                            <button class="vc-tile" id="btnCPD" title="Child presence detection" data-i18n-attr="title:vehicle.btn_cpd_title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M15 12h.01"/><path d="M19.38 6.813A9 9 0 0 1 20.8 10.2a2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/><path d="M9 12h.01"/></svg>
+                                <span data-i18n="vehicle.btn_cpd">CPD</span>
+                            </button>
+                        </div>
+                        <div class="vc-panel-row vc-schedule" id="panelCharging" style="display:none;">
+                            <div class="vc-charging-grid">
+                                <section class="vc-block">
+                                    <div class="vc-block-head">
+                                        <span class="vc-block-title" data-i18n="vehicle_control.section_schedule">Schedule</span>
+                                        <button class="vc-charge-switch" id="btnSmartChargeToggle" title="Smart charging" data-i18n-attr="title:vehicle_control.smart_charging" data-requires-cloud="true">On</button>
+                                    </div>
+                                    <div class="vc-schedule-grid">
+                                        <div class="vc-schedule-bar vc-schedule-window">
+                                            <span class="vc-schedule-label" data-i18n="vehicle_control.window">Window</span>
+                                            <input type="time" id="chargeStartTime" class="vc-time" value="22:00" aria-label="Start" />
+                                            <span class="vc-schedule-arrow">–</span>
+                                            <input type="time" id="chargeEndTime" class="vc-time" value="06:00" aria-label="End" />
+                                            <button class="vc-pill" id="btnChargeUntilFull" data-i18n="vehicle_control.until_full" title="Charge until full inside the window" data-i18n-attr="title:vehicle_control.until_full_title">Until full</button>
+                                        </div>
+                                        <div class="vc-schedule-bar">
+                                            <span class="vc-schedule-label" data-i18n="vehicle_control.repeat">Repeat</span>
+                                            <div class="vc-segmented" id="repeatSegmented">
+                                                <button class="vc-seg" data-mode="once" title="Run once and stop" data-i18n-attr="title:vehicle_control.repeat_once_title" data-i18n="vehicle_control.repeat_once">One time</button>
+                                                <button class="vc-seg" data-mode="daily" title="Run every day" data-i18n-attr="title:vehicle_control.repeat_daily_title" data-i18n="vehicle_control.repeat_daily">Every day</button>
+                                                <button class="vc-seg" data-mode="custom" title="Pick specific days" data-i18n-attr="title:vehicle_control.repeat_custom_title" data-i18n="vehicle_control.repeat_custom">Custom</button>
+                                            </div>
+                                        </div>
+                                        <div class="vc-schedule-bar vc-day-chips" id="chargeDayChips" style="display:none;">
+                                            <button class="vc-day" data-day="0" data-i18n="vehicle_control.day_mon">Mon</button>
+                                            <button class="vc-day" data-day="1" data-i18n="vehicle_control.day_tue">Tue</button>
+                                            <button class="vc-day" data-day="2" data-i18n="vehicle_control.day_wed">Wed</button>
+                                            <button class="vc-day" data-day="3" data-i18n="vehicle_control.day_thu">Thu</button>
+                                            <button class="vc-day" data-day="4" data-i18n="vehicle_control.day_fri">Fri</button>
+                                            <button class="vc-day" data-day="5" data-i18n="vehicle_control.day_sat">Sat</button>
+                                            <button class="vc-day" data-day="6" data-i18n="vehicle_control.day_sun">Sun</button>
+                                        </div>
+                                        <div class="vc-schedule-bar vc-block-actions">
+                                            <button class="vc-charge-action" id="btnStartCharging" title="Start charging now" data-i18n-attr="title:vehicle_control.start_charge" data-requires-cloud="true">
+                                                <span data-i18n="vehicle_control.start_charge">Start now</span>
+                                            </button>
+                                            <button class="vc-charge-save" id="btnChargeScheduleSave" title="Save charging schedule" data-i18n-attr="title:vehicle_control.save_schedule" data-requires-cloud="true">
+                                                <span data-i18n="vehicle_control.save">Save</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="vc-block vc-block--divider" id="chargeCapSection">
+                                    <div class="vc-block-head">
+                                        <span class="vc-block-title" data-i18n="vehicle_control.section_charge_cap">Charge limit</span>
+                                        <span class="vc-readout" id="chargeCapReadout">—</span>
+                                        <button class="vc-charge-switch" id="btnChargeCapToggle" title="Charge limit" data-i18n-attr="title:vehicle_control.section_charge_cap">On</button>
+                                    </div>
+                                    <input type="range" id="chargeCapSlider" class="vc-soc-slider" min="50" max="100" step="5" value="50" aria-label="Charge limit" />
+                                </section>
+                                <section class="vc-block vc-block--divider" id="acChargeCurrentSection">
+                                    <div class="vc-block-head">
+                                        <span class="vc-block-title" data-i18n="vehicle_control.section_ac_current">AC current</span>
+                                    </div>
+                                    <div class="vc-segmented vc-segmented-full" id="acChargeCurrentSegmented"
+                                         aria-label="AC charging current limit">
+                                        <button class="vc-seg" data-state="1" disabled>6 A</button>
+                                        <button class="vc-seg" data-state="2" disabled>8 A</button>
+                                        <button class="vc-seg" data-state="3" disabled>10 A</button>
+                                        <button class="vc-seg" data-state="4" disabled>16 A</button>
+                                        <button class="vc-seg" data-state="5" disabled data-i18n="vehicle_control.ac_max">Max</button>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category tabs — always visible -->
+                    <div class="vc-tabs">
+                        <button class="vc-tab has-active" data-panel="panelSecurity" onclick="VC.togglePanel('panelSecurity', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            <span data-i18n="vehicle.tab_security">Security</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelTrunk" onclick="VC.togglePanel('panelTrunk', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 21H2"/><path d="M10 4a2 2 0 0 1 2.36-1.968l5.41.992A1.5 1.5 0 0 1 19 4.5V21l-7.876.992A1 1 0 0 1 10 21z"/><path d="M10.268 3H7a2 2 0 0 0-2 2v16"/><path d="M14 12h.01"/><path d="M22 21h-3"/></svg>
+                            <span data-i18n="vehicle.tab_trunk">Trunk</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelClimate" onclick="VC.togglePanel('panelClimate', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+                            <span data-i18n="vehicle.tab_climate">Climate</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelSeats" onclick="VC.togglePanel('panelSeats', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.35 5.64c-.9-.64-1.12-1.88-.49-2.79.63-.9 1.88-1.12 2.79-.49.9.64 1.12 1.88.49 2.79-.64.9-1.88 1.12-2.79.49zM16 19H8.93c-1.48 0-2.74-1.08-2.96-2.54L4 7H2l1.99 9.76C4.37 19.2 6.47 21 8.94 21H16v-2zm.23-4h-4.88l-1.03-4.1c1.58.89 3.28 1.54 5.15 1.22V9.99c-1.63.31-3.44-.27-4.69-1.25L9.14 7.47c-.23-.18-.49-.3-.76-.38-.32-.09-.66-.12-.99-.06h-.02c-1.23.22-2.05 1.39-1.84 2.61l1.35 5.92C7.16 16.98 8.39 18 9.83 18h6.85l3.82 3 1.5-1.5-5.77-4.5z"/></svg>
+                            <span data-i18n="vehicle.tab_seats">Seats</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelWindows" onclick="VC.togglePanel('panelWindows', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M583-620q-10 0-18-6t-11-16l-57-200q-4-14 5-26t24-12h263q10 0 18 6t11 16l57 200q4 14-5 26t-24 12H583Zm23-60h200l-40-140H566l40 140Zm-341 0q-29 0-49-20t-20-49q0-29 20-50t49-21q29 0 50 21t21 50q0 29-21 49t-50 20Zm257 560H241q-26 0-44.5-17T173-180L80-645h63l87 465h292v60ZM762-20 644-225H330q-26 0-46.5-15T258-280l-47-248q-9-46 23-81.5t80-35.5q35 0 60 22.5t32 56.5l46 240h166q20 0 35 12t25 29L815-50l-53 30ZM606-680l-40-140 40 140Z"/></svg>
+                            <span data-i18n="vehicle.tab_windows">Windows</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelLights" onclick="VC.togglePanel('panelLights', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+                            <span data-i18n="vehicle.tab_lights">Lights</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelAdas" onclick="VC.togglePanel('panelAdas', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span data-i18n="vehicle.tab_adas">ADAS</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelCharging" onclick="VC.togglePanel('panelCharging', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h8l-1 8 10-12h-8z"/></svg>
+                            <span data-i18n="vehicle_control.charging_tab">Charging</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelSound" onclick="VC.togglePanel('panelSound', this)">
+                            <span class="tab-dot"></span>
+                            <!-- Speaker + sound waves — exterior speaker glyph. -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                            <span data-i18n="vehicle.tab_sound">Sound</span>
+                        </button>
+                        <button class="vc-tab" data-panel="panelSystem"
+                                onclick="VC.togglePanel('panelSystem', this)">
+                            <span class="tab-dot"></span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 11a8.1 8.1 0 1 1-2.3-5.7"/>
+                                <path d="M20 4v7h-7"/>
+                            </svg>
+                            <span>System</span>
+                        </button>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!--
+        Three.js r147 (last with examples/js/ UMD), Draco decoder, GSAP 3.12
+        Chrome 58+ compatible — no ES modules, no import maps.
+        ALL VENDOR SCRIPTS LOAD LOCALLY — no internet required after install.
+        ?v=12 cache-busts the WebView's HTTP cache after upgrade — bump on next release.
+    -->
+    <!-- auth.js MUST load before any other script that calls fetch(), so it can
+         install its global fetch override that auto-attaches the JWT bearer
+         token (works through tunnels where cookies are stripped). -->
+    <script src="../shared/auth.js?v=12"></script>
+    <script src="../shared/pwa-init.js?v=index1"></script>
+    <!-- core.js polls /status every 5s and populates the sidebar status card
+         (12V, ACC, SOC, range, SOH, fuel, network). Without it those values
+         all stay unread since vehicle-control.js only manages the 3D scene. -->
+    <script src="../shared/core.js?v=20"></script>
+    <script src="../shared/update-flow.js"></script>
+    <!-- Mode-gated loader. In immersive mode this injects the heavy stack
+         (SotaPlayer + three.js + Draco/GLTF/Orbit + gsap ≈ 820 KB of script,
+         plus the 1.6 MB GLB the scene then fetches) in strict order via
+         async=false, exactly matching the old static tag order. In lite mode
+         only vehicle-control.js loads — its boot detects VC_LITE and skips
+         the 3D scene entirely. NOTE: dynamically injected scripts don't block
+         DOMContentLoaded, so vehicle-control.js boots readyState-aware. -->
+    <script>
+        (function () {
+            // Published so VC.switchViewMode() can pull the same stack, in the
+            // same order, when the user turns 3D on without reloading.
+            window.VC_VENDOR_CHAIN = [
+                '../shared/SotaPlayer.js?v=13',
+                '../shared/vendor/three.min.js?v=12',
+                '../shared/vendor/DRACOLoader.js?v=12',
+                '../shared/vendor/GLTFLoader.js?v=12',
+                '../shared/vendor/OrbitControls.js?v=12',
+                '../shared/vendor/gsap.min.js?v=12'
+            ];
+            var chain = window.VC_LITE ? [] : window.VC_VENDOR_CHAIN.slice();
+            chain.push('../shared/vehicle-control.js?v=vclite31');
+            for (var i = 0; i < chain.length; i++) {
+                var s = document.createElement('script');
+                s.src = chain[i];
+                s.async = false;   // preserve execution order
+                document.body.appendChild(s);
+            }
+        })();
+    </script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        // Kick off sidebar status polling. core.js doesn't auto-init (other
+        // pages call BYD.core.init() from their own bootstrap blocks).
+        if (window.BYD && BYD.core && typeof BYD.core.init === 'function') {
+            BYD.i18n.init().then(function () {
+                BYD.core.init();
+            });
+        }
+    </script>
+</body>
+</html>

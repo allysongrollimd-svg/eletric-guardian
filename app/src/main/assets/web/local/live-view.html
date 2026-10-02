@@ -1,0 +1,2758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title data-i18n="app.live_view_title">Live View - OverDrive</title>
+    <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="../shared/app-icon-dark.webp">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#00876C">
+    <script src="../shared/theme.js?v=8"></script>
+    <script src="../shared/skeleton.js?v=4"></script>
+    <script src="../shared/app-shell.js?v=7"></script>
+    <script>
+        if (typeof window.AndroidBridge !== 'undefined') {
+            document.documentElement.classList.add('is-app-webview');
+        }
+    </script>
+    <style>
+        html.is-app-webview .cabin-listen-btn { display: none !important; }
+    </style>
+    <link rel="stylesheet" href="../shared/styles.css?v=34">
+    <link rel="stylesheet" href="../shared/leaflet.css" />
+    <script src="../shared/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jmuxer@2.0.4/dist/jmuxer.min.js"></script>
+    <script src="../shared/SotaPlayer.js?v=13"></script>
+    <script src="../shared/Decoder.js"></script>
+    <script src="../shared/YUVCanvas.js"></script>
+    <script src="../shared/Player.js"></script>
+</head>
+<body class="live-view-page">
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <!-- App shell sidebar (rendered by ../shared/app-shell.js) -->
+        <div id="app-shell-mount"></div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="mobile-header" id="mobileHeader">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+                    </svg>
+                </button>
+                <div class="brand"><span class="brand-name" style="font-size:16px;">OverDrive</span></div>
+                <div style="width:40px;"></div>
+            </div>
+
+            <div class="live-tabs-view" id="tabsView">
+                <div class="tab-content">
+                    <!-- Camera-first Live dashboard. In landscape the camera
+                         stage keeps most of the canvas while the selector and
+                         location preview share a utility rail on the right. -->
+                    <div class="tab-panel active" id="panelCameras">
+                        <div class="seamless-camera-view">
+                            <div class="camera-stage">
+                            <!-- Top Bar -->
+                            <div class="camera-top-bar">
+                                <div class="top-bar-left">
+                                    <div class="connection-status" id="connectionStatus" role="status"
+                                         aria-label="Select Camera"
+                                         data-i18n-attr="aria-label:pip.select_camera">
+                                        <span class="conn-dot"></span>
+                                    </div>
+                                </div>
+                                <div class="top-bar-right">
+                                    <!-- The <select> stays the source of truth for the
+                                         quality value and its localized labels; the
+                                         trigger and list mirror it because a native
+                                         option popup can't be themed. -->
+                                    <div class="quality-menu" id="qualityMenu">
+                                        <select id="qualitySelector" class="quality-menu__native" onchange="BYD.stream.setQuality(this.value)">
+                                            <option value="ULTRA_LOW"  data-i18n="stream.quality_ultra_low">Ultra Low (400k)</option>
+                                            <option value="LOW"        data-i18n="stream.quality_low">Low (600k)</option>
+                                            <option value="MEDIUM"     selected data-i18n="stream.quality_medium">Medium (1M)</option>
+                                            <option value="HIGH"       data-i18n="stream.quality_high">High (1.5M)</option>
+                                            <option value="ULTRA_HIGH" data-i18n="stream.quality_ultra_high">Ultra High (2.5M)</option>
+                                            <option value="SMOOTH"     data-i18n="stream.quality_smooth">Smooth (3.5M, 25 fps)</option>
+                                            <option value="MAX"        data-i18n="stream.quality_max">Max (5M, 30 fps)</option>
+                                        </select>
+                                        <button type="button" class="quality-menu__trigger" id="qualityMenuTrigger"
+                                                aria-haspopup="listbox" aria-expanded="false"
+                                                data-i18n-attr="aria-label:recording.video_quality_title"
+                                                aria-label="Video Quality">
+                                            <span class="quality-menu__value" id="qualityMenuValue">Medium (1M)</span>
+                                            <svg class="quality-menu__chevron" viewBox="0 0 24 24" fill="none"
+                                                 stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <path d="m6 9 6 6 6-6"/>
+                                            </svg>
+                                        </button>
+                                        <div class="quality-menu__list" id="qualityMenuList" role="listbox"></div>
+                                    </div>
+                                    <button class="top-bar-btn cabin-listen-btn"
+                                            id="cabinListenButton"
+                                            type="button"
+                                            onclick="BYD.cabinListener.toggle()"
+                                            aria-pressed="false"
+                                            data-i18n-attr="title:liveview.listen_cabin;aria-label:liveview.listen_cabin"
+                                            title="Listen to cabin"
+                                            aria-label="Listen to cabin">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path d="M11 5 6 9H2v6h4l5 4V5Z"/>
+                                            <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+                                            <path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+                                        </svg>
+                                    </button>
+                                    <button class="top-bar-btn" onclick="BYD.stream.toggleFullscreen()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                                            <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Video Display -->
+                            <div class="video-display-area" id="videoDisplayArea">
+                                <video id="hw_player" autoplay muted playsinline></video>
+                                <div id="sw_container"></div>
+                                <canvas id="sota_canvas"></canvas>
+                                <div class="video-idle-state" id="videoIdleState">
+                                    <div class="idle-icon">
+                                        <svg class="idle-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/>
+                                        </svg>
+                                        <svg class="idle-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                             stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                                            <path d="M12 9v4"/><path d="M12 17h.01"/>
+                                            <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
+                                        </svg>
+                                        <span class="idle-spinner" aria-hidden="true"></span>
+                                    </div>
+                                    <span class="idle-text" data-i18n="stream.idle_hint">Tap a camera on the car below</span>
+                                    <span class="idle-subtext" id="videoIdleSubtext"></span>
+                                </div>
+                                <div class="camera-label-overlay" id="cameraLabelOverlay" style="display:none;">
+                                    <span id="currentCameraLabel" data-i18n="stream.front_camera">Front Camera</span>
+                                </div>
+
+                                <!-- Deterrent controls — manual horn + light triggers so the
+                                     camera view is an active security tool, not just a passive
+                                     monitor (see issue #118). Both route to cloud-only vehicle
+                                     commands (FINDCAR = horn+lights, FLASHLIGHT = lights only),
+                                     so the whole cluster stays display:none until the cloud
+                                     status probe below confirms the account is configured +
+                                     verified. Each fire is gated behind a themed confirm dialog
+                                     to prevent accidental activation. -->
+                                <div class="deterrent-controls" id="deterrentControls" style="display:none;"
+                                     role="group" data-i18n-attr="aria-label:liveview.deterrent_group_label"
+                                     aria-label="Vehicle deterrent controls">
+                                    <button type="button" class="deterrent-btn deterrent-horn" id="deterrentHornBtn"
+                                            onclick="BYD.stream.fireDeterrent('horn')"
+                                            data-i18n-attr="title:liveview.deterrent_horn;aria-label:liveview.deterrent_horn"
+                                            title="Horn" aria-label="Horn">
+                                        <!-- Lucide megaphone -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+                                        </svg>
+                                        <span class="deterrent-label" data-i18n="liveview.deterrent_horn">Horn</span>
+                                    </button>
+                                    <button type="button" class="deterrent-btn deterrent-flash" id="deterrentFlashBtn"
+                                            onclick="BYD.stream.fireDeterrent('flash')"
+                                            data-i18n-attr="title:liveview.deterrent_flash;aria-label:liveview.deterrent_flash"
+                                            title="Flash" aria-label="Flash">
+                                        <!-- Lucide lightbulb -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>
+                                        </svg>
+                                        <span class="deterrent-label" data-i18n="liveview.deterrent_flash">Flash</span>
+                                    </button>
+                                </div>
+                            </div>
+                            </div>
+
+                            <aside class="live-utility-rail" id="liveUtilityRail">
+                            <section class="camera-selector-card" aria-label="Camera selector">
+                            <!-- Camera selector — first card in the landscape utility rail. -->
+                            <div class="selector-card-header">
+                                <h2 data-i18n="liveview.cameras">Cameras</h2>
+                            </div>
+                            <div class="car-selector-bottom">
+                                <div class="car-image-container">
+                                    <img class="car-image-fallback"
+                                         src="../shared/car-icon.webp"
+                                         alt=""
+                                         aria-hidden="true">
+                                    <canvas id="liveCarCanvas" class="car-image" aria-hidden="true"></canvas>
+                                    
+                                    <!-- Camera Hotspots with Pulse Animation -->
+                                    <div class="cam-hotspot" data-cam="1" onclick="BYD.stream.selectCamera(1)">
+                                        <div class="hotspot-pulse"></div>
+                                        <div class="hotspot-ring"></div>
+                                        <span class="hotspot-label" data-i18n="stream.hotspot_front">FRONT</span>
+                                    </div>
+                                    <!-- OEM Dashcam (data-cam=6). Hidden by default; the
+                                         init script unhides it iff /api/settings/quality
+                                         reports oemDashcam.oemDashcamCameraId >= 0. The
+                                         "DVR" pill sits on the hood, slightly off-centre
+                                         from the FRONT quadrant marker so users see the
+                                         standalone dashcam sensor as distinct from the
+                                         AVM front-quadrant stitch. -->
+                                    <div class="cam-hotspot cam-dvr" data-cam="6" style="display:none;" onclick="BYD.stream.selectCamera(6)">
+                                        <div class="hotspot-pulse"></div>
+                                        <div class="hotspot-ring"></div>
+                                        <span class="hotspot-label" data-i18n="stream.hotspot_oem_dashcam">DVR</span>
+                                    </div>
+                                    <div class="cam-hotspot" data-cam="3" onclick="BYD.stream.selectCamera(3)">
+                                        <div class="hotspot-pulse"></div>
+                                        <div class="hotspot-ring"></div>
+                                        <span class="hotspot-label" data-i18n="stream.hotspot_rear">REAR</span>
+                                    </div>
+                                    <div class="cam-hotspot" data-cam="4" onclick="BYD.stream.selectCamera(4)">
+                                        <div class="hotspot-pulse"></div>
+                                        <div class="hotspot-ring"></div>
+                                        <span class="hotspot-label" data-i18n="stream.hotspot_left">LEFT</span>
+                                    </div>
+                                    <div class="cam-hotspot" data-cam="2" onclick="BYD.stream.selectCamera(2)">
+                                        <div class="hotspot-pulse"></div>
+                                        <div class="hotspot-ring"></div>
+                                        <span class="hotspot-label" data-i18n="stream.hotspot_right">RIGHT</span>
+                                    </div>
+                                    <div class="cam-hotspot cam-all" data-cam="0" onclick="BYD.stream.selectCamera(0)">
+                                        <div class="hotspot-pulse"></div>
+                                        <div class="hotspot-ring"></div>
+                                        <span class="hotspot-label" data-i18n="stream.hotspot_all">ALL</span>
+                                    </div>
+                                </div>
+                            </div>
+                            </section>
+
+                            <section class="live-location-card" id="locationCard">
+                                <div class="location-card-header">
+                                    <div>
+                                        <h2 data-i18n="dashboard.card_location">Vehicle location</h2>
+                                        <div class="location-freshness is-sk">
+                                            <span class="location-freshness-dot"></span>
+                                            <span class="location-freshness-label">
+                                                <span id="lastGpsUpdate">—</span>
+                                            </span>
+                                            <span class="sk sk-cover" data-sk-group="gpsFreshness"></span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="location-close-button"
+                                            onclick="BYD.liveLayout.setMapExpanded(false)"
+                                            data-i18n-attr="aria-label:liveview.back_to_cameras"
+                                            aria-label="Back to cameras">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                            <path fill="currentColor" d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l8.92-7.92L13.5 5.5 8 11h12z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="location-map-frame">
+                                    <div class="map-container" id="mapContainer"></div>
+                                    <div class="map-overlay-actions">
+                                        <button class="btn-map-float btn-my-location"
+                                                onclick="BYD.map.showMyLocation()"
+                                                data-i18n-attr="aria-label:liveview.my_location"
+                                                aria-label="Show my location">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/>
+                                            </svg>
+                                        </button>
+                                        <button class="btn-map-float btn-directions"
+                                                onclick="BYD.map.openDirections()"
+                                                data-i18n-attr="aria-label:liveview.directions"
+                                                aria-label="Directions to vehicle">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+                                        </button>
+                                    </div>
+                                    <div class="location-distance-chip is-sk">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                                        </svg>
+                                        <span class="location-distance-label">
+                                            <span id="distanceToCar">—</span>
+                                        </span>
+                                        <span class="sk sk-cover" data-sk-group="gpsDistance"></span>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="location-expand-button"
+                                        id="locationExpandButton"
+                                        onclick="BYD.liveLayout.toggleMap()"
+                                        aria-expanded="false">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+                                        <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+                                    </svg>
+                                    <span id="locationExpandLabel" data-i18n="liveview.expand_map">Expand map</span>
+                                </button>
+                            </section>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div id="toastContainer" class="toast-container"></div>
+
+    <style>
+        /* Theme tokens for the Live View page. The chrome (top bar chips,
+           quality select, rail cards) resolves to the shared M3 surface
+           tokens so it matches the rest of the app in both schemes; only the
+           video stage and its scrim need page-local values. */
+        .live-view-page {
+            --lv-panel-bg: var(--surface);
+            --lv-top-overlay: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 100%);
+            --lv-pill-bg: var(--surface-container);
+            --lv-pill-bg-hover: var(--surface-container-high);
+            --lv-pill-border: var(--outline-variant);
+            --lv-pill-border-soft: var(--outline-variant);
+            --lv-overlay-text: var(--on-surface);
+            --lv-label-overlay-bg: var(--surface-container);
+            --lv-idle-icon-bg: var(--surface-container);
+            --lv-idle-icon-border: var(--outline-variant);
+            /* Camera controls sit over user-selected vehicle paint, so their
+               contrast must not depend on either paint colour or app theme.
+               A light edge + dark halo remains visible on white and black. */
+            --lv-hotspot-ring-border: rgba(255,255,255,0.96);
+            --lv-hotspot-ring-bg: rgba(5,10,12,0.82);
+            --lv-hotspot-ring-halo: rgba(0,0,0,0.88);
+            --lv-hotspot-label-bg: rgba(5,9,12,0.92);
+            --lv-hotspot-label-border: rgba(255,255,255,0.24);
+            --lv-hotspot-label-text: #ffffff;
+            --lv-hotspot-active-text: #72f4d9;
+            /* Video stage / letterbox background. Dark theme keeps the
+               classic black-bars look; light theme flips to the page surface
+               so the camera tab isn't a giant black slab on a light cabin
+               display. The decoded video's own pixels still cover most of
+               the area while a stream is active — this colour is only
+               visible in idle / buffer / aspect-mismatch regions. */
+            --lv-video-bg: #000;
+        }
+        :root[data-theme="light"] .live-view-page {
+            /* Everything else already flips with the shared tokens. The scrim
+               and the letterbox are the two values that cannot: both sit over
+               decoded video rather than over a themed surface. */
+            --lv-top-overlay: linear-gradient(180deg, rgba(247,250,247,0.85) 0%, transparent 100%);
+            --lv-video-bg: var(--bg-base);
+        }
+
+        /* The bottom surface owns the iOS inset. Keeping it on the outer tab
+           wrapper as well leaves a second, empty safe-area strip. */
+        .live-view-page .live-tabs-view { padding-bottom: 0; }
+
+        /* SOTA Seamless Camera View */
+        .seamless-camera-view {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: var(--lv-panel-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .camera-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: var(--lv-top-overlay);
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+        }
+
+        /* Margin, NOT flex `gap`: gap is Chrome 84+ and this page runs in a
+           Chrome 58 WebView on the head unit. */
+        .top-bar-left, .top-bar-right { display: flex; align-items: center; }
+        .top-bar-left > * + *, .top-bar-right > * + * { margin-left: 10px; }
+        [dir="rtl"] .top-bar-left > * + *,
+        [dir="rtl"] .top-bar-right > * + * { margin-left: 0; margin-right: 10px; }
+        /* Top-aligned: the row's height comes from the quality menu opposite,
+           which would otherwise push the dot below its own left inset. */
+        .top-bar-left { min-width: 0; align-self: flex-start; }
+        .top-bar-right { flex: 0 0 auto; }
+
+        /* The dot carries no text, so its accessible name lives on aria-label
+           — see BYD.stream.updateConnectionStatus. */
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .conn-dot {
+            width: 10px; height: 10px;
+            flex: 0 0 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: all 0.3s;
+        }
+        
+        .connection-status.live .conn-dot {
+            background: var(--status-success);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .connection-status.connecting .conn-dot {
+            background: var(--status-warning);
+            animation: pulse 0.6s infinite;
+        }
+
+        .connection-status.disconnected .conn-dot {
+            background: var(--status-danger);
+        }
+        
+        .quality-menu { position: relative; }
+        .quality-menu__native { display: none; }
+
+        .quality-menu__trigger {
+            display: flex;
+            align-items: center;
+            min-width: 80px;
+            padding: 8px 10px 8px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--lv-pill-bg);
+            border: 1px solid var(--lv-pill-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .quality-menu__trigger:hover { background: var(--lv-pill-bg-hover); }
+
+        .quality-menu__value {
+            flex: 1 1 auto;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        .quality-menu__chevron {
+            flex: 0 0 auto;
+            width: 14px;
+            height: 14px;
+            margin-left: 8px;
+            color: var(--on-surface-variant);
+        }
+
+        /* Fixed, so the panel escapes the stage's overflow clipping; JS anchors
+           it to the trigger and flips it above when the viewport is short. */
+        .quality-menu__list {
+            display: none;
+            position: fixed;
+            z-index: 120;
+            max-height: 320px;
+            padding: 4px;
+            overflow-y: auto;
+            background: var(--surface-container-high);
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-md);
+        }
+
+        .quality-menu__list.is-open { display: block; }
+
+        .quality-menu__option {
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            color: var(--on-surface);
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .quality-menu__option:hover { background: var(--surface-container-highest); }
+
+        .quality-menu__option[aria-selected="true"] {
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            font-weight: 600;
+        }
+
+        .top-bar-btn {
+            width: 38px; height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--lv-pill-bg);
+            border: 1px solid var(--lv-pill-border);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .top-bar-btn:hover { background: var(--lv-pill-bg-hover); color: var(--text-primary); }
+        .top-bar-btn svg { width: 18px; height: 18px; }
+        .cabin-listen-btn.is-active {
+            color: var(--on-primary-container);
+            border-color: var(--primary-container);
+            background: var(--primary-container);
+        }
+        .cabin-listen-btn.is-connecting {
+            color: var(--status-warning);
+            border-color: var(--status-warning);
+        }
+        .cabin-listen-btn.is-paused {
+            color: var(--status-warning);
+            border-color: var(--status-warning);
+            background: var(--status-warning-container);
+        }
+        
+        /* Video Display — the stage and the layered video / canvas /
+           software-decoder containers all share --lv-video-bg so the camera
+           tab flips palette with the rest of the app. Dark theme resolves
+           it to #000 (the classic letterbox look); light theme resolves it
+           to the page surface so the panel doesn't read as a black slab on
+           a light cabin display. The decoded video's own pixels cover most
+           of the area while streaming, so this colour is only visible in
+           idle / buffer / aspect-mismatch regions. */
+        .video-display-area {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            overflow: hidden;
+            background: var(--lv-video-bg);
+        }
+
+        .video-display-area video, .video-display-area #sw_container {
+            position: absolute;
+            max-width: 100%; max-height: 100%;
+            width: 100%; height: 100%;
+            object-fit: contain;
+            display: none;
+            background: var(--lv-video-bg);
+        }
+
+        .video-display-area #sota_canvas {
+            position: absolute;
+            max-width: 100%; max-height: 100%;
+            width: 100%; height: 100%;
+            object-fit: contain;
+            display: none;
+            background: var(--lv-video-bg);
+            z-index: 10;
+        }
+        
+        .video-display-area video.active, .video-display-area #sw_container.active { display: block; }
+        .video-display-area #sota_canvas.active { display: block !important; }
+        
+        .video-idle-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            transition: opacity 0.3s;
+        }
+        
+        .video-idle-state.hidden { opacity: 0; pointer-events: none; }
+        
+        .idle-icon {
+            width: 64px; height: 64px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--lv-idle-icon-bg);
+            border: 1px solid var(--lv-idle-icon-border);
+            border-radius: var(--radius-md);
+        }
+
+        .idle-icon svg { width: 32px; height: 32px; opacity: 0.5; }
+        .idle-alert { display: none; }
+        .idle-text { font-size: 14px; font-weight: 500; }
+
+        .idle-subtext {
+            display: none;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .idle-spinner {
+            display: none;
+            width: 26px;
+            height: 26px;
+            border: 2px solid var(--outline-variant);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: idleSpin 0.9s linear infinite;
+        }
+
+        .video-idle-state.is-busy .idle-glyph { display: none; }
+        .video-idle-state.is-busy .idle-spinner { display: block; }
+
+        .video-idle-state.is-error .idle-glyph { display: none; }
+        .video-idle-state.is-error .idle-alert { display: block; opacity: 1; }
+        .video-idle-state.is-error .idle-subtext { display: block; }
+
+        .video-idle-state.is-error .idle-icon {
+            background: var(--status-danger-container);
+            border-color: transparent;
+            color: var(--status-danger);
+        }
+
+        .video-idle-state.is-error .idle-text { color: var(--on-surface); }
+
+        .video-idle-state.is-busy .idle-icon {
+            width: auto;
+            height: auto;
+            margin-bottom: 14px;
+            background: none;
+            border: 0;
+        }
+
+        @keyframes idleSpin { to { transform: rotate(360deg); } }
+
+        .camera-label-overlay {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            background: var(--lv-label-overlay-bg);
+            border: 1px solid var(--lv-pill-border);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        /* Deterrent controls — bottom-right buttons layered over the video
+           stage. Anchored to the video-display-area (not the top bar) so they
+           sit within reach of the thumb over the live feed and never collide
+           with the connection pill / quality select up top or the camera label
+           overlay (top-centre). z-index 15 keeps them above the decoded video
+           (z 10) and idle state, below the top-bar chrome (z 20) so a
+           quality-select dropdown still overlays them.
+
+           Chrome-58 (BYD in-app WebView) notes:
+             - No flex `gap` in this old engine; buttons are spaced with a
+               sibling margin instead.
+             - safe-bottom inset keeps the cluster clear of the gesture bar
+               in fullscreen / notched displays. */
+        .deterrent-controls {
+            position: absolute;
+            right: 16px;
+            bottom: calc(16px + var(--safe-bottom, 0px));
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            z-index: 15;
+        }
+        .deterrent-controls .deterrent-btn + .deterrent-btn { margin-top: 10px; }
+
+        /* In the browser the theme picker sits bottom-right, over both the
+           deterrent stack and the expand-map button. The app never mounts the
+           picker, so reserve room for it outside the WebView only. */
+        html:not(.is-app-webview) .deterrent-controls {
+            bottom: calc(76px + var(--safe-bottom, 0px));
+        }
+        html:not(.is-app-webview) .location-expand-button {
+            margin-right: 60px;
+        }
+        [dir="rtl"] html:not(.is-app-webview) .location-expand-button {
+            margin-right: 0;
+            margin-left: 60px;
+        }
+
+        /* Same surface language as .btn-map-float, so the two floating clusters
+           on this page read as one control family. */
+        .deterrent-btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            box-sizing: border-box;
+            width: 116px;
+            height: 40px;
+            padding: 0 12px;
+            background: var(--surface-container);
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-md);
+            color: var(--on-surface);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .deterrent-btn svg { width: 18px; height: 18px; margin-right: 8px; flex: 0 0 18px; }
+        .deterrent-btn .deterrent-label { line-height: 1; white-space: nowrap; }
+        .deterrent-btn:hover { background: var(--surface-container-high); }
+        .deterrent-btn:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        .deterrent-btn:disabled,
+        .deterrent-btn[disabled] {
+            color: var(--on-surface-variant);
+            border-style: dashed;
+            cursor: not-allowed;
+        }
+
+        /* Pending state while the cloud round-trip is in flight — the only
+           place semantic colour appears. Blocks re-taps so a double-tap
+           doesn't queue two horn commands. */
+        .deterrent-btn.pending {
+            border-color: var(--status-warning);
+            color: var(--status-warning);
+            pointer-events: none;
+        }
+
+        /* Bottom Car Selector */
+        .car-selector-bottom {
+            flex-shrink: 0;
+            padding: 20px 16px 24px 16px;
+            padding-bottom: calc(30px + var(--safe-bottom));
+            background: transparent;
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* The silhouette fills its card, and the FRONT / REAR labels hang
+           outside the box — so the gutters that reserve room for them are the
+           same values subtracted from max-height. Overriding one without the
+           other clips the labels on a short card. */
+        .car-image-container {
+            --car-gutter-top: 22px;
+            --car-gutter-bottom: 30px;
+            position: relative;
+            width: 112px;
+            height: 230px;
+            max-width: 100%;
+            max-height: calc(100% - var(--car-gutter-top) - var(--car-gutter-bottom));
+            margin: var(--car-gutter-top) auto var(--car-gutter-bottom) auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .car-image-fallback,
+        .car-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .car-image-fallback {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            object-fit: contain;
+            opacity: 0.72;
+            transition: opacity 0.18s ease;
+        }
+
+        .car-image {
+            position: relative;
+            z-index: 3;
+            opacity: 0;
+            transition:
+                opacity 0.18s ease,
+                transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .car-image-container.vehicle-render-ready .car-image-fallback {
+            opacity: 0;
+        }
+
+        .car-image-container.vehicle-render-ready .car-image {
+            opacity: 1;
+        }
+        
+        /* Camera Hotspots */
+        .cam-hotspot {
+            position: absolute;
+            width: 40px; height: 40px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+        
+        .cam-hotspot:hover { transform: scale(1.15); }
+        
+        /* Hotspot positions for vertical car (112x230) */
+        .cam-hotspot[data-cam="1"] { top: -8px; left: 50%; transform: translateX(-50%); }
+        .cam-hotspot[data-cam="3"] { bottom: -8px; left: 50%; transform: translateX(-50%); }
+        .cam-hotspot[data-cam="4"] { top: 50%; left: -20px; transform: translateY(-50%); }
+        .cam-hotspot[data-cam="2"] { top: 50%; right: -20px; transform: translateY(-50%); }
+        .cam-hotspot.cam-all { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        /* OEM Dashcam pill — sits on the hood, just below the FRONT
+           hotspot (top:-8px) and offset right of centre so the DVR ring
+           and FRONT ring read as two distinct sensors. The "DVR" label
+           is anchored to the right side of its hotspot to avoid colliding
+           with the FRONT label that sits directly above the same column. */
+        .cam-hotspot[data-cam="6"] { top: 30px; left: 62%; transform: translateX(-50%); }
+        
+        .hotspot-ring {
+            width: 26px; height: 26px;
+            box-sizing: border-box;
+            border: 2px solid var(--lv-hotspot-ring-border);
+            border-radius: 50%;
+            background: var(--lv-hotspot-ring-bg);
+            box-shadow:
+                0 0 0 2px var(--lv-hotspot-ring-halo),
+                0 2px 6px rgba(0,0,0,0.72);
+            transition: all 0.3s;
+        }
+        
+        .hotspot-pulse {
+            position: absolute;
+            width: 26px; height: 26px;
+            border-radius: 50%;
+            background: transparent;
+            pointer-events: none;
+        }
+        
+        /* Labels positioned outside hotspots */
+        .hotspot-label {
+            position: absolute;
+            font-size: 11px;
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--lv-hotspot-label-text);
+            background: var(--lv-hotspot-label-bg);
+            border: 1px solid var(--lv-hotspot-label-border);
+            border-radius: 999px;
+            padding: 4px 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.62);
+            text-shadow: none;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        /* Front label - above */
+        .cam-hotspot[data-cam="1"] .hotspot-label { bottom: calc(100% + 2px); left: 50%; transform: translateX(-50%); top: auto; }
+        /* Rear label - below with more clearance */
+        .cam-hotspot[data-cam="3"] .hotspot-label { top: calc(100% + 2px); left: 50%; transform: translateX(-50%); bottom: auto; }
+        /* Left label - to the left */
+        .cam-hotspot[data-cam="4"] .hotspot-label { right: calc(100% + 4px); left: auto; top: 50%; transform: translateY(-50%); bottom: auto; }
+        /* Right label - to the right */
+        .cam-hotspot[data-cam="2"] .hotspot-label { left: calc(100% + 4px); right: auto; top: 50%; transform: translateY(-50%); bottom: auto; }
+        /* All label - below center */
+        .cam-hotspot.cam-all .hotspot-label { top: calc(50% + 16px); left: 50%; transform: translateX(-50%); bottom: auto; }
+        /* OEM Dashcam label — anchored to the right of the ring so it
+           floats outside the car silhouette and never overlaps the FRONT
+           label that sits directly above the centre column. */
+        .cam-hotspot[data-cam="6"] .hotspot-label {
+            left: calc(100% + 4px);
+            top: 50%;
+            transform: translateY(-50%);
+            bottom: auto;
+        }
+        
+        .cam-hotspot:hover .hotspot-ring {
+            border-color: var(--brand-primary);
+            background: rgba(0,42,36,0.9);
+            box-shadow:
+                0 0 0 2px var(--lv-hotspot-ring-halo),
+                0 0 0 4px rgba(0,212,170,0.2);
+        }
+        
+        .cam-hotspot:hover .hotspot-label {
+            color: var(--lv-hotspot-active-text);
+            border-color: rgba(0,212,170,0.62);
+        }
+        
+        /* Active State with Animation */
+        .cam-hotspot.active .hotspot-ring {
+            border-color: var(--brand-primary);
+            background: rgba(0,48,40,0.94);
+            animation: ringPulse 2s ease-in-out infinite;
+        }
+        
+        .cam-hotspot.active .hotspot-pulse {
+            background: rgba(0,212,170,0.4);
+            animation: hotspotPulse 1.5s ease-out infinite;
+        }
+        
+        .cam-hotspot.active .hotspot-label {
+            color: var(--lv-hotspot-active-text);
+            background: rgba(0,35,31,0.96);
+            border-color: rgba(0,212,170,0.72);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.68);
+        }
+        
+        @keyframes hotspotPulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+        
+        @keyframes ringPulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 0 2px var(--lv-hotspot-ring-halo),
+                    0 0 0 4px rgba(0,212,170,0.2);
+            }
+            50% {
+                box-shadow:
+                    0 0 0 2px var(--lv-hotspot-ring-halo),
+                    0 0 0 6px rgba(0,212,170,0.32);
+            }
+        }
+
+        /* Camera-first Live dashboard */
+        .camera-stage {
+            position: relative;
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .live-utility-rail {
+            display: flex;
+            flex: 0 0 auto;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+            padding: 12px;
+            padding-bottom: calc(12px + var(--safe-bottom, 0px));
+            background: var(--lv-panel-bg);
+        }
+
+        .camera-selector-card,
+        .live-location-card {
+            border: 1px solid var(--lv-pill-border-soft);
+            border-radius: var(--radius-md);
+            background: var(--surface-container-low);
+            overflow: hidden;
+        }
+
+        .camera-selector-card {
+            display: flex;
+            flex: 1 1 54%;
+            flex-direction: column;
+            min-height: 210px;
+        }
+
+        .selector-card-header {
+            flex: 0 0 auto;
+            padding: 12px 14px 0;
+        }
+
+        .camera-selector-card .car-selector-bottom {
+            flex: 1 1 auto;
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            align-items: center;
+        }
+
+        .live-location-card {
+            position: relative;
+            display: flex;
+            flex: 1 1 46%;
+            flex-direction: column;
+            min-height: 210px;
+            margin-top: 12px;
+            transition: border-radius 180ms ease, margin 180ms ease;
+        }
+
+        .location-card-header {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px 10px;
+        }
+
+        .selector-card-header h2,
+        .location-card-header h2 {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .location-freshness {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            color: var(--on-surface);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* The dot carries the fix state; the label just names it. */
+        .location-freshness-dot {
+            width: 7px;
+            height: 7px;
+            margin-right: 6px;
+            border-radius: 50%;
+            background: var(--outline);
+        }
+
+        /* Text width is unknowable before the reading lands, so the label slot
+           reserves one and the placeholder covers it. */
+        .location-freshness-label {
+            display: -webkit-inline-flex;
+            display: inline-flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+            min-width: 68px;
+            line-height: 1;
+        }
+
+        .location-freshness-dot.is-live { background: var(--status-success); }
+        .location-freshness-dot.is-stale { background: var(--status-warning); }
+        .location-freshness-dot.is-down { background: var(--status-danger); }
+
+        .location-map-frame {
+            position: relative;
+            flex: 1 1 auto;
+            min-height: 100px;
+            margin: 0 12px;
+            overflow: hidden;
+            border: 1px solid var(--lv-pill-border-soft);
+            border-radius: var(--radius-md);
+            background: var(--surface-container-lowest);
+        }
+
+        .location-map-frame .map-container,
+        .location-map-frame .leaflet-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .location-distance-chip {
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            padding: 6px 9px;
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-md);
+            background: var(--surface-container);
+            color: var(--on-surface-variant);
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .location-distance-label {
+            display: -webkit-inline-flex;
+            display: inline-flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+            min-width: 34px;
+            min-height: 13px;
+            line-height: 1;
+        }
+
+        .location-distance-label #distanceToCar {
+            line-height: 1;
+        }
+
+        .location-distance-chip svg {
+            width: 13px;
+            height: 13px;
+            margin-right: 5px;
+            color: var(--on-surface-variant);
+            -webkit-flex-shrink: 0;
+            flex-shrink: 0;
+        }
+
+        .location-expand-button {
+            display: flex;
+            flex: 0 0 44px;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 12px 12px;
+            border: 0;
+            border-radius: var(--radius-md);
+            background: var(--secondary-container);
+            color: var(--on-secondary-container);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .location-expand-button svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+
+        .location-close-button {
+            display: none;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            margin: -8px 0 -8px -12px;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--on-surface);
+            cursor: pointer;
+        }
+
+        .location-close-button:hover {
+            background: var(--surface-container-high);
+        }
+
+        .location-close-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        [dir="rtl"] .location-close-button {
+            margin: -8px -12px -8px 0;
+        }
+
+        [dir="rtl"] .location-close-button svg {
+            transform: scaleX(-1);
+        }
+
+        /* Compact preview is deliberately passive: map controls and the
+           Leaflet chrome appear only after the user explicitly expands it. */
+        #panelCameras:not(.map-expanded) .map-overlay-actions,
+        #panelCameras:not(.map-expanded) .location-map-frame .leaflet-control-container {
+            display: none;
+        }
+
+        /* Expanding location promotes the existing map card over the camera
+           dashboard, preserving the stream and selected view underneath. */
+        #panelCameras.map-expanded .live-location-card {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            min-height: 0;
+            margin: 0;
+            border: 0;
+            border-radius: 0;
+            background: var(--surface);
+        }
+
+        #panelCameras.map-expanded .location-card-header {
+            justify-content: flex-start;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--outline-variant);
+            background: var(--surface-container);
+        }
+
+        /* Margin, NOT flex `gap`: gap is Chrome 84+ and BYD's in-app WebView is
+           Chrome 58, where the title would butt against the button. */
+        #panelCameras.map-expanded .location-close-button {
+            display: flex;
+            order: -1;
+        }
+
+        /* min-width:0 lets the title yield first: this is a nowrap flex row, and
+           a long localized title overflows the header on a 320px phone. */
+        #panelCameras.map-expanded .location-card-header > div:first-child {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        #panelCameras.map-expanded .location-card-header h2 {
+            font-size: 18px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #panelCameras.map-expanded .location-map-frame {
+            min-height: 0;
+            margin: 0;
+            border: 0;
+            border-radius: 0;
+        }
+
+        #panelCameras.map-expanded .map-overlay-actions {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #panelCameras.map-expanded .map-overlay-actions .btn-map-float + .btn-map-float {
+            margin-top: 8px;
+        }
+
+        #panelCameras.map-expanded .location-distance-chip {
+            left: 16px;
+            bottom: calc(16px + var(--safe-bottom, 0px));
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        #panelCameras.map-expanded .location-expand-button {
+            display: none;
+        }
+        
+        /* Fullscreen */
+        .seamless-camera-view.fullscreen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .camera-top-bar { padding: 12px; }
+            .top-bar-left > * + *, .top-bar-right > * + * { margin-left: 6px; }
+            [dir="rtl"] .top-bar-left > * + *,
+            [dir="rtl"] .top-bar-right > * + * { margin-right: 6px; }
+            .top-bar-left { flex: 1 1 auto; }
+            .quality-menu__trigger {
+                width: 124px;
+                min-width: 124px;
+                max-width: 124px;
+                padding: 6px 8px 6px 10px;
+                font-size: 11px;
+            }
+            .quality-menu__option { padding: 11px 12px; font-size: 12px; }
+            .top-bar-btn { width: 34px; height: 34px; }
+            .car-selector-bottom { padding: 10px; padding-bottom: calc(14px + 60px + var(--safe-bottom)); }
+            .car-image-container {
+                --car-gutter-top: 20px;
+                --car-gutter-bottom: 28px;
+                width: 96px;
+                height: 200px;
+            }
+            .cam-hotspot { width: 36px; height: 36px; }
+            .hotspot-ring { width: 24px; height: 24px; }
+            .hotspot-pulse { width: 24px; height: 24px; }
+            .hotspot-label { font-size: 9px; padding: 3px 5px; }
+            /* DVR sits a touch closer to FRONT on the smaller silhouette. */
+            .cam-hotspot[data-cam="6"] { top: 24px; left: 62%; }
+            .idle-icon { width: 48px; height: 48px; }
+            .idle-icon svg { width: 24px; height: 24px; }
+            .idle-text { font-size: 12px; }
+            /* Tighter deterrent buttons on phones so the pair doesn't crowd
+               the bottom-right of a small video stage. */
+            .deterrent-controls { right: 12px; bottom: calc(12px + var(--safe-bottom, 0px)); }
+            .deterrent-btn { width: 104px; height: 36px; padding: 0 10px; font-size: 12px; }
+            .deterrent-btn svg { width: 16px; height: 16px; flex: 0 0 16px; margin-right: 6px; }
+            .deterrent-controls .deterrent-btn + .deterrent-btn { margin-top: 8px; }
+
+            /* On narrow/portrait screens keep the same information
+               architecture but stack the utility cards below the cameras. */
+            #panelCameras .seamless-camera-view {
+                overflow-y: auto;
+            }
+            /* Grows to absorb whatever the intrinsically-sized rail leaves, so a
+               viewport where the two do not sum to 100% has no dead strip. */
+            #panelCameras .camera-stage {
+                flex: 1 1 58%;
+                min-height: 300px;
+            }
+            #panelCameras .live-utility-rail {
+                /* Shrink-but-don't-grow: the rail keeps its intrinsic height and
+                   yields surplus to the stage, and can compress on short screens
+                   rather than overflowing (measured -88px at 320x568). */
+                flex: 0 1 auto;
+                flex-direction: row;
+                min-height: 200px;
+                padding: 10px;
+                padding-bottom: calc(10px + var(--safe-bottom, 0px));
+                border-top: 1px solid var(--lv-pill-border-soft);
+            }
+            #panelCameras .camera-selector-card,
+            #panelCameras .live-location-card {
+                flex: 1 1 50%;
+                min-width: 0;
+                min-height: 200px;
+            }
+            #panelCameras .live-location-card {
+                margin-top: 0;
+                margin-left: 10px;
+            }
+            #panelCameras .camera-selector-card .car-selector-bottom {
+                padding: 8px;
+                padding-bottom: 8px;
+            }
+
+            /* Expanding the map floats .mobile-header (position:absolute, z-index:60)
+               over the panel so tiles paint to the top edge — see
+               body.live-map-active in styles.css. The expanded card's header, which
+               carries the only back-to-cameras control, sits at top:0 and was
+               therefore covered 100% by that floating header on every phone size:
+               the user had no way back except the sidebar. Start the card below the
+               header instead of under it. The header is display:none above 768px, so
+               this offset belongs in the mobile query only. */
+            #panelCameras.map-expanded .live-location-card {
+                top: var(--live-mobile-header-h, 65px);
+            }
+        }
+
+        /* Mini preview position handled by .cameras-mode class */
+
+        /* Landscape camera-first dashboard: video receives roughly 72% of
+           the canvas; selector + location share a 28% utility rail. */
+        @media (orientation: landscape) {
+            #panelCameras .seamless-camera-view {
+                flex-direction: row;
+            }
+            #panelCameras .camera-stage {
+                flex: 1 1 72%;
+                min-width: 0;
+                min-height: 0;
+            }
+            #panelCameras .video-display-area {
+                min-height: 0;
+            }
+            #panelCameras .live-utility-rail {
+                flex: 0 0 28%;
+                max-width: 380px;
+                min-width: 270px;
+                border-left: 1px solid var(--lv-pill-border-soft, rgba(255,255,255,0.08));
+            }
+            #panelCameras .camera-selector-card .car-selector-bottom {
+                padding: 10px 12px;
+                padding-bottom: 10px;
+            }
+            #panelCameras .camera-selector-card .car-image-container {
+                --car-gutter-top: 18px;
+                --car-gutter-bottom: 18px;
+            }
+            #panelCameras.map-expanded .live-utility-rail {
+                border-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) and (orientation: portrait) {
+            #panelCameras .seamless-camera-view {
+                overflow: hidden;
+            }
+            #panelCameras .camera-stage {
+                flex: 1 1 auto;
+                min-height: 0;
+            }
+            #panelCameras .live-utility-rail {
+                flex: 0 0 calc(220px + var(--safe-bottom, 0px));
+                flex-direction: row;
+                min-height: calc(220px + var(--safe-bottom, 0px));
+                padding: 4px 8px 0;
+                overflow: hidden;
+            }
+            #panelCameras .camera-selector-card {
+                flex: 0 0 58%;
+                width: auto;
+                min-height: 0;
+            }
+            #panelCameras .camera-selector-card,
+            #panelCameras .live-location-card {
+                border-radius: var(--radius-md) var(--radius-md) 0 0;
+            }
+            #panelCameras .live-location-card {
+                flex: 1 1 auto;
+                width: auto;
+                min-height: 0;
+                margin: 0 0 0 8px;
+            }
+            [dir="rtl"] #panelCameras .live-location-card {
+                margin-left: 0;
+                margin-right: 8px;
+            }
+            #panelCameras .selector-card-header {
+                padding: 9px 10px 0;
+            }
+            #panelCameras .selector-card-header h2,
+            #panelCameras .location-card-header h2 {
+                overflow: hidden;
+                font-size: 12px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            #panelCameras .camera-selector-card .car-selector-bottom {
+                padding: 0 4px calc(4px + var(--safe-bottom, 0px));
+            }
+            #panelCameras .camera-selector-card .car-image-container {
+                --car-gutter-top: 14px;
+                --car-gutter-bottom: 18px;
+                width: 60px;
+                height: 126px;
+                transform: none;
+            }
+            #panelCameras .cam-hotspot {
+                width: 32px;
+                height: 32px;
+            }
+            #panelCameras .hotspot-ring,
+            #panelCameras .hotspot-pulse {
+                width: 21px;
+                height: 21px;
+            }
+            #panelCameras .hotspot-label {
+                padding: 2px 4px;
+                font-size: 8px;
+            }
+            #panelCameras .cam-hotspot[data-cam="1"] { top: -6px; }
+            #panelCameras .cam-hotspot[data-cam="3"] { bottom: -6px; }
+            #panelCameras .cam-hotspot[data-cam="4"] { left: -16px; }
+            #panelCameras .cam-hotspot[data-cam="2"] { right: -16px; }
+            #panelCameras .cam-hotspot[data-cam="6"] { top: 18px; }
+            #panelCameras .cam-hotspot.cam-all .hotspot-label {
+                top: calc(50% + 13px);
+            }
+            #panelCameras .location-card-header {
+                padding: 9px 9px 6px;
+            }
+            #panelCameras .location-card-header > div:first-child {
+                min-width: 0;
+            }
+            #panelCameras:not(.map-expanded) .location-freshness,
+            #panelCameras:not(.map-expanded) .location-distance-chip {
+                display: none;
+            }
+            #panelCameras .location-map-frame {
+                min-height: 70px;
+                margin: 0 7px;
+            }
+            #panelCameras .location-expand-button {
+                flex: 0 0 44px;
+                margin: 6px 7px calc(7px + var(--safe-bottom, 0px));
+                font-size: 0;
+            }
+            #panelCameras .location-expand-button svg {
+                width: 17px;
+                height: 17px;
+                margin: 0;
+            }
+            #panelCameras.map-expanded .live-location-card {
+                width: auto;
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) and (max-height: 650px) and (orientation: portrait) {
+            #panelCameras .live-utility-rail {
+                flex-basis: calc(200px + var(--safe-bottom, 0px));
+                min-height: calc(200px + var(--safe-bottom, 0px));
+            }
+            #panelCameras .camera-selector-card .car-image-container {
+                width: 54px;
+                height: 112px;
+            }
+            #panelCameras .hotspot-label {
+                font-size: 7px;
+            }
+        }
+
+        @media (max-width: 768px) and (orientation: landscape) {
+            #panelCameras .live-utility-rail {
+                flex-direction: column;
+                min-width: 220px;
+                max-width: 300px;
+                overflow-y: auto;
+            }
+            #panelCameras .camera-selector-card,
+            #panelCameras .live-location-card {
+                flex: 0 0 auto;
+                width: 100%;
+                min-height: 180px;
+            }
+            #panelCameras .live-location-card {
+                margin-top: 10px;
+                margin-left: 0;
+            }
+        }
+    </style>
+
+    <script src="../shared/auth.js"></script>
+    <script src="../shared/pwa-init.js?v=index1"></script>
+    <script src="../shared/core.js?v=20"></script>
+    <script src="../shared/update-flow.js"></script>
+    <script src="../shared/cabin-audio.js?v=1"></script>
+    <script src="../shared/stream.js?v=index5"></script>
+    <script src="../shared/map.js?v=6"></script>
+    <script src="../shared/surveillance.js?v=survtoggle9"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+
+        BYD.cabinListener = {
+            lastState: 'idle',
+            init: function () {
+                var self = this;
+                CabinAudio.subscribe(function (status) {
+                    self.render(status);
+                });
+                document.addEventListener('visibilitychange', function () {
+                    if (document.hidden) CabinAudio.stop();
+                });
+                window.addEventListener('pagehide', function () {
+                    CabinAudio.stop();
+                });
+                window.addEventListener('beforeunload', function () {
+                    CabinAudio.stop();
+                });
+            },
+            toggle: function () {
+                CabinAudio.toggle();
+            },
+            render: function (status) {
+                var button = document.getElementById('cabinListenButton');
+                if (!button) return;
+                var active = status.state === 'live';
+                var paused = status.state === 'paused';
+                var connecting = status.state === 'connecting';
+                button.classList.toggle('is-active', active);
+                button.classList.toggle('is-paused', paused);
+                button.classList.toggle('is-connecting', connecting);
+                button.setAttribute(
+                    'aria-pressed',
+                    active || paused || connecting ? 'true' : 'false');
+                var key = active
+                    ? 'liveview.stop_listening'
+                    : paused
+                        ? 'liveview.listening_paused'
+                        : connecting
+                            ? 'liveview.listener_starting'
+                            : 'liveview.listen_cabin';
+                var label = BYD.i18n.t(key);
+                if (label && label !== key) {
+                    button.title = label;
+                    button.setAttribute('aria-label', label);
+                }
+                if (status.state === 'error'
+                        && this.lastState !== 'error'
+                        && BYD.utils
+                        && BYD.utils.toast) {
+                    BYD.utils.toast(
+                        status.reason || BYD.i18n.t('liveview.listener_unavailable'),
+                        'error');
+                }
+                this.lastState = status.state;
+            }
+        };
+        
+        /**
+         * Themed replacement for the quality <select>'s option popup. The
+         * native <select> remains the value holder, so `.value` reads and
+         * writes elsewhere keep working; picking an item writes through to it
+         * and fires `change`, which is what starts the quality request.
+         */
+        BYD.qualityMenu = {
+            open: false,
+            init: function () {
+                var native = document.getElementById('qualitySelector');
+                var trigger = document.getElementById('qualityMenuTrigger');
+                var list = document.getElementById('qualityMenuList');
+                if (!native || !trigger || !list) return;
+                this.native = native;
+                this.trigger = trigger;
+                this.list = list;
+
+                var self = this;
+                list.innerHTML = '';
+                for (var i = 0; i < native.options.length; i++) {
+                    var opt = native.options[i];
+                    var item = document.createElement('div');
+                    item.className = 'quality-menu__option';
+                    item.setAttribute('role', 'option');
+                    item.setAttribute('data-value', opt.value);
+                    item.textContent = opt.textContent;
+                    list.appendChild(item);
+                }
+
+                list.addEventListener('click', function (e) {
+                    var item = e.target;
+                    while (item && item !== list && !item.getAttribute('data-value')) {
+                        item = item.parentNode;
+                    }
+                    if (item && item !== list) self.pick(item.getAttribute('data-value'));
+                });
+                trigger.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    self.toggle();
+                });
+                document.addEventListener('click', function (e) {
+                    if (self.open && !list.contains(e.target)) self.close();
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (self.open && (e.key === 'Escape' || e.keyCode === 27)) self.close();
+                });
+                window.addEventListener('resize', function () { self.close(); });
+
+                this.sync();
+            },
+
+            /** Mirrors the native element's value into the trigger and list. */
+            sync: function () {
+                if (!this.native) return;
+                var value = this.native.value;
+                var selected = this.native.options[this.native.selectedIndex];
+                var valueEl = document.getElementById('qualityMenuValue');
+                if (valueEl && selected) valueEl.textContent = selected.textContent;
+                var items = this.list.children;
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    item.textContent = this.native.options[i]
+                        ? this.native.options[i].textContent
+                        : item.textContent;
+                    item.setAttribute('aria-selected',
+                        item.getAttribute('data-value') === value ? 'true' : 'false');
+                }
+            },
+
+            pick: function (value) {
+                if (!this.native) return;
+                this.close();
+                if (value === this.native.value) return;
+                this.native.value = value;
+                this.sync();
+                this.native.dispatchEvent(new Event('change'));
+            },
+
+            toggle: function () { this.open ? this.close() : this.show(); },
+
+            show: function () {
+                if (!this.list) return;
+                this.sync();
+                this.list.classList.add('is-open');
+                this.trigger.setAttribute('aria-expanded', 'true');
+                this.open = true;
+                this.position();
+            },
+
+            close: function () {
+                if (!this.list) return;
+                this.list.classList.remove('is-open');
+                this.trigger.setAttribute('aria-expanded', 'false');
+                this.open = false;
+            },
+
+            /**
+             * Anchors the panel to the trigger's trailing edge, opening on
+             * whichever side has room. Windowed head-unit heights can be
+             * shorter than the list, so the chosen side also caps its height.
+             */
+            position: function () {
+                var GAP = 6;
+                var EDGE = 8;
+                var anchor = this.trigger.getBoundingClientRect();
+                var list = this.list;
+                list.style.minWidth = anchor.width + 'px';
+                list.style.maxHeight = '';
+
+                var spaceBelow = window.innerHeight - anchor.bottom - GAP - EDGE;
+                var spaceAbove = anchor.top - GAP - EDGE;
+                var below = list.offsetHeight <= spaceBelow || spaceBelow >= spaceAbove;
+                var space = below ? spaceBelow : spaceAbove;
+                if (list.offsetHeight > space) {
+                    list.style.maxHeight = Math.max(120, space) + 'px';
+                }
+
+                var height = list.offsetHeight;
+                list.style.top = (below
+                    ? anchor.bottom + GAP
+                    : Math.max(EDGE, anchor.top - height - GAP)) + 'px';
+                var left = anchor.right - list.offsetWidth;
+                list.style.left = Math.max(EDGE,
+                    Math.min(left, window.innerWidth - list.offsetWidth - EDGE)) + 'px';
+            }
+        };
+
+        BYD.liveLayout = {
+            mapExpanded: false,
+            setMapExpanded: function (expanded) {
+                expanded = !!expanded;
+                var panel = document.getElementById('panelCameras');
+                var button = document.getElementById('locationExpandButton');
+                var label = document.getElementById('locationExpandLabel');
+                if (!panel) return;
+
+                this.mapExpanded = expanded;
+                // Publish the header's MEASURED height before flipping the class:
+                // .mobile-header has no fixed height (it's content-sized, and grows
+                // with safe-area-inset-top in PWA/standalone), so the CSS offset that
+                // keeps "Back to cameras" clear of the floating header can't hardcode
+                // a number. Measured while the header is still in flow.
+                this.syncHeaderHeight();
+                panel.classList.toggle('map-expanded', expanded);
+                document.body.classList.toggle('live-map-active', expanded);
+                if (button) button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                if (label) {
+                    label.textContent = expanded
+                        ? BYD.i18n.t('liveview.back_to_cameras')
+                        : BYD.i18n.t('liveview.expand_map');
+                }
+
+                // Leaflet keeps the preview's old dimensions until explicitly
+                // invalidated after the expansion transition.
+                setTimeout(function () {
+                    if (BYD.map && BYD.map.map) BYD.map.map.invalidateSize();
+                }, 220);
+            },
+            toggleMap: function () {
+                this.setMapExpanded(!this.mapExpanded);
+            },
+            /** Mirror the mobile header's real height into --live-mobile-header-h.
+             *  No-op above 768px (the header is display:none there and the expanded
+             *  card correctly starts at the panel's top edge). */
+            syncHeaderHeight: function () {
+                try {
+                    var hdr = document.querySelector('.mobile-header');
+                    if (!hdr) return;
+                    var h = Math.round(hdr.getBoundingClientRect().height);
+                    // A floating (already-expanded) header still reports its height,
+                    // but 0 means display:none — desktop, where no offset applies.
+                    document.documentElement.style.setProperty(
+                        '--live-mobile-header-h', (h > 0 ? h : 0) + 'px');
+                } catch (e) { /* keep the CSS fallback */ }
+            }
+        };
+
+        // Compatibility for any existing callers while the page moves away
+        // from ambiguous tab swapping. Cameras remain the default and map is
+        // promoted only by the explicitly labelled Expand map action.
+        BYD.tabs = {
+            activeTab: 'cameras',
+            switchTo: function (tab) {
+                BYD.liveLayout.setMapExpanded(tab === 'map');
+                this.activeTab = tab === 'map' ? 'map' : 'cameras';
+            }
+        };
+
+        // Camera-first entry: ALL is selected before the stream starts.
+        BYD.stream.currentViewMode = 0;
+        
+        BYD.stream.selectCamera = async function(mode) {
+            // Invalidate every older route response, including a DVR
+            // first-frame poll. A newer non-DVR click must always win.
+            const selectionToken = (this._viewSelectionToken || 0) + 1;
+            this._viewSelectionToken = selectionToken;
+            this._viewPollToken = (this._viewPollToken || 0) + 1;
+            const selectionIsCurrent = () => this._viewSelectionToken === selectionToken;
+
+            // Capture the prior view mode + label BEFORE we mutate UI so the
+            // already-streaming branch can preserve them while the backend
+            // confirms the requested route.
+            const priorMode = this.confirmedViewMode >= 0
+                ? this.confirmedViewMode
+                : this.currentViewMode;
+            const priorLabelEl0 = document.getElementById('currentCameraLabel');
+            const priorLabelText = priorLabelEl0 ? priorLabelEl0.textContent : '';
+            const priorOverlayEl0 = document.getElementById('cameraLabelOverlay');
+            const priorOverlayDisplay = priorOverlayEl0 ? priorOverlayEl0.style.display : '';
+
+            // Toggle behavior: if the same camera is tapped again, stop the
+            // stream. The earlier guard only checked sotaPlayer (WebCodecs),
+            // so on the BYD in-app WebView (Chrome 58, no VideoDecoder) the
+            // active player is jmuxer / Broadway / hw_player and the toggle
+            // never fired — re-tapping the same camera silently re-started
+            // the stream. Treat ANY active player + streamStarted as "live".
+            const sotaLive = this.sotaPlayer && this.sotaPlayer.isRunning && this.sotaPlayer.isRunning();
+            const legacyLive = this.streamStarted && (
+                !!this.jmuxer || !!this.broadwayPlayer ||
+                (this.ws && this.ws.readyState === WebSocket.OPEN)
+            );
+            const hadLiveStream = !!(sotaLive || legacyLive);
+            if (this.currentViewMode === mode
+                    && (sotaLive || legacyLive || this.streamStarted)) {
+                console.log("[Stream] Toggling off camera:", mode);
+                // Reuse the canonical stopStream path so all decoder branches
+                // (sota / jmuxer / broadway / ws) tear down cleanly. The
+                // standalone `sotaPlayer.stop()` left jmuxer + ws dangling
+                // when the active decoder wasn't WebCodecs.
+                this.stopStream();
+                this.currentViewMode = -1;
+                // Every selected view is persisted server-side. Queue the
+                // disable behind any in-flight route so a late response cannot
+                // resurrect this stopped stream on the next reconnect.
+                this._requestStreamDisable(this._viewSelectionToken).catch(() => {});
+
+                // Remove active state from hotspots
+                document.querySelectorAll('.cam-hotspot').forEach(el => el.classList.remove('active'));
+
+                // Update UI
+                const labelEl = document.getElementById('currentCameraLabel');
+                const overlayEl = document.getElementById('cameraLabelOverlay');
+                if (labelEl) labelEl.textContent = BYD.i18n.t('pip.select_camera');
+                if (overlayEl) overlayEl.style.display = 'none';
+
+                this.setStagePhase('idle');
+                this.updateConnectionStatus('idle');
+                return;
+            }
+            
+            const camKeys = {0: 'pip.title_all_cameras', 1: 'pip.title_front_camera', 2: 'pip.title_right_camera', 3: 'pip.title_rear_camera', 4: 'pip.title_left_camera', 6: 'pip.title_oem_dashcam'};
+            const labelEl = document.getElementById('currentCameraLabel');
+            const overlayEl = document.getElementById('cameraLabelOverlay');
+
+            // Keep the confirmed label and hotspot visible while a DVR route
+            // waits for its first frame. Committing these optimistically made
+            // AVM frames look like a mislabeled DVR feed.
+            const commitSelectionUi = (selectedMode) => {
+                document.querySelectorAll('.cam-hotspot').forEach(el => {
+                    el.classList.toggle('active', parseInt(el.dataset.cam) === selectedMode);
+                });
+                if (labelEl) {
+                    labelEl.textContent = camKeys[selectedMode]
+                        ? BYD.i18n.t(camKeys[selectedMode])
+                        : BYD.i18n.t('pip.default_camera');
+                }
+                if (overlayEl) overlayEl.style.display = 'block';
+            };
+            const restorePriorUi = () => {
+                document.querySelectorAll('.cam-hotspot').forEach(el => {
+                    el.classList.toggle('active', parseInt(el.dataset.cam) === priorMode);
+                });
+                if (labelEl) labelEl.textContent = priorLabelText;
+                if (overlayEl) overlayEl.style.display = priorOverlayDisplay;
+            };
+            const restorePriorRoute = () => {
+                if (!selectionIsCurrent()) return;
+                if (hadLiveStream && priorMode >= 0) {
+                    this._requestViewRoute(priorMode, selectionToken).catch(() => {});
+                } else {
+                    this._requestStreamDisable(selectionToken).catch(() => {});
+                }
+            };
+            const reassertLatestRoute = () => {
+                const latestMode = this.currentViewMode;
+                if (latestMode >= 0) {
+                    this._requestViewRoute(
+                        latestMode, this._viewSelectionToken).catch(() => {});
+                } else {
+                    this._requestStreamDisable(this._viewSelectionToken).catch(() => {});
+                }
+            };
+            
+            this.currentViewMode = mode;
+
+            // Helper: switch view mode + revert UI on backend rejection. The
+            // backend returns {success:false, error} when the requested
+            // mode isn't currently routable (e.g. view 6 = OEM Dashcam
+            // before the streaming hook is plumbed). Without the JSON
+            // parse, the hotspot ring stays "active" while WS frames keep
+            // arriving from the previous source.
+            const applyView = async (m) => {
+                try {
+                    if (!selectionIsCurrent()) {
+                        reassertLatestRoute();
+                        return { cancelled: true };
+                    }
+                    let d = await BYD.stream._requestViewRoute(m, selectionToken);
+                    if (!selectionIsCurrent()) {
+                        reassertLatestRoute();
+                        return { cancelled: true };
+                    }
+                    if (d && d.success === false && d.starting) {
+                        d = await BYD.stream._pollViewUntilSettled(m, d, selectionToken);
+                    }
+                    // Cancelled by a newer click — treat as success-ish
+                    // (don't toast an error, don't revert the UI). The
+                    // newer click is responsible for its own UI state.
+                    if (d && d.cancelled) return d;
+                    if (d && d.success === false) {
+                        if (BYD.utils && BYD.utils.toast) {
+                            // An exhausted poll still reports the sticky
+                            // `*_starting` code, which would announce progress
+                            // as the failure. The timeout is the outcome.
+                            BYD.utils.toast(d.exhausted
+                                ? BYD.i18n.t('stream.start_failed')
+                                : (d.errorCode
+                                    ? BYD.i18n.t('stream.' + d.errorCode)
+                                    : (d.error || BYD.i18n.t('stream.view_unavailable'))),
+                                'error');
+                        }
+                        return false;
+                    }
+                    return true;
+                } catch (e) {
+                    if (!selectionIsCurrent()) {
+                        reassertLatestRoute();
+                        return { cancelled: true };
+                    }
+                    if (BYD.utils && BYD.utils.toast) {
+                        BYD.utils.toast(BYD.i18n.t('stream.view_unavailable'), 'error');
+                    }
+                    return false;
+                }
+            };
+
+            // If already streaming, just switch the view mode. Restore prior
+            // UI state on rejection — leaving the user staring at "select
+            // camera" while frames continue from the previous view is the
+            // exact UX glitch the Round 3 audit flagged.
+            if (sotaLive || legacyLive) {
+                console.log("[Stream] Switching view to:", mode);
+                const switchGen = this._startGeneration;
+                const ok = await applyView(mode);
+                // A stopStream() landed mid-switch (backgrounded / toggled off):
+                // don't touch UI or confirmedViewMode for a stream that's gone.
+                if (this._startGeneration !== switchGen) return;
+                if (!selectionIsCurrent() || (ok && ok.cancelled)) return;
+                if (ok === false) {
+                    restorePriorRoute();
+                    this.currentViewMode = priorMode;
+                    this.confirmedViewMode = priorMode;
+                    restorePriorUi();
+                } else {
+                    this.confirmedViewMode = mode;
+                    commitSelectionUi(mode);
+                    // The BYD WebView fallback reuses its open WebSocket, so
+                    // switching cameras does not emit another onopen event.
+                    // Mark this transition pending; the first frame from the
+                    // newly-selected view promotes the badge back to Live.
+                    this.markStreamConnecting();
+                }
+                return;
+            }
+
+            const started = await this.startSeamlessStream(selectionToken);
+            if (started && selectionIsCurrent()) {
+                commitSelectionUi(mode);
+            } else if (!started && selectionIsCurrent()) {
+                restorePriorRoute();
+            }
+        };
+        
+        BYD.stream.startSeamlessStream = async function(selectionToken) {
+            // A stopStream() during any await below (backgrounding, toggle-off)
+            // supersedes this run; without the check it would still enable
+            // streaming and build a decoder after the teardown.
+            const gen = ++this._startGeneration;
+            const superseded = () => this._startGeneration !== gen;
+            const selectionIsCurrent = () => selectionToken === undefined
+                || this._viewSelectionToken === selectionToken;
+            const reassertLatestRoute = () => {
+                const latestMode = this.currentViewMode;
+                if (latestMode >= 0) {
+                    this._requestViewRoute(
+                        latestMode, this._viewSelectionToken).catch(() => {});
+                } else {
+                    this._requestStreamDisable(this._viewSelectionToken).catch(() => {});
+                }
+            };
+            this.streamStarted = true;
+
+            this.setStagePhase('busy');
+            this.markStreamConnecting();
+
+            // 1. Set quality
+            var _qSel = document.getElementById('qualitySelector');
+            const quality = (_qSel && _qSel.value) || 'LOW';
+            try {
+                const qRes = await fetch('/api/stream/quality/' + quality, { method: 'POST' });
+                const qData = await qRes.json();
+                if (qData.fps) this.activeFps = qData.fps;
+            } catch(e) {}
+            if (superseded() || !selectionIsCurrent()) return false;
+
+            // 2. Set view mode BEFORE enabling streaming. Bail if the
+            // backend rejects the mode — otherwise WS connects to the
+            // default sink and the UI shows a stale label over different
+            // frames.
+            if (this.currentViewMode >= 0) {
+                try {
+                    let d = await BYD.stream._requestViewRoute(
+                        this.currentViewMode, selectionToken);
+                    if (!selectionIsCurrent()) {
+                        reassertLatestRoute();
+                        return false;
+                    }
+                    if (d && d.success === false && d.starting) {
+                        d = await BYD.stream._pollViewUntilSettled(
+                            this.currentViewMode, d, selectionToken);
+                    }
+                    if (superseded() || !selectionIsCurrent()) {
+                        if (!selectionIsCurrent()) reassertLatestRoute();
+                        return false;
+                    }
+                    // Cancelled by a newer click; let the newer click own
+                    // the UI state. Don't bail out as if an error happened.
+                    if (d && d.cancelled) return false;
+                    if (d && d.success === false) {
+                        // An exhausted poll still carries the sticky `*_starting`
+                        // errorCode, so reporting that code here would announce
+                        // progress as the failure. The timeout is the outcome.
+                        const reason = d.exhausted
+                            ? BYD.i18n.t('stream.start_failed')
+                            : (d.errorCode
+                                ? BYD.i18n.t('stream.' + d.errorCode)
+                                : (d.error || BYD.i18n.t('stream.view_unavailable')));
+                        document.querySelectorAll('.cam-hotspot').forEach(el => el.classList.remove('active'));
+                        this.currentViewMode = -1;
+                        this.confirmedViewMode = -1;
+                        this.streamStarted = false;
+                        this.setStagePhase('error', reason);
+                        this.updateConnectionStatus('idle');
+                        return false;
+                    }
+                    this.confirmedViewMode = this.currentViewMode;
+                    console.log("[Stream] View mode set to:", this.currentViewMode);
+                } catch(e) {
+                    if (superseded() || !selectionIsCurrent()) {
+                        if (!selectionIsCurrent()) reassertLatestRoute();
+                        return false;
+                    }
+                    this.currentViewMode = -1;
+                    this.confirmedViewMode = -1;
+                    this.streamStarted = false;
+                    this.setStagePhase('error', BYD.i18n.t('stream.view_unavailable'));
+                    this.updateConnectionStatus('idle');
+                    return false;
+                }
+            }
+            
+            // 3. Enable Streaming on Backend
+            const enabled = await this.enableStreaming();
+            if (superseded() || !selectionIsCurrent()) return false;
+            if (!enabled) {
+                this.streamStarted = false;
+                this.setStagePhase('error', BYD.i18n.t('liveview.enable_failed'));
+                this.updateConnectionStatus('idle');
+                return false;
+            }
+
+            // 4. Initialize SOTA Player (WebCodecs)
+            if ('VideoDecoder' in window && typeof SotaPlayer !== 'undefined') {
+                console.log("[Stream] Initializing SOTA Player (WebCodecs)...");
+                this.decoderMode = 'webcodecs';
+                
+                const canvas = document.getElementById('sota_canvas');
+                if (canvas) {
+                    canvas.classList.add('active');
+                    var _hw = document.getElementById('hw_player');
+                    if (_hw) _hw.classList.remove('active');
+                    var _sw = document.getElementById('sw_container');
+                    if (_sw) _sw.classList.remove('active');
+                }
+                
+                
+                // CRITICAL FIX: Use the /ws endpoint on the current port (e.g. 8080)
+                // Do NOT use port 8887 - that's the dead legacy port
+                // Append JWT as ?token= so tunnels work (cookies get dropped by SameSite
+                // policies through reverse proxies; browser WS API can't set headers).
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                let url = `${protocol}//${window.location.host}/ws`;
+                if (typeof BYDAuth !== 'undefined') {
+                    const wsToken = BYDAuth.getToken();
+                    if (wsToken) url += `?token=${encodeURIComponent(wsToken)}`;
+                }
+                console.log("[Stream] Connecting to optimized endpoint:", url);
+                
+                // Initialize and Start Player
+                if (this.sotaPlayer) {
+                    this.sotaPlayer.stop();
+                }
+                
+                // Store view mode for logging
+                const targetViewMode = this.currentViewMode;
+                
+                this.sotaPlayer = new SotaPlayer(canvas, url);
+                this.sotaPlayer.onConnected = () => {
+                    console.log("[Stream] Connected, view mode:", targetViewMode);
+                    this.markStreamConnecting();
+                };
+                this.sotaPlayer.onDisconnected = () => this.markStreamConnecting();
+                this.sotaPlayer.onFrame = (count) => this.noteFrameReceived(count);
+                // Unrecoverable WebCodecs failure → switch decoders. This page
+                // wires its own player, so without this hook the shared
+                // fallback in stream.js never ran and the canvas stayed black
+                // on phones whose decoder rejects the stream's profile.
+                this.sotaPlayer.onError = () => {
+                    if (BYD.utils && BYD.utils.toast) {
+                        BYD.utils.toast(BYD.i18n.t('liveview.decoder_fallback'), 'warning');
+                    }
+                    this.fallbackFromWebCodecs();
+                };
+                this.sotaPlayer.start();
+                
+            } else {
+                // Fallback to Legacy (JMuxer/Broadway) if WebCodecs not supported
+                console.log("[Stream] WebCodecs not supported, using fallback decoder...");
+                const decoderReady = await this.initDecoder();
+                if (!decoderReady) {
+                    if (BYD.utils && BYD.utils.toast) BYD.utils.toast('Decoder init failed', 'error');
+                    this.streamStarted = false;
+                    return false;
+                }
+                if (superseded() || !selectionIsCurrent()) return false;
+                
+                // Show appropriate video element based on decoder mode
+                if (this.decoderMode === 'jmuxer') {
+                    const video = document.getElementById('hw_player');
+                    if (video) video.classList.add('active');
+                } else {
+                    const container = document.getElementById('sw_container');
+                    if (container) container.classList.add('active');
+                }
+                
+                this.connectWebSocket();
+            }
+            return true;
+        };
+        
+        /**
+         * Drives the centred overlay on the video stage: 'idle', 'busy',
+         * 'error', or 'live' (hidden). Call only on selection and terminal
+         * outcomes — a mid-stream reconnect must not drop this overlay back
+         * over a frozen frame.
+         */
+        BYD.stream.setStagePhase = function(phase, message) {
+            const stage = document.getElementById('videoIdleState');
+            if (!stage) return;
+            const textEl = stage.querySelector('.idle-text');
+            const subEl = stage.querySelector('.idle-subtext');
+            if (phase === 'live') {
+                stage.classList.add('hidden');
+                stage.classList.remove('is-busy');
+                stage.classList.remove('is-error');
+                return;
+            }
+            stage.classList.remove('hidden');
+            stage.classList.remove('is-busy');
+            stage.classList.remove('is-error');
+            if (phase === 'busy') {
+                stage.classList.add('is-busy');
+                if (textEl) textEl.textContent = message || BYD.i18n.t('pip.connecting');
+            } else if (phase === 'error') {
+                stage.classList.add('is-error');
+                if (textEl) {
+                    textEl.textContent = message || BYD.i18n.t('stream.start_failed');
+                }
+                if (subEl) subEl.textContent = BYD.i18n.t('stream.idle_hint');
+            } else if (textEl) {
+                textEl.textContent = BYD.i18n.t('stream.idle_hint');
+            }
+        };
+
+        /**
+         * Sink for the backend's start-up reason (oem_starting / pano_starting).
+         * Its presence makes shared stream.js skip its own toast, so the more
+         * specific message replaces the generic spinner text in place.
+         */
+        BYD.stream.showStartupStatus = function(message) {
+            const stage = document.getElementById('videoIdleState');
+            if (!stage || stage.classList.contains('hidden')) return;
+            this.setStagePhase('busy', message);
+        };
+
+        BYD.stream.updateConnectionStatus = function(status) {
+            const el = document.getElementById('connectionStatus');
+            if (el) {
+                el.classList.remove('live', 'connecting', 'disconnected');
+                let labelKey = 'pip.select_camera';
+                if (status === 'live') {
+                    el.classList.add('live');
+                    labelKey = 'liveview.live';
+                } else if (status === 'connecting') {
+                    el.classList.add('connecting');
+                    labelKey = 'pip.connecting';
+                } else if (status === 'disconnected') {
+                    el.classList.add('disconnected');
+                    labelKey = 'stream.disconnected';
+                }
+                el.setAttribute('aria-label', BYD.i18n.t(labelKey));
+            }
+            if (status === 'live') this.setStagePhase('live');
+        };
+        
+        const originalUpdateStatus = BYD.stream.updateStreamStatus;
+        BYD.stream.updateStreamStatus = function(text, isLive) {
+            this.updateConnectionStatus(isLive ? 'live' : 'connecting');
+            if (originalUpdateStatus) originalUpdateStatus.call(this, text, isLive);
+        };
+        
+        // Manual deterrent trigger (issue #118). `kind` is 'horn' or 'flash':
+        //   horn  → POST /api/vehicle/find-car  (FINDCAR = horn + lights; the
+        //           only horn primitive exposed on this BYD generation — there
+        //           is no lights-independent horn command).
+        //   flash → POST /api/vehicle/flash     (FLASHLIGHT = lights only).
+        // Both are cloud-only, so the cluster is only visible after the cloud
+        // probe unhides it. Each fire is gated behind a themed confirm dialog
+        // (BYD.utils.confirmDialog) to prevent an accidental horn blast, then
+        // the button enters a pending state until the routed response lands so
+        // a double-tap can't queue two commands. The toast reads the
+        // server-resolved `message` (correct locale + which transport fired),
+        // falling back to a local string only when the endpoint returns none.
+        BYD.stream.fireDeterrent = async function(kind) {
+            const isHorn = kind === 'horn';
+            const btnId = isHorn ? 'deterrentHornBtn' : 'deterrentFlashBtn';
+            const btn = document.getElementById(btnId);
+            if (btn && btn.classList.contains('pending')) return;
+
+            const confirmed = await BYD.utils.confirmDialog({
+                title: isHorn ? BYD.i18n.t('liveview.deterrent_horn_confirm_title')
+                              : BYD.i18n.t('liveview.deterrent_flash_confirm_title'),
+                body: isHorn ? BYD.i18n.t('liveview.deterrent_horn_confirm_body')
+                             : BYD.i18n.t('liveview.deterrent_flash_confirm_body'),
+                confirmLabel: BYD.i18n.t('liveview.deterrent_confirm_ok'),
+                cancelLabel: BYD.i18n.t('common.cancel'),
+                danger: isHorn
+            });
+            if (!confirmed) return;
+
+            if (btn) btn.classList.add('pending');
+            const endpoint = isHorn ? '/api/vehicle/find-car' : '/api/vehicle/flash';
+            let result;
+            try {
+                // fetch() (not XHR) — POST bodies are dropped by the BYD WebView's
+                // XHR path; fetch is the reliable transport here.
+                const resp = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: '{}'
+                });
+                result = await resp.json();
+            } catch (e) {
+                result = { success: false };
+            } finally {
+                if (btn) btn.classList.remove('pending');
+            }
+
+            if (BYD.utils && BYD.utils.toast) {
+                const fallbackOk = isHorn ? BYD.i18n.t('liveview.deterrent_horn_sent')
+                                          : BYD.i18n.t('liveview.deterrent_flash_sent');
+                const fallbackErr = BYD.i18n.t('liveview.deterrent_failed');
+                const msg = (result && result.message)
+                    || (result && result.success ? fallbackOk : ((result && result.error) || fallbackErr));
+                const type = (result && result.success) ? 'success'
+                    : (result && (result.outcome === 'auth_required' || result.outcome === 'rate_limited')) ? 'info'
+                    : 'error';
+                BYD.utils.toast(msg, type);
+            }
+        };
+
+        BYD.stream.toggleFullscreen = function() {
+            const view = document.querySelector('.seamless-camera-view');
+            if (!view) return;
+            this.isFullscreen = !this.isFullscreen;
+            view.classList.toggle('fullscreen', this.isFullscreen);
+            if (this.isFullscreen && view.requestFullscreen) {
+                view.requestFullscreen().catch(() => {});
+            } else if (!this.isFullscreen && document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        };
+        
+        async function loadSavedStreamQuality() {
+            try {
+                const res = await fetch('/api/stream/quality');
+                const data = await res.json();
+                if (data.success && data.current) {
+                    const select = document.getElementById('qualitySelector');
+                    if (select) {
+                        select.value = data.current;
+                        BYD.stream.selectedQuality = data.current;
+                        if (BYD.qualityMenu) BYD.qualityMenu.sync();
+                    }
+                    const preset = (data.options || []).find(
+                        option => option.id === data.current);
+                    if (preset && preset.fps) {
+                        BYD.stream.activeFps = preset.fps;
+                    }
+                }
+            } catch (e) {
+                console.log('[Init] Using default quality');
+            }
+        }
+
+        // i18n must load before first paint. Once the shared modules and the
+        // saved quality are ready, start the useful view immediately instead
+        // of presenting an empty "select camera" state.
+        BYD.i18n.init().then(async function () {
+            BYD.core.init();
+            BYD.cabinListener.init();
+            BYD.stream.init();
+            BYD.map.init();
+            SurvSettings.initHeatmapOnly();
+            await loadSavedStreamQuality();
+            BYD.qualityMenu.init();
+            if (!BYD.stream.autoStartRequested) {
+                BYD.stream.autoStartRequested = true;
+                await BYD.stream.selectCamera(0);
+            }
+        });
+
+        // Gate the OEM Dashcam (data-cam=6) hotspot on whether the
+        // backend has a configured OEM dashcam camera id for this
+        // vehicle. /api/settings/quality returns:
+        //   oemDashcam: { oemDashcamCameraId, concurrentAvmSupported, ... }
+        // Negative id (-1) = unset / not detected — keep the hotspot
+        // hidden so the user can't tap into a view that the backend
+        // will reject. One-shot fetch on page load: the user reloads
+        // the live-view tab after configuring the id, so a perpetual
+        // poll would just burn cycles.
+        (async function () {
+            try {
+                const res = await fetch('/api/settings/quality');
+                const data = await res.json();
+                const oem = data && data.oemDashcam;
+                const camId = oem && typeof oem.oemDashcamCameraId === 'number'
+                    ? oem.oemDashcamCameraId
+                    : -1;
+                const hotspot = document.querySelector('.cam-hotspot[data-cam="6"]');
+                if (hotspot) {
+                    hotspot.style.display = camId >= 0 ? '' : 'none';
+                }
+            } catch (e) {
+                // Backend unreachable or response shape changed — leave
+                // the hotspot hidden (its inline default). The feature
+                // is opt-in; silent suppression is the safe fallback.
+                console.log('[Init] OEM dashcam gating skipped:', e && e.message);
+            }
+        })();
+        
+        // Gate the deterrent controls (issue #118) on BYD Cloud availability.
+        // The horn (find-car) and flash commands are CLOUD_ONLY on this BYD
+        // generation — there is no SDK fallback — so if the cloud account
+        // isn't configured + verified the buttons would only ever produce a
+        // "cloud required" toast. Hiding them until the probe confirms cloud
+        // is up keeps the camera view honest: a visible button always works.
+        // One-shot probe on load, mirroring the OEM-dashcam gate below (the
+        // user re-enters the live view after configuring cloud, so a
+        // perpetual poll would just burn cycles). Cluster defaults to
+        // display:none inline, so any failure path leaves it safely hidden.
+        (async function () {
+            try {
+                const res = await fetch('/api/vehicle/cloud-status');
+                const data = await res.json();
+                const cloudReady = !!(data && data.configured && data.verified);
+                const controls = document.getElementById('deterrentControls');
+                if (controls && cloudReady) controls.style.display = '';
+            } catch (e) {
+                // Cloud status unreachable — leave the cluster hidden (its
+                // inline default). Deterrent controls are opt-in on cloud
+                // availability; silent suppression is the safe fallback.
+                console.log('[Init] Deterrent controls gating skipped:', e && e.message);
+            }
+        })();
+
+        // Draggable mini-preview chip with snap-to-corner.
+        //
+        // Pattern: AssistiveTouch / Google Translate floating bubble.
+        // Pointer down starts a drag; the chip tracks the pointer freely
+        // (top/left set per-frame, no transition). On release we measure
+        // the chip centre vs the four corners of its containing rail and
+        // animate to the nearest one. Position persists in localStorage
+        // (corner only, so the chip lands correctly on next load even if
+        // viewport size changes) and we treat any pointer move under
+        // ~5px as a click — that keeps the existing tab-toggle behaviour
+        // intact for users who never want to drag.
+        (function () {
+            var chip = document.getElementById('miniPreview');
+            if (!chip) return;
+            var rail = chip.parentElement;     // .live-tabs-view (positioned)
+            var STORAGE_KEY = 'liveview.miniPreviewCorner';
+            var MARGIN = 16;                   // distance from rail edge after snap
+            var DRAG_THRESHOLD = 5;            // px before we treat as drag, not click
+
+            // Compute the actual top/bottom safe zones at apply-time. Static
+            // constants didn't work because:
+            //   - TOP_RESERVED=80 was just barely below the .camera-top-bar
+            //     overlay (connection pill + quality select), so the chip
+            //     visually sat under the bar's drop shadow when snapped tl/tr.
+            //   - BOTTOM_RESERVED=16+60 ignored the camera tab's
+            //     .car-selector-bottom, a ~200px-tall bottom widget. Snapping
+            //     bl/br on the map tab worked, but switching to the camera
+            //     tab put the chip behind the car selector.
+            //
+            // Strategy: measure the actual obstructing element rectangles
+            // relative to the rail. Top guard = bottom edge of the camera
+            // top-bar (or 0 on map tab where no overlay exists). Bottom
+            // guard = top edge of the car-selector-bottom (or rail bottom
+            // on map tab). 12px breathing room on each side so the chip
+            // sits below/above the obstruction with a visible gap.
+            function obstructionRect(selector) {
+                var el = document.querySelector(selector);
+                if (!el) return null;
+                // Skip elements with display:none (inactive tab panel).
+                if (el.offsetWidth === 0 && el.offsetHeight === 0) return null;
+                var elR = el.getBoundingClientRect();
+                var railR = rail.getBoundingClientRect();
+                return {
+                    top: elR.top - railR.top,
+                    bottom: elR.bottom - railR.top,
+                    height: elR.height,
+                };
+            }
+            function computeSafeZone() {
+                var BREATH = 12;
+                var railH = rail.getBoundingClientRect().height;
+                var chipH = chip.offsetHeight || 80;
+                // Top: take the MAX of every obstruction that overlaps the
+                // top region of the rail.
+                //   - .mobile-header on the map tab: position:absolute
+                //     floats over the map at < 768px, so its bottom edge
+                //     pokes INTO the rail's coordinate space — chip
+                //     would slide under it without this.
+                //   - .camera-top-bar: position:absolute inside the
+                //     camera panel, ~70-80px tall.
+                //   - The .map-overlay-actions FAB cluster (top-right):
+                //     a chip in the top-RIGHT would collide with My
+                //     Location / Directions buttons, so we also clear
+                //     past the bottom of that cluster on the map tab.
+                var topGuard = MARGIN;
+                var candidates = [
+                    obstructionRect('.mobile-header'),
+                    obstructionRect('.tab-panel.active .camera-top-bar'),
+                    obstructionRect('.tab-panel.active .map-overlay-actions'),
+                ];
+                for (var i = 0; i < candidates.length; i++) {
+                    var c = candidates[i];
+                    if (c && c.bottom > 0 && c.bottom + BREATH > topGuard) {
+                        topGuard = c.bottom + BREATH;
+                    }
+                }
+                // Bottom: car-selector-bottom only exists on the camera panel;
+                // otherwise fall back to the safe-bottom inset.
+                var bottomGuard = MARGIN;
+                var obstr = obstructionRect('.tab-panel.active .car-selector-bottom');
+                if (obstr && obstr.top > 0 && obstr.top < railH) {
+                    // Distance from rail bottom up to the top edge of the
+                    // obstruction. Only honour rects that are actually
+                    // BELOW the rail top (top > 0) and INSIDE the rail
+                    // (top < railH) — defends against measurement glitches
+                    // when an inactive panel's children are briefly read
+                    // through getBoundingClientRect right after a tab
+                    // swap (Chrome desktop sometimes returns rects from
+                    // a stale layout before the next paint commits).
+                    bottomGuard = (railH - obstr.top) + BREATH;
+                }
+                // Clamp so the chip ALWAYS has at least a chipH+8px usable
+                // band between top and bottom guards. If both guards are
+                // huge (rail unusually short or stale measurements), the
+                // chip would otherwise be positioned with bottom > railH-
+                // chipH which puts its top above 0 — invisible. Reserve
+                // room by capping each guard at 40% of the rail.
+                var maxGuard = Math.max(MARGIN, railH * 0.4 - chipH);
+                if (topGuard > maxGuard) topGuard = maxGuard;
+                if (bottomGuard > maxGuard) bottomGuard = maxGuard;
+                return { top: topGuard, bottom: bottomGuard };
+            }
+
+            // Map a corner key to the four position properties. We set all
+            // four explicitly (auto for the unused pair) so the stylesheet's
+            // `top: 80px; left: 24px` defaults don't fight our snap-target
+            // when we land on bottom-right etc.
+            function applyCorner(corner, animate) {
+                if (animate) {
+                    chip.classList.add('snap-anim');
+                    setTimeout(function () { chip.classList.remove('snap-anim'); }, 260);
+                }
+                var safe = computeSafeZone();
+                var topRes = safe.top + 'px';
+                var leftRes = MARGIN + 'px';
+                var rightRes = MARGIN + 'px';
+                var bottomRes = safe.bottom + 'px';
+                if (corner === 'tl') {
+                    chip.style.top = topRes; chip.style.left = leftRes;
+                    chip.style.right = 'auto'; chip.style.bottom = 'auto';
+                } else if (corner === 'tr') {
+                    chip.style.top = topRes; chip.style.right = rightRes;
+                    chip.style.left = 'auto'; chip.style.bottom = 'auto';
+                } else if (corner === 'bl') {
+                    chip.style.bottom = bottomRes; chip.style.left = leftRes;
+                    chip.style.top = 'auto'; chip.style.right = 'auto';
+                } else {
+                    chip.style.bottom = bottomRes; chip.style.right = rightRes;
+                    chip.style.top = 'auto'; chip.style.left = 'auto';
+                }
+            }
+            // Expose for the tab-switch listener installed below.
+            chip._reapplyCorner = function () {
+                var saved = 'bl';
+                try {
+                    var s = localStorage.getItem(STORAGE_KEY);
+                    if (s && /^(tl|tr|bl|br)$/.test(s)) saved = s;
+                } catch (e) {}
+                applyCorner(saved, true);
+            };
+
+            // Restore last corner on first paint. Default to bottom-left so
+            // the chip doesn't overlap the camera tab's top bar (connection
+            // pill / decoder chip on the left, quality select / fullscreen
+            // on the right) or the My Location / Directions FABs on the map
+            // tab (top-right). User can drag to any corner.
+            var savedCorner = 'bl';
+            try {
+                var s = localStorage.getItem(STORAGE_KEY);
+                if (s && /^(tl|tr|bl|br)$/.test(s)) savedCorner = s;
+            } catch (e) { /* localStorage blocked — ignore */ }
+            applyCorner(savedCorner, false);
+
+            // Use Pointer Events when present (Chrome 55+, so the BYD
+            // Chrome 58 WebView qualifies) and fall back to touch + mouse
+            // events otherwise. Move/up handlers are bound to *document*
+            // — not the chip — so the drag survives the pointer leaving
+            // the chip's bounds even when setPointerCapture silently fails
+            // on some embedded WebView builds.
+            var startX = 0, startY = 0;
+            var startLeft = 0, startTop = 0;
+            var moved = false;
+            var activeId = null;          // pointerId / touch identifier / null for mouse
+
+            function pickCoords(ev) {
+                if (ev.touches && ev.touches.length) return { x: ev.touches[0].clientX, y: ev.touches[0].clientY };
+                if (ev.changedTouches && ev.changedTouches.length) return { x: ev.changedTouches[0].clientX, y: ev.changedTouches[0].clientY };
+                return { x: ev.clientX, y: ev.clientY };
+            }
+
+            function beginDrag(ev) {
+                if (ev.button !== undefined && ev.button !== 0) return false;
+                var coords = pickCoords(ev);
+                if (coords.x === undefined) return false;
+                var railRect = rail.getBoundingClientRect();
+                var chipRect = chip.getBoundingClientRect();
+                startX = coords.x;
+                startY = coords.y;
+                startLeft = chipRect.left - railRect.left;
+                startTop = chipRect.top - railRect.top;
+                moved = false;
+                chip.style.top = startTop + 'px';
+                chip.style.left = startLeft + 'px';
+                chip.style.right = 'auto';
+                chip.style.bottom = 'auto';
+                chip.classList.remove('snap-anim');
+                return true;
+            }
+
+            function moveDrag(ev) {
+                var coords = pickCoords(ev);
+                if (coords.x === undefined) return;
+                var dx = coords.x - startX;
+                var dy = coords.y - startY;
+                if (!moved && Math.abs(dx) + Math.abs(dy) < DRAG_THRESHOLD) return;
+                if (!moved) {
+                    moved = true;
+                    chip.classList.add('dragging');
+                }
+                // Stop the WebView from interpreting the drag as a scroll
+                // / refresh-pull. touch-action:none on the chip handles
+                // pointer/touch events that originate on it; the document-
+                // level fallback below still needs the explicit prevent.
+                if (ev.cancelable) ev.preventDefault();
+                var railRect = rail.getBoundingClientRect();
+                var chipW = chip.offsetWidth, chipH = chip.offsetHeight;
+                var safe = computeSafeZone();
+                var nextLeft = Math.max(MARGIN, Math.min(railRect.width - chipW - MARGIN, startLeft + dx));
+                var nextTop = Math.max(safe.top, Math.min(railRect.height - chipH - safe.bottom, startTop + dy));
+                chip.style.left = nextLeft + 'px';
+                chip.style.top = nextTop + 'px';
+            }
+
+            function endDrag() {
+                if (!moved) {
+                    // Tap without drag — beginDrag still mutated the
+                    // chip's inline styles to `top:Ypx; left:Xpx; right:
+                    // auto; bottom:auto` (so a real drag could track the
+                    // pointer). The synthetic click is about to fire
+                    // BYD.tabs.switchTo(), which will trigger
+                    // _reapplyCorner — but only after a setTimeout(0).
+                    // Between now and that timeout, the chip would
+                    // briefly render anchored top-left at the OLD
+                    // position. On desktop with a previous bottom-corner
+                    // anchor this looks like the chip "jumping" up to
+                    // a Y coordinate that, when combined with the
+                    // tab-swap CSS reflow, can fall outside the new
+                    // panel's viewport (the click handler removes
+                    // .live-map-active which un-floats the mobile-header
+                    // and pushes the rail down; chip's old absolute
+                    // position is now off-screen above the rail).
+                    // Restore the corner anchor immediately to bridge
+                    // the gap — _reapplyCorner will run next tick and
+                    // recompute against the new tab's safe zone.
+                    var saved = 'bl';
+                    try {
+                        var s0 = localStorage.getItem(STORAGE_KEY);
+                        if (s0 && /^(tl|tr|bl|br)$/.test(s0)) saved = s0;
+                    } catch (e) {}
+                    applyCorner(saved, false);
+                    return;
+                }
+                chip.classList.remove('dragging');
+                var railRect = rail.getBoundingClientRect();
+                var chipRect = chip.getBoundingClientRect();
+                var cx = (chipRect.left + chipRect.right) / 2 - railRect.left;
+                var cy = (chipRect.top + chipRect.bottom) / 2 - railRect.top;
+                var corner = (cy < railRect.height / 2 ? 't' : 'b') + (cx < railRect.width / 2 ? 'l' : 'r');
+                applyCorner(corner, true);
+                try { localStorage.setItem(STORAGE_KEY, corner); } catch (e) {}
+                // Swallow the synthetic click that fires after a drag so
+                // we don't toggle tabs immediately after dropping.
+                var swallow = function (e) { e.stopPropagation(); e.preventDefault(); };
+                chip.addEventListener('click', swallow, true);
+                setTimeout(function () { chip.removeEventListener('click', swallow, true); }, 0);
+            }
+
+            // Register touch + mouse + (optionally) pointer events in
+            // PARALLEL. The previous if/PointerEvent/else design bet
+            // everything on the pointer path, but BYD's Chrome 58 in-app
+            // WebView exposes window.PointerEvent yet sometimes never
+            // dispatches pointerdown on a touch-originated gesture
+            // (it dispatches touchstart instead, and the browser-level
+            // pointer-from-touch synthesis the spec describes is
+            // incomplete in the embedded WebView). The unified approach:
+            //   - touchstart owns drag if it fires first.
+            //   - pointerdown owns drag if IT fires first (mouse on
+            //     desktop / hybrid devices that send pointer-only).
+            //   - mousedown is a third fallback for ancient WebViews
+            //     where neither pointer nor touch events are reliable
+            //     (and for desktop browsers with no touch hardware that
+            //     still synthesise mouse events).
+            // activeId tracks which input owns the gesture so the other
+            // paths short-circuit, and endDrag clears it.
+            chip.addEventListener('touchstart', function (ev) {
+                if (activeId !== null || !ev.touches || !ev.touches.length) return;
+                if (!beginDrag(ev)) return;
+                activeId = 'touch:' + ev.touches[0].identifier;
+            }, { passive: true });
+            document.addEventListener('touchmove', function (ev) {
+                if (activeId === null || activeId.indexOf('touch:') !== 0) return;
+                moveDrag(ev);
+            }, { passive: false });
+            var tEnd = function () {
+                if (activeId === null || activeId.indexOf('touch:') !== 0) return;
+                endDrag();
+                activeId = null;
+            };
+            document.addEventListener('touchend', tEnd);
+            document.addEventListener('touchcancel', tEnd);
+
+            if (window.PointerEvent) {
+                chip.addEventListener('pointerdown', function (ev) {
+                    if (activeId !== null) return;
+                    // Skip touch-originated pointer events — the
+                    // touchstart path already owns those. Without this
+                    // skip, on Chrome that DOES synthesize pointer-from-
+                    // touch correctly, both paths would fire and
+                    // double-init the drag.
+                    if (ev.pointerType === 'touch') return;
+                    if (!beginDrag(ev)) return;
+                    activeId = 'pointer:' + ev.pointerId;
+                    try { chip.setPointerCapture(ev.pointerId); } catch (e) {}
+                });
+                document.addEventListener('pointermove', function (ev) {
+                    if (activeId !== 'pointer:' + ev.pointerId) return;
+                    moveDrag(ev);
+                });
+                var pUp = function (ev) {
+                    if (activeId !== 'pointer:' + ev.pointerId) return;
+                    try { chip.releasePointerCapture(ev.pointerId); } catch (e) {}
+                    endDrag();
+                    activeId = null;
+                };
+                document.addEventListener('pointerup', pUp);
+                document.addEventListener('pointercancel', pUp);
+            }
+
+            // Mouse fallback — covers desktop and the rare WebView with
+            // neither working pointer nor touch events. Skipped if a
+            // touch or pointer drag is already in flight.
+            chip.addEventListener('mousedown', function (ev) {
+                if (activeId !== null) return;
+                if (!beginDrag(ev)) return;
+                activeId = 'mouse';
+            });
+            document.addEventListener('mousemove', function (ev) {
+                if (activeId !== 'mouse') return;
+                moveDrag(ev);
+            });
+            document.addEventListener('mouseup', function () {
+                if (activeId !== 'mouse') return;
+                endDrag();
+                activeId = null;
+            });
+
+            // Re-snap on viewport resize (e.g. BYD landscape↔portrait
+            // rotation) so a corner valid in one orientation is also
+            // valid in the other.
+            window.addEventListener('resize', function () {
+                try {
+                    var s = localStorage.getItem(STORAGE_KEY);
+                    if (s && /^(tl|tr|bl|br)$/.test(s)) applyCorner(s, false);
+                } catch (e) {}
+            });
+        })();
+
+        // Keep --live-mobile-header-h honest across rotation and viewport changes:
+        // the offset that holds "Back to cameras" clear of the floating header is a
+        // measured value, and rotating while the map is already expanded would
+        // otherwise leave the portrait height applied in landscape (where the header
+        // is display:none and the offset must collapse to 0).
+        window.addEventListener('resize', function () {
+            if (BYD.liveLayout) BYD.liveLayout.syncHeaderHeight();
+        });
+        // Also measure once at startup so the very first expand is correct even if
+        // the header's height differs from the CSS fallback (safe-area insets).
+        if (BYD.liveLayout) BYD.liveLayout.syncHeaderHeight();
+
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && BYD.stream.isFullscreen) {
+                BYD.stream.isFullscreen = false;
+                var _scv = document.querySelector('.seamless-camera-view');
+                if (_scv) _scv.classList.remove('fullscreen');
+            }
+        });
+
+        // Top-down 3D vehicle in the camera selector. Replaces the static
+        // car-icon.webp PNG with the user's actual GLB tinted in their
+        // chosen paint colour, kept in sync with the sidebar EV-card via
+        // OverdriveAppShell.mountVehicleCanvas. Hotspot CSS positions
+        // (FRONT/REAR/LEFT/RIGHT around a 72×150 silhouette) align with
+        // the auto-fit roof-down render.
+        function mountLiveCarCanvas() {
+            const canvas = document.getElementById('liveCarCanvas');
+            if (!canvas) return;
+            const shell = window.OverdriveAppShell;
+            if (!shell || typeof shell.mountVehicleCanvas !== 'function') return;
+            const container = canvas.parentElement;
+            shell.mountVehicleCanvas(canvas, {
+                view: 'top',
+                onReady: function () {
+                    if (container) container.classList.add('vehicle-render-ready');
+                }
+            });
+        }
+        // app-shell.js exposes mountVehicleCanvas after it renders the
+        // sidebar and dispatches `app-shell:ready`. Listen for that
+        // event AND check synchronously in case the shell already
+        // initialised (script-load order on cached pages can flip).
+        if (window.OverdriveAppShell && window.OverdriveAppShell.mountVehicleCanvas) {
+            mountLiveCarCanvas();
+        } else {
+            document.addEventListener('app-shell:ready', mountLiveCarCanvas);
+        }
+    </script>
+</body>
+</html>
