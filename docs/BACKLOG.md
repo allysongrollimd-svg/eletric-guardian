@@ -39,3 +39,11 @@
 - Escondido do cliente (admin vê tudo): experimental/DI5, economia de energia e corte por bateria, ajustes finos de detecção, desenvolvedor, áreas de detecção, Parking Intelligence, dissuasão em nuvem, mensagem/imagem personalizada, resolvedor online/URL, buffers, codec, FPS, duração do clipe, câmera do para-brisa, campos de telemetria, ajustes finos da limpeza, aba Dashcam OEM.
 - Implementação: `webapp/lib/viewproxy.js` (`SURVEILLANCE_HIDE`), por chave de tradução (`data-i18n`).
 - **Pendente:** repetir a conversa para a página de Gravações (Dashcam).
+
+## Dashcam: o que o cliente vê (decidido)
+- **Captura:** modo de gravação, layout da câmera, marcação de local.
+- **Qualidade:** qualidade, codec, duração do clipe, correção de olho de peixe, telemetria no vídeo, áudio da cabine.
+- **Armazenamento:** local, uso, limite, limpeza automática da dashcam BYD (se o carro tiver).
+- Escondido do cliente: câmera do para-brisa, ajustes da guarda de proximidade (sensibilidade/buffers), resolvedor online/URL, FPS, ajustes finos da limpeza, aba Status.
+- **Dashcam OEM removida para todos** (cliente e admin) no webapp: `EMBED_CSS` em `webapp/lib/viewproxy.js`. Continua existindo no carro. Para recolocar, tirar a regra de `EMBED_CSS`.
+- Áudio da cabine: mantido visível (decisão do dono); privacidade/consentimento a revisar nos Termos.

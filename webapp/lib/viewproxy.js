@@ -8,6 +8,8 @@ const STRIP_COOKIES = /^(eg_session|eg_view|eg_ctl)$/;
 // the shell is hidden so there is a single navigation. Detected from the browser's Sec-Fetch-Dest header.
 const EMBED_CSS = '<style id="eg-embed">#app-shell-mount,.sidebar,.sidebar-overlay,.mobile-header,.page-header{display:none!important}' +
   '.app-layout{display:block!important}.main-content{margin:0!important;max-width:100%!important;width:100%!important}body{padding:0!important}' +
+  // Dashcam OEM (the factory camera) is removed from the product: no tab, no cards
+  '[data-tab="oem"],[data-tab-target="oem"],#oemDashcamCard,#oemDashcamMainCard,#oemNativeDvrCard{display:none!important}' +
   // the car pages' own theme button only changes that one page: hidden until there is a global theme
   '#bydThemePicker{display:none!important}' +
   // Sentinela: "Ativar" comes first, before the operating mode (as in the reference app)
@@ -34,11 +36,21 @@ const SURVEILLANCE_HIDE = [
   '.timeline-visual', '.info-row:has([data-i18n="recording.fps_actual"])',
   // Armazenamento: fine tuning of the BYD dashcam cleanup
   ...hideRows(['recording.cdr_reserved', 'recording.cdr_protect_recent', 'recording.cdr_min_keep']),
-  '[data-tab="oem"]', '[data-tab-target="oem"]', '#parking',
+  '#parking',
+];
+const RECORDING_HIDE = [
+  '[data-tab="status"]', '[data-tab-target="status"]',
+  // Captura: windshield camera, proximity-guard fine tuning, online geocoder
+  ...hideRows(['recording.layout_use_windshield_label', 'recording.geocoding_online_name', 'recording.geocoding_custom_url_name']),
+  ...hideCards(['recording.proximity_settings_title']),
+  // Qualidade: frame rate (codec, clip length, cabin audio, telemetry and fisheye stay)
+  ...hideRows(['recording.camera_fps']), '#fpsClampRow',
+  // Armazenamento: fine tuning of the BYD dashcam cleanup
+  ...hideRows(['recording.cdr_reserved', 'recording.cdr_protect_recent', 'recording.cdr_min_keep']),
 ];
 const CUSTOMER_CSS = {
   '/surveillance.html': `<style id="eg-customer">${SURVEILLANCE_HIDE.join(',')}{display:none!important}</style>`,
-  '/recording.html': '<style id="eg-customer">[data-tab="status"],[data-tab-target="status"]{display:none!important}</style>',
+  '/recording.html': `<style id="eg-customer">${RECORDING_HIDE.join(',')}{display:none!important}</style>`,
 };
 const STRIP_RES = /^(connection|keep-alive|transfer-encoding|proxy-.*|x-frame-options|content-security-policy)$/i;
 
