@@ -75,6 +75,8 @@
                     <div id="egClaimed" style="display:none;">
                         <div class="eg-row"><div><div style="font-size:14px;font-weight:500;" id="egCarName">Carro vinculado</div><div class="eg-hint">Para desvincular, use Carros → Desvincular no painel.</div></div></div>
                         <div class="eg-row"><span>Câmeras (túnel)</span><span class="eg-pill" id="egTunnel">…</span></div>
+                        <div class="eg-row"><span>Telemetria (MQTT)</span><span class="eg-pill" id="egMqtt">…</span></div>
+                        <div class="eg-hint" id="egMqttDetail"></div>
                     </div>
                     <div id="egOff" class="eg-hint">Ative a conexão e informe o endereço do servidor para gerar o código de vínculo.</div>
                     <div class="eg-err" id="egStatusErr"></div>
@@ -126,6 +128,10 @@
                     $('egCarName').textContent = s.name || 'Carro vinculado';
                     $('egTunnel').textContent = s.tunnel ? 'conectado' : 'conectando…';
                     $('egTunnel').className = 'eg-pill ' + (s.tunnel ? 'ok' : 'warn');
+                    var m = s.mqtt || {};
+                    $('egMqtt').textContent = m.connected ? 'conectada' : 'reconectando…';
+                    $('egMqtt').className = 'eg-pill ' + (m.connected ? 'ok' : 'warn');
+                    $('egMqttDetail').textContent = m.connected ? (m.publishes || 0) + ' envios' : (m.lastError ? 'Último erro: ' + m.lastError : '');
                 } else {
                     st.textContent = s.state === 'disabled' ? 'Desativado' : (s.state || '—');
                 }

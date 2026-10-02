@@ -103,6 +103,11 @@ public final class CloudClient {
     }
 
     private volatile String sentVin;
+    // State of the telemetry (MQTT) link, shown on the Cloud page, plus a watchdog: the app's own reconnect has been seen to
+    // give up for hours after a server restart, so a link that stays down is rebuilt from the saved configuration.
+    private volatile JSONObject mqttInfo = new JSONObject();
+    private long mqttDownSince;
+    private long mqttLastRestart;
 
     private void step() throws Exception {
         CloudConfig cfg = CloudConfig.load();
@@ -230,8 +235,43 @@ public final class CloudClient {
                 mgr.updateConnection(existing.id, j);
                 LOG.info("cloud MQTT connection updated");
             }
+            watchMqtt(mgr, j, url);
         } catch (Throwable t) {
             LOG.warn("MQTT provisioning failed: " + t.getMessage());
+        }
+    }
+
+    /** Records the link state for the UI and rebuilds the connection when it has been down for more than 3 minutes. */
+    private void watchMqtt(MqttConnectionManager mgr, JSONObject desired, String url) {
+        try {
+            MqttConnectionConfig cur = null;
+            for (MqttConnectionConfig c : mgr.getStore().getAll()) {
+                if (MQTT_NAME.equals(c.name)) { cur = c; break; }
+            }
+            if (cur == null) return;
+            JSONObject entry = mgr.getConnectionStatus(cur.id);
+            JSONObject s = entry == null ? null : entry.optJSONObject("status");
+            boolean up = s != null && s.optBoolean("connected", false);
+            JSONObject info = new JSONObject();
+            info.put("connected", up);
+            info.put("broker", s != null ? s.optString("brokerUri", url) : url);
+            info.put("lastError", s != null ? s.optString("lastError", "") : "");
+            info.put("publishes", s != null ? s.optLong("totalPublishes", 0) : 0);
+            info.put("failed", s != null ? s.optLong("failedPublishes", 0) : 0);
+            mqttInfo = info;
+            long now = System.currentTimeMillis();
+            if (up) {
+                mqttDownSince = 0;
+            } else {
+                if (mqttDownSince == 0) mqttDownSince = now;
+                if (now - mqttDownSince > 180_000L && now - mqttLastRestart > 300_000L) {
+                    LOG.warn("cloud MQTT down for " + ((now - mqttDownSince) / 1000) + " s: rebuilding the connection");
+                    mqttLastRestart = now;
+                    mgr.updateConnection(cur.id, desired);
+                }
+            }
+        } catch (Throwable t) {
+            LOG.warn("MQTT watchdog failed: " + t.getMessage());
         }
     }
 
@@ -293,6 +333,7 @@ public final class CloudClient {
             j.put("codeExpiresAt", codeExpiresAt);
             j.put("name", claimedName);
             j.put("tunnel", tunnelUp);
+            j.put("mqtt", mqttInfo);
             j.put("error", lastError);
             String vin = currentVin();
             j.put("vinKnown", vin != null);
