@@ -48,6 +48,9 @@ public class MqttConnectionManager {
 
     // Per-connection schedulers: connectionId → scheduler
     private final ConcurrentHashMap<String, ScheduledExecutorService> schedulers = new ConcurrentHashMap<>();
+    // Latest live driving sample, shared with the regular publish cycle so both agree
+    private volatile JSONObject liveFresh;
+    private volatile long liveFreshAt;
     // Optional fast driving stream per connection (liveIntervalMs > 0)
     private final ConcurrentHashMap<String, ScheduledExecutorService> liveSchedulers = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ScheduledFuture<?>> scheduledTasks = new ConcurrentHashMap<>();
@@ -294,6 +297,8 @@ public class MqttConnectionManager {
                 if (collector == null) return;
                 JSONObject sample = collector.readLiveSample();
                 if (sample.length() == 0) return;
+                liveFresh = sample;
+                liveFreshAt = System.currentTimeMillis();
                 String body = sample.toString();
                 long now = System.currentTimeMillis();
                 if (body.equals(last[0]) && now - lastAt[0] < 2000L) return;   // unchanged: skip, resend every 2 s
@@ -399,6 +404,14 @@ public class MqttConnectionManager {
             }
 
             // Change-gated publish (per-field for HA, full snapshot for aggregate).
+            // The slow snapshot (5 s poll) must not overwrite the fresh live values with stale ones.
+            JSONObject fresh = liveFresh;
+            if (fresh != null && System.currentTimeMillis() - liveFreshAt < 2000L) {
+                for (java.util.Iterator<String> it = fresh.keys(); it.hasNext(); ) {
+                    String k = it.next();
+                    try { payload.put(k, fresh.get(k)); } catch (Exception ignored) {}
+                }
+            }
             publisher.publishTelemetry(payload);
 
         } catch (Exception e) {

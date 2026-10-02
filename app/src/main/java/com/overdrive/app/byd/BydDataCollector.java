@@ -2064,6 +2064,13 @@ public class BydDataCollector {
                         o.put("power", Math.round(kw * 10.0) / 10.0);
                     }
                 }
+                if (!o.has("power")) {
+                    Object pg = BydDeviceHelper.callGetter(eng, "getEnginePower");
+                    if (pg instanceof Number) {
+                        double kw = ((Number) pg).doubleValue();
+                        if (kw >= -200.0 && kw <= 400.0 && !isEnginePowerSentinel(kw)) o.put("power", Math.round(kw * 10.0) / 10.0);
+                    }
+                }
                 Object fms = BydDeviceHelper.callGet(eng, BydFeatureIds.ENGINE_FRONT_MOTOR_SPEED, Integer.class);
                 if (fms != null) { int v = BydDeviceHelper.getIntValue(fms); if (isPlausibleMotorRpm(v)) o.put("motor_front_rpm", -v); }
                 Object rms = BydDeviceHelper.callGet(eng, BydFeatureIds.ENGINE_REAR_MOTOR_SPEED, Integer.class);
