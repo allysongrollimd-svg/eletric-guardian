@@ -24,14 +24,21 @@ const store = new Store({ historyMinGapMs: 1000 });
 const hub = createTunnelHub({ accounts, log: {} });
 const broker = await createBroker({ accounts, store, log: {} });
 const mqttPort = await broker.listen({ port: 0, host: '127.0.0.1' });
-const cloud = createCloud({ cfg, accounts, store, hub, broker, secret: SECRET });
+// Stand-in for the InfinitePay checkout: the "hosted page" is the return URL itself and any transaction counts as paid in full.
+const amounts = new Map();
+const provider = {
+  createLink: async ({ orderNsu, items, redirectUrl }) => { amounts.set(orderNsu, items[0].price); return `${redirectUrl}&transaction_nsu=dev-${orderNsu}&slug=dev&capture_method=pix`; },
+  paymentCheck: async ({ orderNsu }) => ({ paid: true, paidAmountCents: amounts.get(orderNsu) ?? 0, captureMethod: 'pix' }),
+};
+const cloud = createCloud({ cfg, accounts, store, hub, broker, secret: SECRET, provider });
+cloud.billing.setSettings({ infinitepayHandle: 'dev-tag' });
 const server = createApp(cfg, store, broker, cloud);
 await new Promise((r) => server.listen(PORT, '127.0.0.1', r));
 
 // demo account + paired car
 const CAR = { deviceId: 'dddddddd-0000-4000-8000-000000000001', deviceKey: 'demo-device-key-'.padEnd(44, 'k') };
 const VIN = 'LGXC16DG2R0123456';
-const user = await accounts.signup({ email: 'demo@example.com', password: 'demo-password-123', name: 'Demo' });
+const user = await accounts.signup({ email: 'demo@example.com', password: 'demo-password-123', name: 'Demo', role: 'admin' });
 accounts.claim(user.id, { vin: VIN, code: accounts.registerDevice({ ...CAR, vin: VIN }).code, name: 'Dolphin GS (demo)' });
 
 // the car's "local web UI" served through the tunnel

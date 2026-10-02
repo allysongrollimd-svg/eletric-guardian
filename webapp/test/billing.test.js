@@ -69,6 +69,14 @@ test('first link of a chassis starts the trial; trial -> grace -> expired; re-li
   assert.equal(s.billing.state(VIN).state, 'expired');
 });
 
+test('cars linked before billing existed get the trial when billing starts', async () => {
+  const s = setup(); const { car } = await linkedCar(s);
+  s.db.exec('DELETE FROM vin_access');                                   // simulate the database from before this feature
+  assert.equal(s.billing.allowed(car.id), false);
+  const again = createBilling({ db: s.db, accounts: s.accounts, cfg: {}, secret: SECRET, now: s.clock.now, provider: s.provider });
+  assert.equal(again.state(VIN).state, 'trial');
+});
+
 test('checkout: needs a configured handle, only the owner can pay for a car, plan must be active', async () => {
   const s = setup({ handle: '' }); const { u, car } = await linkedCar(s);
   const o = await s.accounts.signup({ email: 'other@x.com', password: 'senha-forte-123' });
@@ -103,7 +111,7 @@ test('payment: provider is the authority, amounts are checked, credit happens on
   assert.equal(r.already, false); assert.equal(r.invoice.status, 'paid'); assert.equal(r.invoice.captureMethod, 'pix');
   const st = s.billing.state(VIN);
   assert.equal(st.state, 'active');
-  assert.equal(new Date(st.paidUntil).toISOString().slice(0, 10), '2026-02-28');                // 31 Jan + 1 month
+  assert.equal(new Date(st.paidUntil).toISOString().slice(0, 10), '2026-03-07');                // trial ends 7 Feb (kept) + 1 month
   // the same webhook again (retry) changes nothing
   const again = await s.billing.settleFromProvider(inv.id, { transactionNsu: 'tx-1' });
   assert.equal(again.already, true); assert.equal(s.billing.state(VIN).paidUntil, st.paidUntil);
@@ -111,7 +119,7 @@ test('payment: provider is the authority, amounts are checked, credit happens on
   const inv2 = await s.billing.createInvoice({ userId: u.id, deviceId: car.id, planId: 'trimestral', baseUrl: 'https://a.test' });
   s.provider.paid.set(inv2.id, { tx: 'tx-2', cents: 8490 });
   await s.billing.settleFromProvider(inv2.id, { transactionNsu: 'tx-2' });
-  assert.equal(new Date(s.billing.state(VIN).paidUntil).toISOString().slice(0, 10), '2026-05-28');
+  assert.equal(new Date(s.billing.state(VIN).paidUntil).toISOString().slice(0, 10), '2026-06-07');
   // one provider transaction can never pay two invoices
   const inv3 = await s.billing.createInvoice({ userId: u.id, deviceId: car.id, planId: 'mensal', baseUrl: 'https://a.test' });
   s.provider.paid.set(inv3.id, { tx: 'tx-2', cents: 2990 });
@@ -134,7 +142,7 @@ test('admin: manual settlement, grants, cancel, last-admin protection, audit', a
   const inv = await s.billing.createInvoice({ userId: u.id, deviceId: car.id, planId: 'semestral', baseUrl: 'https://a.test' });
   const r = s.billing.settleManual(inv.id, { note: 'PIX direto', adminId: adm.id });
   assert.equal(r.invoice.status, 'paid'); assert.equal(s.billing.invoice(inv.id).source, 'manual');
-  assert.equal(new Date(s.billing.state(VIN).paidUntil).toISOString().slice(0, 10), '2026-07-31');
+  assert.equal(new Date(s.billing.state(VIN).paidUntil).toISOString().slice(0, 10), '2026-08-07');
   const sale = s.billing.createManualPaid({ vin: VIN, planId: 'mensal', adminId: adm.id });
   assert.equal(sale.invoice.status, 'paid');
   const before = s.billing.state(VIN).paidUntil; s.billing.grantDays(VIN, 10, { adminId: adm.id });

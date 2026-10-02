@@ -1,6 +1,7 @@
 // Electric Guardian live dashboard. All values are written with textContent (never innerHTML).
 import { initControls } from '/controls.js';
 import { loadConfig, initCloud } from '/cloud.js';
+import { initBilling } from '/billing.js';
 const $ = (id) => document.getElementById(id);
 const nf = (v, d = 0) => (typeof v === 'number' && isFinite(v) ? v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--');
 const state = { devices: new Map(), current: null, history: [], fields: {}, es: null, lastMapKey: '' };
@@ -53,6 +54,7 @@ function render(dev) {
 }
 
 function renderStatus(dev) {
+  bill?.refreshBanner();
   const el = $('status');
   el.className = `pill ${dev.online ? 'on' : 'off'}`;
   const age = dev.lastSeen ? Math.max(0, Math.round((Date.now() - dev.lastSeen) / 1000)) : null;
@@ -111,6 +113,7 @@ const ctl = initControls({
   isOnline: () => !!state.devices.get(state.current)?.online,
 });
 let cloud = null;        // set in accounts mode
+let bill = null;
 let ctlTimer = null;
 const ctlRerender = () => { if (!$('controls').hidden && !document.querySelector('dialog[open]')) ctl.render(); };
 function showTab(name) {
@@ -236,6 +239,7 @@ async function boot() {
           onAuthChanged: () => boot(),
           onCarsChanged: () => { transport.ws?.close(); transport.es?.close(); state.devices.clear(); state.current = null; $('device').replaceChildren(); boot(); },
         });
+        bill = initBilling({ getCurrent: () => state.devices.get(state.current) });
         state.cfg = cfg;
         $('pinHint').textContent = 'Digite a senha da sua conta para desbloquear os controles por alguns minutos.';
         $('pin').placeholder = 'Senha da conta'; $('pin').inputMode = 'text'; $('pin').autocomplete = 'current-password';
@@ -243,7 +247,11 @@ async function boot() {
     }
     await api('/api/devices'); // auth probe
     $('login').hidden = true; $('auth').hidden = true; $('logout').hidden = false;
-    if (state.mode === 'accounts') { $('carsBtn').hidden = false; $('camsTab').hidden = false; }
+    if (state.mode === 'accounts') {
+      $('carsBtn').hidden = false; $('camsTab').hidden = false; $('billBtn').hidden = false;
+      api('/api/me').then((m) => { $('adminLink').hidden = m.user?.role !== 'admin'; }).catch(() => {});
+      bill.handleReturn();
+    }
     connect();
     if (state.mode === 'accounts') cloud.maybePair();
   } catch (e) {

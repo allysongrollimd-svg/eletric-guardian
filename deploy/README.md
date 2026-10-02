@@ -64,3 +64,14 @@ sudo APP_HOST=guardian.allysongrolli.com.br VIEW_HOST=cam.guardian.allysongrolli
 DNS: crie registros A para `guardian…` e `cam.guardian…` apontando para o IP da VPS (portas 80/443 abertas).
 No carro: Nuvem → endereço `https://guardian.allysongrolli.com.br` → aparece um **QR code**; o cliente o lê,
 entra na conta e toca em *Vincular*. O chassi é enviado pelo próprio app do carro.
+
+## Cobrança (InfinitePay) e painel de administração
+
+- **Administração:** `https://SEU_APP_HOST/admin` (somente contas com perfil admin). Clientes, carros, faturas, planos, configurações e auditoria.
+  Para promover uma conta existente: `docker compose -f deploy/docker-compose.nginx.yml exec -T eg node scripts/admin.mjs make-admin voce@email.com`
+- **Checkout:** em *Config.* informe a **InfiniteTag** da sua conta InfinitePay. O link de pagamento (Pix ou cartão) e o webhook são criados
+  automaticamente a cada fatura; a baixa é automática. O servidor **não confia no corpo do webhook**: confirma cada pagamento na API da InfinitePay
+  (`payment_check`) e confere o valor antes de liberar. A URL do webhook leva uma chave por fatura.
+- **Regras:** o teste grátis começa no primeiro vínculo do chassi e não reinicia ao desvincular/vincular. Depois de vencer há uma tolerância; passada
+  a tolerância, câmeras e controles remotos ficam bloqueados (o painel segue mostrando os dados). Pagar durante o teste não perde os dias restantes.
+- **Renovação:** o checkout da InfinitePay é pagamento avulso (não cobra o cartão sozinho todo mês). Cada período é uma nova fatura que o cliente paga em *Assinatura*.

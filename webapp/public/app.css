@@ -105,3 +105,21 @@ input,select{font-size:16px}                       /* 16px stops iOS from zoomin
 }
 .hero .card:nth-child(4){grid-column:1/-1}
 .drawer-car:has(+ select[hidden]){display:none}
+
+/* ---- subscription ---- */
+.bill-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--card);font-size:14px}
+.bill-banner.warn{border-left:4px solid var(--warn)}.bill-banner.bad{border-left:4px solid var(--bad)}
+.bill-banner button{background:var(--primary);color:var(--on-primary);padding:8px 14px;white-space:nowrap}
+.bcar{border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin:10px 0}
+.bcar header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.bcar header b{font-size:16px}.bcar small{display:block;color:var(--muted);margin-top:2px}
+.state{font:600 12px ui-monospace,Menlo,monospace;padding:4px 10px;border-radius:99px;border:1px solid var(--line);text-transform:uppercase;letter-spacing:.06em}
+.state.trial,.state.active{color:var(--ok)}.state.grace{color:var(--warn)}.state.expired{color:var(--bad)}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.plan{display:grid;gap:2px;text-align:left;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px;min-height:76px}
+.plan b{font-size:15px}.plan .p{font:600 18px ui-monospace,Menlo,monospace}.plan small{color:var(--muted);font-size:12px}
+.plan:active{border-color:var(--primary)}
+.invrow{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:14px;flex-wrap:wrap}
+.invrow:last-child{border:0}.invrow small{display:block;color:var(--muted)}
+.invrow a{color:var(--primary)}
+a.drawer-item{display:flex;align-items:center;text-decoration:none;color:var(--text)}

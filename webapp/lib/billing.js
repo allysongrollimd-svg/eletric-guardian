@@ -95,7 +95,7 @@ export function createBilling({ db, accounts, cfg = {}, secret, now = () => Date
       vin = normalizeVin(vin);
       if (!Number.isInteger(days) || days < -3650 || days > 3650 || days === 0) throw new AccountError('bad_days', 'Informe um número de dias diferente de zero.');
       const a = q.access.get(vin);
-      const base = Math.max(now(), a?.paid_until || 0);
+      const base = Math.max(now(), a?.paid_until || 0, a?.trial_until || 0);
       const paid = base + days * DAY;
       if (a) q.setAccess.run(a.trial_until, paid, a.plan_id, now(), vin); else q.insAccess.run(vin, null, paid, null, now());
       log('admin_grant_days', { vin, days }, { userId: adminId });
@@ -144,7 +144,7 @@ export function createBilling({ db, accounts, cfg = {}, secret, now = () => Date
         if (r.changes) {
           if (source) db.prepare('UPDATE invoices SET source = ? WHERE id = ?').run(source, id);
           const a = q.access.get(inv.vin);
-          const from = Math.max(now(), a?.paid_until || 0);
+          const from = Math.max(now(), a?.paid_until || 0, a?.trial_until || 0);       // paying early never burns the remaining trial days
           const paid = addMonths(from, inv.months);
           if (a) q.setAccess.run(a.trial_until, paid, inv.plan_id, now(), inv.vin); else q.insAccess.run(inv.vin, null, paid, inv.plan_id, now());
         }
@@ -183,5 +183,7 @@ export function createBilling({ db, accounts, cfg = {}, secret, now = () => Date
     },
   };
   accounts.onClaim((e) => api.onClaim(e));
+  // Cars linked before billing existed get the normal trial instead of being locked out by the upgrade.
+  for (const { vin } of db.prepare('SELECT DISTINCT vin FROM devices WHERE owner_id IS NOT NULL AND vin IS NOT NULL').all()) api.onClaim({ vin });
   return api;
 }

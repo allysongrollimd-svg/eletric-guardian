@@ -30,11 +30,15 @@
     <button class="tab" data-tab="cams" id="camsTab" hidden>Câmeras</button>
   </nav>
   <div class="drawer-foot">
+    <button id="billBtn" class="drawer-item" hidden>Assinatura</button>
+    <a id="adminLink" class="drawer-item" href="/admin" hidden>Administração</a>
     <span id="latency" class="pill off" title="Transporte e latência (ida e volta)" hidden></span>
     <button id="carsBtn" class="drawer-item" hidden>Meus carros</button>
     <button id="logout" class="drawer-item" hidden>Sair</button>
   </div>
 </aside>
+
+<div id="billBanner" class="bill-banner" hidden role="status"><span id="billBannerText"></span><button id="billBannerBtn" type="button">Ver planos</button></div>
 
 <main id="cams" hidden>
   <div class="card cam-bar">
@@ -92,6 +96,20 @@
   </details>
 </main>
 
+<dialog id="billDlg" class="dlg wide">
+  <h2>Assinatura</h2>
+  <p class="sub" id="billIntro"></p>
+  <div id="billCars"></div>
+  <h3>Faturas</h3>
+  <div id="billInvoices"></div>
+  <p id="billErr" class="err" role="alert"></p>
+  <div class="dlg-actions"><button type="button" class="ghost" id="billClose">Fechar</button></div>
+</dialog>
+<dialog id="retDlg" class="dlg">
+  <h2 id="retTitle">Confirmando pagamento…</h2>
+  <p class="sub" id="retText">Aguarde alguns segundos.</p>
+  <div class="dlg-actions"><button type="button" id="retClose" hidden>Continuar</button></div>
+</dialog>
 <dialog id="confirmDlg" class="dlg"><form method="dialog"><h2 id="confirmTitle">Confirmar</h2><p id="confirmText"></p><div class="dlg-actions"><button value="cancel" class="ghost">Cancelar</button><button value="ok" id="confirmOk">Confirmar</button></div></form></dialog>
 <dialog id="pinDlg" class="dlg"><form id="pinForm" method="dialog"><h2>Desbloquear controles</h2><p id="pinHint">Digite o PIN de controle (diferente do token do painel).</p><input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" required><p id="pinErr" class="err" role="alert"></p><div class="dlg-actions"><button value="cancel" class="ghost" formnovalidate>Cancelar</button><button value="ok" id="pinOk">Desbloquear</button></div></form></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
