@@ -59,8 +59,8 @@ export function validateCommand({ key, sub, value }) {
  * Remote-control gate: PIN unlock (sliding window), rate limits and an audit trail.
  * `bridge.publishCommand(device, key, sub, payload)` delivers the command.
  */
-export function createControl(cfg, bridge, { now = () => Date.now(), log = console } = {}) {
-  const sessions = new Map(); // token -> expiry
+export function createControl(cfg, bridge, { now = () => Date.now(), log = console, verifySecret = null } = {}) {
+  const sessions = new Map(); // token -> { exp, userId }
   const pinLimit = createLimiter(5, 5 * 60_000, now);
   const perDevice = createLimiter(20, 60_000, now);
   const lastByKey = new Map();
@@ -68,31 +68,34 @@ export function createControl(cfg, bridge, { now = () => Date.now(), log = conso
   const ttl = cfg.controlUnlockSeconds * 1000;
 
   const record = (e) => { audit.push({ t: now(), ...e }); if (audit.length > 200) audit.shift(); log.info?.(`[control] ${JSON.stringify(e)}`); };
-  const sweep = () => { for (const [k, exp] of sessions) if (exp <= now()) sessions.delete(k); };
+  const sweep = () => { for (const [k, s] of sessions) if (s.exp <= now()) sessions.delete(k); };
 
   return {
     enabled: cfg.controlEnabled && !!bridge,
-    audit: () => audit.slice().reverse(),
-    unlock(pin, ip) {
-      if (!pinLimit(ip)) return { error: 'too many attempts', code: 429 };
-      if (!cfg.controlPin || !safeEqual(pin ?? '', cfg.controlPin)) { record({ event: 'unlock-failed', ip }); return { error: 'invalid pin', code: 401 }; }
+    audit: (userId) => audit.filter((e) => userId == null || e.userId === userId).reverse(),
+    /** secret = the control PIN (single-owner mode) or the account password (accounts mode, via verifySecret). */
+    async unlock(secret, ip, userId = 'owner') {
+      if (!pinLimit(`${ip}|${userId}`) || !pinLimit(`u|${userId}`)) return { error: 'too many attempts', code: 429 };
+      const ok = verifySecret ? await verifySecret(userId, secret) : !!cfg.controlPin && safeEqual(secret ?? '', cfg.controlPin);
+      if (!ok) { record({ event: 'unlock-failed', ip, userId }); return { error: verifySecret ? 'invalid password' : 'invalid pin', code: 401 }; }
       sweep();
       const token = randomBytes(24).toString('hex');
-      sessions.set(token, now() + ttl);
-      record({ event: 'unlock', ip });
+      sessions.set(token, { exp: now() + ttl, userId });
+      record({ event: 'unlock', ip, userId });
       return { token, ttlSeconds: cfg.controlUnlockSeconds };
     },
     lock(token) { if (token) sessions.delete(token); },
-    status(token) {
+    status(token, userId = 'owner') {
       sweep();
-      const exp = sessions.get(token);
-      return { enabled: this.enabled, unlocked: !!exp && exp > now(), ttlSeconds: exp ? Math.max(0, Math.round((exp - now()) / 1000)) : 0 };
+      const s = sessions.get(token);
+      const ok = !!s && s.userId === userId && s.exp > now();
+      return { enabled: this.enabled, unlocked: ok, ttlSeconds: ok ? Math.max(0, Math.round((s.exp - now()) / 1000)) : 0 };
     },
-    async execute(token, device, body, ip, deviceOnline) {
+    async execute(token, device, body, ip, deviceOnline, userId = 'owner') {
       if (!this.enabled) return { code: 403, error: 'remote control is disabled on this server' };
       const t = token;
-      const exp = t && sessions.get(t);
-      if (!exp || exp <= now()) return { code: 403, error: 'locked: enter the control PIN', locked: true };
+      const sess = t && sessions.get(t);
+      if (!sess || sess.exp <= now() || sess.userId !== userId) return { code: 403, error: 'locked: enter the control PIN', locked: true };
       const v = validateCommand(body || {});
       if (v.error) return { code: 400, error: v.error };
       if (!deviceOnline) return { code: 409, error: 'vehicle is offline' };
@@ -101,13 +104,13 @@ export function createControl(cfg, bridge, { now = () => Date.now(), log = conso
       if (now() - (lastByKey.get(gapKey) || 0) < 1500) return { code: 429, error: 'slow down' };
       if (!perDevice(device)) return { code: 429, error: 'rate limit' };
       lastByKey.set(gapKey, now());
-      sessions.set(t, now() + ttl); // sliding window
+      sess.exp = now() + ttl; // sliding window
       try {
         const topic = await bridge.publishCommand(device, v.control.key, sub, v.payload);
-        record({ event: 'command', device, key: v.control.key, sub, payload: v.payload, ip, ok: true });
+        record({ event: 'command', device, key: v.control.key, sub, payload: v.payload, ip, userId, ok: true });
         return { code: 202, ok: true, topic };
       } catch (e) {
-        record({ event: 'command', device, key: v.control.key, sub, payload: v.payload, ip, ok: false, error: e.message });
+        record({ event: 'command', device, key: v.control.key, sub, payload: v.payload, ip, userId, ok: false, error: e.message });
         return { code: 502, error: 'could not deliver the command' };
       }
     },

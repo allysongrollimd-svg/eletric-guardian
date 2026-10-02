@@ -18,6 +18,20 @@ export function loadConfig(env = process.env) {
     historyMax: int(env.HISTORY_MAX_POINTS, 4000),
     historyMinGapMs: int(env.HISTORY_MIN_GAP_MS, 2000),
     demo: env.DEMO === '1',
+    // --- multi-tenant "accounts" mode (the sellable service) ---
+    accounts: env.AUTH_MODE === 'accounts',
+    dataDir: env.DATA_DIR || './data',
+    sessionSecret: env.SESSION_SECRET || '',
+    allowSignup: env.ALLOW_SIGNUP === '1',
+    appHost: (env.APP_HOST || '').toLowerCase(),          // e.g. app.example.com  (the dashboard)
+    viewHost: (env.VIEW_HOST || '').toLowerCase(),        // e.g. view.example.com (car cameras/recordings; must be a subdomain of APP_HOST's domain)
+    publicScheme: env.PUBLIC_SCHEME || (env.NODE_ENV === 'production' ? 'https' : 'http'),
+    trustProxy: env.TRUST_PROXY === '1',
+    brokerPort: int(env.BROKER_PORT, 0),                  // plain MQTT (dev / private network); 0 = off
+    brokerTlsPort: int(env.BROKER_TLS_PORT, 0),           // MQTT over TLS (needs TLS_CERT + TLS_KEY); 0 = off
+    tlsCert: env.TLS_CERT || '',
+    tlsKey: env.TLS_KEY || '',
+    mqttPublic: env.MQTT_PUBLIC_URL ? { url: env.MQTT_PUBLIC_URL } : null,   // what cars are told to connect to
     controlEnabled: env.CONTROL_ENABLED === '1',
     controlPin: env.CONTROL_PIN || '',
     controlUnlockSeconds: int(env.CONTROL_UNLOCK_SECONDS, 600),
@@ -27,6 +41,14 @@ export function loadConfig(env = process.env) {
 /** Returns a list of fatal config problems (empty when OK). */
 export function validateConfig(cfg) {
   const problems = [];
+  if (cfg.accounts) {
+    if (cfg.sessionSecret && cfg.sessionSecret.length < 32) problems.push('SESSION_SECRET must have at least 32 characters (or leave it empty to auto-generate one in DATA_DIR).');
+    if (cfg.viewHost && cfg.viewHost === cfg.appHost) problems.push('VIEW_HOST must differ from APP_HOST.');
+    if (cfg.viewHost && !cfg.appHost) problems.push('APP_HOST is required when VIEW_HOST is set (used for frame-ancestors).');
+    if (cfg.brokerTlsPort && (!cfg.tlsCert || !cfg.tlsKey)) problems.push('BROKER_TLS_PORT needs TLS_CERT and TLS_KEY.');
+    if (cfg.publicScheme === 'https' && !cfg.trustProxy && !cfg.tlsCert) { /* fine: assume a TLS-terminating proxy */ }
+    return problems;                                      // none of the single-owner rules below apply
+  }
   if (!cfg.allowInsecure) {
     if (!cfg.dashboardToken) problems.push('DASHBOARD_TOKEN is required (telemetry includes GPS position). Set ALLOW_INSECURE=1 only for local testing.');
     if (!cfg.ingestToken && !cfg.mqttUrl && !cfg.demo) problems.push('Set MQTT_URL and/or INGEST_TOKEN so telemetry can reach the server.');

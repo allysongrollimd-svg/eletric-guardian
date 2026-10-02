@@ -53,6 +53,15 @@ export class Store extends EventEmitter {
     return { device: d.device, online: this.isOnline(d), lastSeen: d.lastSeen || null, data: d.data };
   }
 
+  /** Latest state per car, for persistence across restarts. */
+  dump() { return [...this.devices.values()].map((d) => ({ device: d.device, data: d.data, lastSeen: d.lastSeen })); }
+  restore(items) {
+    for (const it of Array.isArray(items) ? items : []) {
+      if (!it || typeof it.device !== 'string' || typeof it.data !== 'object') continue;
+      const d = this._dev(it.device); d.data = it.data; d.lastSeen = Number(it.lastSeen) || 0;
+    }
+  }
+
   list() { return [...this.devices.values()].map((d) => this.view(d)); }
   get(id) { const d = this.devices.get(sanitizeDeviceId(id)); return d ? this.view(d) : null; }
 
