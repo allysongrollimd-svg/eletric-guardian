@@ -28,8 +28,6 @@ object PreferencesManager {
     /** Rail keys the user has already been offered, so a NEW one can default to
      *  visible without un-hiding something they deliberately switched off. */
     private const val KEY_NAVIGATION_SEEN_V1 = "navigation_seen_v1"
-    private const val KEY_CUSTOMER_MODE = "customer_mode_v1"
-    private const val KEY_INSTALLER_PIN = "installer_pin_v1"
 
     private var prefs: SharedPreferences? = null
     // Held so theme-mode changes can poke the floating overlay service —
@@ -272,30 +270,4 @@ object PreferencesManager {
 
     /** Current access URL — always the last tunnel URL we saw. */
     fun getCurrentUrl(): String? = getLastTunnelUrl()
-
-    // ---- Customer mode: the car shows only the connect screen, live view and recordings; the installer's PIN brings the full app back ----
-
-    /** Off by default, so an install in progress shows everything. The installer turns it on when handing the car over. */
-    fun isCustomerMode(): Boolean = try { requirePrefs().getBoolean(KEY_CUSTOMER_MODE, false) } catch (_: Throwable) { false }
-
-    fun enableCustomerMode(pin: String) {
-        val salt = java.util.UUID.randomUUID().toString().replace("-", "").take(16)
-        requirePrefs().edit()
-            .putString(KEY_INSTALLER_PIN, salt + ":" + pinHash(salt, pin))
-            .putBoolean(KEY_CUSTOMER_MODE, true)
-            .apply()
-    }
-
-    /** @return true (and customer mode off) when the PIN is right. */
-    fun disableCustomerMode(pin: String): Boolean {
-        val stored = requirePrefs().getString(KEY_INSTALLER_PIN, null) ?: return false
-        val i = stored.indexOf(':')
-        if (i <= 0 || stored.substring(i + 1) != pinHash(stored.substring(0, i), pin)) return false
-        requirePrefs().edit().putBoolean(KEY_CUSTOMER_MODE, false).apply()
-        return true
-    }
-
-    private fun pinHash(salt: String, pin: String): String =
-        java.security.MessageDigest.getInstance("SHA-256").digest((salt + pin).toByteArray())
-            .joinToString("") { "%02x".format(it) }
 }
