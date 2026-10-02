@@ -338,6 +338,40 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    /** Installer's switch: hand the car over to the customer (connect screen + live + recordings only). */
+    private fun addCustomerModeCard(view: View) {
+        val anchor = view.findViewById<View>(R.id.cardSectionSecurity) ?: return
+        val parent = anchor.parent as? android.view.ViewGroup ?: return
+        if (parent.findViewWithTag<View>("customerModeCard") != null) return
+        val ctx = requireContext()
+        val dp = ctx.resources.displayMetrics.density
+        val title = android.widget.TextView(ctx).apply { text = "Modo cliente"; textSize = 16f; setTextColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface)) }
+        val desc = android.widget.TextView(ctx).apply {
+            text = "Para entregar o carro: mostra só a tela de conectar, o Ao vivo e as Gravações. Um PIN do instalador abre o app completo."
+            setTextColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurfaceVariant))
+        }
+        val btn = com.google.android.material.button.MaterialButton(ctx).apply {
+            text = "Ativar modo cliente"
+            setOnClickListener {
+                com.overdrive.app.ui.customer.CustomerMode.showEnableDialog(ctx) { (activity as? MainActivity)?.onCustomerModeChanged() }
+            }
+        }
+        val box = android.widget.LinearLayout(ctx).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            val pad = (16 * dp).toInt(); setPadding(pad, pad, pad, pad)
+            addView(title); addView(desc); addView(btn)
+        }
+        val card = com.google.android.material.card.MaterialCardView(ctx).apply {
+            tag = "customerModeCard"
+            radius = 16 * dp
+            cardElevation = 0f
+            setCardBackgroundColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurfaceContainer))
+            addView(box)
+            layoutParams = android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT).apply { bottomMargin = (16 * dp).toInt() }
+        }
+        parent.addView(card, parent.indexOfChild(anchor) + 1)
+    }
+
     private fun setupSectionShortcuts(view: View) {
         view.findViewById<View>(R.id.cardSectionRecording)?.setOnClickListener {
             findNavController().navigateDrillDown(R.id.recordingSettingsWebFragment)
@@ -348,6 +382,7 @@ class SettingsFragment : Fragment() {
         view.findViewById<View>(R.id.cardSectionSecurity)?.setOnClickListener {
             findNavController().navigateDrillDown(R.id.settingsSecurityFragment)
         }
+        addCustomerModeCard(view)
         view.findViewById<View>(R.id.cardSectionDaemons)?.setOnClickListener {
             findNavController().navigateDrillDown(R.id.daemonsFragment)
         }

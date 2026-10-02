@@ -1808,7 +1808,11 @@ open class MainActivity : AppCompatActivity() {
             TooltipCompat.setTooltipText(row, label)
             row.setOnClickListener {
                 val activity = item.launchActivity
-                if (activity != null) {
+                if (com.overdrive.app.ui.customer.CustomerMode.isOn() && item.key == NavigationRailCatalog.INTEGRATIONS) {
+                    navigateToRailDestination(R.id.cloudFragment)          // customers go straight to the connect screen
+                } else if (com.overdrive.app.ui.customer.CustomerMode.isOn() && item.key == RAIL_KEY_ABOUT) {
+                    com.overdrive.app.ui.customer.CustomerMode.showExitDialog(this) { onCustomerModeChanged() }
+                } else if (activity != null) {
                     startActivity(Intent(this, activity))
                 } else {
                     navigateToRailDestination(item.destinationId)
@@ -1862,6 +1866,9 @@ open class MainActivity : AppCompatActivity() {
             animate = false
         )
         refreshNavigationRailVisibility()
+        if (savedInstanceState == null && com.overdrive.app.ui.customer.CustomerMode.isOn()) {
+            navigationRail.post { navigateToRailDestination(R.id.cloudFragment) }     // customers open on the connect screen
+        }
 
         // Selection sync — light up the row whose destinationId matches
         // the current nav destination (or any of its ancestors).
@@ -1926,13 +1933,34 @@ open class MainActivity : AppCompatActivity() {
         applyNavigationRailVisibility(activeKey)
     }
 
+    /** In customer mode two rows get customer-facing names: the cloud screen ("Conectar") and the way back for the installer ("Técnico"). */
+    private fun applyCustomerLabel(item: RailItem, customer: Boolean) {
+        val text = when {
+            customer && item.key == NavigationRailCatalog.INTEGRATIONS -> "Conectar"
+            customer && item.key == RAIL_KEY_ABOUT -> "Técnico"
+            else -> getString(item.labelRes)
+        }
+        val row = navigationRail.findViewById<View>(item.rowId) ?: return
+        row.findViewById<TextView>(R.id.railItemLabel)?.text = text
+        row.contentDescription = text
+    }
+
+    /** Called after customer mode is switched on/off: rebuild the rail and go to the right first screen. */
+    fun onCustomerModeChanged() {
+        refreshNavigationRailVisibility()
+        navigateToRailDestination(if (com.overdrive.app.ui.customer.CustomerMode.isOn()) R.id.cloudFragment else R.id.dashboardFragment)
+    }
+
     private fun applyNavigationRailVisibility(activeKey: String?) {
         val customizableKeys = NavigationRailCatalog.customizableKeys
         val visibleKeys = PreferencesManager.getVisibleNavigationKeys(customizableKeys)
+        val customer = com.overdrive.app.ui.customer.CustomerMode.isOn()
         val shownKeys = mutableSetOf<String>()
         railItems.forEach { item ->
             val fixed = item.key !in customizableKeys
-            val visible = fixed || item.key in visibleKeys || item.key == activeKey
+            val visible = if (customer) item.key in com.overdrive.app.ui.customer.CustomerMode.visibleKeys
+                else fixed || item.key in visibleKeys || item.key == activeKey
+            applyCustomerLabel(item, customer)
             if (visible) shownKeys += item.key
             navigationRail.findViewById<View>(item.rowId)?.visibility =
                 if (visible) View.VISIBLE else View.GONE
