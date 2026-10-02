@@ -107,11 +107,28 @@ const ZOOM = {
   standard: { front: ['0% 0%', 'scale(2)'], right: ['100% 0%', 'scale(2)'], rear: ['0% 100%', 'scale(2)'], left: ['100% 100%', 'scale(2)'] },
   dashcam: { front: ['50% 0%', 'scaleY(1.42857)'], left: ['0% 100%', 'scale(3, 3.33333)'], rear: ['50% 100%', 'scale(3, 3.33333)'], right: ['100% 100%', 'scale(3, 3.33333)'] },
 };
-let curQuad = 'all', curRec = null, curLayout = 'standard', curDurMs = 0;
+// A third composition shows up on some clips: four tall strips side by side (left to right). Which camera is which strip is
+// not declared by the car, so the buttons are numbered; a strip is isolated (clipped) and centred rather than stretched.
+const STRIP_BTNS = { front: 0, right: 1, rear: 2, left: 3 };
+let curQuad = 'all', curRec = null, curLayout = 'standard', curDurMs = 0, userLayout = null;
+function setGrid(g) {
+  curLayout = g;
+  document.querySelectorAll('#gridPick button').forEach((b) => b.classList.toggle('on', b.dataset.g === g));
+  const names = g === 'strips' ? { front: 'Faixa 1', right: 'Faixa 2', rear: 'Faixa 3', left: 'Faixa 4' } : { front: 'Frente', right: 'Direita', rear: 'Traseira', left: 'Esquerda' };
+  document.querySelectorAll('#quads button').forEach((b) => { if (names[b.dataset.q]) b.textContent = names[b.dataset.q]; });
+  applyQuad(curQuad);
+}
 function applyQuad(q) {
   curQuad = q; document.querySelectorAll('#quads button').forEach((b) => b.classList.toggle('on', b.dataset.q === q));
-  const v = $('video');
-  if (q === 'all') { v.style.transform = ''; v.style.transformOrigin = ''; return; }
+  const v = $('video'), box = $('vbox');
+  v.style.clipPath = ''; v.style.transform = ''; v.style.transformOrigin = '';
+  if (q === 'all') return;
+  if (curLayout === 'strips') {
+    const i = STRIP_BTNS[q];
+    v.style.clipPath = `inset(0 ${100 - (i + 1) * 25}% 0 ${i * 25}%)`;
+    v.style.transformOrigin = '0 0'; v.style.transform = `translateX(${(0.5 - (i + 0.5) / 4) * box.clientWidth}px)`;
+    return;
+  }
   const [origin, tf] = ZOOM[curLayout][q];
   v.style.transformOrigin = origin; v.style.transform = tf;
 }
@@ -132,8 +149,8 @@ function openPlayer(rec) {
   $('pTitle').textContent = `${dayTxt(rec)} · ${clock(rec)}`;
   $('pSub').textContent = rec.place?.displayName || rec.place?.short || rec.sizeFormatted || '';
   $('player').hidden = false; document.body.style.overflow = 'hidden';
-  curLayout = 'standard'; curDurMs = 0; applyQuad(curQuad); diag.lines = {}; say('clip', `${rec.type} · ${rec.id}`); probe(rec);
-  getJson(rec.eventUrl || `/api/events/id/${rec.id}`).then((ev) => { if (curRec !== rec) return; curLayout = ev?.layout === 'dashcam' ? 'dashcam' : 'standard'; curDurMs = ev?.durationMs > 0 ? ev.durationMs : 0; applyQuad(curQuad); say('evento', `layout=${ev?.layout ?? '-'} · durationMs=${ev?.durationMs ?? '-'} · campos: ${Object.keys(ev || {}).join(',').slice(0, 120)}`); }).catch(() => {});
+  curDurMs = 0; setGrid(userLayout || 'standard'); diag.lines = {}; say('clip', `${rec.type} · ${rec.id}`); probe(rec);
+  getJson(rec.eventUrl || `/api/events/id/${rec.id}`).then((ev) => { if (curRec !== rec) return; curDurMs = ev?.durationMs > 0 ? ev.durationMs : 0; if (!userLayout) setGrid(ev?.layout === 'dashcam' ? 'dashcam' : 'standard'); say('evento', `layout=${ev?.layout ?? '-'} · durationMs=${ev?.durationMs ?? '-'} · campos: ${Object.keys(ev || {}).join(',').slice(0, 120)}`); }).catch(() => {});
   v.onloadedmetadata = () => { if (v.videoWidth && v.videoHeight) $('vbox').style.setProperty('--ar', `${v.videoWidth}/${v.videoHeight}`); applyQuad(curQuad); };
   v.src = rec.videoUrl || `/video/id/${rec.id}`; v.play().catch(() => {});
 }
@@ -158,6 +175,9 @@ function closePlayer() { const v = $('video'); v.pause(); v.removeAttribute('src
 $('prev').addEventListener('click', () => go(1)); $('next').addEventListener('click', () => go(-1));
 $('more').addEventListener('click', () => { state.page++; loadPage(false); });
 $('pClose').addEventListener('click', closePlayer);
+try { userLayout = localStorage.getItem('eg.grid'); } catch { /* storage unavailable */ }
+if (!['standard', 'dashcam', 'strips'].includes(userLayout)) userLayout = null;
+document.querySelectorAll('#gridPick button').forEach((b) => b.addEventListener('click', () => { userLayout = b.dataset.g; try { localStorage.setItem('eg.grid', userLayout); } catch { /* ignore */ } setGrid(userLayout); }));
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('player').hidden) closePlayer(); });
 document.querySelectorAll('#quads button').forEach((b) => b.addEventListener('click', () => applyQuad(curQuad === b.dataset.q && b.dataset.q !== 'all' ? 'all' : b.dataset.q)));
 document.querySelectorAll('#filters button').forEach((b) => b.addEventListener('click', () => { state.filter = b.dataset.f; document.querySelectorAll('#filters button').forEach((x) => x.classList.toggle('on', x === b)); loadPage(true); }));

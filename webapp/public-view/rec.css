@@ -47,3 +47,7 @@ a{color:inherit}
 .clip .th.nothumb{background:repeating-linear-gradient(45deg,#111,#111 8px,#161616 8px,#161616 16px)}
 .clip .th img:not([src]){visibility:hidden}
 .diag{margin:0;padding:6px 12px;font:11px/1.35 var(--mono);color:var(--muted);white-space:pre-wrap;word-break:break-all;background:var(--bg);user-select:text}
+.grid-pick{display:flex;align-items:center;gap:8px;justify-content:center;padding:10px 12px 0;background:var(--bg);flex-wrap:wrap}
+.grid-pick span{font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.grid-pick button{padding:6px 12px;border:1px solid var(--line);border-radius:99px;color:var(--muted);font-size:13px}
+.grid-pick button.on{border-color:var(--accent);color:var(--text)}
