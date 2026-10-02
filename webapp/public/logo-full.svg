@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 360 360">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420">
 
 <defs>
   <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -19,12 +19,14 @@
   </filter>
 </defs>
 
-<g>
-  <path d="M180 32 L302 91 V176 C302 251 254 300 180 332 C106 300 58 251 58 176 V91 Z"
-        fill="none" stroke="url(#shieldGrad)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(34,34) scale(.98)">
+  <path d="M180 32 L302 91 V176 C302 251 254 300 180 332 C106 300 58 251 58 176 V91 Z" fill="none" stroke="url(#shieldGrad)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
   <circle cx="180" cy="172" r="78" fill="none" stroke="url(#shieldGrad)" stroke-width="22"/>
   <circle cx="180" cy="172" r="46" fill="none" stroke="url(#shieldGrad)" stroke-width="16"/>
   <circle cx="180" cy="172" r="27" fill="url(#lensGrad)"/>
   <circle cx="170" cy="162" r="8" fill="#EFFFFF" opacity="0.9"/>
 </g>
+<text x="425" y="170" font-family="Inter,Arial,sans-serif" font-size="112" font-weight="750" fill="#F5F8FF">Eletric</text>
+<text x="425" y="285" font-family="Inter,Arial,sans-serif" font-size="108" font-weight="300" fill="#F5F8FF">Guardian</text>
+<text x="425" y="335" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="600" letter-spacing="10" fill="#B9C7D6">PROTEÇÃO EM TEMPO REAL</text>
 </svg>

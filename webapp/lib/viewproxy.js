@@ -65,7 +65,7 @@ function cleanCookie(header) {
 }
 
 const offlinePage = (name) => `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Carro offline</title>
-<body style="font:16px system-ui;background:#0E1013;color:#E4E8EC;display:grid;place-items:center;height:100vh;margin:0;text-align:center">
+<body style="font:16px system-ui;background:#0A0F17;color:#E6EEF5;display:grid;place-items:center;height:100vh;margin:0;text-align:center">
 <div><h2>${name ? name.replace(/[<>&"]/g, '') + ' está offline' : 'Carro offline'}</h2><p style="color:#97A1AB">O carro precisa estar ligado ou com a central ativa e com internet.<br>Tentando reconectar…</p></div>
 <script>setTimeout(()=>location.reload(),5000)</script></body>`;
 
