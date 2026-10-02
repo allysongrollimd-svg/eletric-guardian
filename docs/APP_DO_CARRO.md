@@ -109,31 +109,37 @@ Isso é o item "esconder o avançado no APK" que você deixou para depois do web
 
 ---
 
-## 6. Instalação hoje (como está no código)
-1. Instalar o APK no carro (instalador de APK/pen drive/ADB).
-2. Ativar **depuração ADB sem fio (porta 5555)** nas opções de desenvolvedor do carro **(a confirmar o caminho exato por modelo)**.
-3. Abrir o app: ele tenta `localhost:5555`; o carro mostra **"Permitir depuração USB"** → aceitar (marcar "sempre").
-4. O app aplica `pm grant` em tudo, inicia os daemons e aparece o assistente de integração (`VehicleWizardCoach`, `CameraWizardCoach`, tours).
-5. Ativar acessibilidade e permissão de sobreposição quando pedido.
-6. Abrir **Nuvem**, ler o QR com o celular → criar conta → vincular.
+## 6. Quem instala e como (decisão do dono)
+**Quem instala é o técnico que faz o desbloqueio do carro** (serviço principal do dono). O carro já chega com o acesso liberado (ADB sem fio ligado e acessível), então **o cliente nunca mexe em ADB, opções de desenvolvedor ou "controle de dados"** (este último já não é problema).
 
-## 7. Plano de instalação "fácil" (a construir)
-**Tela "Instalação" no carro** com uma lista de verificação ao vivo e botão de corrigir em cada linha:
-1. ADB `localhost:5555` conectado e chave autorizada.
-2. Daemons ativos (câmera, sentinela, ACC) — com "reiniciar".
-3. Permissões concedidas (lista `PermissionGranter`: quantas OK / faltando).
+Roteiro do técnico:
+1. Carro desbloqueado e ADB acessível (já é o serviço dele).
+2. Instalar o APK.
+3. Abrir o app, aceitar a chave ADB (uma vez) e esperar a checklist ficar toda verde.
+4. **Se o Electro estiver instalado:** desligar o **início automático do Electro** (ele volta a ligar sozinho a cada reinicialização da central — conferir de novo depois de reiniciar). O início automático **do nosso app já vem ligado**; os dois juntos disputam câmeras/acesso.
+5. Ler o QR com o celular do cliente, criar a conta e vincular; conferir no `/admin` que o carro aparece com "Ao vivo" ✔.
+6. Reiniciar a central uma vez e confirmar que o app volta sozinho.
+
+## 7. Checklist de instalação no carro (a construir)
+Tela única para o técnico (e o mesmo relatório enviado ao `/admin`):
+1. ADB conectado e chave autorizada.
+2. Processos ativos (câmera, sentinela, ACC) — com "reiniciar".
+3. Permissões concedidas (quantas OK / faltando).
 4. Acessibilidade, sobreposição, armazenamento, localização em segundo plano.
-5. Câmeras entregando imagem (quadro recente das 4).
-6. Telemetria lendo o carro (SoC, velocidade, GPS — com carro ligado).
+5. Câmeras entregando imagem (4 quadros recentes).
+6. Telemetria lendo o carro (SoC, velocidade, GPS — com o carro ligado).
 7. Nuvem: registrado, **VIN recebido**, MQTT conectado, túnel ativo.
-8. Armazenamento com espaço e destino de gravação definido.
-O **mesmo relatório é enviado à nuvem**, e o admin vê no `/admin` (por carro) o que está faltando — assim o suporte resolve sem ir ao carro.
-Também: guia ilustrado passo a passo no webapp (`/ajuda/instalar`), pensado para o cliente final.
+8. Armazenamento com espaço e destino de gravação.
+9. **Conflito com o Electro** (quando o pacote dele estiver instalado/rodando): aviso para desligar o início automático dele.
+10. Início automático do nosso app: ligado.
 
----
+## 8. Tela do carro para o cliente (modo cliente)
+Referência: a tela do Electro. Estrutura:
+- **Principal:** endereço do webapp, **Gerar QR Code**, **Configurações**, lista do dono vinculado com **Remover** (desvincula o carro), e uma faixa de status.
+- **Configurações:** início automático e a checklist da seção 7.
+- Todo o resto escondido; o **PIN do técnico** abre o app completo.
 
-## 8. O que preciso de você para fechar
-- Prints da instalação do **Electro** (para copiarmos a lógica e a ordem das telas).
-- O caminho exato, no seu carro, para ativar o ADB sem fio e aceitar a chave (prints).
-- Confirmar: o **modo cliente** só mostra Nuvem/Ao vivo/Gravações/Status? Algo mais (ex.: Veículo/controles locais)?
-- Decidir o provedor de **alertas** (e-mail/push) para o item 5.1.
+## 9. Em aberto
+- Nome do pacote do Electro (para detectar e avisar).
+- Confirmar o que acontece quando os dois rodam juntos.
+- Provedor de alertas (push/e-mail) — recomendado: Web Push do webapp.
