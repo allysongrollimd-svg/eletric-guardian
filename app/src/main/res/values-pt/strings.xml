@@ -600,7 +600,7 @@
     <string name="nav_page_abrp">ABRIR</string>
     <string name="nav_page_mqtt">MQTT</string>
     <string name="nav_page_byd_cloud">BYD Cloud</string>
-    <string name="nav_page_cloud">Nuvem</string>
+    <string name="nav_page_cloud">Eletric Guardian</string>
     <!-- StatusOverlayService persistent notification (foreground service) -->
     <string name="status_overlay_notif_title">Status do Electric Guardian</string>
     <string name="status_overlay_notif_text">Status overlay active</string>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Nuvem - Electric Guardian</title>
+    <title>Eletric Guardian</title>
     <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
     <script src="../shared/theme.js?v=8"></script>
     <script src="../shared/app-shell.js?v=7"></script>
@@ -67,12 +67,12 @@
                 <button class="menu-toggle" onclick="toggleSidebar()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                 </button>
-                <span style="font-weight:600;">Nuvem</span>
+                <span style="font-weight:600;">Eletric Guardian</span>
                 <div style="width:40px;"></div>
             </div>
 
             <header class="page-header">
-                <h1 class="page-title">Electric Guardian Nuvem</h1>
+                <h1 class="page-title">Eletric Guardian</h1>
             </header>
 
             <div class="page-body">
@@ -235,7 +235,7 @@
             function renderChecks(s) {
                 var m = s.mqtt || {};
                 var items = [
-                    { ok: !!s.enabled && !!s.serverUrl, label: 'Conexão com a nuvem ativada', fix: 'Ativando automaticamente…' },
+                    { ok: !!s.enabled && !!s.serverUrl, label: 'Conexão com o Eletric Guardian ativada', fix: 'Ativando automaticamente…' },
                     { ok: !!s.vinKnown, label: 'Chassi (VIN) lido do carro' + (s.vinKnown ? ' (final ' + s.vinLast4 + ')' : ''), fix: 'Ligue o carro e aguarde; o chassi vem do próprio carro.' },
                     { ok: s.state === 'claimed', label: 'Carro vinculado a uma conta', fix: 'Leia o QR com o celular do cliente e toque em Vincular.' },
                     { ok: !!s.tunnel, label: 'Câmeras e páginas do carro (túnel) conectados', fix: 'Verifique a internet do carro; a conexão é refeita sozinha.' },
