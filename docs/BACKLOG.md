@@ -32,7 +32,7 @@
 - Falta cortar **dentro** das abas Geral/Gravação/Armazenamento (experimentais, energia estacionado, locais seguros, dissuasão…). O corte limpo é um "modo cliente" no APK (decisão: depois do webapp pronto).
 
 ## Sentinela: o que o cliente vê (decidido)
-- **Geral:** modo de operação, ativar, modo de ativação, modo com carro desligado, USB energizado, dados móveis acordados, programação, dissuasão na tela (aviso e duração), marcação de local.
+- **Geral:** modo de operação, ativar, modo de ativação, modo com carro desligado, USB energizado, dados móveis acordados, programação, marcação de local. (Dissuasão na tela: escondida; exigiria editor de texto.)
 - **Detecção:** locais seguros, predefinição de ambiente, sensibilidade, objetos detectados.
 - **Gravação:** qualidade, layout, telemetria nos vídeos (liga/desliga), correção de olho de peixe.
 - **Armazenamento:** local, uso, limite, limpeza automática da dashcam BYD (liga/desliga).

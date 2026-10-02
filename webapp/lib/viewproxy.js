@@ -21,7 +21,7 @@ const SURVEILLANCE_HIDE = [
   ...hideRows(['surveillance.det_zone', 'surveillance.loitering_time', 'surveillance.approach_trigger', 'surveillance.shadow_filter', 'surveillance.motion_salience',
     'surveillance.discard_empty_motion', 'surveillance.discard_empty_motion_night', 'surveillance.camera_controls', 'surveillance.camera_front', 'surveillance.camera_right', 'surveillance.camera_left', 'surveillance.camera_rear', 'surveillance.sidecam_boost', 'surveillance.sidecam_sens', 'surveillance.sidecam_zone']),
   ...hideSelf(['surveillance.zone_hint', 'surveillance.shadow_hint', 'surveillance.approach_trigger_hint', 'surveillance.discard_empty_motion_hint', 'surveillance.discard_empty_motion_night_hint', 'surveillance.camera_controls_hint']),
-  ...hideCards(['surveillance.developer', 'surveillance.detection_zones_title', 'surveillance.deterrent_title', 'parking.settings_title']),
+  ...hideCards(['surveillance.developer', 'surveillance.detection_zones_title', 'surveillance.deterrent_title', 'surveillance.screen_deterrent_title', 'parking.settings_title']),
   // Dissuasão na tela: custom message/image/themes; Marcação de local: online resolver and custom URL
   'div:has(> [data-i18n="surveillance.screen_deterrent_content_heading"])',
   ...hideRows(['surveillance.geocoding_online_name', 'surveillance.geocoding_custom_url_name']),
