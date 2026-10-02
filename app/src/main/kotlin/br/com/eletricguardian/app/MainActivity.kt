@@ -51,10 +51,10 @@ class MainActivity : Activity() {
         )
 
         /**
-         * Localização e as permissões *_COMMON da BYD. No DiLink 3.0 estas são
+         * Localização, câmera (dashcam) e as permissões *_COMMON da BYD. No DiLink 3.0 estas são
          * "dangerous" (o usuário libera na tela); as *_GET são de assinatura.
          */
-        val RUNTIME_PERMISSIONS = listOf(Manifest.permission.ACCESS_FINE_LOCATION) +
+        val RUNTIME_PERMISSIONS = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA) +
             BYD_MODULES.map { "android.permission.BYDAUTO_${it}_COMMON" }
     }
 }
