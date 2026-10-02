@@ -31,6 +31,32 @@
         .eg-user small { color: var(--text-muted); }
         .eg-user button { background: var(--danger, #ef4444); color: #fff; border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; }
         .eg-hint { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        /* ---- Tela de conectar do carro: marca Eletric Guardian, textos grandes para tela de toque ---- */
+        :root { --primary: #0066FF; --on-primary: #FFFFFF; --primary-container: #0A2A5C; --tertiary: #00C2FF; --status-success: #00D6A3; --status-warning: #FFB020; --danger: #FF4D5A; }
+        .page-body { padding: 8px 20px 24px; }
+        .eg-brand { display: flex; align-items: center; gap: 16px; margin: 4px 0 18px; }
+        .eg-brand img { height: 84px; width: auto; }
+        .eg-grid > .card { margin: 0; }
+        .eg-grid { grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+        .eg-left, .eg-right { padding: 26px 28px; border-radius: 18px; }
+        .eg-left .card-title, .eg-right .card-title { font-size: 24px; font-weight: 700; }
+        .eg-lead { font-size: 19px; line-height: 1.5; margin: 14px 0 18px; color: var(--text-primary, #E6EEF5); }
+        .eg-qr { width: 270px; max-width: 80%; padding: 14px; border-radius: 16px; }
+        .eg-code { font-size: 44px; letter-spacing: 8px; padding: 14px 8px; }
+        .eg-hint { font-size: 15px; }
+        .eg-pill { font-size: 15px; padding: 6px 16px; }
+        .eg-btns { gap: 14px; margin-top: 18px; }
+        .eg-btns .btn { min-height: 60px; padding: 0 30px; font-size: 19px; font-weight: 600; border-radius: 14px; }
+        .btn-primary { background: linear-gradient(135deg, #0066FF, #1A8CFF); color: #fff; border: 0; }
+        .eg-user { padding: 18px 0; }
+        .eg-user b { font-size: 22px; }
+        .eg-user small { font-size: 16px; }
+        .eg-user button { background: #FF4D5A; color: #fff; min-height: 52px; padding: 0 24px; font-size: 17px; border-radius: 12px; }
+        .eg-row { padding: 16px 0; font-size: 18px; }
+        .eg-row .btn { min-height: 52px; padding: 0 24px; font-size: 17px; border-radius: 12px; }
+        #egSettings .card { padding: 22px 26px; border-radius: 18px; margin-top: 20px; }
+        #egSettings .card-title { font-size: 22px; font-weight: 700; }
+        @media (max-width: 900px) { .eg-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -50,6 +76,7 @@
             </header>
 
             <div class="page-body">
+                <div class="eg-brand"><img src="../shared/eg-logo-full.svg" alt="Eletric Guardian"></div>
                 <div class="eg-grid">
                     <section class="card eg-left">
                         <div class="eg-top"><div class="card-title"><span>Conectar ao celular</span></div><span class="eg-pill" id="egState">…</span></div>

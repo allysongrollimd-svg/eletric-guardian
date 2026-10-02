@@ -1647,6 +1647,10 @@ open class MainActivity : AppCompatActivity() {
     
     private fun setupNavigation(savedInstanceState: Bundle?) {
         setSupportActionBar(toolbar)
+        if (com.overdrive.app.BuildConfig.SIMPLE_UI) {
+            supportActionBar?.hide()                                        // no title bar, language or help buttons for the customer
+            findViewById<View>(R.id.appBarLayout)?.visibility = View.GONE
+        }
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.navHostFragment) as NavHostFragment
