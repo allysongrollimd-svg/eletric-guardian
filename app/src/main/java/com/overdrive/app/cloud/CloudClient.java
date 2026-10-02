@@ -49,6 +49,9 @@ public final class CloudClient {
     private volatile String code = "";
     private volatile long codeExpiresAt;
     private volatile String claimedName = "";
+    private volatile org.json.JSONArray members = new org.json.JSONArray();   // people linked to this car (e-mail masked by the server)
+    private volatile String addCode = "";                                      // code for linking one more person (on demand)
+    private volatile long addExpiresAt;
     private volatile boolean tunnelUp;
     private volatile String lastError = "";
     private volatile boolean registered;
@@ -140,12 +143,53 @@ public final class CloudClient {
         if ("claimed".equals(state)) {
             code = "";
             claimedName = st.optString("name", "");
+            applyClaimed(st);
             provisionMqtt(cfg, st.optJSONObject("mqtt"));
             ensureTunnel(cfg);
             sleep(tunnelUp ? 15000 : 3000);
             return;
         }
         throw new IllegalStateException("unexpected pairing state: " + state);
+    }
+
+    private void applyClaimed(JSONObject st) {
+        org.json.JSONArray m = st.optJSONArray("members");
+        members = m == null ? new org.json.JSONArray() : m;
+        addCode = st.optString("addCode", "");
+        addExpiresAt = addCode.isEmpty() ? 0 : st.optLong("addExpiresAt", 0);
+    }
+
+    /** Asks the server for a fresh code so one more person can link to this (already linked) car. */
+    public JSONObject requestAddCode() throws Exception {
+        CloudConfig cfg = CloudConfig.load();
+        Request req = new Request.Builder().url(cfg.serverUrl + "/api/device/add-code")
+                .header("Authorization", "Bearer " + cfg.bearer()).post(RequestBody.create("{}", JSON)).build();
+        try (Response r = http.newCall(req).execute()) {
+            String text = r.body() == null ? "" : r.body().string();
+            if (!r.isSuccessful()) throw new IllegalStateException("add-code HTTP " + r.code());
+            JSONObject o = new JSONObject(text);
+            addCode = o.optString("code", "");
+            addExpiresAt = o.optLong("expiresAt", 0);
+            wakeUp();
+            return o;
+        }
+    }
+
+    /** Removes one person from this car (the last one leaving frees the car for a new pairing). */
+    public void removeMember(String userId) throws Exception {
+        CloudConfig cfg = CloudConfig.load();
+        JSONObject body = new JSONObject().put("userId", userId);
+        Request req = new Request.Builder().url(cfg.serverUrl + "/api/device/members/remove")
+                .header("Authorization", "Bearer " + cfg.bearer()).post(RequestBody.create(body.toString(), JSON)).build();
+        try (Response r = http.newCall(req).execute()) {
+            String text = r.body() == null ? "" : r.body().string();
+            if (!r.isSuccessful()) throw new IllegalStateException("remove HTTP " + r.code());
+            JSONObject st = new JSONObject(text);
+            state = st.optString("state", state);
+            if ("claimed".equals(state)) applyClaimed(st);
+            else { members = new org.json.JSONArray(); addCode = ""; code = st.optString("code", ""); codeExpiresAt = st.optLong("expiresAt", 0); }
+            wakeUp();
+        }
     }
 
     // ---------------------------------------------------------------- HTTP to the server
@@ -336,6 +380,9 @@ public final class CloudClient {
             j.put("code", code);
             j.put("codeExpiresAt", codeExpiresAt);
             j.put("name", claimedName);
+            j.put("members", members);
+            j.put("addCode", addCode);
+            j.put("addExpiresAt", addExpiresAt);
             j.put("tunnel", tunnelUp);
             j.put("mqtt", mqttInfo);
             j.put("error", lastError);

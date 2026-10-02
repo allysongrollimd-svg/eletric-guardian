@@ -82,6 +82,17 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
         return send(200, { ...accounts.pairingState(d.id), mqtt: cfg.mqttPublic || null }), true;
       }
 
+      if ((path === '/api/device/add-code' || path === '/api/device/members/remove') && req.method === 'POST') {
+        if (!limits.status(ip)) return send(429, { error: 'rate limit' }), true;
+        const m = /^Bearer ([a-f0-9-]{32,40})\.(.{32,200})$/i.exec(req.headers.authorization || '');
+        const d = m && accounts.deviceAuth(m[1], m[2]);
+        if (!d) return send(401, { error: 'unauthorized' }), true;
+        if (path === '/api/device/add-code') return send(200, accounts.requestAddCode(d.id)), true;
+        if (!jsonOnly()) return send(415, { error: 'json required' }), true;
+        accounts.removeMember(d.id, String((await body()).userId || ''));
+        return send(200, accounts.pairingState(d.id)), true;
+      }
+
       // ---- payment provider webhook (public; the body is never trusted, see billing.settleFromProvider) ----
       if (path === '/api/billing/infinitepay/webhook' && req.method === 'POST') {
         if (!limits.webhook(ip)) return send(429, { success: false, message: 'rate limit' }), true;
@@ -209,6 +220,12 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
         if (!jsonOnly()) return send(415, { error: 'json required' }), true;
         if (!accounts.owns(user.id, one[1])) return send(404, { error: 'Carro não encontrado.' }), true;
         accounts.renameCar(user.id, one[1], (await body()).name); return send(200, { ok: true }), true;
+      }
+      const mem = path.match(/^\/api\/cars\/([^/]+)\/members(?:\/([^/]+))?$/);
+      if (mem) {
+        if (!accounts.owns(user.id, mem[1])) return send(404, { error: 'Carro não encontrado.' }), true;
+        if (!mem[2] && req.method === 'GET') return send(200, { members: accounts.members(mem[1]).map((x) => ({ ...x, you: x.id === user.id })) }), true;
+        if (mem[2] && req.method === 'DELETE') { accounts.removeMember(mem[1], mem[2]); return send(200, { ok: true }), true; }
       }
       if (one && req.method === 'DELETE') { accounts.unlink(user.id, one[1]); return send(200, { ok: true }), true; }
       const vw = path.match(/^\/api\/cars\/([^/]+)\/view$/);

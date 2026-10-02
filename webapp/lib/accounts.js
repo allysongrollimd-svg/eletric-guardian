@@ -33,10 +33,17 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
     dev: db.prepare('SELECT * FROM devices WHERE id = ?'),
     insDev: db.prepare('INSERT INTO devices (id, key_hash, reported_vin, app_version, created_at) VALUES (?, ?, ?, ?, ?)'),
     devByVin: db.prepare('SELECT * FROM devices WHERE vin = ? AND owner_id IS NOT NULL'),
-    carsOf: db.prepare('SELECT * FROM devices WHERE owner_id = ? ORDER BY created_at'),
+    carsOf: db.prepare('SELECT d.* FROM devices d JOIN device_members m ON m.device_id = d.id WHERE m.user_id = ? ORDER BY d.created_at'),
+    membersOf: db.prepare('SELECT u.id, u.email, u.name, m.added_at FROM device_members m JOIN users u ON u.id = m.user_id WHERE m.device_id = ? ORDER BY m.added_at, u.email'),
+    isMember: db.prepare('SELECT 1 AS x FROM device_members WHERE device_id = ? AND user_id = ?'),
+    addMember: db.prepare('INSERT OR IGNORE INTO device_members (device_id, user_id, added_at) VALUES (?, ?, ?)'),
+    delMember: db.prepare('DELETE FROM device_members WHERE device_id = ? AND user_id = ?'),
+    delMembers: db.prepare('DELETE FROM device_members WHERE device_id = ?'),
+    moveMembers: db.prepare('INSERT OR IGNORE INTO device_members (device_id, user_id, added_at) SELECT ?, user_id, added_at FROM device_members WHERE device_id = ?'),
+    setOwner: db.prepare('UPDATE devices SET owner_id = ? WHERE id = ?'),
     claimDev: db.prepare('UPDATE devices SET owner_id = ?, vin = ?, name = ?, claimed_at = ? WHERE id = ?'),
-    release: db.prepare('UPDATE devices SET owner_id = NULL, vin = NULL, claimed_at = NULL WHERE id = ?'),
-    rename: db.prepare('UPDATE devices SET name = ? WHERE id = ? AND owner_id = ?'),
+    releaseDev: db.prepare('UPDATE devices SET owner_id = NULL, vin = NULL, claimed_at = NULL WHERE id = ?'),
+    rename: db.prepare('UPDATE devices SET name = ? WHERE id = ?'),
     touch: db.prepare('UPDATE devices SET last_seen = ?, app_version = COALESCE(?, app_version), reported_vin = COALESCE(?, reported_vin) WHERE id = ?'),
     pairIns: db.prepare('INSERT INTO pairings (code, device_id, expires_at) VALUES (?, ?, ?)'),
     pairByCode: db.prepare('SELECT * FROM pairings WHERE code = ?'),
@@ -48,6 +55,8 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
     auditList: db.prepare('SELECT * FROM audit WHERE user_id = ? ORDER BY id DESC LIMIT 100'),
   };
   const log = (event, { userId = null, deviceId = null, detail = null } = {}) => q.audit.run(now(), userId, deviceId, event, detail == null ? null : JSON.stringify(detail));
+  const release = { run(id) { q.delMembers.run(id); q.releaseDev.run(id); } };
+  const maskEmail = (e) => { const [u, d] = String(e).split('@'); return `${u.slice(0, 2)}${'*'.repeat(Math.max(1, Math.min(6, u.length - 2)))}@${d}`; };
   const publicUser = (u) => u && { id: u.id, email: u.email, name: u.name, role: u.role };
   const publicCar = (d) => d && {
     id: d.id, name: d.name, vin: d.vin, vinReported: d.reported_vin || null,
@@ -165,8 +174,11 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
     /** State for the car: claimed, or pending with a (re)generated code. */
     pairingState(deviceId) {
       const d = q.dev.get(deviceId);
-      if (d.owner_id) return { state: 'claimed', name: d.name, vin: d.vin };
       q.pairPrune.run(now());
+      if (d.owner_id) {
+        const add = q.pairByDev.get(deviceId, now());
+        return { state: 'claimed', name: d.name, vin: d.vin, members: q.membersOf.all(deviceId).map((m) => ({ id: m.id, name: m.name, email: maskEmail(m.email) })), ...(add ? { addCode: add.code, addExpiresAt: add.expires_at } : {}) };
+      }
       let p = q.pairByDev.get(deviceId, now());
       if (!p) {
         q.pairDelDev.run(deviceId);
@@ -178,13 +190,34 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
       return { state: 'pending', code: p.code, expiresAt: p.expires_at };
     },
 
+    /** The car's side: show a fresh code so one more person can link (the code proves they are at the car). */
+    requestAddCode(deviceId) {
+      const d = q.dev.get(deviceId);
+      if (!d?.owner_id) throw new AccountError('not_claimed', 'O carro ainda não está vinculado.', 409);
+      q.pairPrune.run(now());
+      q.pairDelDev.run(deviceId);
+      for (let i = 0; i < 5; i++) {
+        const code = Array.from(randomBytes(8), (b) => PAIR_ALPHABET[b % PAIR_ALPHABET.length]).join('');
+        try { q.pairIns.run(code, deviceId, now() + PAIR_TTL_MS); break; } catch { /* collision: retry */ }
+      }
+      const p = q.pairByDev.get(deviceId, now());
+      log('add_code', { deviceId });
+      return { code: p.code, expiresAt: p.expires_at };
+    },
+
     /** The owner's side: bind a car (by the code on its screen) to this account and a VIN. */
     claim(userId, { vin, code, name }) {
       const c = String(code ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
       const p = q.pairByCode.get(c);
       if (!p || p.expires_at <= now()) throw new AccountError('bad_code', 'Código inválido ou expirado. Gere um novo na tela do carro.', 404);
       const d = q.dev.get(p.device_id);
-      if (d.owner_id) throw new AccountError('already_claimed', 'Este carro já está vinculado.', 409);
+      if (d.owner_id) {                                           // one more person for a car that is already linked: the code shown on the car is the proof
+        if (q.isMember.get(d.id, userId)) { q.pairDelDev.run(d.id); return publicCar(d); }
+        q.addMember.run(d.id, userId, now());
+        q.pairDelDev.run(d.id);
+        log('member_add', { userId, deviceId: d.id });
+        return publicCar(q.dev.get(d.id));
+      }
       // The chassis comes from the car itself (APK). A typed VIN is only accepted when the car has not reported one.
       let v;
       if (d.reported_vin) {
@@ -196,9 +229,10 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
         if (!isValidVin(v)) throw new AccountError('bad_vin', 'Chassi (VIN) inválido: são 17 caracteres, sem I, O ou Q.');
       }
       const holder = q.devByVin.get(v);
-      if (holder && holder.owner_id !== userId) throw new AccountError('vin_taken', 'Este chassi já está vinculado a outra conta. Peça a liberação ao suporte.', 409);
-      if (holder && holder.owner_id === userId) { q.release.run(holder.id); log('rebind', { userId, deviceId: holder.id }); }   // same owner reinstalled the app
+      if (holder && !q.isMember.get(holder.id, userId)) throw new AccountError('vin_taken', 'Este chassi já está vinculado a outra conta. Peça a liberação ao suporte.', 409);
+      if (holder) { q.moveMembers.run(d.id, holder.id); release.run(holder.id); log('rebind', { userId, deviceId: holder.id }); }   // same people reinstalled the app: keep everyone
       q.claimDev.run(userId, v, String(name || '').trim().slice(0, 60) || 'Meu carro', now(), d.id);
+      q.addMember.run(d.id, userId, now());
       q.pairDelDev.run(d.id);
       log('claim', { userId, deviceId: d.id, detail: { vin: v } });
       for (const fn of claimHooks) fn({ userId, deviceId: d.id, vin: v });
@@ -208,14 +242,26 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
     listCars(userId) { return q.carsOf.all(userId).map(publicCar); },
     getDevice(id) { return q.dev.get(String(id)) || null; },
     ownerOf(id) { return q.dev.get(String(id))?.owner_id ?? null; },
-    owns(userId, id) { return !!userId && q.dev.get(String(id))?.owner_id === userId; },
-    renameCar(userId, id, name) { q.rename.run(String(name).trim().slice(0, 60) || 'Meu carro', id, userId); },
+    /** Anyone linked to the car (owner or added later) has the same access. */
+    owns(userId, id) { return !!userId && !!q.isMember.get(String(id), userId); },
+    members(id) { return q.membersOf.all(String(id)).map((m) => ({ id: m.id, name: m.name, email: m.email, addedAt: m.added_at })); },
+    renameCar(userId, id, name) { if (api.owns(userId, id)) q.rename.run(String(name).trim().slice(0, 60) || 'Meu carro', id); },
+    /** Takes one person off the car; the last one leaving frees the car (the chassis keeps its subscription). */
+    removeMember(deviceId, userId) {
+      const d = q.dev.get(String(deviceId));
+      if (!d?.owner_id || !q.isMember.get(d.id, userId)) throw new AccountError('not_found', 'Pessoa não encontrada neste carro.', 404);
+      q.delMember.run(d.id, userId);
+      const rest = q.membersOf.all(d.id);
+      if (!rest.length) release.run(d.id);
+      else if (d.owner_id === userId) q.setOwner.run(rest[0].id, d.id);
+      log('member_remove', { userId, deviceId: d.id });
+    },
     unlink(userId, id) {
       if (!api.owns(userId, id)) throw new AccountError('not_found', 'Carro não encontrado.', 404);
-      q.release.run(id); log('unlink', { userId, deviceId: id });
+      api.removeMember(id, userId); log('unlink', { userId, deviceId: id });
     },
     /** Support/admin: free a chassis so another account can claim it. */
-    adminReleaseVin(vin) { const d = q.devByVin.get(normalizeVin(vin)); if (d) { q.release.run(d.id); log('admin_release', { deviceId: d.id }); } return !!d; },
+    adminReleaseVin(vin) { const d = q.devByVin.get(normalizeVin(vin)); if (d) { release.run(d.id); log('admin_release', { deviceId: d.id }); } return !!d; },
     touch(id, { vin, appVersion } = {}) { q.touch.run(now(), appVersion ?? null, vin && isValidVin(vin) ? normalizeVin(vin) : null, id); },
     audit(userId) { return q.auditList.all(userId); },
     log,

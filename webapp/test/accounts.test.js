@@ -164,3 +164,48 @@ test('claim without typing the VIN uses the one the car reported; falls back to 
   acc.registerDevice({ ...d2, vin: VIN2 });                                             // VIN learned later: re-register is idempotent
   assert.equal(acc.claim(a.id, { code: acc.pairingState(d2.deviceId).code }).vin, VIN2);
 });
+
+test('várias pessoas por carro: código do carro adiciona, acesso é igual, o último que sai libera o carro', async () => {
+  const { acc } = make();
+  const ana = await acc.signup({ email: 'ana@example.com', password: 'a-long-password', name: 'Ana' });
+  const bia = await acc.signup({ email: 'bia@example.com', password: 'a-long-password', name: 'Bia' });
+  const caio = await acc.signup({ email: 'caio@example.com', password: 'a-long-password', name: 'Caio' });
+  const d = dev(7);
+  const st = acc.registerDevice({ ...d, vin: VIN });
+  acc.claim(ana.id, { code: st.code, name: 'Dolphin' });
+  assert.equal(acc.owns(ana.id, d.deviceId), true);
+  assert.equal(acc.owns(bia.id, d.deviceId), false);
+
+  // sem código novo no carro, ninguém entra
+  await throwsCode(() => acc.claim(bia.id, { code: 'ABCD2345' }), 'bad_code');
+  const add = acc.requestAddCode(d.deviceId);
+  const car = acc.claim(bia.id, { code: add.code });
+  assert.equal(car.id, d.deviceId);
+  assert.equal(acc.owns(bia.id, d.deviceId), true);
+  assert.equal(acc.listCars(bia.id).length, 1);
+  await throwsCode(() => acc.claim(caio.id, { code: add.code }), 'bad_code');          // código de uso único
+  assert.equal(acc.pairingState(d.deviceId).members.length, 2);
+  assert.ok(acc.pairingState(d.deviceId).members.some((m) => /^bi\*+@example\.com$/.test(m.email)));   // a tela do carro mascara o e-mail
+
+  acc.removeMember(d.deviceId, ana.id);                                                   // quem era dono sai: a Bia assume
+  assert.equal(acc.owns(ana.id, d.deviceId), false);
+  assert.equal(acc.ownerOf(d.deviceId), bia.id);   // quem sobrou
+  assert.equal(acc.pairingState(d.deviceId).state, 'claimed');
+  acc.unlink(bia.id, d.deviceId);                                                         // último a sair libera o carro
+  assert.equal(acc.pairingState(d.deviceId).state, 'pending');
+  await throwsCode(() => acc.removeMember(d.deviceId, bia.id), 'not_found');
+});
+
+test('reinstalar o app mantém todas as pessoas do carro', async () => {
+  const { acc } = make();
+  const ana = await acc.signup({ email: 'ana@example.com', password: 'a-long-password' });
+  const bia = await acc.signup({ email: 'bia@example.com', password: 'a-long-password' });
+  const a = dev(1), b = dev(2);
+  acc.claim(ana.id, { code: acc.registerDevice({ ...a, vin: VIN }).code });
+  acc.claim(bia.id, { code: acc.requestAddCode(a.deviceId).code });
+  const st = acc.registerDevice({ ...b, vin: VIN });                                      // novo id, mesmo chassi
+  acc.claim(ana.id, { code: st.code });
+  assert.equal(acc.owns(ana.id, b.deviceId), true);
+  assert.equal(acc.owns(bia.id, b.deviceId), true);
+  assert.equal(acc.owns(ana.id, a.deviceId), false);
+});

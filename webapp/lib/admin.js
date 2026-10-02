@@ -8,7 +8,7 @@ const clampInt = (v, d, max) => Math.min(Math.max(Number.isInteger(+v) ? +v : d,
 export function createAdmin({ db, accounts, billing, now = () => Date.now(), live = () => null }) {
   const q = {
     users: db.prepare(`SELECT u.id, u.email, u.name, u.role, u.disabled, u.created_at,
-        (SELECT COUNT(*) FROM devices d WHERE d.owner_id = u.id) AS cars
+        (SELECT COUNT(*) FROM device_members m WHERE m.user_id = u.id) AS cars
       FROM users u WHERE (u.email LIKE ?1 ESCAPE '\\' OR u.name LIKE ?1 ESCAPE '\\') ORDER BY u.created_at DESC LIMIT ?2 OFFSET ?3`),
     user: db.prepare('SELECT * FROM users WHERE id = ?'),
     setDisabled: db.prepare('UPDATE users SET disabled = ?, session_ver = session_ver + 1 WHERE id = ?'),

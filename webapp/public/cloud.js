@@ -46,9 +46,24 @@ export function initCloud({ getCars, getCurrent, onAuthChanged, onCarsChanged })
       const actions = el('div', 'seg');
       const ren = el('button', 'act', 'Renomear'); ren.type = 'button';
       ren.addEventListener('click', async () => { const n = prompt('Novo nome do carro:', c.name || ''); if (n && n.trim()) { await post(`/api/cars/${encodeURIComponent(c.device)}`, { name: n.trim() }, 'PATCH'); onCarsChanged(); } });
-      const del = el('button', 'act danger', 'Desvincular'); del.type = 'button';
-      del.addEventListener('click', async () => { if (confirm(`Desvincular "${c.name}"? Ele deixa de aparecer aqui e perde acesso à nuvem (o chassi fica livre para outra conta).`)) { await fetch(`/api/cars/${encodeURIComponent(c.device)}`, { method: 'DELETE', credentials: 'same-origin' }); onCarsChanged(); } });
-      actions.append(ren, del); row.append(info, actions); host.append(row);
+      const del = el('button', 'act danger', 'Sair do carro'); del.type = 'button';
+      del.addEventListener('click', async () => { if (confirm(`Sair de "${c.name}"? Você deixa de ver este carro. Quem continua vinculado mantém o acesso, e a assinatura continua valendo para o carro.`)) { await fetch(`/api/cars/${encodeURIComponent(c.device)}`, { method: 'DELETE', credentials: 'same-origin' }); onCarsChanged(); } });
+      const ppl = el('button', 'act', 'Pessoas'); ppl.type = 'button';
+      const list = el('div', 'sub'); list.hidden = true;
+      ppl.addEventListener('click', async () => {
+        if (!list.hidden) { list.hidden = true; return; }
+        list.replaceChildren(el('small', null, 'Carregando…')); list.hidden = false;
+        const r = await fetch(`/api/cars/${encodeURIComponent(c.device)}/members`, { credentials: 'same-origin' });
+        const b = await r.json().catch(() => ({})); list.replaceChildren();
+        for (const m of b.members || []) {
+          const line = el('div', 'carrow'); const who = el('div'); who.append(el('b', null, m.name || m.email), el('small', null, ` ${m.email}${m.you ? ' · você' : ''}`));
+          const rm = el('button', 'act danger', m.you ? 'Sair' : 'Remover'); rm.type = 'button';
+          rm.addEventListener('click', async () => { if (confirm(m.you ? 'Sair deste carro?' : `Remover ${m.name || m.email} deste carro?`)) { await fetch(`/api/cars/${encodeURIComponent(c.device)}/members/${encodeURIComponent(m.id)}`, { method: 'DELETE', credentials: 'same-origin' }); onCarsChanged(); ppl.click(); ppl.click(); } });
+          line.append(who, rm); list.append(line);
+        }
+        list.append(el('small', null, 'Para adicionar mais alguém: na tela do carro toque em "Adicionar pessoa" e leia o QR code com o celular dela.'));
+      });
+      actions.append(ppl, ren, del); row.append(info, actions); host.append(row, list);
     }
   }
   function openCars() { renderCars(); $('claimErr').textContent = ''; $('carsDlg').showModal(); }

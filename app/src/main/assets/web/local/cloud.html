@@ -16,6 +16,20 @@
         .eg-pill.ok { color: var(--status-success, #5BD382); }
         .eg-pill.warn { color: var(--status-warning, #FFB870); }
         .eg-err { color: var(--danger, #ef4444); font-size: 13px; min-height: 18px; margin-top: 6px; }
+        .eg-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px; align-items: start; }
+        @media (max-width: 800px) { .eg-grid { grid-template-columns: 1fr; } }
+        .eg-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .eg-left { text-align: center; padding: 20px; }
+        .eg-right { padding: 6px 20px 16px; }
+        .eg-right .card-header { padding-left: 0; }
+        .eg-lead { color: var(--text-secondary); font-size: 14px; line-height: 1.5; margin: 12px 0; }
+        .eg-qr { width: 200px; max-width: 70%; margin: 8px auto; background: #fff; padding: 10px; border-radius: 12px; }
+        .eg-code { font-size: 30px; padding: 10px 8px; }
+        .eg-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+        .eg-user { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-default, #3a4750); }
+        .eg-user b { display: block; font-size: 16px; }
+        .eg-user small { color: var(--text-muted); }
+        .eg-user button { background: var(--danger, #ef4444); color: #fff; border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; cursor: pointer; }
         .eg-hint { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
     </style>
 </head>
@@ -36,6 +50,28 @@
             </header>
 
             <div class="page-body">
+                <div class="eg-grid">
+                    <section class="card eg-left">
+                        <div class="eg-top"><div class="card-title"><span>Conectar ao celular</span></div><span class="eg-pill" id="egState">…</span></div>
+                        <p class="eg-lead" id="egLead">Carregando…</p>
+                        <div id="egQrBox" style="display:none;">
+                            <div id="egQr" class="eg-qr"></div>
+                            <div class="eg-code" id="egCode">--------</div>
+                            <div class="eg-hint" id="egExpiry"></div>
+                        </div>
+                        <div class="eg-btns">
+                            <button class="btn btn-primary" id="egAddBtn" type="button" style="display:none;">Adicionar pessoa</button>
+                            <button class="btn" id="egCfgBtn" type="button">Configurações</button>
+                        </div>
+                        <div class="eg-err" id="egStatusErr"></div>
+                    </section>
+                    <section class="card eg-right">
+                        <div class="card-header"><div class="card-title"><span>Usuários conectados</span></div></div>
+                        <div id="egUsers"></div>
+                        <div class="eg-hint" id="egUsersHint">A assinatura é do carro: todas as pessoas acima usam o mesmo plano.</div>
+                    </section>
+                </div>
+                <div id="egSettings" style="display:none;">
                 <div class="card">
                     <div class="card-header"><div class="card-title"><span>Conexão</span></div></div>
                     <div class="eg-row">
@@ -67,26 +103,6 @@
                     <div class="eg-hint">Tudo precisa estar verde antes de entregar o carro. Itens de câmera e telemetria dependem do carro ligado.</div>
                 </div>
 
-                <div class="card" id="egPairCard">
-                    <div class="card-header"><div class="card-title"><span>Vínculo com a sua conta</span></div><span class="eg-pill" id="egState">…</span></div>
-                    <div id="egPending" style="display:none;">
-                        <div class="eg-code" id="egCode">--------</div>
-                        <div id="egQr" style="width:220px;max-width:70%;margin:8px auto;background:#fff;padding:10px;border-radius:12px;"></div>
-                        <ol class="eg-steps">
-                            <li>Escaneie o QR code acima com a câmera do celular.</li>
-                            <li>Entre (ou crie) a sua conta em <b id="egSiteName">o painel</b> e toque em <b>Vincular</b>.</li>
-                            <li>O chassi é enviado por este aplicativo<span id="egVinHint"></span>; você não precisa digitar nada. Sem o QR, digite o código acima em <b>Carros → Vincular um carro</b>.</li>
-                        </ol>
-                        <div class="eg-hint" id="egExpiry"></div>
-                    </div>
-                    <div id="egClaimed" style="display:none;">
-                        <div class="eg-row"><div><div style="font-size:14px;font-weight:500;" id="egCarName">Carro vinculado</div><div class="eg-hint">Para desvincular, use Carros → Desvincular no painel.</div></div></div>
-                        <div class="eg-row"><span>Câmeras (túnel)</span><span class="eg-pill" id="egTunnel">…</span></div>
-                        <div class="eg-row"><span>Telemetria (MQTT)</span><span class="eg-pill" id="egMqtt">…</span></div>
-                        <div class="eg-hint" id="egMqttDetail"></div>
-                    </div>
-                    <div id="egOff" class="eg-hint">Ative a conexão e informe o endereço do servidor para gerar o código de vínculo.</div>
-                    <div class="eg-err" id="egStatusErr"></div>
                 </div>
             </div>
         </main>
@@ -109,42 +125,78 @@
             function fmtCode(c) { return c && c.length === 8 ? c.slice(0, 4) + '-' + c.slice(4) : (c || '--------'); }
             function show(id, on) { $(id).style.display = on ? '' : 'none'; }
 
+            function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+            function drawQr(link) {
+                if (link === lastLink) return;
+                lastLink = link; $('egQr').innerHTML = '';
+                if (link && window.qrcode) { var q = qrcode(0, 'M'); q.addData(link); q.make(); $('egQr').innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); }
+            }
+
             function render(s) {
                 if (!formLoaded) {                                   // fill the form once; later polls must not overwrite edits
                     $('egEnabled').checked = !!s.enabled; $('egServer').value = s.serverUrl || ''; $('egControl').checked = !!s.allowControl;
                     formLoaded = true;
+                    if (!s.enabled || !s.serverUrl) $('egSettings').style.display = '';   // first setup: the connection settings are the first thing to fill in
                 }
-                var st = $('egState');
-                st.className = 'eg-pill';
-                show('egPending', s.state === 'pending'); show('egClaimed', s.state === 'claimed'); show('egOff', s.state === 'disabled');
+                var site = s.serverUrl ? s.serverUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '') : '';
+                var st = $('egState'), lead = $('egLead'), box = $('egQrBox'), add = $('egAddBtn');
+                st.className = 'eg-pill'; box.style.display = 'none'; add.style.display = 'none';
+                var code = '', exp = 0;
                 if (s.state === 'pending') {
                     st.textContent = 'Aguardando vínculo'; st.classList.add('warn');
-                    $('egCode').textContent = fmtCode(s.code);
-                    var link = s.serverUrl && s.code ? s.serverUrl.replace(/\/+$/, '') + '/pair?code=' + s.code : '';
-                    if (link !== lastLink) {
-                        lastLink = link; $('egQr').innerHTML = '';
-                        if (link && window.qrcode) { var q = qrcode(0, 'M'); q.addData(link); q.make(); $('egQr').innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); }
-                    }
-                    $('egQr').style.display = link ? '' : 'none';
-                    $('egSiteName').textContent = s.serverUrl ? s.serverUrl.replace(/^https?:\/\//, '') : 'o painel';
-                    $('egVinHint').textContent = s.vinKnown ? ' (detectado: final ' + s.vinLast4 + ')' : ' (ainda lendo o chassi do carro…)';
-                    var left = s.codeExpiresAt ? Math.max(0, Math.round((s.codeExpiresAt - Date.now()) / 60000)) : 0;
-                    $('egExpiry').textContent = left > 0 ? 'O código expira em ~' + left + ' min e é renovado automaticamente.' : '';
+                    lead.innerHTML = 'No celular, leia o QR code abaixo com a câmera' + (site ? ' (ou acesse <b>' + esc(site) + '</b>)' : '') + ', entre ou crie a sua conta e toque em <b>Vincular</b>.' +
+                        (s.vinKnown ? '' : ' <span class="eg-hint">Ainda lendo o chassi do carro…</span>');
+                    code = s.code; exp = s.codeExpiresAt;
                 } else if (s.state === 'claimed') {
                     st.textContent = 'Vinculado'; st.classList.add('ok');
-                    $('egCarName').textContent = s.name || 'Carro vinculado';
-                    $('egTunnel').textContent = s.tunnel ? 'conectado' : 'conectando…';
-                    $('egTunnel').className = 'eg-pill ' + (s.tunnel ? 'ok' : 'warn');
-                    var m = s.mqtt || {};
-                    $('egMqtt').textContent = m.connected ? 'conectada' : 'reconectando…';
-                    $('egMqtt').className = 'eg-pill ' + (m.connected ? 'ok' : 'warn');
-                    $('egMqttDetail').textContent = m.connected ? (m.publishes || 0) + ' envios' : (m.lastError ? 'Último erro: ' + m.lastError : '');
+                    if (s.addCode) {
+                        lead.innerHTML = 'Para adicionar mais uma pessoa, peça que leia o QR code abaixo com a câmera do celular e entre na conta dela.';
+                        code = s.addCode; exp = s.addExpiresAt;
+                    } else {
+                        lead.textContent = (s.name || 'Este carro') + ' está conectado. Toque em "Adicionar pessoa" para liberar o acesso a mais alguém.';
+                        add.style.display = '';
+                    }
                 } else {
                     st.textContent = s.state === 'disabled' ? 'Desativado' : (s.state || '—');
+                    lead.textContent = s.state === 'disabled' ? 'A conexão com a nuvem está desativada. Abra Configurações para ativar e informar o endereço do servidor.' : 'Conectando…';
+                }
+                if (code) {
+                    var link = s.serverUrl ? s.serverUrl.replace(/\/+$/, '') + '/pair?code=' + code : '';
+                    drawQr(link);
+                    box.style.display = '';
+                    $('egQr').style.display = link ? '' : 'none';
+                    $('egCode').textContent = fmtCode(code);
+                    var left = exp ? Math.max(0, Math.round((exp - Date.now()) / 60000)) : 0;
+                    $('egExpiry').textContent = left > 0 ? 'O código expira em ~' + left + ' min' + (s.state === 'pending' ? ' e é renovado automaticamente.' : '.') : '';
+                } else { lastLink = ''; }
+
+                var users = $('egUsers'), ms = s.members || [];
+                if (s.state !== 'claimed') { users.innerHTML = '<div class="eg-hint" style="padding:16px 0;">Nenhum usuário conectado ainda.</div>'; }
+                else {
+                    users.innerHTML = ms.map(function (m) {
+                        return '<div class="eg-user"><div><b>' + esc(m.name || m.email) + '</b><small>' + esc(m.email) + '</small></div>' +
+                            '<button type="button" data-uid="' + esc(m.id) + '" data-nm="' + esc(m.name || m.email) + '">Remover</button></div>';
+                    }).join('') || '<div class="eg-hint" style="padding:16px 0;">Nenhum usuário.</div>';
                 }
                 $('egStatusErr').textContent = s.error || '';
             }
 
+            $('egUsers').addEventListener('click', function (e) {
+                var b = e.target.closest('button[data-uid]'); if (!b) return;
+                if (!confirm('Remover ' + b.dataset.nm + ' deste carro? A pessoa deixa de ver o carro no celular.')) return;
+                fetch('/api/cloud/remove-member', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: b.dataset.uid }) })
+                    .then(function () { poll(); }).catch(function () {});
+            });
+            $('egAddBtn').addEventListener('click', function () {
+                $('egAddBtn').disabled = true;
+                fetch('/api/cloud/add-code', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+                    .then(function () { poll(); }).catch(function () { $('egStatusErr').textContent = 'Não foi possível gerar o código. Verifique a internet do carro.'; })
+                    .then(function () { $('egAddBtn').disabled = false; });
+            });
+            $('egCfgBtn').addEventListener('click', function () {
+                var el = $('egSettings'); el.style.display = el.style.display === 'none' ? '' : 'none';
+            });
 
             function renderChecks(s) {
                 var m = s.mqtt || {};

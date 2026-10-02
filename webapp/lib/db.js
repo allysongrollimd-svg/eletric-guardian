@@ -33,6 +33,16 @@ export function openDb(file) {
     -- A chassis can belong to exactly one account at a time.
     CREATE UNIQUE INDEX IF NOT EXISTS devices_vin_claimed ON devices(vin) WHERE vin IS NOT NULL AND owner_id IS NOT NULL;
     CREATE INDEX IF NOT EXISTS devices_owner ON devices(owner_id);
+    -- Several people can use one car (the subscription belongs to the car/VIN, not to a person).
+    CREATE TABLE IF NOT EXISTS device_members (
+      device_id TEXT NOT NULL REFERENCES devices(id) ON DELETE CASCADE,
+      user_id   TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      added_at  INTEGER NOT NULL,
+      PRIMARY KEY (device_id, user_id)
+    );
+    CREATE INDEX IF NOT EXISTS device_members_user ON device_members(user_id);
+    INSERT OR IGNORE INTO device_members (device_id, user_id, added_at)
+      SELECT id, owner_id, COALESCE(claimed_at, created_at) FROM devices WHERE owner_id IS NOT NULL;
     CREATE TABLE IF NOT EXISTS pairings (
       code       TEXT PRIMARY KEY,
       device_id  TEXT NOT NULL REFERENCES devices(id) ON DELETE CASCADE,

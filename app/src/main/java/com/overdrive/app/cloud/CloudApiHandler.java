@@ -23,6 +23,16 @@ public final class CloudApiHandler {
                 HttpResponse.sendJson(out, client.statusJson().toString());
                 return true;
             }
+            if ((PREFIX + "add-code").equals(p) && "POST".equals(method)) {
+                HttpResponse.sendJson(out, client.requestAddCode().put("success", true).toString());
+                return true;
+            }
+            if ((PREFIX + "remove-member").equals(p) && "POST".equals(method)) {
+                JSONObject b = new JSONObject(body == null || body.isEmpty() ? "{}" : body);
+                client.removeMember(b.optString("userId", ""));
+                HttpResponse.sendJson(out, new JSONObject().put("success", true).toString());
+                return true;
+            }
             if ((PREFIX + "config").equals(p) && "POST".equals(method)) {
                 JSONObject b = new JSONObject(body == null || body.isEmpty() ? "{}" : body);
                 Boolean enabled = b.has("enabled") ? b.optBoolean("enabled") : null;
