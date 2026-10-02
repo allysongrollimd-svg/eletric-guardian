@@ -34,7 +34,7 @@ a{color:inherit}
 .player{position:fixed;inset:0;z-index:20;background:#000;display:flex;flex-direction:column}
 .player header{display:flex;align-items:center;gap:10px;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;background:var(--bg)}
 .player header div{flex:1;min-width:0}.player header b{display:block;font-family:var(--mono)}.player header small{color:var(--muted)}
-.vbox{position:relative;width:100%;overflow:hidden;background:#000;aspect-ratio:var(--ar,16/9);max-height:62dvh;margin:auto 0}
+.vbox{position:relative;width:100%;max-width:calc(62dvh * var(--arn,1.7778));overflow:hidden;background:#000;aspect-ratio:var(--ar,16/9);margin:auto}
 .vbox video{position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:0 0;background:#000}
 .ctl{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg)}
 .ctl input[type=range]{flex:1;min-width:0;accent-color:var(--accent);height:32px}

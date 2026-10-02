@@ -134,7 +134,7 @@ function applyQuad(q) {
 }
 // Diagnostic line under the player: what the car answered for this video and what the browser made of it.
 const diag = { lines: {} };
-const say = (k, v) => { diag.lines[k] = v; $('diag').textContent = Object.entries(diag.lines).map(([a, b]) => `${a}: ${b}`).join('\n'); };
+const say = (k, v) => { diag.lines[k] = v; const d = $('diag'); if (!d) return; d.textContent = Object.entries(diag.lines).map(([a, b]) => `${a}: ${b}`).join('\n'); };
 async function probe(rec) {
   const url = rec.videoUrl || `/video/id/${rec.id}`;
   try {
@@ -151,7 +151,7 @@ function openPlayer(rec) {
   $('player').hidden = false; document.body.style.overflow = 'hidden';
   curDurMs = 0; setGrid(userLayout || 'standard'); diag.lines = {}; say('clip', `${rec.type} · ${rec.id}`); probe(rec);
   getJson(rec.eventUrl || `/api/events/id/${rec.id}`).then((ev) => { if (curRec !== rec) return; curDurMs = ev?.durationMs > 0 ? ev.durationMs : 0; if (!userLayout) setGrid(ev?.layout === 'dashcam' ? 'dashcam' : 'standard'); say('evento', `layout=${ev?.layout ?? '-'} · durationMs=${ev?.durationMs ?? '-'} · campos: ${Object.keys(ev || {}).join(',').slice(0, 120)}`); }).catch(() => {});
-  v.onloadedmetadata = () => { if (v.videoWidth && v.videoHeight) $('vbox').style.setProperty('--ar', `${v.videoWidth}/${v.videoHeight}`); applyQuad(curQuad); };
+  v.onloadedmetadata = () => { if (v.videoWidth && v.videoHeight) { $('vbox').style.setProperty('--ar', `${v.videoWidth}/${v.videoHeight}`); $('vbox').style.setProperty('--arn', String(v.videoWidth / v.videoHeight)); } applyQuad(curQuad); };
   load.started = Date.now(); clearInterval(load.timer); load.timer = setInterval(updateLoad, 1000); $('vloadBar').parentElement.hidden = false; $('bufBar').style.width = '0'; showLoad(true); updateLoad();
   v.src = rec.videoUrl || `/video/id/${rec.id}`; v.play().catch(() => {});
 }
