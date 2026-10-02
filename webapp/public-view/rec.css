@@ -46,3 +46,4 @@ a{color:inherit}
 .hint{color:var(--muted);font-size:13px;text-align:center;padding:0 12px 6px}
 .clip .th.nothumb{background:repeating-linear-gradient(45deg,#111,#111 8px,#161616 8px,#161616 16px)}
 .clip .th img:not([src]){visibility:hidden}
+.diag{margin:0;padding:6px 12px;font:11px/1.35 var(--mono);color:var(--muted);white-space:pre-wrap;word-break:break-all;background:var(--bg);user-select:text}

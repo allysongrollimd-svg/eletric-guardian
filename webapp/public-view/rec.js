@@ -115,13 +115,25 @@ function applyQuad(q) {
   const [origin, tf] = ZOOM[curLayout][q];
   v.style.transformOrigin = origin; v.style.transform = tf;
 }
+// Diagnostic line under the player: what the car answered for this video and what the browser made of it.
+const diag = { lines: {} };
+const say = (k, v) => { diag.lines[k] = v; $('diag').textContent = Object.entries(diag.lines).map(([a, b]) => `${a}: ${b}`).join('\n'); };
+async function probe(rec) {
+  const url = rec.videoUrl || `/video/id/${rec.id}`;
+  try {
+    const r = await fetch(url, { credentials: 'same-origin', headers: { Range: 'bytes=0-1023' } });
+    const h = (n) => r.headers.get(n) || '-';
+    say('video', `HTTP ${r.status} · ${h('content-type')} · ranges ${h('accept-ranges')} · range ${h('content-range')} · len ${h('content-length')}`);
+    try { await r.body?.cancel(); } catch { /* ignore */ }
+  } catch (e) { say('video', `falhou: ${e.message}`); }
+}
 function openPlayer(rec) {
   curRec = rec; const v = $('video');
   $('pTitle').textContent = `${dayTxt(rec)} · ${clock(rec)}`;
   $('pSub').textContent = rec.place?.displayName || rec.place?.short || rec.sizeFormatted || '';
   $('player').hidden = false; document.body.style.overflow = 'hidden';
-  curLayout = 'standard'; curDurMs = 0; applyQuad(curQuad);
-  getJson(rec.eventUrl || `/api/events/id/${rec.id}`).then((ev) => { if (curRec !== rec) return; curLayout = ev?.layout === 'dashcam' ? 'dashcam' : 'standard'; curDurMs = ev?.durationMs > 0 ? ev.durationMs : 0; applyQuad(curQuad); }).catch(() => {});
+  curLayout = 'standard'; curDurMs = 0; applyQuad(curQuad); diag.lines = {}; say('clip', `${rec.type} · ${rec.id}`); probe(rec);
+  getJson(rec.eventUrl || `/api/events/id/${rec.id}`).then((ev) => { if (curRec !== rec) return; curLayout = ev?.layout === 'dashcam' ? 'dashcam' : 'standard'; curDurMs = ev?.durationMs > 0 ? ev.durationMs : 0; applyQuad(curQuad); say('evento', `layout=${ev?.layout ?? '-'} · durationMs=${ev?.durationMs ?? '-'} · campos: ${Object.keys(ev || {}).join(',').slice(0, 120)}`); }).catch(() => {});
   v.onloadedmetadata = () => { if (v.videoWidth && v.videoHeight) $('vbox').style.setProperty('--ar', `${v.videoWidth}/${v.videoHeight}`); applyQuad(curQuad); };
   v.src = rec.videoUrl || `/video/id/${rec.id}`; v.play().catch(() => {});
 }
@@ -138,7 +150,8 @@ const fmtT = (s) => (Number.isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.f
   v.addEventListener('timeupdate', () => { if (!dragging && dur()) seek.value = String(Math.min(1000, Math.round((v.currentTime / dur()) * 1000))); $('time').textContent = `${fmtT(v.currentTime)} / ${fmtT(dur())}`; });
   seek.addEventListener('input', () => { dragging = true; if (dur()) v.currentTime = (seek.value / 1000) * dur(); });
   seek.addEventListener('change', () => { dragging = false; });
-  v.addEventListener('error', () => { $('time').textContent = 'vídeo indisponível'; });
+  v.addEventListener('error', () => { $('time').textContent = 'vídeo indisponível'; say('erro', `código ${v.error?.code ?? '?'} ${v.error?.message || ''}`); });
+  for (const ev of ['loadedmetadata', 'canplay', 'playing', 'waiting', 'stalled', 'suspend', 'abort']) v.addEventListener(ev, () => say('player', `${ev} · ${v.videoWidth}x${v.videoHeight} · dur ${Number.isFinite(v.duration) ? v.duration.toFixed(1) : v.duration}s · ready ${v.readyState} · rede ${v.networkState}`));
 })();
 function closePlayer() { const v = $('video'); v.pause(); v.removeAttribute('src'); v.load(); $('player').hidden = true; document.body.style.overflow = ''; }
 
