@@ -225,7 +225,9 @@ public final class CloudClient {
             j.put("homeAssistantDiscovery", true);                       // per-field topics: required by the app for control
             j.put("allowControl", cfg.allowControl);                     // explicit opt-in on the car's screen
             j.put("minIntervalSeconds", 1);
-            j.put("maxIntervalSeconds", 300);
+            j.put("maxIntervalSeconds", 10);                             // heartbeat: the app never sits on stale data for long
+            j.put("parkedIntervalSeconds", 30);                          // parked: slower, saves the car's mobile data
+            j.put("chargingIntervalSeconds", 10);
             j.put("changeOnly", true);
             j.put("trustAllCerts", false);
             if (existing == null) {
@@ -278,7 +280,8 @@ public final class CloudClient {
     private static boolean needsUpdate(MqttConnectionConfig c, String url, String topic, CloudConfig cfg) {
         return !url.equals(c.brokerUrl) || !topic.equals(c.topic) || !cfg.deviceId.equals(c.username)
                 || !cfg.deviceKey.equals(c.password) || c.allowControl != cfg.allowControl
-                || !c.enabled || !c.homeAssistantDiscovery;
+                || !c.enabled || !c.homeAssistantDiscovery
+                || c.maxIntervalSeconds != 10 || c.parkedIntervalSeconds != 30 || c.chargingIntervalSeconds != 10;
     }
 
     // ---------------------------------------------------------------- tunnel
