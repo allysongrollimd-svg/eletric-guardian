@@ -56,7 +56,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
     return req.socket.remoteAddress || '?';
   };
   const secureCookie = (req) => (req.headers['x-forwarded-proto'] === 'https' || cfg.publicScheme === 'https' ? '; Secure' : '');
-  const viewProxy = cloud?.viewHost ? createViewProxy({ hub: cloud.hub, authorize: (req) => cloud.view.authorize(req), frameAncestors: cloud.appHost ? `${cfg.publicScheme || 'https'}://${cloud.appHost}` : null }) : null;
+  const viewProxy = cloud?.viewHost ? createViewProxy({ hub: cloud.hub, authorize: (req) => cloud.view.authorize(req), isAdmin: (id) => cloud.accounts.isAdmin(id), frameAncestors: cloud.appHost ? `${cfg.publicScheme || 'https'}://${cloud.appHost}` : null }) : null;
   const clients = new Set();
   const ctlToken = (req) => parseCookies(req.headers.cookie).eg_ctl;
 

@@ -9,6 +9,11 @@ const STRIP_COOKIES = /^(eg_session|eg_view|eg_ctl)$/;
 const EMBED_PAGES = new Set(['/recording.html', '/surveillance.html', '/live-view.html']);
 const EMBED_CSS = '<style id="eg-embed">#app-shell-mount,.sidebar,.sidebar-overlay,.mobile-header,.page-header{display:none!important}' +
   '.app-layout{display:block!important}.main-content{margin:0!important;max-width:100%!important;width:100%!important}body{padding:0!important}</style>';
+// Advanced blocks hidden from customers (the admin sees everything). The car's pages tag every block with data-tab.
+const CUSTOMER_CSS = {
+  '/surveillance.html': '<style id="eg-customer">[data-tab="detection"],[data-tab="oem"],#parking{display:none!important}</style>',
+  '/recording.html': '<style id="eg-customer">[data-tab="status"]{display:none!important}</style>',
+};
 const STRIP_RES = /^(connection|keep-alive|transfer-encoding|proxy-.*|x-frame-options|content-security-policy)$/i;
 
 function cleanCookie(header) {
@@ -27,7 +32,7 @@ const offlinePage = (name) => `<!doctype html><meta charset="utf-8"><meta name="
  *  authorize(req) -> { userId, deviceId, name? } | null      (checked on EVERY request / upgrade)
  *  hub.openStream(deviceId) -> TunnelStream | null
  */
-export function createViewProxy({ hub, authorize, frameAncestors = null }) {
+export function createViewProxy({ hub, authorize, frameAncestors = null, isAdmin = () => false }) {
   const forwardHeaders = (req, { upgrade }) => {
     const out = {};
     for (let i = 0; i < req.rawHeaders.length; i += 2) {
@@ -70,7 +75,8 @@ export function createViewProxy({ hub, authorize, frameAncestors = null }) {
         pres.on('data', (c) => chunks.push(c));
         pres.on('end', () => {
           let html = Buffer.concat(chunks).toString('utf8');
-          html = /<\/head>/i.test(html) ? html.replace(/<\/head>/i, `${EMBED_CSS}</head>`) : EMBED_CSS + html;
+          const css = EMBED_CSS + (isAdmin(who.userId) ? '' : (CUSTOMER_CSS[pathOnly] || ''));
+          html = /<\/head>/i.test(html) ? html.replace(/<\/head>/i, `${css}</head>`) : css + html;
           delete headers['content-length']; headers['content-length'] = Buffer.byteLength(html);
           res.writeHead(200, pres.statusMessage, headers); res.end(html);
         });

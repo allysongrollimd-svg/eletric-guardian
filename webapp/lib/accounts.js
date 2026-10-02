@@ -126,6 +126,7 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
       if (typeof next !== 'string' || next.length < 10) throw new AccountError('weak_password', 'A senha precisa ter pelo menos 10 caracteres.');
       q.setPass.run(await hash(next), userId);
     },
+    isAdmin(userId) { return q.userById.get(userId)?.role === 'admin'; },
     sessionVersion(userId) { return q.userById.get(userId)?.session_ver ?? 0; },
     async changePassword(userId, current, next) {
       const u = q.userById.get(userId);

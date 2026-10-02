@@ -25,3 +25,8 @@
 - Área da conta (trocar senha, dados, exclusão — LGPD)
 - Avisos (vencimento da assinatura, alertas da sentinela) — precisa escolher o serviço de envio
 - Revisão de licenças antes de vender (YOLO AGPL, sing-box GPL), termos de uso e política de privacidade
+
+## Sentinela/Dashcam no estilo do app de referência (decisão)
+- Referência (Electro): Sentinela = Gravações (lista + navegação por dia) e Configurações enxuta: Ativar, Armazenamento (tipo + limite + tempo estimado), Resolução (HD/Full HD/Original), Modo de operação, Layout.
+- Hoje: Configurações = página do carro embutida; clientes não veem as abas Detecção/OEM/Estacionamento (Sentinela) nem Status (Dashcam).
+- Falta cortar **dentro** das abas Geral/Gravação/Armazenamento (experimentais, energia estacionado, locais seguros, dissuasão…). O corte limpo é um "modo cliente" no APK (decisão: depois do webapp pronto).
