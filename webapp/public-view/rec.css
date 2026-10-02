@@ -44,3 +44,5 @@ a{color:inherit}
 .quads button{padding:10px 16px;border:1px solid var(--line);border-radius:99px;color:var(--muted);min-width:76px}
 .quads button.on{background:var(--accent);color:var(--on-accent);border-color:transparent}
 .hint{color:var(--muted);font-size:13px;text-align:center;padding:0 12px 6px}
+.clip .th.nothumb{background:repeating-linear-gradient(45deg,#111,#111 8px,#161616 8px,#161616 16px)}
+.clip .th img:not([src]){visibility:hidden}

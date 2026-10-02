@@ -33,21 +33,31 @@ const queue = []; let active = 0;
 function loadThumb(img, url) {
   queue.push({ img, url }); pump();
 }
+// The car answers 202 {"status":"generating"} the first time it is asked for a thumbnail; ask again until it is ready.
+async function fetchThumb(url) {
+  for (let i = 0; i < 12; i++) {
+    const r = await fetch(url, { credentials: 'same-origin' });
+    if (r.status === 202) { await new Promise((res) => setTimeout(res, 1500)); continue; }
+    if (!r.ok || !/^image\//.test(r.headers.get('content-type') || '')) throw new Error(String(r.status));
+    return URL.createObjectURL(await r.blob());
+  }
+  throw new Error('timeout');
+}
 function pump() {
   while (active < 4 && queue.length) {
     const { img, url } = queue.shift(); active++;
-    const done = () => { active--; pump(); };
-    img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true });
-    img.src = url;
+    fetchThumb(url).then((u) => { img.src = u; }).catch(() => { img.closest('.th')?.classList.add('nothumb'); }).finally(() => { active--; pump(); });
   }
 }
 const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { io.unobserve(e.target); loadThumb(e.target, e.target.dataset.src); } }), { rootMargin: '200px' }) : null;
 
+const clock = (rec) => (rec.timestamp ? new Date(rec.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : (rec.timeFormatted || rec.time || ''));
+const dayTxt = (rec) => (rec.timestamp ? new Date(rec.timestamp).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : (rec.dateFormatted || rec.date || ''));
 function clipRow(rec) {
   const b = el('button', 'clip'); b.type = 'button';
   const th = el('div', 'th'); const img = el('img'); img.alt = ''; img.decoding = 'async'; img.dataset.src = rec.thumbnailUrl || `/thumb/id/${rec.id}`;
   th.append(img); if (io) io.observe(img); else loadThumb(img, img.dataset.src);
-  const m = el('div', 'meta'); m.append(el('b', null, rec.timeFormatted || rec.time || ''));
+  const m = el('div', 'meta'); m.append(el('b', null, clock(rec)));
   const where = rec.place?.displayName || rec.place?.medium || rec.place?.short;
   m.append(el('small', null, where || rec.sizeFormatted || ''));
   const tags = el('div', 'tags');
@@ -90,23 +100,28 @@ function renderDay() {
 const go = (delta) => { const n = state.idx + delta; if (n < 0 || n >= state.dates.length) return; state.idx = n; renderDay(); loadPage(true); };
 
 // ---- player ----
-// The car records a mosaic of its four cameras in one video; "front/right/rear/left" crop and zoom into one quadrant.
-const LAYOUT_2X2 = { front: [0, 0, .5, .5], right: [.5, 0, .5, .5], rear: [0, .5, .5, .5], left: [.5, .5, .5, .5] };
-const LAYOUT_DASH = { front: [0, 0, 1, .7], left: [0, .7, 1 / 3, .3], rear: [1 / 3, .7, 1 / 3, .3], right: [2 / 3, .7, 1 / 3, .3] };
-let curQuad = 'all', curRec = null;
+// The car records one video that tiles its four cameras. The per-clip layout comes from /api/events/id/<id>:
+//  standard = 2x2 (front, right / rear, left); dashcam = front on the top 70%, left / rear / right across the bottom 30%.
+// These transforms mirror the ones in the car's own player so a tap here crops exactly what the car UI shows.
+const ZOOM = {
+  standard: { front: ['0% 0%', 'scale(2)'], right: ['100% 0%', 'scale(2)'], rear: ['0% 100%', 'scale(2)'], left: ['100% 100%', 'scale(2)'] },
+  dashcam: { front: ['50% 0%', 'scaleY(1.42857)'], left: ['0% 100%', 'scale(3, 3.33333)'], rear: ['50% 100%', 'scale(3, 3.33333)'], right: ['100% 100%', 'scale(3, 3.33333)'] },
+};
+let curQuad = 'all', curRec = null, curLayout = 'standard', curDurMs = 0;
 function applyQuad(q) {
   curQuad = q; document.querySelectorAll('#quads button').forEach((b) => b.classList.toggle('on', b.dataset.q === q));
-  const v = $('video'), box = $('vbox');
-  if (q === 'all') { v.style.transform = ''; return; }
-  const [x, y, w, h] = (curRec?.type === 'sentry' ? LAYOUT_2X2 : LAYOUT_DASH)[q];
-  const S = Math.min(1 / w, 1 / h), W = box.clientWidth, H = box.clientHeight;
-  v.style.transform = `translate(${-((x + w / 2) * S - .5) * W}px, ${-((y + h / 2) * S - .5) * H}px) scale(${S})`;
+  const v = $('video');
+  if (q === 'all') { v.style.transform = ''; v.style.transformOrigin = ''; return; }
+  const [origin, tf] = ZOOM[curLayout][q];
+  v.style.transformOrigin = origin; v.style.transform = tf;
 }
 function openPlayer(rec) {
   curRec = rec; const v = $('video');
-  $('pTitle').textContent = `${rec.dateFormatted || rec.date} · ${rec.timeFormatted || rec.time}`;
+  $('pTitle').textContent = `${dayTxt(rec)} · ${clock(rec)}`;
   $('pSub').textContent = rec.place?.displayName || rec.place?.short || rec.sizeFormatted || '';
   $('player').hidden = false; document.body.style.overflow = 'hidden';
+  curLayout = 'standard'; curDurMs = 0; applyQuad(curQuad);
+  getJson(rec.eventUrl || `/api/events/id/${rec.id}`).then((ev) => { if (curRec !== rec) return; curLayout = ev?.layout === 'dashcam' ? 'dashcam' : 'standard'; curDurMs = ev?.durationMs > 0 ? ev.durationMs : 0; applyQuad(curQuad); }).catch(() => {});
   v.onloadedmetadata = () => { if (v.videoWidth && v.videoHeight) $('vbox').style.setProperty('--ar', `${v.videoWidth}/${v.videoHeight}`); applyQuad(curQuad); };
   v.src = rec.videoUrl || `/video/id/${rec.id}`; v.play().catch(() => {});
 }
@@ -118,8 +133,10 @@ const fmtT = (s) => (Number.isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.f
   $('pp').addEventListener('click', toggle); $('vbox').addEventListener('click', toggle);
   v.addEventListener('play', () => $('ppIcon').firstElementChild.setAttribute('d', ICON_PAUSE));
   v.addEventListener('pause', () => $('ppIcon').firstElementChild.setAttribute('d', ICON_PLAY));
-  v.addEventListener('timeupdate', () => { if (!dragging && v.duration) seek.value = String(Math.round((v.currentTime / v.duration) * 1000)); $('time').textContent = `${fmtT(v.currentTime)} / ${fmtT(v.duration)}`; });
-  seek.addEventListener('input', () => { dragging = true; if (v.duration) v.currentTime = (seek.value / 1000) * v.duration; });
+  // Clips are still being written or served without a length: fall back to the duration the car reports.
+  const dur = () => (Number.isFinite(v.duration) && v.duration > 0 ? v.duration : curDurMs / 1000);
+  v.addEventListener('timeupdate', () => { if (!dragging && dur()) seek.value = String(Math.min(1000, Math.round((v.currentTime / dur()) * 1000))); $('time').textContent = `${fmtT(v.currentTime)} / ${fmtT(dur())}`; });
+  seek.addEventListener('input', () => { dragging = true; if (dur()) v.currentTime = (seek.value / 1000) * dur(); });
   seek.addEventListener('change', () => { dragging = false; });
   v.addEventListener('error', () => { $('time').textContent = 'vídeo indisponível'; });
 })();

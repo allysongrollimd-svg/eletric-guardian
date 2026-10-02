@@ -62,7 +62,12 @@ const local = http.createServer((req, res) => {
     const size = +q.get('pageSize') || 12, page = +q.get('page') || 1;
     return sendJson({ success: true, recordings: rows.slice((page - 1) * size, page * size), totalCount: rows.length, totalPages: Math.max(1, Math.ceil(rows.length / size)), page, pageSize: size });
   }
-  if (p.startsWith('/thumb/id/')) { res.writeHead(200, { 'content-type': 'image/svg+xml' }); return res.end(mosaic(p.slice(10))); }
+  if (p.startsWith('/api/events/id/')) return sendJson({ layout: p.endsWith('1') ? 'dashcam' : 'standard', durationMs: 33000, events: [] });
+  if (p.startsWith('/thumb/id/')) {                                 // like the car: 202 "generating" on the first ask
+    const id = p.slice(10); if (!globalThis.__thumbSeen) globalThis.__thumbSeen = new Set();
+    if (!globalThis.__thumbSeen.has(id)) { globalThis.__thumbSeen.add(id); res.writeHead(202, { 'content-type': 'application/json', 'retry-after': '1' }); return res.end('{"status":"generating"}'); }
+    res.writeHead(200, { 'content-type': 'image/svg+xml' }); return res.end(mosaic(id));
+  }
   const body = p === '/live-view.html'
     ? `<canvas id=c width=640 height=360 style="width:100%;max-width:900px;background:#000;border:1px solid #333"></canvas><p id=t>conectando ao /ws…</p><script>let n=0,c=document.getElementById('c').getContext('2d');const w=new WebSocket((location.protocol=='https:'?'wss':'ws')+'://'+location.host+'/ws');w.onmessage=e=>{n++;const x=(n*7)%640;c.fillStyle='#111';c.fillRect(0,0,640,360);c.fillStyle='#8bdc5c';c.fillRect(x,150,60,60);document.getElementById('t').textContent='frames recebidos: '+n};</script>`
     : '<p>Página do carro servida pelo túnel.</p><ul><li><a href="/live-view.html">Ao vivo</a></li><li><a href="/recording.html">Gravações</a></li></ul>';
