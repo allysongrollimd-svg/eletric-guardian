@@ -152,6 +152,7 @@ function openPlayer(rec) {
   curDurMs = 0; setGrid(userLayout || 'standard'); diag.lines = {}; say('clip', `${rec.type} · ${rec.id}`); probe(rec);
   getJson(rec.eventUrl || `/api/events/id/${rec.id}`).then((ev) => { if (curRec !== rec) return; curDurMs = ev?.durationMs > 0 ? ev.durationMs : 0; if (!userLayout) setGrid(ev?.layout === 'dashcam' ? 'dashcam' : 'standard'); say('evento', `layout=${ev?.layout ?? '-'} · durationMs=${ev?.durationMs ?? '-'} · campos: ${Object.keys(ev || {}).join(',').slice(0, 120)}`); }).catch(() => {});
   v.onloadedmetadata = () => { if (v.videoWidth && v.videoHeight) $('vbox').style.setProperty('--ar', `${v.videoWidth}/${v.videoHeight}`); applyQuad(curQuad); };
+  load.started = Date.now(); clearInterval(load.timer); load.timer = setInterval(updateLoad, 1000); $('vloadBar').parentElement.hidden = false; $('bufBar').style.width = '0'; showLoad(true); updateLoad();
   v.src = rec.videoUrl || `/video/id/${rec.id}`; v.play().catch(() => {});
 }
 const ICON_PLAY = 'M8 5v14l11-7z', ICON_PAUSE = 'M7 5h4v14H7zM13 5h4v14h-4z';
@@ -170,7 +171,28 @@ const fmtT = (s) => (Number.isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.f
   v.addEventListener('error', () => { $('time').textContent = 'vídeo indisponível'; say('erro', `código ${v.error?.code ?? '?'} ${v.error?.message || ''}`); });
   for (const ev of ['loadedmetadata', 'canplay', 'playing', 'waiting', 'stalled', 'suspend', 'abort']) v.addEventListener(ev, () => say('player', `${ev} · ${v.videoWidth}x${v.videoHeight} · dur ${Number.isFinite(v.duration) ? v.duration.toFixed(1) : v.duration}s · ready ${v.readyState} · rede ${v.networkState}`));
 })();
-function closePlayer() { const v = $('video'); v.pause(); v.removeAttribute('src'); v.load(); $('player').hidden = true; document.body.style.overflow = ''; }
+// Download feedback: the car uploads the clip over its own connection, which can be slow, so say so instead of looking frozen.
+const load = { timer: 0, started: 0 };
+function showLoad(on) { $('vload').hidden = !on; }
+function updateLoad() {
+  const v = $('video'), dur = Number.isFinite(v.duration) && v.duration > 0 ? v.duration : curDurMs / 1000;
+  const end = v.buffered.length ? v.buffered.end(v.buffered.length - 1) : 0;
+  const pct = dur > 0 ? Math.min(100, Math.round((end / dur) * 100)) : null;
+  $('bufBar').style.width = `${pct ?? 0}%`;
+  const bar = $('vloadBar'); bar.parentElement.classList.toggle('indet', pct === null); bar.style.width = pct === null ? '' : `${pct}%`;
+  const size = curRec?.sizeFormatted ? ` (${curRec.sizeFormatted})` : '';
+  $('vloadTxt').textContent = pct === null ? 'Conectando ao carro…' : `Baixando do carro… ${pct}%`;
+  const slow = Date.now() - load.started > 12000 && (pct === null || pct < 100);
+  $('vloadSub').textContent = slow ? `O carro envia o vídeo pela internet dele${size}. Pode levar alguns instantes.` : '';
+}
+(() => {
+  const v = $('video');
+  for (const ev of ['progress', 'loadedmetadata', 'durationchange', 'timeupdate']) v.addEventListener(ev, () => { updateLoad(); });
+  v.addEventListener('waiting', () => { showLoad(true); updateLoad(); });
+  for (const ev of ['playing', 'canplay']) v.addEventListener(ev, () => { if (v.readyState >= 3) showLoad(false); });
+  v.addEventListener('error', () => { showLoad(true); $('vloadTxt').textContent = 'Não foi possível carregar o vídeo'; $('vloadSub').textContent = 'Tente de novo em instantes.'; $('vloadBar').parentElement.hidden = true; });
+})();
+function closePlayer() { clearInterval(load.timer); const v = $('video'); v.pause(); v.removeAttribute('src'); v.load(); $('player').hidden = true; document.body.style.overflow = ''; }
 
 $('prev').addEventListener('click', () => go(1)); $('next').addEventListener('click', () => go(-1));
 $('more').addEventListener('click', () => { state.page++; loadPage(false); });

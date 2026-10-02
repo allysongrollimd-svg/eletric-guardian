@@ -51,3 +51,15 @@ a{color:inherit}
 .grid-pick span{font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .grid-pick button{padding:6px 12px;border:1px solid var(--line);border-radius:99px;color:var(--muted);font-size:13px}
 .grid-pick button.on{border-color:var(--accent);color:var(--text)}
+.vload{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:8px;background:#000b;text-align:center;padding:16px;pointer-events:none}
+.vload[hidden]{display:none}
+.vload b{font-size:16px}.vload span{color:var(--muted);font-size:13px;max-width:30ch}
+.spin{width:34px;height:34px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+.vbar{width:min(240px,70vw);height:6px;border-radius:9px;background:var(--line);overflow:hidden}
+.vbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.vbar.indet i{width:40%;animation:slide 1.4s ease-in-out infinite}
+@keyframes slide{0%{margin-left:-40%}100%{margin-left:100%}}
+.buf{height:4px;background:var(--line);margin:0 12px}
+.buf i{display:block;height:100%;width:0;background:var(--accent);opacity:.55;transition:width .3s}

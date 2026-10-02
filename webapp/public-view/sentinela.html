@@ -26,7 +26,8 @@
 <button id="more" class="more" hidden>Carregar mais</button>
 <section id="player" class="player" hidden aria-label="Reprodução">
   <header><button id="pClose" class="ibtn" aria-label="Fechar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><div><b id="pTitle"></b><small id="pSub"></small></div></header>
-  <div class="vbox" id="vbox"><video id="video" playsinline preload="metadata"></video></div>
+  <div class="vbox" id="vbox"><video id="video" playsinline preload="auto"></video><div class="vload" id="vload" role="status" aria-live="polite"><i class="spin"></i><b id="vloadTxt">Carregando…</b><span id="vloadSub"></span><div class="vbar"><i id="vloadBar"></i></div></div></div>
+  <div class="buf" aria-hidden="true"><i id="bufBar"></i></div>
   <div class="ctl"><button id="pp" class="ibtn" aria-label="Reproduzir ou pausar"><svg id="ppIcon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Posição"><span id="time">0:00</span></div>
   <pre id="diag" class="diag"></pre>
   <p class="hint">Toque numa câmera para ampliar. Toque de novo para voltar à visão completa.</p>
