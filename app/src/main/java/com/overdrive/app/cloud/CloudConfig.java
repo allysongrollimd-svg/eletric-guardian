@@ -18,8 +18,8 @@ final class CloudConfig {
     static final String SECTION = "cloud";
     private static final Pattern SERVER_URL = Pattern.compile("^https?://[A-Za-z0-9.-]+(:\\d{1,5})?$");
 
-    boolean enabled;
-    String serverUrl = "";
+    boolean enabled = true;
+    String serverUrl = com.overdrive.app.BuildConfig.EG_SERVER_URL;
     boolean allowControl;
     String deviceId = "";
     String deviceKey = "";
@@ -30,9 +30,10 @@ final class CloudConfig {
             JSONObject root = UnifiedConfigManager.loadConfig();
             JSONObject s = root == null ? null : root.optJSONObject(SECTION);
             if (s != null) {
-                c.enabled = s.optBoolean("enabled", false);
-                c.serverUrl = s.optString("serverUrl", "").trim();
+                c.enabled = s.optBoolean("enabled", true);
+                c.serverUrl = s.optString("serverUrl", com.overdrive.app.BuildConfig.EG_SERVER_URL).trim();
                 c.allowControl = s.optBoolean("allowControl", false);
+                if (c.serverUrl.isEmpty()) c.serverUrl = com.overdrive.app.BuildConfig.EG_SERVER_URL;
                 c.deviceId = s.optString("deviceId", "");
                 c.deviceKey = CredentialCipher.decrypt(s.optString("deviceKey", ""));
             }

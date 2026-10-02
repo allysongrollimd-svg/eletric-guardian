@@ -351,6 +351,10 @@ android {
         // the working build's generated BuildConfig (default-config fields).
         buildConfigField("boolean", "LOG_CAPTURE", "false")
         buildConfigField("String", "LOG_UPLOAD_URL", "\"\"")
+        // Customer build: the car shows only the connect screen (QR, people, simple settings). -PsimpleUi=false brings the full app back.
+        buildConfigField("boolean", "SIMPLE_UI", (project.findProperty("simpleUi")?.toString() ?: "true"))
+        // Cloud service every car connects to by default (the customer never types an address).
+        buildConfigField("String", "EG_SERVER_URL", "\"" + (project.findProperty("egServerUrl")?.toString() ?: "https://guardian.allysongrolli.com.br") + "\"")
     }
 
     buildFeatures {

@@ -73,34 +73,40 @@
                 </div>
                 <div id="egSettings" style="display:none;">
                 <div class="card">
-                    <div class="card-header"><div class="card-title"><span>Conexão</span></div></div>
+                    <div class="card-header"><div class="card-title"><span>Configurações</span></div></div>
                     <div class="eg-row">
                         <div>
-                            <div style="font-size:14px;font-weight:500;">Conectar este carro à nuvem</div>
-                            <div class="eg-hint">Painel em tempo real, câmeras ao vivo, gravações e sentinela fora do carro.</div>
-                        </div>
-                        <label class="toggle-switch"><input type="checkbox" id="egEnabled"><span class="toggle-slider"></span></label>
-                    </div>
-                    <div class="form-group">
-                        <label for="egServer">Endereço do servidor</label>
-                        <input type="text" id="egServer" placeholder="https://app.seudominio.com" autocapitalize="off" autocomplete="off" spellcheck="false">
-                    </div>
-                    <div class="eg-row">
-                        <div>
-                            <div style="font-size:14px;font-weight:500;">Permitir controle remoto</div>
-                            <div class="eg-hint">Deixa o dono da conta travar/abrir vidros, ligar o ar-condicionado e mudar ajustes pelo painel. Desligado por padrão; só ligue se confia na conta vinculada.</div>
+                            <div style="font-size:14px;font-weight:500;">Permitir controle remoto pelo celular</div>
+                            <div class="eg-hint">Deixa quem está vinculado travar/abrir vidros, ligar o ar-condicionado e mudar ajustes do carro pelo celular. Desligado por padrão.</div>
                         </div>
                         <label class="toggle-switch"><input type="checkbox" id="egControl"><span class="toggle-slider"></span></label>
                     </div>
-                    <div class="form-actions"><button class="btn btn-primary" id="egSave" type="button">Salvar</button></div>
                     <div class="eg-err" id="egErr" role="alert"></div>
                 </div>
-
-
                 <div class="card" id="egCheckCard">
                     <div class="card-header"><div class="card-title"><span>Verificação da instalação</span></div><span class="eg-pill" id="egCheckSummary">…</span></div>
                     <div id="egChecks"></div>
-                    <div class="eg-hint">Tudo precisa estar verde antes de entregar o carro. Itens de câmera e telemetria dependem do carro ligado.</div>
+                    <div class="eg-hint">Se algum item ficar pendente, siga a dica abaixo dele. Câmeras e dados dependem do carro ligado.</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><span>Se algo não estiver funcionando</span></div></div>
+                    <div class="eg-row">
+                        <div>
+                            <div style="font-size:14px;font-weight:500;">Reaplicar acesso em segundo plano</div>
+                            <div class="eg-hint">Use se o aplicativo não voltar sozinho depois de reiniciar o sistema do carro.</div>
+                        </div>
+                        <button class="btn" id="egBgBtn" type="button">Reaplicar</button>
+                    </div>
+                    <div class="eg-row">
+                        <div>
+                            <div style="font-size:14px;font-weight:500;">Reiniciar o sistema do carro</div>
+                            <div class="eg-hint">Só funciona com o carro parado. A central desliga e liga sozinha em alguns segundos.</div>
+                        </div>
+                        <button class="btn" id="egRebootBtn" type="button">Reiniciar</button>
+                    </div>
+                    <div class="eg-hint" id="egActMsg" style="min-height:18px;"></div>
+                    <div class="eg-hint" id="egVersion"></div>
                 </div>
 
                 </div>
@@ -120,7 +126,7 @@
         }
         (function () {
             var $ = function (id) { return document.getElementById(id); };
-            var formLoaded = false, lastLink = '';
+            var formLoaded = false, lastLink = '', autoEnabled = false;
 
             function fmtCode(c) { return c && c.length === 8 ? c.slice(0, 4) + '-' + c.slice(4) : (c || '--------'); }
             function show(id, on) { $(id).style.display = on ? '' : 'none'; }
@@ -135,10 +141,11 @@
 
             function render(s) {
                 if (!formLoaded) {                                   // fill the form once; later polls must not overwrite edits
-                    $('egEnabled').checked = !!s.enabled; $('egServer').value = s.serverUrl || ''; $('egControl').checked = !!s.allowControl;
+                    $('egControl').checked = !!s.allowControl;
                     formLoaded = true;
-                    if (!s.enabled || !s.serverUrl) $('egSettings').style.display = '';   // first setup: the connection settings are the first thing to fill in
                 }
+                if (!s.enabled && !autoEnabled) { autoEnabled = true; post('/api/cloud/config', { enabled: true }).then(poll); }
+                $('egVersion').textContent = s.appVersion ? 'Versão do aplicativo: ' + s.appVersion : '';
                 var site = s.serverUrl ? s.serverUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '') : '';
                 var st = $('egState'), lead = $('egLead'), box = $('egQrBox'), add = $('egAddBtn');
                 st.className = 'eg-pill'; box.style.display = 'none'; add.style.display = 'none';
@@ -159,7 +166,7 @@
                     }
                 } else {
                     st.textContent = s.state === 'disabled' ? 'Desativado' : (s.state || '—');
-                    lead.textContent = s.state === 'disabled' ? 'A conexão com a nuvem está desativada. Abra Configurações para ativar e informar o endereço do servidor.' : 'Conectando…';
+                    lead.textContent = 'Conectando…';
                 }
                 if (code) {
                     var link = s.serverUrl ? s.serverUrl.replace(/\/+$/, '') + '/pair?code=' + code : '';
@@ -201,7 +208,7 @@
             function renderChecks(s) {
                 var m = s.mqtt || {};
                 var items = [
-                    { ok: !!s.enabled && !!s.serverUrl, label: 'Nuvem ativada com endereço do servidor', fix: 'Ative a conexão e informe o endereço acima.' },
+                    { ok: !!s.enabled && !!s.serverUrl, label: 'Conexão com a nuvem ativada', fix: 'Ativando automaticamente…' },
                     { ok: !!s.vinKnown, label: 'Chassi (VIN) lido do carro' + (s.vinKnown ? ' (final ' + s.vinLast4 + ')' : ''), fix: 'Ligue o carro e aguarde; o chassi vem do próprio carro.' },
                     { ok: s.state === 'claimed', label: 'Carro vinculado a uma conta', fix: 'Leia o QR com o celular do cliente e toque em Vincular.' },
                     { ok: !!s.tunnel, label: 'Câmeras e páginas do carro (túnel) conectados', fix: 'Verifique a internet do carro; a conexão é refeita sozinha.' },
@@ -224,15 +231,25 @@
                 fetch('/api/cloud/status').then(function (r) { return r.json(); }).then(function (s) { render(s); renderChecks(s); }).catch(function () {});
             }
 
-            $('egSave').addEventListener('click', function () {
+            function post(url, body) {
+                return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
+            }
+            $('egControl').addEventListener('change', function () {
                 $('egErr').textContent = '';
-                fetch('/api/cloud/config', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ enabled: $('egEnabled').checked, serverUrl: $('egServer').value, allowControl: $('egControl').checked })
-                }).then(function (r) { return r.json().then(function (b) { return { ok: r.ok, b: b }; }); }).then(function (x) {
-                    if (!x.ok) { $('egErr').textContent = x.b.error || 'Erro ao salvar'; return; }
-                    formLoaded = false; poll();
-                }).catch(function () { $('egErr').textContent = 'Falha de comunicação com o app.'; });
+                post('/api/cloud/config', { allowControl: $('egControl').checked }).then(function (r) {
+                    if (!r.ok) { $('egErr').textContent = 'Não foi possível salvar.'; $('egControl').checked = !$('egControl').checked; }
+                }).catch(function () { $('egErr').textContent = 'Falha de comunicação com o aplicativo.'; });
+            });
+            $('egBgBtn').addEventListener('click', function () {
+                $('egActMsg').textContent = 'Reaplicando…';
+                post('/api/system/background-access').then(function (r) { $('egActMsg').textContent = r.ok ? 'Pronto. Se precisar, reinicie o sistema do carro.' : 'Não foi possível aplicar agora.'; })
+                    .catch(function () { $('egActMsg').textContent = 'Falha de comunicação com o aplicativo.'; });
+            });
+            $('egRebootBtn').addEventListener('click', function () {
+                if (!confirm('Reiniciar o sistema do carro agora? Só funciona com o carro parado.')) return;
+                $('egActMsg').textContent = 'Reiniciando…';
+                post('/api/system/ivi-reboot').then(function (r) { if (!r.ok) $('egActMsg').textContent = 'O carro precisa estar parado para reiniciar.'; })
+                    .catch(function () { $('egActMsg').textContent = 'Falha de comunicação com o aplicativo.'; });
             });
 
             BYD.i18n.init().then(function () { BYD.core.init(); poll(); setInterval(poll, 3000); });

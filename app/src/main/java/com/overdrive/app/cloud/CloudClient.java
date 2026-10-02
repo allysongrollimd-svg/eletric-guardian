@@ -381,6 +381,7 @@ public final class CloudClient {
             j.put("codeExpiresAt", codeExpiresAt);
             j.put("name", claimedName);
             j.put("members", members);
+            j.put("appVersion", com.overdrive.app.BuildConfig.VERSION_NAME);
             j.put("addCode", addCode);
             j.put("addExpiresAt", addExpiresAt);
             j.put("tunnel", tunnelUp);

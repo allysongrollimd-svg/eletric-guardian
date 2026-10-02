@@ -455,6 +455,7 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun maybeStartOnboarding(delayMs: Long) {
+        if (com.overdrive.app.BuildConfig.SIMPLE_UI) return          // the guided tours point at menu items the customer build does not have
         val runner = Runnable {
             if (isFinishing || isDestroyed) return@Runnable
             val host = onboardingHost ?: com.overdrive.app.onboarding.OnboardingHost(
@@ -1650,6 +1651,12 @@ open class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
+        if (com.overdrive.app.BuildConfig.SIMPLE_UI && savedInstanceState == null) {
+            // Customer build: the connect screen is the root of the app (back leaves the app, nothing else to go back to).
+            val graph = navController.navInflater.inflate(R.navigation.nav_graph)
+            graph.setStartDestination(R.id.cloudFragment)
+            navController.setGraph(graph, null)
+        }
 
         // Top-level destinations on the rail — no back arrow on these.
         appBarConfiguration = AppBarConfiguration(
@@ -1690,6 +1697,9 @@ open class MainActivity : AppCompatActivity() {
         }
 
         setupCustomRail(savedInstanceState)
+        if (com.overdrive.app.BuildConfig.SIMPLE_UI) {
+            navigationRailContainer.visibility = View.GONE          // no menu at all: the customer only sees the connect screen
+        }
     }
 
     /**
