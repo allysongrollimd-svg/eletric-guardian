@@ -183,8 +183,6 @@
     <string name="setup_language_body">O padrão é o idioma da sua central multimídia. Toque para escolher um idioma diferente para o aplicativo Electric Guardian e para o túnel da web.</string>
     <string name="setup_language_button">Escolha o Idioma</string>
     <string name="setup_autostart_title">Desativar a Restrição de Inicialização Automática</string>
-    <string name="setup_autostart_body">Toque abaixo para abrir BYD Auto-Start. Encontre o Electric Guardian na lista e desmarque a caixa. BYD limpa isso em cada instalação.</string>
-    <string name="setup_autostart_button">Abrir BYD Auto-Start</string>
     <string name="setup_overlay_title">Permitir exibição em outros aplicativos</string>
     <string name="setup_overlay_body">Habilitar isso para mostrar um indicador de estado flutuante para gravação e rastreamento de viagens em cima de outros aplicativos.</string>
     <string name="setup_overlay_button">Abrir Configurações de Sobreposição</string>
@@ -1387,4 +1385,11 @@
     <string name="setup_simple_button">Ativar</string>
     <string name="setup_simple_later">Depois</string>
     <string name="setup_simple_done">Concluir</string>
+    <string name="setup_autostart_body">Abrimos a lista de inicialização automática do carro. Deixe o Eletric Guardian DESLIGADO (interruptor cinza). Se ele já estiver cinza, está tudo certo: feche a lista e toque em Concluir.</string>
+    <string name="setup_autostart_button">Abrir a lista do carro</string>
+    <string name="setup_autostart_enabling">Ativando…</string>
+    <string name="setup_autostart_enabled">Pronto: o aplicativo vai continuar funcionando depois de reiniciar o carro.</string>
+    <string name="setup_autostart_failed">Não foi possível ativar sozinho. Abrimos a lista do carro: deixe o Eletric Guardian desligado (cinza) e toque em Concluir.</string>
+    <string name="webview_loading_simple">Iniciando o Eletric Guardian…
+Na primeira vez isso pode levar alguns minutos.</string>
 </resources>

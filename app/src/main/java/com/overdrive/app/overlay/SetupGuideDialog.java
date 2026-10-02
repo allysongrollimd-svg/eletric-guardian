@@ -271,6 +271,8 @@ public class SetupGuideDialog {
             return;
         }
         KeepAliveAccessibilityService service = KeepAliveAccessibilityService.getInstance();
+        if (service == null) enableAccessibilityService(context);
+        service = KeepAliveAccessibilityService.getInstance();
         if (service != null) {
             service.runAutoStartEnabler((success, result) ->
                     finishAutoStartAttempt(context, step, success, result));
@@ -285,6 +287,26 @@ public class SetupGuideDialog {
         Log.w(TAG, "a11y service did not bind within " + AUTOSTART_SERVICE_WAIT_MS
                 + "ms — falling back to manual settings");
         finishAutoStartAttempt(context, step, false, null);
+    }
+
+    /**
+     * The autostart switch is flipped through the accessibility service, which is off after a fresh install.
+     * This app holds WRITE_SECURE_SETTINGS (granted at install by the daemon), so it can turn the service on by itself.
+     */
+    private static void enableAccessibilityService(Context context) {
+        try {
+            android.content.ContentResolver cr = context.getContentResolver();
+            String comp = context.getPackageName() + "/" + KeepAliveAccessibilityService.class.getName();
+            String cur = Settings.Secure.getString(cr, "enabled_accessibility_services");
+            if (cur == null || cur.isEmpty()) {
+                Settings.Secure.putString(cr, "enabled_accessibility_services", comp);
+            } else if (!cur.contains(comp)) {
+                Settings.Secure.putString(cr, "enabled_accessibility_services", cur + ":" + comp);
+            }
+            Settings.Secure.putInt(cr, "accessibility_enabled", 1);
+        } catch (Throwable t) {
+            Log.w(TAG, "could not enable the accessibility service by itself: " + t.getMessage());
+        }
     }
 
     private static void finishAutoStartAttempt(

@@ -473,6 +473,11 @@ class WebViewFragment : Fragment() {
         liveWebView = webView
         loadingOverlay = view.findViewById(R.id.loadingOverlay)
         errorOverlay = view.findViewById(R.id.errorOverlay)
+        if (com.overdrive.app.BuildConfig.SIMPLE_UI) {
+            // second child of the loading overlay is its caption
+            ((view.findViewById<View>(R.id.loadingOverlay) as? android.view.ViewGroup)?.getChildAt(1) as? android.widget.TextView)
+                ?.setText(R.string.webview_loading_simple)
+        }
         btnRetry = view.findViewById(R.id.btnRetry)
         btnRetry?.setOnClickListener { retryLoad() }
 
@@ -1703,6 +1708,16 @@ class WebViewFragment : Fragment() {
     }
 
     private fun showError() {
+        if (com.overdrive.app.BuildConfig.SIMPLE_UI) {
+            // Customer build: the services are still starting (first launch after an install takes minutes). Keep the
+            // friendly "starting" screen and try again by itself instead of showing a technical error.
+            showLoading()
+            webView?.visibility = View.INVISIBLE
+            view?.postDelayed({
+                if (isAdded && view != null && pageLoadFailed) retryLoad()
+            }, 4000L)
+            return
+        }
         loadingOverlay?.animate()?.cancel()
         loadingOverlay?.visibility = View.GONE
         errorOverlay?.visibility = View.VISIBLE
