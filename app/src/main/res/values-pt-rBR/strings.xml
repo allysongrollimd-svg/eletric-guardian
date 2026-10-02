@@ -1380,4 +1380,11 @@
     <string name="rail_section_automation">Automação</string>
     <string name="rail_section_system">Sistema</string>
     <string name="rail_collapse_label">Recolher</string>
+    <string name="setup_simple_title">Configuração inicial</string>
+    <string name="setup_simple_subtitle">Falta só um passo para o aplicativo continuar funcionando depois que o carro for desligado ou reiniciado.</string>
+    <string name="setup_simple_step_title">Manter o aplicativo sempre ativo</string>
+    <string name="setup_simple_step_body">Toque em Ativar. A configuração é feita automaticamente e leva poucos segundos.</string>
+    <string name="setup_simple_button">Ativar</string>
+    <string name="setup_simple_later">Depois</string>
+    <string name="setup_simple_done">Concluir</string>
 </resources>

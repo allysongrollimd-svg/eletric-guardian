@@ -68,7 +68,8 @@ public class SetupGuideDialog {
      *                 the user understands why it reappeared.
      */
     public static void show(Context context, boolean isUpdate) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_setup_guide, null);
+        final boolean simple = com.overdrive.app.BuildConfig.SIMPLE_UI;   // customer build: one automatic step, nothing else
+        View view = LayoutInflater.from(context).inflate(simple ? R.layout.dialog_setup_simple : R.layout.dialog_setup_guide, null);
 
         // Version banner — only when re-showing after an update, not on first install.
         TextView tvVersionBanner = view.findViewById(R.id.tvVersionBanner);
@@ -124,9 +125,9 @@ public class SetupGuideDialog {
                 R.id.tvOverlayTitle, R.id.tvOverlayBody,
                 R.id.btnOpenOverlay, R.id.ivOverlayCheck);
 
-        renderOverlayPermission(context, overlayStep);
+        if (!simple) renderOverlayPermission(context, overlayStep);
 
-        overlayStep.button.setOnClickListener(v -> {
+        if (!simple) overlayStep.button.setOnClickListener(v -> {
             try {
                 Intent intent = new Intent(
                         Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -164,6 +165,11 @@ public class SetupGuideDialog {
                 .create();
 
         dialog.setOnShowListener(ignored -> {
+            if (simple) {
+                // Do the one step by itself: the installer only has to confirm the BYD screen if the system asks.
+                autoStartStep.button.postDelayed(() -> autoStartStep.button.performClick(), 800L);
+                return;
+            }
             renderOverlayPermission(context, overlayStep);
             dialog.getWindow().getDecorView().getViewTreeObserver()
                     .addOnWindowFocusChangeListener(hasFocus -> {
@@ -179,7 +185,7 @@ public class SetupGuideDialog {
         // the marker naturally invalidates and the dialog reappears post-update.
         view.findViewById(R.id.btnDone).setOnClickListener(v -> {
             markCurrentInstallSeen(context);
-            StatusOverlayService.startIfPermitted(context);
+            if (!simple) StatusOverlayService.startIfPermitted(context);
             dialog.dismiss();
         });
 
