@@ -86,12 +86,14 @@ bash deploy/backup.sh                                    # copia para /var/backu
 (crontab -l 2>/dev/null; echo "30 3 * * * bash $PWD/deploy/backup.sh >> /var/log/eg-backup.log 2>&1") | crontab -
 ```
 
-Copie essa pasta também para outro lugar (outro servidor, nuvem, seu computador). O arquivo `session.secret` vai junto: ele assina as sessões e as chaves dos webhooks.
+Copie essa pasta também para outro lugar (outro servidor, nuvem, seu computador). O segredo que assina as sessões e as chaves dos webhooks vai junto (`env.backup`, cópia do `deploy/.env`; ou `session.secret`, se não usar `SESSION_SECRET` no `.env`). **Guarde esses arquivos com cuidado: contêm segredos.**
 
 **Restaurar** (serviço parado): copie o `eg-AAAAMMDD-HHMMSSZ.sqlite` escolhido para `eg.sqlite` no volume e o `session.secret` para o mesmo lugar, depois suba de novo:
 
 ```bash
 docker compose -f deploy/docker-compose.nginx.yml stop eg
-docker run --rm -v deploy_eg-data:/data -v /var/backups/electric-guardian:/b alpine sh -c 'cp /b/eg-XXXX.sqlite /data/eg.sqlite && cp /b/session.secret /data/session.secret && rm -f /data/eg.sqlite-wal /data/eg.sqlite-shm && chown -R 1000:1000 /data'
+docker run --rm -v deploy_eg-data:/data -v /var/backups/electric-guardian:/b alpine sh -c 'cp /b/eg-XXXX.sqlite /data/eg.sqlite && ([ -f /b/session.secret ] && cp /b/session.secret /data/session.secret || true) && rm -f /data/eg.sqlite-wal /data/eg.sqlite-shm && chown -R 1000:1000 /data'
 docker compose -f deploy/docker-compose.nginx.yml start eg
 ```
+
+Se estiver recuperando em outro servidor, restaure também o `deploy/.env` a partir de `env.backup` (mesmo `SESSION_SECRET`).
