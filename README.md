@@ -49,10 +49,28 @@ Para ver os dados e **controlar o carro pelo painel**, configure a conexão MQTT
   para este repositório. Baixar os modelos de IA ainda usa os assets `models-v1` do repositório original.
 - Novo tópico MQTT padrão e o webapp acima.
 
+## Serviço na nuvem (contas, câmeras e controle)
+
+`webapp/` roda em dois modos: **dono único** (um token, seus próprios carros, MQTT externo) e **contas** (`AUTH_MODE=accounts`,
+o serviço vendável): clientes com login, **carro vinculado ao chassi (VIN)** por código de pareamento exibido na tela do carro,
+broker MQTT embutido com isolamento por carro, painel em tempo real, controle remoto e **câmeras ao vivo / gravações /
+sentinela por túnel reverso** (o carro abre uma conexão de saída até a sua VPS; nada precisa ser aberto no 4G).
+Implantação: [`deploy/README.md`](deploy/README.md). Demo local sem carro: `cd webapp && npm install && npm run dev:cloud`.
+
+## Antes de vender (licenças e riscos — não é aconselhamento jurídico)
+
+- O código do OverDrive é **MIT** (pode vender; mantenha o aviso de copyright, já em [LICENSE](LICENSE) e [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)).
+- **Modelos YOLO (`yolo11n`, `yolo26n`, Ultralytics) são AGPL-3.0**: distribuir/oferecer como serviço implica obrigações de código aberto
+  ou licença comercial da Ultralytics. Troque por um detector de licença permissiva ou compre a licença.
+- **`sing-box` é GPL-3.0** (binário embutido): quem recebe o APK precisa poder pedir o código-fonte.
+- A integração com a **nuvem da BYD** vem de engenharia reversa de terceiros (sem licença clara) e pode violar termos da BYD.
+- **LGPD**: gravações de sentinela captam imagem de terceiros; defina política de retenção e base legal antes de armazenar na VPS.
+- O túnel dá a quem acessa as câmeras o mesmo poder do app no carro: veja a seção de segurança em `deploy/README.md`.
+
 ## Estado e limitações conhecidas
 
-- O app Android **não foi compilado nem testado em veículo** nesta etapa (ambiente sem Android SDK). As
-  mudanças no app são de texto, recursos (cores/ícones) e URLs; compile e valide antes de distribuir.
+- O app Android é compilado pelo GitHub Actions (CI) e já foi instalado e testado num BYD Dolphin GS (ao vivo, gravações e
+  estacionamento funcionam). O **cliente de nuvem** (pareamento, túnel e MQTT automático) é novo e **ainda não foi testado num carro**.
 - O `applicationId`/pacote Kotlin continua **`com.overdrive.app`** de propósito: há ~140 referências ao pacote
   em comandos de shell/daemons (`am start -n com.overdrive.app/...`, `/data/app/com.overdrive.app*/`) que
   precisam ser migradas e testadas num carro. Consequência: não instala lado a lado com o OverDrive original.

@@ -1,5 +1,10 @@
 # Electric Guardian — painel em tempo real
 
+> Dois modos: **dono único** (este README: token + MQTT externo) e **contas** (`AUTH_MODE=accounts`, serviço multi-cliente com
+> câmeras por túnel): veja [`../deploy/README.md`](../deploy/README.md). Variáveis do modo contas: `AUTH_MODE`, `DATA_DIR`,
+> `SESSION_SECRET`, `ALLOW_SIGNUP`, `APP_HOST`, `VIEW_HOST`, `PUBLIC_SCHEME`, `TRUST_PROXY`, `MQTT_PUBLIC_URL`, `CONTROL_ENABLED`,
+> `VIEW_COOKIE_SAMESITE`. Testes: `npm test` (50 testes incluindo isolamento entre clientes, túnel e broker).
+
 Servidor Node.js (única dependência: `mqtt`) que recebe a telemetria do carro e a empurra ao navegador por
 **Server‑Sent Events**. Dashboard PWA em português: bateria, velocidade, potência/regeneração, carga, viagem,
 temperaturas, odômetro, gráficos dos últimos 30 min, mapa e tabela com **todos** os campos publicados
