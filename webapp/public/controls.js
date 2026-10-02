@@ -42,7 +42,7 @@ export function initControls({ getDevice, getData, isOnline, rpc }) {
         ev.preventDefault();
         const r = await rpc('unlock', { pin: $('pin').value });
         if (r.ok) { d.close('ok'); await refreshStatus(); resolve(true); }
-        else $('pinErr').textContent = r.status === 429 ? 'Muitas tentativas. Aguarde alguns minutos.' : 'PIN inválido.';
+        else $('pinErr').textContent = r.status === 429 ? 'Muitas tentativas. Aguarde alguns minutos.' : 'Credencial inválida.';
       };
       d.onclose = () => { if (d.returnValue !== 'ok') resolve(false); };
       d.showModal(); $('pin').focus();
@@ -110,7 +110,7 @@ export function initControls({ getDevice, getData, isOnline, rpc }) {
     if (status.unlocked) {
       b.append(el('span', null, `Controles desbloqueados (${Math.max(0, status.ttlSeconds - Math.round((Date.now() - statusAt) / 1000))} s). Comandos sem confirmação do carro: verifique o estado.`),
         btn('Bloquear', async () => { await rpc('lock'); refreshStatus(); }, 'ghost'));
-    } else b.append(el('span', null, 'Controles bloqueados.'), btn('Desbloquear com PIN', askPin, 'act'));
+    } else b.append(el('span', null, 'Controles bloqueados.'), btn('Desbloquear', askPin, 'act'));
   }
 
   function render() {

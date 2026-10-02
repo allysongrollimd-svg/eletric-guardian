@@ -3,6 +3,8 @@ import { AccountError } from './accounts.js';
 import { createViewSessions } from './viewsession.js';
 
 const SESSION_COOKIE = 'eg_session';
+// Pages of the car's own web UI that the dashboard can open directly.
+const VIEW_PAGES = new Set(['/', '/live-view.html', '/recording.html', '/surveillance.html', '/parking.html', '/events.html', '/performance.html']);
 
 /**
  * Multi-tenant ("accounts") mode: users, cars bound to a chassis (VIN), and the routes around them.
@@ -118,8 +120,10 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret }) {
         if (!accounts.owns(user.id, vw[1])) return send(404, { error: 'Carro não encontrado.' }), true;     // ownership first: never reveal another account's car state
         if (!hub.isConnected(vw[1])) return send(409, { error: 'O carro não está conectado ao túnel (offline).' }), true;
         const t = view.issueTicket(user.id, vw[1]);
+        let page = '/';
+        if (jsonOnly()) { const b = await body(1024).catch(() => ({})); if (VIEW_PAGES.has(b?.page)) page = b.page; }   // only known pages of the car UI
         const scheme = cfg.publicScheme || 'https';
-        return send(200, { url: `${scheme}://${cloud.viewHost}/_enter?t=${encodeURIComponent(t)}` }), true;
+        return send(200, { url: `${scheme}://${cloud.viewHost}/_enter?t=${encodeURIComponent(t)}${page === '/' ? '' : `&next=${encodeURIComponent(page)}`}` }), true;
       }
       return false;
     } catch (e) {
@@ -133,7 +137,8 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret }) {
     if (path !== '/_enter') return false;
     const cookie = view.redeem(url.searchParams.get('t') || '');
     if (!cookie) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); res.end('Link expirado. Abra a câmera novamente pelo painel.'); return true; }
-    res.writeHead(302, { Location: '/', 'Set-Cookie': `eg_view=${cookie}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${view.cookieMaxAge}${secureCookie(req)}`, 'Cache-Control': 'no-store' });
+    const next = url.searchParams.get('next');
+    res.writeHead(302, { Location: VIEW_PAGES.has(next) ? next : '/', 'Set-Cookie': `eg_view=${cookie}; HttpOnly; SameSite=${cfg.viewCookieSameSite || 'Strict'}; Path=/; Max-Age=${view.cookieMaxAge}${cfg.viewCookieSameSite === 'None' ? '; Secure' : secureCookie(req)}`, 'Cache-Control': 'no-store' });
     res.end();
     return true;
   };

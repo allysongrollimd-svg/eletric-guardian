@@ -141,6 +141,11 @@ test('product flow: signup -> car pairs -> claim by VIN -> telemetry -> cameras 
     assert.equal((await viewer.get('/')).status, 401);                                         // no cookie: no access
     const enter = await viewer.get(ticketPath); assert.equal(enter.status, 302); assert.ok(viewer.jar.eg_view);
     assert.equal((await s.view().get(ticketPath)).status, 403);                                // tickets are one-time
+    // choosing a page opens it directly; unknown pages are ignored (no open redirect)
+    const t2 = (await ana.post(`/api/cars/${CAR.deviceId}/view`, { page: '/recording.html' })).json.url; assert.match(t2, /next=%2Frecording\.html$/);
+    const t3 = (await ana.post(`/api/cars/${CAR.deviceId}/view`, { page: '//evil.example' })).json.url; assert.doesNotMatch(t3, /next=/);
+    const e2 = await s.view().get(new URL(t2).pathname + new URL(t2).search); assert.equal(e2.headers.location, '/recording.html');
+    assert.equal((await s.view().get(new URL(t3).pathname + new URL(t3).search + '&next=//evil.example')).headers.location, '/');
     const page = await viewer.get('/live-view.html'); assert.equal(page.status, 200); assert.match(page.text, /live-view \/live-view.html/);
     assert.equal(page.headers['x-frame-options'], undefined); assert.match(page.headers['content-security-policy'], /frame-ancestors http:\/\/app\.test/);
     assert.equal(s.seen.at(-1).cookie, undefined);                                             // our cookies never reach the car

@@ -1,5 +1,6 @@
 // Electric Guardian live dashboard. All values are written with textContent (never innerHTML).
 import { initControls } from '/controls.js';
+import { loadConfig, initCloud } from '/cloud.js';
 const $ = (id) => document.getElementById(id);
 const nf = (v, d = 0) => (typeof v === 'number' && isFinite(v) ? v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--');
 const state = { devices: new Map(), current: null, history: [], fields: {}, es: null, lastMapKey: '' };
@@ -109,12 +110,14 @@ const ctl = initControls({
   getData: () => state.devices.get(state.current)?.data,
   isOnline: () => !!state.devices.get(state.current)?.online,
 });
+let cloud = null;        // set in accounts mode
 let ctlTimer = null;
 const ctlRerender = () => { if (!$('controls').hidden && !document.querySelector('dialog[open]')) ctl.render(); };
 function showTab(name) {
-  $('dash').hidden = name !== 'dash' || !state.current; $('controls').hidden = name !== 'controls';
+  $('dash').hidden = name !== 'dash' || !state.current; $('controls').hidden = name !== 'controls'; $('cams').hidden = name !== 'cams';
   document.querySelectorAll('.tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
   if (name === 'controls') { ctl.refreshStatus(); ctl.render(); }
+  if (name === 'cams') cloud?.renderCams();
 }
 document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
 // Re-render at most every 2 s while the controls tab is open so states (on/off, selected option) follow telemetry.
@@ -134,8 +137,9 @@ function upsertDevice(dev) {
   state.devices.set(dev.device, dev);
   const sel = $('device');
   if (![...sel.options].some((o) => o.value === dev.device)) {
-    const o = document.createElement('option'); o.value = dev.device; o.textContent = dev.device; sel.append(o);
+    const o = document.createElement('option'); o.value = dev.device; sel.append(o);
   }
+  for (const o of sel.options) if (o.value === dev.device) o.textContent = dev.name || dev.device;
   sel.hidden = state.devices.size < 2;
   if (!state.current) selectDevice(dev.device);
   else if (state.current === dev.device) { render(dev); pushHistory(dev.data); drawCharts(); }
@@ -152,9 +156,9 @@ async function selectDevice(id) {
 const transport = { ws: null, kind: 'none', pending: new Map(), seq: 0, rtt: null, timer: null };
 
 function handle(event, data) {
-  if (event === 'snapshot') { data.forEach(upsertDevice); if (!state.devices.size) { $('dash').hidden = true; $('empty').hidden = false; } }
+  if (event === 'snapshot') { data.forEach(upsertDevice); if (!state.devices.size) { $('dash').hidden = true; $('empty').hidden = false; $('tabs').hidden = state.mode !== 'accounts'; if (state.mode === 'accounts') cloud.openCars(); } }
   else if (event === 'telemetry') upsertDevice(data);
-  else if (event === 'status') { state.devices.set(data.device, data); if (data.device === state.current) renderStatus(data); }
+  else if (event === 'status') { state.devices.set(data.device, data); if (data.device === state.current) { renderStatus(data); cloud?.renderCams(); } }
   else if (event === 'pong') { transport.rtt = Math.round(performance.now() - data); renderLatency(); }
   else if (event === 'rpc') { const p = transport.pending.get(data.id); if (p) { transport.pending.delete(data.id); p({ ok: data.ok, status: data.status, body: data.body }); } }
 }
@@ -216,12 +220,30 @@ function connect() {
 async function boot() {
   try {
     state.fields = await (await fetch('/fields.json')).json();
+    if (state.mode === undefined) {
+      const cfg = await loadConfig();
+      state.mode = cfg ? 'accounts' : 'token';
+      if (cfg) {
+        cloud = initCloud({
+          getCars: () => [...state.devices.values()],
+          getCurrent: () => state.devices.get(state.current),
+          onAuthChanged: () => boot(),
+          onCarsChanged: () => { transport.ws?.close(); transport.es?.close(); state.devices.clear(); state.current = null; $('device').replaceChildren(); boot(); },
+        });
+        state.cfg = cfg;
+        $('pinHint').textContent = 'Digite a senha da sua conta para desbloquear os controles por alguns minutos.';
+        $('pin').placeholder = 'Senha da conta'; $('pin').inputMode = 'text'; $('pin').autocomplete = 'current-password';
+      }
+    }
     await api('/api/devices'); // auth probe
-    $('login').hidden = true; $('logout').hidden = false;
+    $('login').hidden = true; $('auth').hidden = true; $('logout').hidden = false;
+    if (state.mode === 'accounts') { $('carsBtn').hidden = false; $('camsTab').hidden = false; }
     connect();
   } catch (e) {
-    if (e.code === 401) { $('login').hidden = false; $('dash').hidden = true; $('logout').hidden = true; $('status').textContent = 'Acesso restrito'; }
-    else { $('status').textContent = 'Sem conexão'; setTimeout(boot, 3000); }
+    if (e.code === 401) {
+      $('dash').hidden = true; $('logout').hidden = true; $('tabs').hidden = true; $('status').textContent = 'Acesso restrito';
+      if (state.mode === 'accounts') cloud.showAuth(state.cfg); else $('login').hidden = false;
+    } else { $('status').textContent = 'Sem conexão'; setTimeout(boot, 3000); }
   }
 }
 
@@ -230,7 +252,8 @@ $('loginForm').addEventListener('submit', async (ev) => {
   try { await api('/api/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: $('token').value }) }); $('token').value = ''; boot(); }
   catch { setText('loginErr', 'Token inválido.'); }
 });
-$('logout').addEventListener('click', async () => { await rpc('lock'); await fetch('/api/logout', { method: 'POST' }); $('tabs').hidden = true; $('controls').hidden = true; transport.ws?.close(); transport.es?.close(); state.devices.clear(); state.current = null; boot(); });
+$('logout').addEventListener('click', async () => {
+  if (state.mode === 'accounts') { await rpc('lock').catch(() => {}); return cloud.logout(); } await rpc('lock'); await fetch('/api/logout', { method: 'POST' }); $('tabs').hidden = true; $('controls').hidden = true; transport.ws?.close(); transport.es?.close(); state.devices.clear(); state.current = null; boot(); });
 $('device').addEventListener('change', (e) => selectDevice(e.target.value));
 $('filter').addEventListener('input', () => { const d = state.devices.get(state.current); if (d) renderTable(d.data); });
 setInterval(() => { const d = state.devices.get(state.current); if (d) renderStatus(d); }, 1000);
