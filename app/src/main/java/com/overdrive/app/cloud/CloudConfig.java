@@ -50,6 +50,16 @@ final class CloudConfig {
         return SERVER_URL.matcher(u).matches() ? u : "";
     }
 
+    /** The app's URL parser wants an explicit port: wss://host/mqtt becomes wss://host:443/mqtt. */
+    static String withExplicitPort(String url) {
+        if (url.matches("^(tcp|ssl|ws|wss)://[^/]+:\\d+(/.*)?$")) return url;
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("^(tcp|ssl|ws|wss)://([^/]+)(/.*)?$").matcher(url);
+        if (!m.matches()) return url;
+        String scheme = m.group(1);
+        int port = scheme.equals("wss") ? 443 : scheme.equals("ws") ? 80 : scheme.equals("ssl") ? 8883 : 1883;
+        return scheme + "://" + m.group(2) + ":" + port + (m.group(3) == null ? "" : m.group(3));
+    }
+
     String wsUrl(String path) {
         return serverUrl.replaceFirst("^http", "ws") + path;
     }

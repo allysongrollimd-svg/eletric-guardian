@@ -194,7 +194,7 @@ public final class CloudClient {
             if (mgr == null) return;                                     // retried on the next step
             String url = mqttHint != null ? mqttHint.optString("url", "") : "";
             if (url.isEmpty()) url = cfg.wsUrl("/mqtt");
-            url = withExplicitPort(url);
+            url = CloudConfig.withExplicitPort(url);
             String topic = "electric-guardian/" + cfg.deviceId + "/telemetry";
 
             MqttConnectionConfig existing = null;
@@ -234,16 +234,6 @@ public final class CloudClient {
         return !url.equals(c.brokerUrl) || !topic.equals(c.topic) || !cfg.deviceId.equals(c.username)
                 || !cfg.deviceKey.equals(c.password) || c.allowControl != cfg.allowControl
                 || !c.enabled || !c.homeAssistantDiscovery;
-    }
-
-    /** The app's URL parser wants an explicit port: wss://host/mqtt becomes wss://host:443/mqtt. */
-    static String withExplicitPort(String url) {
-        if (url.matches("^(tcp|ssl|ws|wss)://[^/]+:\\d+(/.*)?$")) return url;
-        java.util.regex.Matcher m = java.util.regex.Pattern.compile("^(tcp|ssl|ws|wss)://([^/]+)(/.*)?$").matcher(url);
-        if (!m.matches()) return url;
-        String scheme = m.group(1);
-        int port = scheme.equals("wss") ? 443 : scheme.equals("ws") ? 80 : scheme.equals("ssl") ? 8883 : 1883;
-        return scheme + "://" + m.group(2) + ":" + port + (m.group(3) == null ? "" : m.group(3));
     }
 
     // ---------------------------------------------------------------- tunnel

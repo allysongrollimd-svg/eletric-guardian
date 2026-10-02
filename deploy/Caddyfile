@@ -1,0 +1,26 @@
+{
+	email {$ACME_EMAIL}
+}
+
+# Dashboard, car pairing API, MQTT-over-WebSocket (/mqtt) and the car tunnel (/tunnel).
+{$APP_HOST} {
+	encode zstd gzip
+	reverse_proxy eg:8787 {
+		flush_interval -1
+		transport http {
+			read_timeout 0
+			write_timeout 0
+		}
+	}
+}
+
+# Cameras / recordings / sentry of the car (proxied through the tunnel). Streaming: never buffer.
+{$VIEW_HOST} {
+	reverse_proxy eg:8787 {
+		flush_interval -1
+		transport http {
+			read_timeout 0
+			write_timeout 0
+		}
+	}
+}
