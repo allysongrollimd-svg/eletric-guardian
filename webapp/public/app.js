@@ -1,4 +1,5 @@
 // Electric Guardian live dashboard. All values are written with textContent (never innerHTML).
+import { initControls } from '/controls.js';
 const $ = (id) => document.getElementById(id);
 const nf = (v, d = 0) => (typeof v === 'number' && isFinite(v) ? v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--');
 const state = { devices: new Map(), current: null, history: [], fields: {}, es: null, lastMapKey: '' };
@@ -101,6 +102,23 @@ function spark(svgId, key) {
 }
 const drawCharts = () => { spark('chSoc', 'soc'); spark('chSpeed', 'speed'); spark('chPower', 'power'); };
 
+// ---------- tabs / controls ----------
+const ctl = initControls({
+  getDevice: () => state.current,
+  getData: () => state.devices.get(state.current)?.data,
+  isOnline: () => !!state.devices.get(state.current)?.online,
+});
+let ctlTimer = null;
+const ctlRerender = () => { if (!$('controls').hidden && !document.querySelector('dialog[open]')) ctl.render(); };
+function showTab(name) {
+  $('dash').hidden = name !== 'dash' || !state.current; $('controls').hidden = name !== 'controls';
+  document.querySelectorAll('.tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
+  if (name === 'controls') { ctl.refreshStatus(); ctl.render(); }
+}
+document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+// Re-render at most every 2 s while the controls tab is open so states (on/off, selected option) follow telemetry.
+setInterval(ctlRerender, 2000);
+
 // ---------- data flow ----------
 function pushHistory(d) {
   const p = { t: Date.now() };
@@ -124,7 +142,7 @@ function upsertDevice(dev) {
 
 async function selectDevice(id) {
   state.current = id; state.lastMapKey = ''; $('device').value = id;
-  $('empty').hidden = true; $('dash').hidden = false;
+  $('empty').hidden = true; $('tabs').hidden = false; if (!document.querySelector('.tab.on[data-tab=controls]')) $('dash').hidden = false;
   try { state.history = await api(`/api/devices/${encodeURIComponent(id)}/history?minutes=30`); } catch { state.history = []; }
   render(state.devices.get(id)); drawCharts();
 }
@@ -156,7 +174,7 @@ $('loginForm').addEventListener('submit', async (ev) => {
   try { await api('/api/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: $('token').value }) }); $('token').value = ''; boot(); }
   catch { setText('loginErr', 'Token inválido.'); }
 });
-$('logout').addEventListener('click', async () => { await fetch('/api/logout', { method: 'POST' }); state.es?.close(); state.devices.clear(); state.current = null; boot(); });
+$('logout').addEventListener('click', async () => { await fetch('/api/control/lock', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }); await fetch('/api/logout', { method: 'POST' }); $('tabs').hidden = true; $('controls').hidden = true; state.es?.close(); state.devices.clear(); state.current = null; boot(); });
 $('device').addEventListener('change', (e) => selectDevice(e.target.value));
 $('filter').addEventListener('input', () => { const d = state.devices.get(state.current); if (d) renderTable(d.data); });
 setInterval(() => { const d = state.devices.get(state.current); if (d) renderStatus(d); }, 1000);

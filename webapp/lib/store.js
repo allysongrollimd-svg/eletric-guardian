@@ -25,7 +25,7 @@ export class Store extends EventEmitter {
   update(id, fields) {
     const d = this._dev(id);
     const t = this.now();
-    Object.assign(d.data, fields);
+    for (const [k, v] of Object.entries(fields)) { if (v === null) delete d.data[k]; else d.data[k] = v; }
     d.lastSeen = t;
     const last = d.history[d.history.length - 1];
     if (!last || t - last.t >= this.historyMinGapMs) {

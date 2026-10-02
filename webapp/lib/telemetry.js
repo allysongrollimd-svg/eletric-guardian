@@ -32,6 +32,7 @@ export function normalizeTelemetry(input) {
     else if (typeof v === 'number') { if (Number.isFinite(v)) out[k] = v; }
     else if (typeof v === 'string') {
       const s = v.slice(0, 200);
+      if (kind !== 'text' && /^(true|false)$/i.test(s)) { out[k] = /^true$/i.test(s); continue; }
       if (kind === 'binary' && /^(true|false|on|off)$/i.test(s)) out[k] = /^(true|on)$/i.test(s);
       else if (kind !== 'text' && NUMERIC.test(s)) out[k] = Number(s);
       else out[k] = s;
@@ -41,18 +42,34 @@ export function normalizeTelemetry(input) {
 }
 
 /**
- * MQTT topic -> { device, kind }. The Android app publishes aggregate JSON to <topic> and its
- * Last-Will/online state to <topic>/availability, so both of these are understood:
- *   electric-guardian/<device>/telemetry
- *   electric-guardian/<device>/telemetry/availability
- * (and <base>/<device>/availability). A bare "<base>/telemetry" maps to device "car".
+ * Normalizes one per-field MQTT value (Home Assistant mode publishes one retained topic per
+ * field). Returns undefined for unusable input and null for an explicit tombstone (empty payload).
+ */
+export function normalizeField(key, raw) {
+  if (!/^[A-Za-z0-9_]{1,64}$/.test(key)) return undefined;
+  const s = String(raw).trim();
+  if (s === '') return null;
+  return normalizeTelemetry({ [key]: s })?.[key];
+}
+
+/**
+ * MQTT topic -> { device, kind, key? } for the topics the Android app publishes:
+ *   <base>                    aggregate JSON            (kind "telemetry")
+ *   <base>/availability       online/offline            (kind "availability")
+ *   <base>/<field>            one value, HA mode        (kind "field")
+ * where <base> = electric-guardian/<device>/telemetry. Also accepts <prefix>/<device>/availability
+ * and a bare "<prefix>/telemetry" (device "car"). <base>/<key>/set (commands) is never matched.
  */
 export function parseTopic(topic) {
   const parts = String(topic).split('/').filter(Boolean);
-  let kind = 'telemetry';
-  if (parts[parts.length - 1] === 'availability') { kind = 'availability'; parts.pop(); }
+  let kind = null, key;
+  const last = parts[parts.length - 1];
+  if (last === 'availability') { kind = 'availability'; parts.pop(); }
+  else if (last === 'telemetry') kind = 'telemetry';
+  else if (parts.length >= 3 && parts[parts.length - 2] === 'telemetry' && last !== 'location') { kind = 'field'; key = parts.pop(); }
+  else return null;
   if (parts[parts.length - 1] === 'telemetry') parts.pop();
-  else if (kind === 'telemetry') return null;
+  else if (kind !== 'availability') return null;
   const device = parts.length >= 2 ? parts[parts.length - 1] : 'car';
-  return { device: sanitizeDeviceId(device), kind };
+  return kind === 'field' ? { device: sanitizeDeviceId(device), kind, key } : { device: sanitizeDeviceId(device), kind };
 }

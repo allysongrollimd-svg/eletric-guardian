@@ -19,6 +19,16 @@
   </div>
 </header>
 
+<nav class="tabs" id="tabs" hidden>
+  <button class="tab on" data-tab="dash">Painel</button>
+  <button class="tab" data-tab="controls">Controles</button>
+</nav>
+
+<main id="controls" hidden>
+  <div id="ctlBanner" class="card banner"></div>
+  <div id="ctlGroups"></div>
+</main>
+
 <main id="dash" hidden>
   <section class="hero">
     <div class="card gauge-card">
@@ -34,6 +44,8 @@
     <div class="card"><div class="label">Carregamento</div><div class="big"><b id="chgState">--</b></div><div class="sub" id="chgDetail">&nbsp;</div></div>
   </section>
 
+  <section class="card map-card"><div class="label">Localização <small id="coords"></small></div><iframe id="map" title="Mapa" loading="lazy" referrerpolicy="no-referrer"></iframe></section>
+
   <section class="grid">
     <div class="card"><div class="label">Viagem</div><div class="kv"><span>Distância</span><b id="tripKm">--</b></div><div class="kv"><span>Energia</span><b id="tripKwh">--</b></div><div class="kv"><span>Consumo (50 km)</span><b id="cons">--</b></div></div>
     <div class="card"><div class="label">Temperaturas</div><div class="kv"><span>Bateria</span><b id="tBatt">--</b></div><div class="kv"><span>Cabine</span><b id="tCabin">--</b></div><div class="kv"><span>Externa</span><b id="tExt">--</b></div></div>
@@ -46,13 +58,16 @@
     <div class="card"><div class="label">Potência (kW)</div><svg class="spark" id="chPower" viewBox="0 0 300 80" preserveAspectRatio="none"></svg></div>
   </section>
 
-  <section class="card map-card"><div class="label">Localização <small id="coords"></small></div><iframe id="map" title="Mapa" loading="lazy" referrerpolicy="no-referrer"></iframe></section>
 
   <details class="card all"><summary>Todos os dados (<span id="allCount">0</span>)</summary>
     <input id="filter" type="search" placeholder="Filtrar…" aria-label="Filtrar campos">
     <table><tbody id="allRows"></tbody></table>
   </details>
 </main>
+
+<dialog id="confirmDlg" class="dlg"><form method="dialog"><h2 id="confirmTitle">Confirmar</h2><p id="confirmText"></p><div class="dlg-actions"><button value="cancel" class="ghost">Cancelar</button><button value="ok" id="confirmOk">Confirmar</button></div></form></dialog>
+<dialog id="pinDlg" class="dlg"><form id="pinForm" method="dialog"><h2>Desbloquear controles</h2><p>Digite o PIN de controle (diferente do token do painel).</p><input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" required><p id="pinErr" class="err" role="alert"></p><div class="dlg-actions"><button value="cancel" class="ghost" formnovalidate>Cancelar</button><button value="ok" id="pinOk">Desbloquear</button></div></form></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
 
 <div id="login" class="login" hidden>
   <form id="loginForm" class="card">

@@ -3,7 +3,8 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, normalize, extname } from 'node:path';
 import { isDashboardAuthed, isIngestAuthed, safeEqual, createLimiter } from './auth.js';
-import { normalizeTelemetry, sanitizeDeviceId } from './telemetry.js';
+import { normalizeTelemetry } from './telemetry.js';
+import { createControl } from './control.js';
 
 const PUBLIC_DIR = join(dirname(fileURLToPath(import.meta.url)), '../public');
 const TYPES = {
@@ -33,12 +34,23 @@ function readBody(req, limit = 256 * 1024) {
   });
 }
 
-export function createApp(cfg, store) {
+export function createApp(cfg, store, bridge = null) {
   const loginLimit = createLimiter(10, 60_000);
+  const control = createControl(cfg, bridge);
   const clients = new Set();
 
   const send = (res, event, data) => res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
-  store.on('update', ({ state }) => clients.forEach((c) => send(c, 'telemetry', state)));
+  // Home Assistant mode delivers one MQTT message per field (hundreds right after connect):
+  // coalesce them so browsers get at most ~4 full-state pushes per second per vehicle.
+  const pending = new Map();
+  store.on('update', ({ device }) => {
+    if (pending.has(device)) return;
+    pending.set(device, setTimeout(() => {
+      pending.delete(device);
+      const s = store.get(device);
+      if (s) clients.forEach((c) => send(c, 'telemetry', s));
+    }, 250).unref());
+  });
   store.on('status', ({ state }) => clients.forEach((c) => send(c, 'status', state)));
   // Online -> offline transitions happen by timeout, so re-evaluate periodically.
   const sweep = setInterval(() => {
@@ -81,6 +93,33 @@ export function createApp(cfg, store) {
       // ---- Authenticated read API ----
       if (path.startsWith('/api/')) {
         if (!isDashboardAuthed(req, cfg)) return json(res, 401, { error: 'unauthorized' });
+
+        // ---- Remote control (dashboard session + control PIN) ----
+        const jsonOnly = () => String(req.headers['content-type'] || '').startsWith('application/json');
+        if (path === '/api/control/status') return json(res, 200, control.status(req));
+        if (path === '/api/control/log') return json(res, 200, control.audit());
+        if (path === '/api/control/unlock' && req.method === 'POST') {
+          if (!jsonOnly()) return json(res, 415, { error: 'json required' });
+          let body; try { body = JSON.parse(await readBody(req, 1024)); } catch { return json(res, 400, { error: 'invalid body' }); }
+          const r = control.unlock(body?.pin, req.socket.remoteAddress || '?');
+          if (r.error) return json(res, r.code, { error: r.error });
+          const secure = req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : '';
+          return json(res, 200, { ok: true, ttlSeconds: r.ttlSeconds }, { 'Set-Cookie': `eg_ctl=${r.token}; HttpOnly; SameSite=Strict; Path=/api; Max-Age=${r.ttlSeconds}${secure}` });
+        }
+        if (path === '/api/control/lock' && req.method === 'POST') {
+          control.lock(req);
+          return json(res, 200, { ok: true }, { 'Set-Cookie': 'eg_ctl=; HttpOnly; SameSite=Strict; Path=/api; Max-Age=0' });
+        }
+        const cmd = path.match(/^\/api\/devices\/([^/]+)\/control$/);
+        if (cmd && req.method === 'POST') {
+          if (!jsonOnly()) return json(res, 415, { error: 'json required' });
+          let body; try { body = JSON.parse(await readBody(req, 4096)); } catch { return json(res, 400, { error: 'invalid body' }); }
+          const device = decodeURIComponent(cmd[1]);
+          const dev = store.get(device);
+          if (!dev) return json(res, 404, { error: 'unknown vehicle' });
+          const r = await control.execute(req, dev.device, body, req.socket.remoteAddress || '?', dev.online);
+          return json(res, r.code, r.error ? { error: r.error, locked: r.locked } : { ok: true });
+        }
         if (path === '/api/devices') return json(res, 200, store.list());
         const hist = path.match(/^\/api\/devices\/([^/]+)\/history$/);
         if (hist) return json(res, 200, store.history(decodeURIComponent(hist[1]), Number(url.searchParams.get('minutes')) || 30));

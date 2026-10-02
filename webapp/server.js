@@ -13,8 +13,8 @@ if (problems.length) {
 if (cfg.allowInsecure) console.warn('WARNING: ALLOW_INSECURE=1 — do not expose this instance to the internet.');
 
 const store = new Store(cfg);
-const server = createApp(cfg, store);
-startMqtt(cfg, store);
+const bridge = startMqtt(cfg, store);
+const server = createApp(cfg, store, cfg.controlEnabled ? bridge : null);
 if (cfg.demo) startSimulator(store);
 
 server.listen(cfg.port, cfg.host, () => console.log(`Electric Guardian webapp on http://${cfg.host}:${cfg.port}${cfg.demo ? ' (demo data)' : ''}`));

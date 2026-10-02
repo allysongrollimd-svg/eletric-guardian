@@ -10,8 +10,37 @@ temperaturas, odômetro, gráficos dos últimos 30 min, mapa e tabela com **todo
 ```bash
 npm install
 npm run dev          # carro simulado, token "dev", http://localhost:8787
-npm test             # 9 testes (parser, auth, SSE, store…)
+npm test             # 18 testes (parser, auth, SSE, store, controle, PIN…)
 ```
+
+## Configurar o app do carro (obrigatório para os controles)
+
+No app (tela do carro ou `http://<ip-do-carro>:8080`): **Configurações → MQTT → nova conexão**.
+
+| Campo | Valor |
+|---|---|
+| Broker / porta | o seu broker na nuvem (use TLS: `ssl://…:8883`) + usuário/senha |
+| Tópico | `electric-guardian/car/telemetry` (um tópico diferente por carro: `electric-guardian/<carro>/telemetry`) |
+| **Home Assistant** | **ligado** (o app passa a publicar um tópico retido por campo; é o único modo que aceita comandos) |
+| **Permitir controle** | ligado (aparece quando "Home Assistant" está ligado; **desligado por padrão no app**) |
+| Intervalo | mínimo 5 s; "só quando mudar" ligado economiza dados |
+
+O painel entende os dois modos de telemetria: JSON agregado (sem controles) e campos retidos (com controles).
+
+## Controle remoto
+
+Aba **Controles**: ar-condicionado, bancos, vidros, porta-malas, teto, luzes, limite de carga, modos de condução e ADAS —
+os 59 controles que o app aceita (`public/controls.json` é gerado de `VehicleControlCatalog.java`: `npm run gen:controls`).
+
+Camadas de segurança (o painel dá acesso físico ao carro):
+1. **Desligado por padrão** no servidor (`CONTROL_ENABLED=1`) *e* no app ("Permitir controle").
+2. Login do painel + **PIN de controle** separado, que desbloqueia por 10 min (5 tentativas / 5 min por IP).
+3. **Confirmação** para vidros, porta-malas, teto, condução e ADAS.
+4. Cada valor é validado contra o catálogo do app antes de ir ao broker; limite de comandos por minuto e por controle; **log de auditoria**.
+5. O app mantém as proteções dele: bloqueio em movimento, comandos *retidos* ignorados, só SDK local.
+6. O carro **não confirma** o comando: o painel mostra o estado vindo da telemetria. Não há "desfazer".
+
+Alguns controles (ex.: modo híbrido, retenção de bateria) só existem em modelos PHEV; em outros o app recusa o comando.
 
 ## Como os dados chegam
 

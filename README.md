@@ -37,9 +37,9 @@ Teste em 30 segundos, sem carro (dados simulados):
 cd webapp && npm install && npm run dev      # http://localhost:8787  — token: dev
 ```
 
-Em produção: `webapp/README.md` (Docker Compose com broker Mosquitto autenticado, HTTPS, variáveis).
-No app: *Configurações → MQTT*, broker do seu servidor, tópico `electric-guardian/<carro>/telemetry`
-(o padrão já é `electric-guardian/car/telemetry`).
+Em produção: `webapp/README.md` (broker MQTT na nuvem, Docker Compose/Render, HTTPS, variáveis).
+Para ver os dados e **controlar o carro pelo painel**, configure a conexão MQTT no app como descrito em `webapp/README.md`
+(tópico `electric-guardian/<carro>/telemetry`, modo *Home Assistant* e *Permitir controle* ligados).
 
 ## O que mudou em relação ao OverDrive
 

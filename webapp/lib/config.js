@@ -18,6 +18,9 @@ export function loadConfig(env = process.env) {
     historyMax: int(env.HISTORY_MAX_POINTS, 4000),
     historyMinGapMs: int(env.HISTORY_MIN_GAP_MS, 2000),
     demo: env.DEMO === '1',
+    controlEnabled: env.CONTROL_ENABLED === '1',
+    controlPin: env.CONTROL_PIN || '',
+    controlUnlockSeconds: int(env.CONTROL_UNLOCK_SECONDS, 600),
   };
 }
 
@@ -27,6 +30,11 @@ export function validateConfig(cfg) {
   if (!cfg.allowInsecure) {
     if (!cfg.dashboardToken) problems.push('DASHBOARD_TOKEN is required (telemetry includes GPS position). Set ALLOW_INSECURE=1 only for local testing.');
     if (!cfg.ingestToken && !cfg.mqttUrl && !cfg.demo) problems.push('Set MQTT_URL and/or INGEST_TOKEN so telemetry can reach the server.');
+  }
+  if (cfg.controlEnabled) {
+    if (!cfg.mqttUrl) problems.push('CONTROL_ENABLED=1 needs MQTT_URL: commands are delivered to the car through the MQTT broker.');
+    if (cfg.controlPin.length < 6) problems.push('CONTROL_PIN must have at least 6 characters when CONTROL_ENABLED=1.');
+    if (cfg.controlPin && cfg.controlPin === cfg.dashboardToken) problems.push('CONTROL_PIN must differ from DASHBOARD_TOKEN.');
   }
   return problems;
 }
