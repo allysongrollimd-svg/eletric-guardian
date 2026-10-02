@@ -53,7 +53,7 @@ EOF
 ln -sf "$SITE" /etc/nginx/sites-enabled/electric-guardian
 nginx -t
 systemctl reload nginx
-certbot --nginx --non-interactive --agree-tos -m "$ACME_EMAIL" --redirect -d "$APP_HOST" -d "$VIEW_HOST"
+certbot --nginx --non-interactive --expand --agree-tos -m "$ACME_EMAIL" --redirect -d "$APP_HOST" -d "$VIEW_HOST"
 nginx -t && systemctl reload nginx
 
 for i in $(seq 1 40); do curl -fs http://127.0.0.1:8787/healthz >/dev/null && break; sleep 2; done
