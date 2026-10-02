@@ -478,6 +478,9 @@ public class SafeLocationManager {
             json.put("zoneCount", zones.size());
 
             GpsMonitor gps = GpsMonitor.getInstance();
+            // The GPS sidecar was only started by the map page; the Safe Locations page (also when
+            // opened from the phone) must start it too, or it waits for a fix forever.
+            if (!gps.isRunning()) gps.start();
             json.put("hasGps", gps.hasLocation());
             if (gps.hasLocation()) {
                 json.put("lat", gps.getLatitude());
