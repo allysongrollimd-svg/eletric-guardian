@@ -56,6 +56,9 @@ const mosaic = (id) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160
 const local = http.createServer((req, res) => {
   const p = req.url.split('?')[0];
   const sendJson = (o) => { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(o)); };
+  if (p === '/api/recording/mode') { let b = ''; req.on('data', (c) => { b += c; }); return req.on('end', () => { if (req.method === 'POST') globalThis.__mode = JSON.parse(b).mode; sendJson({ status: 'ok', mode: globalThis.__mode || 'CONTINUOUS' }); }); }
+  if (p === '/api/settings/unified') { req.resume(); return sendJson({ success: true }); }
+  if (p === '/api/oem-dashcam/config') { let b = ''; req.on('data', (c) => { b += c; }); return req.on('end', () => { if (req.method === 'POST') globalThis.__oem = JSON.parse(b).recordingMode; sendJson({ success: true, recordingMode: globalThis.__oem || 'continuous' }); }); }
   if (p === '/api/recordings/dates') return sendJson({ success: true, dates: [0, 1].map((d) => ({ date: isoDay(d), count: 7, hasSentry: true })) });
   if (p === '/api/recordings') {
     const q = new URL(req.url, 'http://x').searchParams; const rows = REC.filter((r) => (!q.get('type') || r.type === q.get('type')) && (!q.get('date') || r.date === q.get('date')));
