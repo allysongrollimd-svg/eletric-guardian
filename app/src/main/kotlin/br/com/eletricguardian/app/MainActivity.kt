@@ -21,9 +21,8 @@ class MainActivity : Activity() {
         dashboard = DashboardView(this)
         setContentView(dashboard)
 
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION)
-        }
+        val missing = RUNTIME_PERMISSIONS.filter { checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED }
+        if (missing.isNotEmpty()) requestPermissions(missing.toTypedArray(), REQUEST_PERMISSIONS)
         MonitorService.start(this)
 
         scope.launch { Telemetry.state.collect { dashboard.render(it) } }
@@ -31,9 +30,9 @@ class MainActivity : Activity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_LOCATION && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
-            // O serviço passa a ouvir o GPS no próximo start.
-            MonitorService.start(this)
+        if (requestCode == REQUEST_PERMISSIONS && grantResults.any { it == PackageManager.PERMISSION_GRANTED }) {
+            // GPS e módulos da BYD só abrem com as permissões já dadas.
+            MonitorService.restart(this)
         }
     }
 
@@ -43,6 +42,19 @@ class MainActivity : Activity() {
     }
 
     private companion object {
-        const val REQUEST_LOCATION = 1
+        const val REQUEST_PERMISSIONS = 1
+
+        private val BYD_MODULES = listOf(
+            "STATISTIC", "SPEED", "GEARBOX", "INSTRUMENT", "BODYWORK", "AC", "CHARGING",
+            "ENERGY", "ENGINE", "TYRE", "LIGHT", "DOOR_LOCK", "SAFETY_BELT", "RADAR",
+            "SETTING", "TIME", "PM2P5",
+        )
+
+        /**
+         * Localização, câmera (dashcam) e as permissões *_COMMON da BYD. No DiLink 3.0 estas são
+         * "dangerous" (o usuário libera na tela); as *_GET são de assinatura.
+         */
+        val RUNTIME_PERMISSIONS = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA) +
+            BYD_MODULES.map { "android.permission.BYDAUTO_${it}_COMMON" }
     }
 }

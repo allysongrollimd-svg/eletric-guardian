@@ -3,6 +3,7 @@ package br.com.eletricguardian.app.web
 import android.content.Context
 import android.util.Log
 import br.com.eletricguardian.app.Telemetry
+import br.com.eletricguardian.app.camera.CameraSnapshot
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStream
@@ -20,6 +21,7 @@ import java.net.Socket
 class WebServer(context: Context, private val port: Int = 8731) {
 
     private val assets = context.applicationContext.assets
+    private val appContext = context.applicationContext
 
     @Volatile
     private var server: ServerSocket? = null
@@ -113,6 +115,14 @@ class WebServer(context: Context, private val port: Int = 8731) {
             when (path) {
                 "/", "/index.html" -> respondAsset(out, "dashboard.html", "text/html; charset=utf-8")
                 "/api/snapshot" -> respond(out, "200 OK", "application/json; charset=utf-8", SnapshotJson.of(Telemetry.state.value).toByteArray())
+            // Foto de uma câmera (?id=0): primeiro passo da dashcam.
+            "/api/camera.jpg" -> {
+                val id = Regex("[?&]id=([0-9]+)").find(requestLine)?.groupValues?.get(1)?.toInt() ?: 0
+                val jpeg = CameraSnapshot.take(appContext, id)
+                if (jpeg != null) respond(out, "200 OK", "image/jpeg", jpeg)
+                else respond(out, "503 Service Unavailable", "text/plain; charset=utf-8",
+                    "sem foto da câmera $id (câmeras: ${CameraSnapshot.cameraIds()})".toByteArray())
+            }
                 else -> respond(out, "404 Not Found", "text/plain; charset=utf-8", "nao encontrado".toByteArray())
             }
         }

@@ -94,7 +94,8 @@ class MonitorService : Service() {
             val snapshot = runCatching { picked.read(now) }
                 .onFailure { Log.w(TAG, "falha lendo ${picked.name}", it) }
                 .getOrNull()
-                ?.copy(location = location.last)
+                // O módulo de velocidade da BYD é barrado; sem ele, usa a do GPS.
+                ?.let { it.copy(location = location.last, speedKmh = it.speedKmh ?: location.speedKmh(now)) }
             if (snapshot != null) {
                 if (ticks++ % LOG_EVERY == 0L) {
                     Log.i(TAG, "leitura: $snapshot")
@@ -155,6 +156,12 @@ class MonitorService : Service() {
             } else {
                 context.startService(intent)
             }
+        }
+
+        /** Recria o serviço para os módulos da BYD abrirem com as permissões novas. */
+        fun restart(context: Context) {
+            context.stopService(Intent(context, MonitorService::class.java))
+            start(context)
         }
     }
 }

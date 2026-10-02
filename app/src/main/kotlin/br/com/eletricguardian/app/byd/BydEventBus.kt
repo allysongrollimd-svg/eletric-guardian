@@ -37,6 +37,10 @@ class BydEventBus(context: Context) {
     /** Último valor de cada código "deviceType|eventType" (event_type em hex minúsculo). */
     val latest = ConcurrentHashMap<String, Event>()
 
+    init {
+        current = latest
+    }
+
     private val saved = context.getSharedPreferences("byd-eventos", Context.MODE_PRIVATE)
 
     init {
@@ -157,7 +161,7 @@ class BydEventBus(context: Context) {
         val previous = latest.put(e.code, e)
         // Cada código novo vai para o log, para mapearmos o que é cada um.
         if (previous == null) Log.i(TAG, "novo código ${e.code} = ${e.value}")
-        if (e.code.startsWith(PERSISTED_DEVICE) && previous?.value != e.value) {
+        if ((e.code.startsWith(PERSISTED_DEVICE) || e.code in PERSISTED_CODES) && previous?.value != e.value) {
             saved.edit().putString(e.code, "${e.value};${e.timestampMs}").apply()
         }
     }
@@ -190,13 +194,22 @@ class BydEventBus(context: Context) {
         else -> null
     }
 
-    private companion object {
-        const val TAG = "EG-BYD"
-        const val PERSISTED_DEVICE = "1014|"
+    companion object {
+        /** Últimos valores do bus ativo, para o JSON do painel mostrar os códigos crus. */
+        @Volatile
+        var current: Map<String, Event>? = null
+            private set
+
+        private const val TAG = "EG-BYD"
+        private const val PERSISTED_DEVICE = "1014|"
+
+        // A marcha só chega quando muda; salva para o app reabrir já com ela.
+        // O mesmo para a temperatura externa.
+        private val PERSISTED_CODES = setOf("1011|21200038", "1000|40400038", "1007|4a503040")
 
         // IDs (event_type) para pedir o valor atual ao registrar. São os que já
         // vimos chegar do Dolphin GS mais os equivalentes da tabela do Overdrive.
-        val CURRENT_VALUE_IDS = mapOf(
+        private val CURRENT_VALUE_IDS = mapOf(
             "statistic" to intArrayOf(
                 0x44700028, 0x4a50203e, 0x3d904010, 0x44600010, 0x44600030,
                 0x44700010, 0x44700020, 0x44700038, 0x44400028, 0x44400030, 0x43a00028,
@@ -205,6 +218,7 @@ class BydEventBus(context: Context) {
             "charging" to intArrayOf(
                 0x44400008, 0x44400018, 0x27c00018, 0x44500020,
             ),
+            "gearbox" to intArrayOf(0x21200038),
         )
     }
 }

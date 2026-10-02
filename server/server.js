@@ -4,7 +4,8 @@
 //
 //   POST /api/car/<id>            corpo JSON do carro, cabeçalho X-Car-Key
 //   GET  /api/car/<id>?k=<chave>  último estado
-//   GET  /api/car/<id>/stream?k=  estado ao vivo (EventSource)
+//   GET  /api/car/<id>/ws?k=      estado ao vivo (WebSocket)
+//   GET  /api/car/<id>/stream?k=  estado ao vivo (EventSource, reserva)
 //   GET  /car/<id>?k=<chave>      painel (mesmo dashboard.html do app)
 //
 // A chave é criada pelo próprio carro; o primeiro envio de um id grava a chave
@@ -30,6 +31,7 @@ const lastFile = path.join(DATA_DIR, 'last.json');
 const keys = readJson(keysFile); // id -> sha256(chave)
 const last = readJson(lastFile); // id -> último JSON recebido (texto)
 const listeners = new Map();     // id -> Set de respostas EventSource
+const sockets = new Map();       // id -> Set de sockets WebSocket
 
 function readJson(file) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return {}; }
@@ -84,6 +86,7 @@ function receive(id, req, res) {
     last[id] = text;
     saveSoon();
     for (const l of listeners.get(id) || []) l.write(`data: ${text}\n\n`);
+    for (const sock of sockets.get(id) || []) wsSend(sock, text);
     send(res, 204, 'text/plain', '');
   });
 }
@@ -103,6 +106,76 @@ function stream(id, req, res) {
     clearInterval(ping);
     listeners.get(id).delete(res);
   });
+}
+
+// WebSocket sem dependências (RFC 6455): o servidor só envia texto; do
+// navegador aceita ping e close.
+const WS_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
+
+function wsFrame(opcode, payload) {
+  const len = payload.length;
+  let head;
+  if (len < 126) {
+    head = Buffer.from([0x80 | opcode, len]);
+  } else if (len < 65536) {
+    head = Buffer.alloc(4);
+    head[0] = 0x80 | opcode; head[1] = 126; head.writeUInt16BE(len, 2);
+  } else {
+    head = Buffer.alloc(10);
+    head[0] = 0x80 | opcode; head[1] = 127; head.writeBigUInt64BE(BigInt(len), 2);
+  }
+  return Buffer.concat([head, payload]);
+}
+
+function wsSend(sock, text) {
+  if (!sock.destroyed) sock.write(wsFrame(0x1, Buffer.from(text, 'utf8')));
+}
+
+function wsUpgrade(req, sock) {
+  const url = new URL(req.url, 'http://x');
+  const parts = url.pathname.split('/').filter(Boolean);
+  const id = parts[2];
+  const key = req.headers['sec-websocket-key'];
+  if (parts[0] !== 'api' || parts[1] !== 'car' || !ID_RE.test(id || '') || parts[3] !== 'ws' ||
+      !key || !keyOk(id, url.searchParams.get('k'))) {
+    sock.end('HTTP/1.1 403 Forbidden\r\n\r\n');
+    return;
+  }
+  const accept = crypto.createHash('sha1').update(key + WS_GUID).digest('base64');
+  sock.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n' +
+    `Sec-WebSocket-Accept: ${accept}\r\n\r\n`);
+  sock.setNoDelay(true);
+  if (!sockets.has(id)) sockets.set(id, new Set());
+  sockets.get(id).add(sock);
+  if (last[id]) wsSend(sock, last[id]);
+
+  let buf = Buffer.alloc(0);
+  sock.on('data', (chunk) => {
+    buf = Buffer.concat([buf, chunk]);
+    while (buf.length >= 2) {
+      const opcode = buf[0] & 0x0f;
+      const masked = (buf[1] & 0x80) !== 0;
+      let len = buf[1] & 0x7f;
+      let off = 2;
+      if (len === 126) { if (buf.length < 4) return; len = buf.readUInt16BE(2); off = 4; }
+      else if (len === 127) { if (buf.length < 10) return; len = Number(buf.readBigUInt64BE(2)); off = 10; }
+      if (len > MAX_BODY) { sock.destroy(); return; }
+      const total = off + (masked ? 4 : 0) + len;
+      if (buf.length < total) return;
+      let payload = buf.subarray(off + (masked ? 4 : 0), total);
+      if (masked) {
+        const mask = buf.subarray(off, off + 4);
+        payload = Buffer.from(payload.map((b, i) => b ^ mask[i % 4]));
+      }
+      buf = buf.subarray(total);
+      if (opcode === 0x8) { sock.end(wsFrame(0x8, Buffer.alloc(0))); return; }
+      if (opcode === 0x9) sock.write(wsFrame(0xA, payload));
+    }
+  });
+  const ping = setInterval(() => { if (!sock.destroyed) sock.write(wsFrame(0x9, Buffer.alloc(0))); }, 25000);
+  const drop = () => { clearInterval(ping); sockets.get(id)?.delete(sock); };
+  sock.on('close', drop);
+  sock.on('error', drop);
 }
 
 const server = http.createServer((req, res) => {
@@ -130,5 +203,7 @@ const server = http.createServer((req, res) => {
   }
   send(res, 404, 'text/plain', 'não encontrado');
 });
+
+server.on('upgrade', wsUpgrade);
 
 server.listen(PORT, () => console.log(`Eletric Guardian nuvem na porta ${PORT}`));

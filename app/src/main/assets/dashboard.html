@@ -56,6 +56,7 @@
     <div class="value"><span id="soc">—</span><span class="u">%</span></div>
     <div class="subs">
       <div class="sub"><div class="l">Temp</div><div class="v" id="btemp">—</div></div>
+      <div class="sub"><div class="l">Tensão</div><div class="v" id="bpack">—</div></div>
       <div class="sub"><div class="l">Células</div><div class="v" id="bcell">—</div></div>
       <div class="sub"><div class="l">Saúde</div><div class="v" id="bsoh">—</div></div>
       <div class="sub"><div class="l">12V</div><div class="v" id="b12v">—</div></div>
@@ -114,6 +115,7 @@
     var b=s.battery||{};
     set('soc', n(b.soc)?'—':fmt(b.soc,0));
     set('btemp', n(b.temp_c)?'—':fmt(b.temp_c,0)+' °C');
+    set('bpack', n(b.pack_v)?'—':fmt(b.pack_v,1)+' V');
     set('bcell', (n(b.cell_min_v)&&n(b.cell_max_v))?'—':fmt(b.cell_min_v,3)+'/'+fmt(b.cell_max_v,3)+' V');
     set('bsoh', n(b.soh)?'—':fmt(b.soh,0)+' %');
     set('b12v', n(b.v12)?'—':fmt(b.v12,1)+' V');
@@ -201,15 +203,34 @@
   }
 
   // Na nuvem (servidor da pasta server/) o painel abre em /car/<id>?k=<chave>
-  // e recebe os dados por EventSource; no carro, pelo WebSocket local.
+  // e recebe os dados por WebSocket (wss://), como no carro. Se o WebSocket não
+  // abrir (proxy que barra upgrade), cai para EventSource.
   function connectCloud(){
-    var id = location.pathname.split('/')[2];
-    var key = new URLSearchParams(location.search).get('k') || '';
-    var es = new EventSource('/api/car/' + encodeURIComponent(id) + '/stream?k=' + encodeURIComponent(key));
+    var id = encodeURIComponent(location.pathname.split('/')[2]);
+    var key = encodeURIComponent(new URLSearchParams(location.search).get('k') || '');
+    var proto = location.protocol === 'https:' ? 'wss://' : 'ws://';
+    var opened = false;
+    var delay = 1000;
     set('foot', 'conectando...');
+    var sock = new WebSocket(proto + location.host + '/api/car/' + id + '/ws?k=' + key);
+    sock.onopen = function(){ opened = true; delay = 1000; set('foot', ''); };
+    sock.onmessage = function(event){
+      try { render(JSON.parse(event.data)); } catch(e) { console.error('Erro ao processar dados:', e); }
+    };
+    sock.onclose = function(){
+      if (!opened) { cloudEventSource(id, key); return; }
+      set('foot', 'reconectando à nuvem...');
+      setTimeout(connectCloud, Math.min(delay, 30000));
+      delay *= 1.5;
+    };
+  }
+
+  function cloudEventSource(id, key){
+    var es = new EventSource('/api/car/' + id + '/stream?k=' + key);
     es.onmessage = function(event){
       try { render(JSON.parse(event.data)); } catch(e) { console.error('Erro ao processar dados:', e); }
     };
+    es.onopen = function(){ set('foot', ''); };
     es.onerror = function(){ set('foot', 'reconectando à nuvem...'); };
   }
 

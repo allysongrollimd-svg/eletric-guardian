@@ -14,7 +14,7 @@ const id = '123e4567-e89b-12d3-a456-426614174000';
 const key = 'a'.repeat(48);
 
 (async () => {
-  await new Promise((r) => setTimeout(r, 500));
+  await new Promise((r) => setTimeout(r, 1500));
   const post = (k, body) => fetch(`${base}/api/car/${id}`, {
     method: 'POST', headers: { 'X-Car-Key': k, 'Content-Type': 'application/json' }, body,
   });
@@ -37,6 +37,24 @@ const key = 'a'.repeat(48);
   const next = new TextDecoder().decode((await reader.read()).value);
   assert.ok(next.includes('"soc":81'));
   ctrl.abort();
+
+  // WebSocket: recebe o último estado ao abrir e cada envio novo do carro.
+  const ws = new WebSocket(`ws://127.0.0.1:${PORT}/api/car/${id}/ws?k=${key}`);
+  const msgs = [];
+  const got = (n) => new Promise((r) => { const t = setInterval(() => { if (msgs.length >= n) { clearInterval(t); r(); } }, 20); });
+  ws.onmessage = (e) => msgs.push(JSON.parse(e.data));
+  await got(1);
+  assert.strictEqual(msgs[0].battery.soc, 81);
+  await post(key, '{"battery":{"soc":82}}');
+  await got(2);
+  assert.strictEqual(msgs[1].battery.soc, 82);
+  ws.close();
+  const denied = await new Promise((r) => {
+    require('http').get(`${base}/api/car/${id}/ws?k=errada`, {
+      headers: { Connection: 'Upgrade', Upgrade: 'websocket', 'Sec-WebSocket-Version': '13', 'Sec-WebSocket-Key': 'dGhlIHNhbXBsZSBub25jZQ==' },
+    }).on('response', (res) => r(res.statusCode)).on('upgrade', () => r(101)).on('error', () => r(0));
+  });
+  assert.strictEqual(denied, 403);
   console.log('ok');
   srv.kill();
 })().catch((e) => { console.error(e); srv.kill(); process.exit(1); });

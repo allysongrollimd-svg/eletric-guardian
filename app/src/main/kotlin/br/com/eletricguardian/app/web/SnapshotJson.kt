@@ -1,6 +1,7 @@
 package br.com.eletricguardian.app.web
 
 import br.com.eletricguardian.app.Telemetry
+import br.com.eletricguardian.app.byd.BydEventBus
 import br.com.eletricguardian.core.ChargingMode
 import br.com.eletricguardian.core.Gear
 import org.json.JSONObject
@@ -23,6 +24,14 @@ object SnapshotJson {
         root.put("power_kw", num(s.powerKw))
         root.put("outside_temp_c", num(s.climate?.outsideTempC))
 
+        // Códigos crus "device|evento" -> valor, para mapear ao vivo o que falta
+        // (marcha, 12V, saúde). Os de bateria (1014) já estão traduzidos acima.
+        BydEventBus.current?.let { events ->
+            root.put("raw", JSONObject().apply {
+                for ((code, e) in events.toSortedMap()) if (!code.startsWith("1014|")) put(code, e.value)
+            })
+        }
+
         s.vehicle?.let {
             root.put("vehicle", JSONObject().apply {
                 put("brand", it.brand ?: JSONObject.NULL)
@@ -35,6 +44,7 @@ object SnapshotJson {
             put("soh", num(s.battery.sohPct))
             put("range_km", s.battery.rangeKm ?: JSONObject.NULL)
             put("temp_c", num(s.battery.cellTempMaxC))
+            put("pack_v", num(s.battery.packVoltageV))
             put("cell_min_v", num(s.battery.cellVoltageMinV))
             put("cell_max_v", num(s.battery.cellVoltageMaxV))
             put("v12", num(s.battery.voltage12V))

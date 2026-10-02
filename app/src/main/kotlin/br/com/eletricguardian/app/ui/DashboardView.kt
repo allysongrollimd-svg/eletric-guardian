@@ -41,6 +41,7 @@ class DashboardView(context: Context) : ScrollView(context) {
     private val soc = big()
     private val socUnit = unit("%")
     private val bTemp = sub("TEMP")
+    private val bPack = sub("TENSÃO")
     private val bCell = sub("CÉLULAS")
     private val bHealth = sub("SAÚDE")
     private val b12v = sub("12V")
@@ -142,8 +143,10 @@ class DashboardView(context: Context) : ScrollView(context) {
         }
 
         // Bateria
-        soc.text = s?.battery?.socPct?.let { "%.0f".format(it) } ?: "—"
+        soc.text = s?.battery?.socPct?.let { "%.1f".format(it) } ?: "—"
         bTemp.set(s?.battery?.cellTempMaxC?.let { "%.0f °C".format(it) })
+        // Como no app de referência: tensão da célula mais baixa; carregando, a do pack.
+        bPack.set(s?.battery?.packVoltageV?.let { "%.1f V".format(it) } ?: s?.battery?.cellVoltageMinV?.let { "%.3f V".format(it) })
         bCell.set(cells(s))
         bHealth.set(s?.battery?.sohPct?.let { "%.0f %%".format(it) })
         b12v.set(s?.battery?.voltage12V?.let { "%.1f V".format(it) })
@@ -176,7 +179,7 @@ class DashboardView(context: Context) : ScrollView(context) {
 
     private fun batteryCard(): View = cardBox("BATERIA").apply {
         addView(valueRow(soc, socUnit))
-        addView(subRow(bTemp, bCell, bHealth, b12v))
+        addView(subRow(bTemp, bPack, bCell, bHealth, b12v))
     }
 
     private fun speedCard(): View = cardBox("VELOCIDADE").apply {
