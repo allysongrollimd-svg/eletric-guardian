@@ -15,7 +15,7 @@ const COVER_PT = { OPEN: 'Abrir', CLOSE: 'Fechar', STOP: 'Parar' };
 const optLabel = (o) => OPT_PT[o] || o[0].toUpperCase() + o.slice(1).replace(/_/g, ' ');
 const truthy = (v) => v === true || v === 1 || /^(1|on|true)$/i.test(String(v));
 
-export function initControls({ getDevice, getData, isOnline }) {
+export function initControls({ getDevice, getData, isOnline, rpc }) {
   let catalog = null, status = { enabled: false, unlocked: false, ttlSeconds: 0 };
   let statusAt = 0;
 
@@ -23,10 +23,9 @@ export function initControls({ getDevice, getData, isOnline }) {
     const t = $('toast'); t.textContent = msg; t.className = `toast${bad ? ' bad' : ''}`; t.hidden = false;
     clearTimeout(toast.h); toast.h = setTimeout(() => (t.hidden = true), 3500);
   };
-  const post = (path, body) => fetch(path, { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body || {}) });
 
   async function refreshStatus() {
-    try { status = await (await fetch('/api/control/status', { credentials: 'same-origin' })).json(); statusAt = Date.now(); } catch { /* keep last */ }
+    try { const r = await rpc('status'); if (r.ok) { status = r.body; statusAt = Date.now(); } } catch { /* keep last */ }
     renderBanner();
   }
 
@@ -41,7 +40,7 @@ export function initControls({ getDevice, getData, isOnline }) {
       const d = $('pinDlg'); $('pin').value = ''; $('pinErr').textContent = ''; d.returnValue = '';
       $('pinOk').onclick = async (ev) => {
         ev.preventDefault();
-        const r = await post('/api/control/unlock', { pin: $('pin').value });
+        const r = await rpc('unlock', { pin: $('pin').value });
         if (r.ok) { d.close('ok'); await refreshStatus(); resolve(true); }
         else $('pinErr').textContent = r.status === 429 ? 'Muitas tentativas. Aguarde alguns minutos.' : 'PIN inválido.';
       };
@@ -54,10 +53,11 @@ export function initControls({ getDevice, getData, isOnline }) {
     if (c.confirm && !(await ask('Confirmar comando', `${c.label}: ${label || value}?${c.sensitive ? ' O carro vai se mover fisicamente.' : ''}`))) return;
     if (!status.unlocked && !(await askPin())) return;
     const device = getDevice();
-    let r = await post(`/api/devices/${encodeURIComponent(device)}/control`, { key: c.key, sub, value });
-    if (r.status === 403) { if (await askPin()) r = await post(`/api/devices/${encodeURIComponent(device)}/control`, { key: c.key, sub, value }); }
-    const body = await r.json().catch(() => ({}));
-    if (r.ok) toast('Comando enviado ao carro. O carro não confirma: confira o estado na tela.');
+    const t0 = performance.now();
+    let r = await rpc('cmd', { device, key: c.key, sub, value });
+    if (r.status === 403) { if (await askPin()) r = await rpc('cmd', { device, key: c.key, sub, value }); }
+    const body = r.body || {};
+    if (r.ok) toast(`Comando entregue ao broker em ${Math.round(performance.now() - t0)} ms. O carro não confirma: confira o estado na tela.`);
     else toast(errPt(body.error) || `Erro ${r.status}`, true);
     refreshStatus();
   }
@@ -109,7 +109,7 @@ export function initControls({ getDevice, getData, isOnline }) {
     if (!isOnline()) { b.classList.add('warn'); b.append(el('span', null, 'Carro offline: os comandos ficam desativados até ele reconectar.')); return; }
     if (status.unlocked) {
       b.append(el('span', null, `Controles desbloqueados (${Math.max(0, status.ttlSeconds - Math.round((Date.now() - statusAt) / 1000))} s). Comandos sem confirmação do carro: verifique o estado.`),
-        btn('Bloquear', async () => { await post('/api/control/lock'); refreshStatus(); }, 'ghost'));
+        btn('Bloquear', async () => { await rpc('lock'); refreshStatus(); }, 'ghost'));
     } else b.append(el('span', null, 'Controles bloqueados.'), btn('Desbloquear com PIN', askPin, 'act'));
   }
 

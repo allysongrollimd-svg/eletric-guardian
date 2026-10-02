@@ -74,7 +74,7 @@ public class MqttConnectionConfig {
     private static final boolean DEFAULT_ADAPTIVE = true;
     private static final boolean DEFAULT_RETAIN = false;
     private static final boolean DEFAULT_TRUST_ALL_CERTS = false;
-    private static final int DEFAULT_MIN_INTERVAL = 5;
+    private static final int DEFAULT_MIN_INTERVAL = 1;
     private static final int DEFAULT_MAX_INTERVAL = 300;
     private static final boolean DEFAULT_CHANGE_ONLY = true;
     private static final boolean DEFAULT_HA_DISCOVERY = false;

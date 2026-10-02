@@ -104,6 +104,7 @@ const drawCharts = () => { spark('chSoc', 'soc'); spark('chSpeed', 'speed'); spa
 
 // ---------- tabs / controls ----------
 const ctl = initControls({
+  rpc: (op, body) => rpc(op, body),
   getDevice: () => state.current,
   getData: () => state.devices.get(state.current)?.data,
   isOnline: () => !!state.devices.get(state.current)?.online,
@@ -147,14 +148,69 @@ async function selectDevice(id) {
   render(state.devices.get(id)); drawCharts();
 }
 
-function connect() {
-  state.es?.close();
+// ---------- transport: WebSocket first (also carries commands), SSE as fallback ----------
+const transport = { ws: null, kind: 'none', pending: new Map(), seq: 0, rtt: null, timer: null };
+
+function handle(event, data) {
+  if (event === 'snapshot') { data.forEach(upsertDevice); if (!state.devices.size) { $('dash').hidden = true; $('empty').hidden = false; } }
+  else if (event === 'telemetry') upsertDevice(data);
+  else if (event === 'status') { state.devices.set(data.device, data); if (data.device === state.current) renderStatus(data); }
+  else if (event === 'pong') { transport.rtt = Math.round(performance.now() - data); renderLatency(); }
+  else if (event === 'rpc') { const p = transport.pending.get(data.id); if (p) { transport.pending.delete(data.id); p({ ok: data.ok, status: data.status, body: data.body }); } }
+}
+function renderLatency() {
+  const el = $('latency'); if (!el) return;
+  el.hidden = transport.kind === 'none';
+  el.textContent = transport.kind === 'ws' ? `WS${transport.rtt != null ? ` · ${transport.rtt} ms` : ''}` : 'SSE';
+}
+
+/** One request/response op, over the WebSocket when open, otherwise over plain HTTP. */
+async function rpc(op, body = {}) {
+  const ws = transport.ws;
+  if (ws && ws.readyState === 1) {
+    return new Promise((resolve) => {
+      const id = ++transport.seq;
+      const timer = setTimeout(() => { transport.pending.delete(id); resolve({ ok: false, status: 504, body: { error: 'timeout' } }); }, 8000);
+      transport.pending.set(id, (r) => { clearTimeout(timer); resolve(r); });
+      ws.send(JSON.stringify({ type: op, id, ...body }));
+    });
+  }
+  const json = { 'content-type': 'application/json' };
+  let r;
+  if (op === 'status') r = await fetch('/api/control/status', { credentials: 'same-origin' });
+  else if (op === 'unlock') r = await fetch('/api/control/unlock', { method: 'POST', credentials: 'same-origin', headers: json, body: JSON.stringify({ pin: body.pin }) });
+  else if (op === 'lock') r = await fetch('/api/control/lock', { method: 'POST', credentials: 'same-origin', headers: json, body: '{}' });
+  else if (op === 'cmd') r = await fetch(`/api/devices/${encodeURIComponent(body.device)}/control`, { method: 'POST', credentials: 'same-origin', headers: json, body: JSON.stringify({ key: body.key, sub: body.sub, value: body.value }) });
+  else return { ok: false, status: 400, body: { error: 'bad op' } };
+  return { ok: r.ok, status: r.status, body: await r.json().catch(() => ({})) };
+}
+
+function connectSse() {
   const es = new EventSource('/api/stream');
-  state.es = es;
-  es.addEventListener('snapshot', (e) => { JSON.parse(e.data).forEach(upsertDevice); if (!state.devices.size) { $('dash').hidden = true; $('empty').hidden = false; } });
-  es.addEventListener('telemetry', (e) => upsertDevice(JSON.parse(e.data)));
-  es.addEventListener('status', (e) => { const s = JSON.parse(e.data); state.devices.set(s.device, s); if (s.device === state.current) renderStatus(s); });
+  transport.kind = 'sse'; transport.es = es; renderLatency();
+  for (const ev of ['snapshot', 'telemetry', 'status']) es.addEventListener(ev, (e) => handle(ev, JSON.parse(e.data)));
   es.onerror = () => { $('status').className = 'pill off'; $('status').textContent = 'Reconectando…'; if (es.readyState === EventSource.CLOSED) setTimeout(boot, 3000); };
+}
+
+function connect() {
+  transport.es?.close(); transport.ws?.close(); clearInterval(transport.timer);
+  if (new URLSearchParams(location.search).has('sse')) { connectSse(); return; }   // ?sse=1 forces the fallback (debug/benchmark)
+  let opened = false;
+  const ws = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/api/ws`);
+  transport.ws = ws;
+  const give = setTimeout(() => { if (!opened) { ws.onclose = null; ws.close(); connectSse(); } }, 4000);   // WS blocked by a proxy? fall back
+  ws.onopen = () => {
+    opened = true; clearTimeout(give); transport.kind = 'ws'; renderLatency();
+    const ping = () => ws.readyState === 1 && ws.send(JSON.stringify({ type: 'ping', t: performance.now() }));
+    ping(); transport.timer = setInterval(ping, 5000);
+  };
+  ws.onmessage = (e) => { const m = JSON.parse(e.data); handle(m.event, m.event === 'pong' ? m.t : m.event === 'rpc' ? m : m.data); };
+  ws.onclose = () => {
+    clearInterval(transport.timer); clearTimeout(give); transport.kind = 'none'; renderLatency();
+    $('status').className = 'pill off'; $('status').textContent = 'Reconectando…';
+    if (!opened) { connectSse(); return; }            // never opened: use SSE
+    setTimeout(boot, 2000);                             // opened then dropped: re-auth + reconnect
+  };
 }
 
 async function boot() {
@@ -174,7 +230,7 @@ $('loginForm').addEventListener('submit', async (ev) => {
   try { await api('/api/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: $('token').value }) }); $('token').value = ''; boot(); }
   catch { setText('loginErr', 'Token inválido.'); }
 });
-$('logout').addEventListener('click', async () => { await fetch('/api/control/lock', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' }); await fetch('/api/logout', { method: 'POST' }); $('tabs').hidden = true; $('controls').hidden = true; state.es?.close(); state.devices.clear(); state.current = null; boot(); });
+$('logout').addEventListener('click', async () => { await rpc('lock'); await fetch('/api/logout', { method: 'POST' }); $('tabs').hidden = true; $('controls').hidden = true; transport.ws?.close(); transport.es?.close(); state.devices.clear(); state.current = null; boot(); });
 $('device').addEventListener('change', (e) => selectDevice(e.target.value));
 $('filter').addEventListener('input', () => { const d = state.devices.get(state.current); if (d) renderTable(d.data); });
 setInterval(() => { const d = state.devices.get(state.current); if (d) renderStatus(d); }, 1000);

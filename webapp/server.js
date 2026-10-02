@@ -18,4 +18,4 @@ const server = createApp(cfg, store, cfg.controlEnabled ? bridge : null);
 if (cfg.demo) startSimulator(store);
 
 server.listen(cfg.port, cfg.host, () => console.log(`Electric Guardian webapp on http://${cfg.host}:${cfg.port}${cfg.demo ? ' (demo data)' : ''}`));
-for (const sig of ['SIGINT', 'SIGTERM']) process.on(sig, () => server.close(() => process.exit(0)));
+for (const sig of ['SIGINT', 'SIGTERM']) process.on(sig, () => server.shutdown(() => process.exit(0)));

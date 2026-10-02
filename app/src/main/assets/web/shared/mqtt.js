@@ -195,7 +195,7 @@ const MQTT = {
         document.getElementById('formPassword').value = '';
         document.getElementById('formClientId').value = '';
         document.getElementById('formQos').value = '0';
-        document.getElementById('formMinInterval').value = '5';
+        document.getElementById('formMinInterval').value = '1';
         document.getElementById('formMaxInterval').value = '300';
         var pk0 = document.getElementById('formParkedInterval'); if (pk0) pk0.value = '0';
         var ch0 = document.getElementById('formChargingInterval'); if (ch0) ch0.value = '0';

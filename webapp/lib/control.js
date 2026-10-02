@@ -2,7 +2,7 @@ import { randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { safeEqual, createLimiter, parseCookies } from './auth.js';
+import { safeEqual, createLimiter } from './auth.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const CATALOG = JSON.parse(readFileSync(join(here, '../public/controls.json'), 'utf8'));
@@ -82,15 +82,15 @@ export function createControl(cfg, bridge, { now = () => Date.now(), log = conso
       record({ event: 'unlock', ip });
       return { token, ttlSeconds: cfg.controlUnlockSeconds };
     },
-    lock(req) { const t = parseCookies(req.headers.cookie).eg_ctl; if (t) sessions.delete(t); },
-    status(req) {
+    lock(token) { if (token) sessions.delete(token); },
+    status(token) {
       sweep();
-      const exp = sessions.get(parseCookies(req.headers.cookie).eg_ctl);
+      const exp = sessions.get(token);
       return { enabled: this.enabled, unlocked: !!exp && exp > now(), ttlSeconds: exp ? Math.max(0, Math.round((exp - now()) / 1000)) : 0 };
     },
-    async execute(req, device, body, ip, deviceOnline) {
+    async execute(token, device, body, ip, deviceOnline) {
       if (!this.enabled) return { code: 403, error: 'remote control is disabled on this server' };
-      const t = parseCookies(req.headers.cookie).eg_ctl;
+      const t = token;
       const exp = t && sessions.get(t);
       if (!exp || exp <= now()) return { code: 403, error: 'locked: enter the control PIN', locked: true };
       const v = validateCommand(body || {});

@@ -10,7 +10,7 @@ temperaturas, odômetro, gráficos dos últimos 30 min, mapa e tabela com **todo
 ```bash
 npm install
 npm run dev          # carro simulado, token "dev", http://localhost:8787
-npm test             # 18 testes (parser, auth, SSE, store, controle, PIN…)
+npm test             # 23 testes (parser, auth, SSE, WebSocket, store, controle, PIN…)
 ```
 
 ## Configurar o app do carro (obrigatório para os controles)
@@ -64,6 +64,23 @@ docker compose up -d
 Coloque o painel atrás de **HTTPS** (Caddy, Traefik, Cloudflare Tunnel). O cookie de sessão ganha `Secure`
 quando o proxy envia `X-Forwarded-Proto: https`. Prefira TLS também no broker (`mqtts://`) — a telemetria
 contém posição GPS.
+
+## Tempo real: WebSocket (com SSE de reserva) e de onde vem o atraso
+
+O navegador abre um **WebSocket** (`/api/ws`) que recebe os dados e também envia comandos/PIN pela mesma conexão
+(sem novo pedido HTTP a cada clique). Se um proxy bloquear WebSocket, cai sozinho para SSE em 4 s. O selo no topo mostra
+`WS · 38 ms` (ida e volta até o servidor) ou `SSE`. `?sse=1` na URL força o SSE.
+
+Medição (broker + navegador reais, mesma máquina, 40 amostras): do *publish* no MQTT até aparecer na tela,
+**mediana 3 ms, p95 4–5 ms, tanto em WebSocket quanto em SSE**. Ou seja, o trecho broker → servidor → tela já é
+instantâneo, e trocar o protocolo não muda isso. O atraso que você vai perceber vem de fora do painel:
+
+| Trecho | Atraso típico | O que fazer |
+|---|---|---|
+| App publica a cada N s | 1–5 s | *Configurações → MQTT → intervalo mínimo = 1 s* (novo padrão), "só quando mudar" ligado |
+| 4G do carro → broker | 50–300 ms | broker perto (mesma região), QoS 0 |
+| Broker → servidor → navegador | ~3 ms | já otimizado (envio imediato + fusão de rajadas de 60 ms) |
+| Carro recebe o comando | 50–300 ms + execução do app | — |
 
 ## Segurança
 

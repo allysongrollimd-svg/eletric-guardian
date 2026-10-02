@@ -5,7 +5,9 @@
   "type": "module",
   "private": true,
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "DEMO=1 DASHBOARD_TOKEN=dev INGEST_TOKEN=dev node server.js",
@@ -15,6 +17,7 @@
     "test": "node --test test/*.test.js"
   },
   "dependencies": {
-    "mqtt": "^5.10.0"
+    "mqtt": "^5.10.0",
+    "ws": "^8.22.0"
   }
 }

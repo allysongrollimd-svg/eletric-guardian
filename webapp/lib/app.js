@@ -2,7 +2,8 @@ import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, normalize, extname } from 'node:path';
-import { isDashboardAuthed, isIngestAuthed, safeEqual, createLimiter } from './auth.js';
+import { WebSocketServer } from 'ws';
+import { isDashboardAuthed, isIngestAuthed, safeEqual, createLimiter, parseCookies } from './auth.js';
 import { normalizeTelemetry } from './telemetry.js';
 import { createControl } from './control.js';
 
@@ -38,18 +39,24 @@ export function createApp(cfg, store, bridge = null) {
   const loginLimit = createLimiter(10, 60_000);
   const control = createControl(cfg, bridge);
   const clients = new Set();
+  const ctlToken = (req) => parseCookies(req.headers.cookie).eg_ctl;
 
-  const send = (res, event, data) => res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+  // A "sink" is one connected browser: an SSE response or a WebSocket. Both receive {event, data}.
+  const sseSink = (res) => ({ send: (event, data) => res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`), end: () => res.end() });
+  const wsSink = (ws) => ({ send: (event, data) => { if (ws.readyState === 1) ws.send(JSON.stringify({ event, data })); }, end: () => ws.close() });
+  const send = (sink, event, data) => sink.send(event, data);
   // Home Assistant mode delivers one MQTT message per field (hundreds right after connect):
   // coalesce them so browsers get at most ~4 full-state pushes per second per vehicle.
-  const pending = new Map();
+  // Leading + trailing throttle: the first change goes out immediately (lowest latency for a lone
+  // update); a burst is merged into one trailing push after COALESCE_MS.
+  const COALESCE_MS = cfg.coalesceMs ?? 60;
+  const lastPush = new Map(), pending = new Map();
+  const push = (device) => { lastPush.set(device, Date.now()); const s = store.get(device); if (s) clients.forEach((c) => send(c, 'telemetry', s)); };
   store.on('update', ({ device }) => {
     if (pending.has(device)) return;
-    pending.set(device, setTimeout(() => {
-      pending.delete(device);
-      const s = store.get(device);
-      if (s) clients.forEach((c) => send(c, 'telemetry', s));
-    }, 250).unref());
+    const wait = COALESCE_MS - (Date.now() - (lastPush.get(device) || 0));
+    if (wait <= 0) return push(device);
+    pending.set(device, setTimeout(() => { pending.delete(device); push(device); }, wait).unref());
   });
   store.on('status', ({ state }) => clients.forEach((c) => send(c, 'status', state)));
   // Online -> offline transitions happen by timeout, so re-evaluate periodically.
@@ -96,7 +103,7 @@ export function createApp(cfg, store, bridge = null) {
 
         // ---- Remote control (dashboard session + control PIN) ----
         const jsonOnly = () => String(req.headers['content-type'] || '').startsWith('application/json');
-        if (path === '/api/control/status') return json(res, 200, control.status(req));
+        if (path === '/api/control/status') return json(res, 200, control.status(ctlToken(req)));
         if (path === '/api/control/log') return json(res, 200, control.audit());
         if (path === '/api/control/unlock' && req.method === 'POST') {
           if (!jsonOnly()) return json(res, 415, { error: 'json required' });
@@ -107,7 +114,7 @@ export function createApp(cfg, store, bridge = null) {
           return json(res, 200, { ok: true, ttlSeconds: r.ttlSeconds }, { 'Set-Cookie': `eg_ctl=${r.token}; HttpOnly; SameSite=Strict; Path=/api; Max-Age=${r.ttlSeconds}${secure}` });
         }
         if (path === '/api/control/lock' && req.method === 'POST') {
-          control.lock(req);
+          control.lock(ctlToken(req));
           return json(res, 200, { ok: true }, { 'Set-Cookie': 'eg_ctl=; HttpOnly; SameSite=Strict; Path=/api; Max-Age=0' });
         }
         const cmd = path.match(/^\/api\/devices\/([^/]+)\/control$/);
@@ -117,7 +124,7 @@ export function createApp(cfg, store, bridge = null) {
           const device = decodeURIComponent(cmd[1]);
           const dev = store.get(device);
           if (!dev) return json(res, 404, { error: 'unknown vehicle' });
-          const r = await control.execute(req, dev.device, body, req.socket.remoteAddress || '?', dev.online);
+          const r = await control.execute(ctlToken(req), dev.device, body, req.socket.remoteAddress || '?', dev.online);
           return json(res, r.code, r.error ? { error: r.error, locked: r.locked } : { ok: true });
         }
         if (path === '/api/devices') return json(res, 200, store.list());
@@ -126,10 +133,11 @@ export function createApp(cfg, store, bridge = null) {
         if (path === '/api/stream') {
           res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive', 'X-Accel-Buffering': 'no', ...SECURITY_HEADERS });
           res.write('retry: 3000\n\n');
-          send(res, 'snapshot', store.list());
-          clients.add(res);
+          const sink = sseSink(res);
+          send(sink, 'snapshot', store.list());
+          clients.add(sink);
           const hb = setInterval(() => res.write(': hb\n\n'), 15_000);
-          req.on('close', () => { clearInterval(hb); clients.delete(res); });
+          req.on('close', () => { clearInterval(hb); clients.delete(sink); });
           return;
         }
         return json(res, 404, { error: 'not found' });
@@ -149,6 +157,55 @@ export function createApp(cfg, store, bridge = null) {
       if (!res.headersSent) json(res, 500, { error: 'internal error' }); else res.end();
     }
   });
-  server.on('close', () => { clearInterval(sweep); clients.forEach((c) => c.end()); });
+  // ---- WebSocket: same events as SSE, plus request/response ops (status/unlock/lock/cmd/ping) ----
+  const wss = new WebSocketServer({ noServer: true, maxPayload: 8 * 1024 });
+  const wsLimit = createLimiter(120, 60_000); // messages per minute per socket
+  server.on('upgrade', (req, socket, head) => {
+    const reject = (code, msg) => { socket.write(`HTTP/1.1 ${code} ${msg}\r\nConnection: close\r\n\r\n`); socket.destroy(); };
+    if (new URL(req.url, 'http://x').pathname !== '/api/ws') return reject(404, 'Not Found');
+    if (!isDashboardAuthed(req, cfg)) return reject(401, 'Unauthorized');
+    // Cross-site WebSocket hijacking guard: a browser always sends Origin; it must be this host.
+    const origin = req.headers.origin;
+    if (origin) { try { if (new URL(origin).host !== req.headers.host) return reject(403, 'Forbidden'); } catch { return reject(403, 'Forbidden'); } }
+    wss.handleUpgrade(req, socket, head, (ws) => {
+      ws.ctl = ctlToken(req);                       // control session carried over from the HTTP cookie, if any
+      ws.ip = req.socket.remoteAddress || '?';
+      ws.alive = true;
+      const sink = wsSink(ws);
+      send(sink, 'snapshot', store.list());
+      clients.add(sink);
+      ws.on('pong', () => { ws.alive = true; });
+      ws.on('close', () => clients.delete(sink));
+      ws.on('error', () => clients.delete(sink));
+      ws.on('message', async (raw) => {
+        const reply = (id, status, body) => ws.readyState === 1 && ws.send(JSON.stringify({ event: 'rpc', id, ok: status >= 200 && status < 300, status, body }));
+        let m; try { m = JSON.parse(raw.toString()); } catch { return; }
+        if (m.type === 'ping') return ws.send(JSON.stringify({ event: 'pong', t: m.t }));   // latency probe
+        if (!wsLimit(ws.ip + ':' + (ws._id ??= Math.random()))) return reply(m.id, 429, { error: 'rate limit' });
+        if (m.type === 'status') return reply(m.id, 200, control.status(ws.ctl));
+        if (m.type === 'lock') { control.lock(ws.ctl); ws.ctl = undefined; return reply(m.id, 200, { ok: true }); }
+        if (m.type === 'unlock') {
+          const r = control.unlock(m.pin, ws.ip);
+          if (r.error) return reply(m.id, r.code, { error: r.error });
+          ws.ctl = r.token; return reply(m.id, 200, { ok: true, ttlSeconds: r.ttlSeconds });
+        }
+        if (m.type === 'cmd') {
+          const dev = store.get(String(m.device ?? ''));
+          if (!dev) return reply(m.id, 404, { error: 'unknown vehicle' });
+          const r = await control.execute(ws.ctl, dev.device, { key: m.key, sub: m.sub, value: m.value }, ws.ip, dev.online);
+          return reply(m.id, r.code, r.error ? { error: r.error, locked: r.locked } : { ok: true });
+        }
+      });
+    });
+  });
+  const beat = setInterval(() => wss.clients.forEach((ws) => { if (!ws.alive) return ws.terminate(); ws.alive = false; ws.ping(); }), 20_000);
+  beat.unref();
+  server.on('close', () => { clearInterval(sweep); clearInterval(beat); clients.forEach((c) => c.end()); wss.close(); });
+  /** Graceful stop: upgraded WebSocket sockets are not tracked by http.Server#close(), so end them explicitly. */
+  server.shutdown = (cb) => {
+    wss.clients.forEach((ws) => ws.terminate());
+    server.close(cb);
+    server.closeAllConnections?.();
+  };
   return server;
 }
