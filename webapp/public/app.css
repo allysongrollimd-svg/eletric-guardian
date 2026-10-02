@@ -128,3 +128,14 @@ a.drawer-item{display:flex;align-items:center;text-decoration:none;color:var(--t
 #cams{padding:0;gap:0}
 .cam-note{padding:14px 16px;margin:0}.cam-note:empty{display:none}
 .cam-frame{display:block;width:100%;height:calc(100dvh - var(--top) - env(safe-area-inset-top));min-height:0;border:0;border-radius:0}
+
+/* Tela de entrada — marca */
+#auth.login{background:radial-gradient(120% 60% at 50% 0%,#0066ff2e 0%,#00c2ff10 40%,transparent 70%),var(--bg)}
+.auth-logo{width:min(260px,80%);height:auto;margin:4px 0 8px}
+#auth .auth-card{background:#111a26cc;border-color:#2a3646;box-shadow:0 12px 40px #0000008a}
+#auth button[type=submit]{background:linear-gradient(135deg,#0066ff,#1a8cff);color:#fff;min-height:46px}
+#auth input:focus{outline:2px solid #00c2ff80;outline-offset:1px;border-color:#00c2ff}
+#auth .seg{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:0;background:#0a0f17;border:1px solid var(--line);border-radius:12px;padding:3px}
+#auth .seg button{border:0;background:transparent;color:var(--muted);min-height:40px;border-radius:9px}
+#auth .seg button.on{background:#0066ff;color:#fff}
+#auth.login{align-items:center}
