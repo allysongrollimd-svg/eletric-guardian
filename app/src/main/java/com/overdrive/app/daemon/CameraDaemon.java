@@ -2524,6 +2524,14 @@ public class CameraDaemon {
             }
         }, 2, 60, java.util.concurrent.TimeUnit.MINUTES);
         log("Analytics DAU/MAU ping armed (hourly check, <=1 send/day)");
+
+        // Electric Guardian cloud link: pairing + MQTT + camera tunnel. Idle until the user enables it
+        // on the Cloud page; never throws into the daemon.
+        try {
+            com.overdrive.app.cloud.CloudClient.getInstance().start();
+        } catch (Throwable t) {
+            log("Cloud client failed to start: " + t.getClass().getSimpleName() + ": " + t.getMessage());
+        }
     }
 
     private static void logMemoryStatus() {

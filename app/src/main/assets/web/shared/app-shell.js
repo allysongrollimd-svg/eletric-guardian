@@ -73,6 +73,7 @@
         { href: 'abrp.html',                              i18n: 'nav.abrp',           label: 'ABRP',           svg: '<path d="M9 18l6-6-6-6"/><circle cx="18" cy="12" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>' },
         { href: 'mqtt.html',                              i18n: 'nav.mqtt',           label: 'MQTT',           svg: '<circle cx="12" cy="12" r="2"/><path d="M8.46 15.54A5 5 0 0 1 7 12a5 5 0 0 1 1.46-3.54"/><path d="M15.54 8.46A5 5 0 0 1 17 12a5 5 0 0 1-1.46 3.54"/><path d="M5.64 18.36A9 9 0 0 1 3 12a9 9 0 0 1 2.64-6.36"/><path d="M18.36 5.64A9 9 0 0 1 21 12a9 9 0 0 1-2.64 6.36"/>', svgExtra: 'stroke-linecap="round"' },
         { href: 'byd-cloud.html',                         i18n: 'nav.byd_cloud',      label: 'BYD Cloud',      svg: '<path d="M17.5 19a4.5 4.5 0 1 0-2.83-7.97A6 6 0 0 0 4 12.45a3 3 0 0 0 .5 5.95"/><path d="M17.5 19h-12"/>', svgExtra: 'stroke-linecap="round" stroke-linejoin="round"' },
+        { href: 'cloud.html',                             i18n: 'nav.cloud',          label: 'Nuvem',          svg: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>' },
 
         // ===== Diagnostics ===== — Performance is the only diagnostics-ish
         // page that exists on web; the native diagnostics fragment is native.

@@ -37,7 +37,12 @@ export function createViewProxy({ hub, authorize, frameAncestors = null }) {
     return out;
   };
 
+  // Local-only routes of the car: never reachable through the cloud (they re-point or disable the cloud link itself).
+  const LOCAL_ONLY = /^\/(api\/cloud(\/|$)|cloud(\.html)?(\?|$))/;
+  const blocked = (req) => LOCAL_ONLY.test(req.url);
+
   function handle(req, res) {
+    if (blocked(req)) { res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Disponível apenas no carro.'); }
     const who = authorize(req);
     if (!who) { res.writeHead(401, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('Sessão expirada. Abra a câmera novamente pelo painel.'); }
     let stream;
@@ -60,6 +65,7 @@ export function createViewProxy({ hub, authorize, frameAncestors = null }) {
 
   function handleUpgrade(req, socket, head) {
     const who = authorize(req);
+    if (blocked(req)) { socket.write('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n'); return socket.destroy(); }
     const fail = (code, msg) => { socket.write(`HTTP/1.1 ${code} ${msg}\r\nConnection: close\r\n\r\n`); socket.destroy(); };
     if (!who) return fail(401, 'Unauthorized');
     let stream;

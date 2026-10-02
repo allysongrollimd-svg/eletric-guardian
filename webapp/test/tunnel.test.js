@@ -88,6 +88,15 @@ test('viewer request is proxied through the tunnel; headers are sanitized', asyn
   } finally { await s.close(); }
 });
 
+test('the car\'s local-only cloud settings are not reachable through the view proxy', async () => {
+  const s = await setup();
+  try {
+    for (const path of ['/api/cloud/config', '/api/cloud/status', '/cloud.html', '/cloud']) assert.equal((await fetch(`${s.base}${path}`, { headers: { 'x-test-user': 'ok' } })).status, 403, path);
+    assert.equal((await fetch(`${s.base}/api/cloudy`, { headers: { 'x-test-user': 'ok' } })).status, 200);   // only the exact prefix is blocked
+    assert.equal(s.seen().length, 1);                                                                          // blocked ones never reached the car
+  } finally { await s.close(); }
+});
+
 test('request bodies and large responses (flow control) survive the tunnel intact', async () => {
   const s = await setup();
   try {

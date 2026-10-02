@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Nuvem - Electric Guardian</title>
+    <link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
+    <script src="../shared/theme.js?v=8"></script>
+    <script src="../shared/app-shell.js?v=7"></script>
+    <link rel="stylesheet" href="../shared/styles.css?v=34">
+    <style>
+        .eg-code { font: 700 44px/1.1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 6px; text-align: center; padding: 18px 8px; border: 1px dashed var(--border-default, #3a4750); border-radius: 12px; margin: 12px 0; user-select: all; }
+        .eg-steps { margin: 8px 0 0 18px; color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+        .eg-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; }
+        .eg-pill { display: inline-block; padding: 3px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; border: 1px solid var(--border-default, #3a4750); }
+        .eg-pill.ok { color: var(--status-success, #5BD382); }
+        .eg-pill.warn { color: var(--status-warning, #FFB870); }
+        .eg-err { color: var(--danger, #ef4444); font-size: 13px; min-height: 18px; margin-top: 6px; }
+        .eg-hint { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div id="app-shell-mount"></div>
+        <main class="main-content">
+            <div class="mobile-header">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
+                <span style="font-weight:600;">Nuvem</span>
+                <div style="width:40px;"></div>
+            </div>
+
+            <header class="page-header">
+                <h1 class="page-title">Electric Guardian Nuvem</h1>
+            </header>
+
+            <div class="page-body">
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><span>Conexão</span></div></div>
+                    <div class="eg-row">
+                        <div>
+                            <div style="font-size:14px;font-weight:500;">Conectar este carro à nuvem</div>
+                            <div class="eg-hint">Painel em tempo real, câmeras ao vivo, gravações e sentinela fora do carro.</div>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" id="egEnabled"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="egServer">Endereço do servidor</label>
+                        <input type="text" id="egServer" placeholder="https://app.seudominio.com" autocapitalize="off" autocomplete="off" spellcheck="false">
+                    </div>
+                    <div class="eg-row">
+                        <div>
+                            <div style="font-size:14px;font-weight:500;">Permitir controle remoto</div>
+                            <div class="eg-hint">Deixa o dono da conta travar/abrir vidros, ligar o ar-condicionado e mudar ajustes pelo painel. Desligado por padrão; só ligue se confia na conta vinculada.</div>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" id="egControl"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-primary" id="egSave" type="button">Salvar</button></div>
+                    <div class="eg-err" id="egErr" role="alert"></div>
+                </div>
+
+                <div class="card" id="egPairCard">
+                    <div class="card-header"><div class="card-title"><span>Vínculo com a sua conta</span></div><span class="eg-pill" id="egState">…</span></div>
+                    <div id="egPending" style="display:none;">
+                        <div class="eg-code" id="egCode">--------</div>
+                        <ol class="eg-steps">
+                            <li>No celular ou computador, abra <b id="egSiteName">o painel</b> e entre na sua conta.</li>
+                            <li>Toque em <b>Carros → Vincular um carro</b>.</li>
+                            <li>Digite o código acima e o chassi (VIN) do carro<span id="egVinHint"></span>.</li>
+                        </ol>
+                        <div class="eg-hint" id="egExpiry"></div>
+                    </div>
+                    <div id="egClaimed" style="display:none;">
+                        <div class="eg-row"><div><div style="font-size:14px;font-weight:500;" id="egCarName">Carro vinculado</div><div class="eg-hint">Para desvincular, use Carros → Desvincular no painel.</div></div></div>
+                        <div class="eg-row"><span>Câmeras (túnel)</span><span class="eg-pill" id="egTunnel">…</span></div>
+                    </div>
+                    <div id="egOff" class="eg-hint">Ative a conexão e informe o endereço do servidor para gerar o código de vínculo.</div>
+                    <div class="eg-err" id="egStatusErr"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="../shared/auth.js"></script>
+    <script src="../shared/core.js?v=20"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+        (function () {
+            var $ = function (id) { return document.getElementById(id); };
+            var formLoaded = false;
+
+            function fmtCode(c) { return c && c.length === 8 ? c.slice(0, 4) + '-' + c.slice(4) : (c || '--------'); }
+            function show(id, on) { $(id).style.display = on ? '' : 'none'; }
+
+            function render(s) {
+                if (!formLoaded) {                                   // fill the form once; later polls must not overwrite edits
+                    $('egEnabled').checked = !!s.enabled; $('egServer').value = s.serverUrl || ''; $('egControl').checked = !!s.allowControl;
+                    formLoaded = true;
+                }
+                var st = $('egState');
+                st.className = 'eg-pill';
+                show('egPending', s.state === 'pending'); show('egClaimed', s.state === 'claimed'); show('egOff', s.state === 'disabled');
+                if (s.state === 'pending') {
+                    st.textContent = 'Aguardando vínculo'; st.classList.add('warn');
+                    $('egCode').textContent = fmtCode(s.code);
+                    $('egSiteName').textContent = s.serverUrl ? s.serverUrl.replace(/^https?:\/\//, '') : 'o painel';
+                    $('egVinHint').textContent = s.vinKnown ? ' (termina em ' + s.vinLast4 + ')' : '';
+                    var left = s.codeExpiresAt ? Math.max(0, Math.round((s.codeExpiresAt - Date.now()) / 60000)) : 0;
+                    $('egExpiry').textContent = left > 0 ? 'O código expira em ~' + left + ' min e é renovado automaticamente.' : '';
+                } else if (s.state === 'claimed') {
+                    st.textContent = 'Vinculado'; st.classList.add('ok');
+                    $('egCarName').textContent = s.name || 'Carro vinculado';
+                    $('egTunnel').textContent = s.tunnel ? 'conectado' : 'conectando…';
+                    $('egTunnel').className = 'eg-pill ' + (s.tunnel ? 'ok' : 'warn');
+                } else {
+                    st.textContent = s.state === 'disabled' ? 'Desativado' : (s.state || '—');
+                }
+                $('egStatusErr').textContent = s.error || '';
+            }
+
+            function poll() {
+                fetch('/api/cloud/status').then(function (r) { return r.json(); }).then(render).catch(function () {});
+            }
+
+            $('egSave').addEventListener('click', function () {
+                $('egErr').textContent = '';
+                fetch('/api/cloud/config', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enabled: $('egEnabled').checked, serverUrl: $('egServer').value, allowControl: $('egControl').checked })
+                }).then(function (r) { return r.json().then(function (b) { return { ok: r.ok, b: b }; }); }).then(function (x) {
+                    if (!x.ok) { $('egErr').textContent = x.b.error || 'Erro ao salvar'; return; }
+                    formLoaded = false; poll();
+                }).catch(function () { $('egErr').textContent = 'Falha de comunicação com o app.'; });
+            });
+
+            BYD.i18n.init().then(function () { BYD.core.init(); poll(); setInterval(poll, 3000); });
+        })();
+    </script>
+</body>
+</html>

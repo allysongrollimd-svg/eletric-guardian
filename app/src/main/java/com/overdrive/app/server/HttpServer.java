@@ -712,6 +712,10 @@ public class HttpServer {
                 if (!serveStaticFile(out, "local/recording.html")) {
                     HttpResponse.sendError(out, 404, "recording.html not found");
                 }
+            } else if (path.equals("/cloud.html") || path.equals("/cloud")) {
+                if (!serveStaticFile(out, "local/cloud.html")) {
+                    HttpResponse.sendError(out, 404, "cloud.html not found");
+                }
             } else if (path.equals("/parking.html") || path.equals("/parking")) {
                 if (!serveStaticFile(out, "local/parking.html")) {
                     HttpResponse.sendError(out, 404, "parking.html not found");
@@ -1081,6 +1085,11 @@ public class HttpServer {
         // modular handlers are reached; credentials are never returned.
         if (path.startsWith("/api/genai/")) {
             return GenAiApiHandler.handle(method, path, body, out);
+        }
+
+        // Electric Guardian cloud link (pairing code, server address, status)
+        if (path.startsWith("/api/cloud/")) {
+            return com.overdrive.app.cloud.CloudApiHandler.handle(method, path, body, out);
         }
 
         // Community Automations API (browse / publish / import shared automations)
