@@ -5,7 +5,7 @@ const like = (s) => `%${String(s ?? '').trim().replace(/[%_\\]/g, (m) => `\\${m}
 const clampInt = (v, d, max) => Math.min(Math.max(Number.isInteger(+v) ? +v : d, 0), max);
 
 /** Back-office queries and actions. Every mutating call is recorded in the audit log under the admin's id. */
-export function createAdmin({ db, accounts, billing, now = () => Date.now() }) {
+export function createAdmin({ db, accounts, billing, now = () => Date.now(), live = () => null }) {
   const q = {
     users: db.prepare(`SELECT u.id, u.email, u.name, u.role, u.disabled, u.created_at,
         (SELECT COUNT(*) FROM devices d WHERE d.owner_id = u.id) AS cars
@@ -63,7 +63,7 @@ export function createAdmin({ db, accounts, billing, now = () => Date.now() }) {
     cars({ q: s = '', limit = 50, offset = 0 } = {}) {
       return q.cars.all(like(s), clampInt(limit, 50, 200), clampInt(offset, 0, 1e6)).map((d) => ({
         id: d.id, name: d.name, vin: d.vin, vinVerified: d.reported_vin === d.vin, ownerId: d.owner_id, ownerEmail: d.owner_email,
-        lastSeen: d.last_seen, appVersion: d.app_version, claimedAt: d.claimed_at, billing: billing.state(d.vin),
+        lastSeen: d.last_seen, appVersion: d.app_version, claimedAt: d.claimed_at, billing: billing.state(d.vin), live: live(d.id),
       }));
     },
     releaseCar(vin, adminId) { const ok = accounts.adminReleaseVin(vin); accounts.log('admin_release_car', { userId: adminId, detail: { vin } }); return ok; },

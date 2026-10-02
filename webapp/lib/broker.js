@@ -19,6 +19,8 @@ export async function createBroker({ accounts, store, log = console } = {}) {
   const aedes = await Aedes.createBroker({ maxClientsIdLength: 128, drainTimeout: 30_000, maxTopicLevels: 12, connectTimeout: 15_000 });
   const online = new Map();                       // deviceId -> number of live MQTT connections
   const authFail = createLimiter(20, 60_000);     // failed logins per remote address per minute
+  const stats = new Map();                        // deviceId -> { connects, msgs, rejected, lastRejected, lastTopic, lastAt }
+  const st = (id) => { let s = stats.get(id); if (!s) stats.set(id, s = { connects: 0, msgs: 0, rejected: 0, lastRejected: null, lastTopic: null, lastAt: null }); return s; };
   const ipOf = (c) => c?.conn?.remoteAddress ?? c?.req?.socket?.remoteAddress ?? '?';
 
   aedes.authenticate = (client, username, password, cb) => {
@@ -26,6 +28,7 @@ export async function createBroker({ accounts, store, log = console } = {}) {
     const d = accounts.deviceAuth(String(username ?? ''), password?.toString());
     if (!d || !d.owner_id) {
       if (!authFail(ip)) log.warn?.(`[broker] auth flood from ${ip}`);
+      log.info?.(`[broker] login refused for ${String(username ?? '').slice(0, 8)}… (unknown car, wrong key or not linked yet)`);
       const e = new Error('not authorized'); e.returnCode = 4; return cb(e, false);
     }
     client.deviceId = d.id;
@@ -39,6 +42,8 @@ export async function createBroker({ accounts, store, log = console } = {}) {
     if (t === 'homeassistant' || t.startsWith('homeassistant/')) return cb(null);   // HA discovery: accepted and ignored (no one can subscribe)
     const base = `${PREFIX}/${id}/telemetry`;
     if ((t === base || t.startsWith(`${base}/`)) && !t.endsWith('/set')) return cb(null);
+    const s = st(id); s.rejected++; s.lastRejected = String(t).slice(0, 120);
+    if (s.rejected <= 3) log.warn?.(`[broker] ${id.slice(0, 8)}… tried to publish a forbidden topic: ${s.lastRejected}`);
     cb(new Error('forbidden topic'));
   };
 
@@ -48,7 +53,7 @@ export async function createBroker({ accounts, store, log = console } = {}) {
     cb(null, ok ? sub : null);                                      // null = denied for this topic only (SUBACK failure), connection stays up
   };
 
-  aedes.on('clientReady', (c) => { if (c.deviceId) { online.set(c.deviceId, (online.get(c.deviceId) || 0) + 1); accounts.touch(c.deviceId); } });
+  aedes.on('clientReady', (c) => { if (c.deviceId) { st(c.deviceId).connects++; log.info?.(`[broker] car ${c.deviceId.slice(0, 8)}… connected`); online.set(c.deviceId, (online.get(c.deviceId) || 0) + 1); accounts.touch(c.deviceId); } });
   aedes.on('clientDisconnect', (c) => {
     if (!c.deviceId) return;
     const n = (online.get(c.deviceId) || 1) - 1;
@@ -59,6 +64,7 @@ export async function createBroker({ accounts, store, log = console } = {}) {
     if (!client?.deviceId) return;
     const info = parseTopic(packet.topic);
     if (!info || info.device !== client.deviceId) return;
+    const s = st(info.device); s.msgs++; s.lastTopic = String(packet.topic).slice(0, 120); s.lastAt = Date.now();
     const text = packet.payload.toString();
     if (info.kind === 'availability') return store.setAvailability(info.device, text.trim() === 'online');
     if (info.kind === 'field') {
@@ -78,6 +84,7 @@ export async function createBroker({ accounts, store, log = console } = {}) {
   return {
     aedes,
     connected: (deviceId) => online.has(deviceId),
+    stats: (deviceId) => ({ ...(stats.get(deviceId) || { connects: 0, msgs: 0, rejected: 0, lastRejected: null, lastTopic: null, lastAt: null }) }),
     /** Hands a plain TCP/TLS socket (or any duplex) to the broker. */
     handle: (stream) => aedes.handle(stream),
     /** MQTT over WebSocket, mounted by the HTTP server on /mqtt (lets the car use wss://host/mqtt through the TLS proxy). */

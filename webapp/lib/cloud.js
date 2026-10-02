@@ -20,7 +20,12 @@ const VIEW_PAGES = new Set(['/_eg/sentinela.html', '/_eg/dashcam.html', '/', '/l
  */
 export function createCloud({ cfg, accounts, store, hub, broker, secret, provider }) {
   const billing = createBilling({ db: accounts.db, accounts, cfg, secret, now: accounts.now, provider });
-  const admin = createAdmin({ db: accounts.db, accounts, billing, now: accounts.now });
+  // what the server sees of each car right now: tunnel, MQTT link, last telemetry and what the car published
+  const live = (id) => {
+    const v = store.get(id);
+    return { tunnel: hub.isConnected(id), mqtt: broker?.connected(id) ?? false, telemetryAt: v?.lastSeen ?? null, fields: Object.keys(v?.data || {}).length, ...(broker?.stats ? { mqttStats: broker.stats(id) } : {}) };
+  };
+  const admin = createAdmin({ db: accounts.db, accounts, billing, now: accounts.now, live });
   const view = createViewSessions({ secret, accounts, isAllowed: (deviceId) => billing.allowed(deviceId) });
   const limits = {
     signup: createLimiter(5, 3600_000), login: createLimiter(10, 60_000), loginEmail: createLimiter(10, 15 * 60_000),

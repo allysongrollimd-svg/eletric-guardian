@@ -80,6 +80,13 @@ const views = {
       { h: 'Dono', f: (c) => c.ownerEmail },
       { h: 'Assinatura', f: (c) => { const d = el('div'); d.append(tag(c.billing.state), el('div', 'sub', `até ${day(c.billing.accessUntil)}`)); return d; } },
       { h: 'Chassi', f: (c) => (c.vinVerified ? 'verificado' : 'não conferido') },
+      { h: 'Ao vivo', f: (c) => {
+        const l = c.live; if (!l) return '—'; const d = el('div');
+        const ok = (b, t) => el('div', b ? 'ok' : 'sub', `${b ? '●' : '○'} ${t}`);
+        d.append(ok(l.tunnel, 'câmeras (túnel)'), ok(l.mqtt, 'telemetria (MQTT)'));
+        d.append(el('div', 'sub', l.telemetryAt ? `último dado há ${Math.round((Date.now() - l.telemetryAt) / 1000)} s · ${l.fields} campos` : 'nenhum dado de telemetria recebido'));
+        const s = l.mqttStats; if (s) d.append(el('div', 'sub', `conexões ${s.connects} · mensagens ${s.msgs}${s.rejected ? ` · recusadas ${s.rejected} (${s.lastRejected})` : ''}${s.lastTopic ? ` · último tópico: ${s.lastTopic}` : ''}`));
+        return d; } },
       { h: 'Visto', f: (c) => when(c.lastSeen) },
       { h: '', f: (c) => { const a = el('div', 'acts');
         a.append(btn('+ dias', async () => { const d = parseInt(prompt('Quantos dias conceder? (negativo remove)', '30'), 10); if (d) { if (await run(() => api('cars/grant', 'POST', { vin: c.vin, days: d }), 'Dias ajustados')) views.cars(main, st); } }));

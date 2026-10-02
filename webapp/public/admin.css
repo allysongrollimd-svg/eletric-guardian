@@ -35,3 +35,4 @@
   .tbl .num{text-align:right}
 }
 .wrap{display:block;max-width:520px;overflow-wrap:anywhere;font:12px ui-monospace,Menlo,monospace;color:var(--muted)}
+.tbl .ok{color:var(--ok)}
