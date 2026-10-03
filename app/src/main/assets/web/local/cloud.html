@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Eletric Guardian</title>
+<link rel="icon" type="image/webp" href="../shared/app-icon-dark.webp">
+<style>
+  :root { --bg:#0A0F17; --surface:#111A26; --surface2:#1C232E; --line:#2A3646; --text:#E6EEF5; --muted:#8793A5; --blue:#0066FF; --cyan:#00C2FF; --ok:#00D6A3; --warn:#FFB020; --bad:#FF4D5A; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { font-size: 16px; }
+  html, body { margin: 0; min-height: 100%; height: 100%; background: var(--bg); color: var(--text); font: 1.125rem/1.45 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body { background: radial-gradient(90% 55% at 50% 0%, #0066ff30 0%, #00c2ff10 45%, transparent 75%), var(--bg); }
+  button { font: inherit; color: inherit; cursor: pointer; border: 0; }
+  .view { position: fixed; top: 0; right: 0; bottom: 0; left: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 1.75rem 2.5rem 2rem; display: none; flex-direction: column; align-items: center; }
+  .view.on { display: flex; }
+  .logo { width: 27.5rem; max-width: 62vw; height: auto; margin: 0.375rem 0 0.25rem; }
+  .center { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .center > * { margin-top: 0.4375rem; margin-bottom: 0.4375rem; }
+  h1 { margin: 0; font-size: 2.75rem; line-height: 1.1; letter-spacing: -.5px; }
+  h2 { margin: 0; font-size: 1.875rem; }
+  .sub { color: var(--muted); font-size: 1.3125rem; max-width: 47.5rem; }
+  .qr { background: #fff; padding: 1rem; border-radius: 1.25rem; width: 18.75rem; box-shadow: 0 0.75rem 2.5rem #0008; }
+  .code { font: 700 2.875rem/1.1 'JetBrains Mono', ui-monospace, Menlo, monospace; letter-spacing: 0.5625rem; padding: 0.5rem 0.25rem; }
+  .steps { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 0.25rem; }
+  .steps > * { margin: 0.5rem; }
+  .step { background: var(--surface); border: 1px solid var(--line); border-radius: 0.875rem; padding: 0.75rem 1.25rem; font-size: 1.125rem; color: var(--text); }
+  .step b { color: var(--cyan); margin-right: 0.5rem; }
+  .btn { min-height: 4rem; padding: 0 2.125rem; border-radius: 1rem; font-size: 1.25rem; font-weight: 600; background: var(--surface2); border: 1px solid var(--line); }
+  .btn.primary { background: linear-gradient(135deg, #0066FF, #1A8CFF); border: 0; color: #fff; }
+  .btn.danger { background: var(--bad); border: 0; color: #fff; min-height: 3.25rem; padding: 0 1.375rem; font-size: 1.0625rem; }
+  .btn.ghost { background: transparent; color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; justify-content: center; }
+  .row > * { margin: 0.5rem; }
+  .foot { width: 100%; display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.9375rem; margin-top: 1.125rem; }
+  .okring { width: 9.375rem; height: 9.375rem; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, #00d6a333 0%, #00d6a30d 60%, transparent 70%); border: 3px solid var(--ok); box-shadow: 0 0 3.75rem #00d6a344; }
+  .okring.warn { border-color: var(--warn); box-shadow: 0 0 3.75rem #ffb02044; background: radial-gradient(circle, #ffb02033 0%, #ffb0200d 60%, transparent 70%); }
+  .okring svg { width: 4.875rem; height: 4.875rem; }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; margin: 0.375rem 0 0.75rem; }
+  .chips > * { margin: 0.4375rem; }
+  .chip { display: flex; align-items: center; padding: 0.75rem 1.375rem; border-radius: 62.4375rem; background: var(--surface); border: 1px solid var(--line); font-size: 1.1875rem; }
+  .chip i { margin-right: 0.625rem; width: 0.875rem; height: 0.875rem; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0.75rem var(--ok); }
+  .chip.off i { background: #657082; box-shadow: none; }
+  .chip.warn i { background: var(--warn); box-shadow: 0 0 0.75rem var(--warn); }
+  .panel { width: 100%; max-width: 56.25rem; display: flex; flex-direction: column; }
+  .panel > * { margin-bottom: 1.125rem; }
+  .bar { width: 100%; display: flex; align-items: center; margin-bottom: 0.5rem; }
+  .bar .btn { margin-right: 1.125rem; }
+  .bar h2 { flex: 1; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 1.25rem; padding: 1.375rem 1.625rem; }
+  .person { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .person:last-child { border-bottom: 0; }
+  .person b { font-size: 1.4375rem; display: block; }
+  .person small { color: var(--muted); font-size: 1rem; }
+  .item { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .item:last-child { border-bottom: 0; }
+  .item > :first-child { padding-right: 1.125rem; }
+  .person > :first-child { padding-right: 1rem; }
+  .item .t { font-size: 1.1875rem; font-weight: 600; }
+  .hint { color: var(--muted); font-size: 0.9375rem; margin-top: 2px; }
+  .pill { padding: 0.375rem 1rem; border-radius: 62.4375rem; font-size: 0.9375rem; font-weight: 700; border: 1px solid var(--line); white-space: nowrap; }
+  .pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); }
+  .switch { position: relative; width: 4.625rem; height: 2.625rem; flex: none; }
+  .switch input { opacity: 0; width: 100%; height: 100%; position: absolute; margin: 0; z-index: 2; cursor: pointer; }
+  .switch span { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: 62.4375rem; background: var(--surface2); border: 1px solid var(--line); transition: .2s; }
+  .switch span::after { content: ""; position: absolute; top: 0.25rem; left: 0.25rem; width: 2rem; height: 2rem; border-radius: 50%; background: #fff; transition: .2s; }
+  .switch input:checked + span { background: var(--blue); border-color: var(--blue); }
+  .switch input:checked + span::after { transform: translateX(2rem); }
+  .err { color: var(--bad); min-height: 1.375rem; font-size: 1rem; }
+  .spin { width: 4rem; height: 4rem; border: 0.375rem solid #ffffff22; border-top-color: var(--cyan); border-radius: 50%; animation: sp 1s linear infinite; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- Início: conectar (QR) ou "tudo certo" -->
+<section class="view on" id="vHome">
+  <img class="logo" src="../shared/eg-logo-full.svg" alt="Eletric Guardian">
+  <div class="center" id="hLoading"><div class="spin"></div><div class="sub">Iniciando…</div></div>
+
+  <div class="center" id="hPair" style="display:none;">
+    <h1>Conecte seu carro ao celular</h1>
+    <div class="qr" id="qr"></div>
+    <div class="code" id="code">--------</div>
+    <div class="steps">
+      <div class="step"><b>1</b>Leia o QR com a câmera do celular</div>
+      <div class="step"><b>2</b>Entre ou crie sua conta</div>
+      <div class="step"><b>3</b>Toque em Vincular</div>
+    </div>
+    <div class="hint" id="pairHint"></div>
+  </div>
+
+  <div class="center" id="hOk" style="display:none;">
+    <div class="okring" id="okRing"><svg viewBox="0 0 24 24" fill="none" stroke="#00D6A3" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" id="okIcon"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h1 id="okTitle">Tudo certo!</h1>
+    <div class="sub" id="okSub"></div>
+    <div class="chips">
+      <div class="chip" id="chCams"><i></i>Câmeras</div>
+      <div class="chip" id="chData"><i></i>Dados do carro</div>
+      <div class="chip" id="chCtl"><i></i>Controle remoto</div>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="btnPeople" type="button">Pessoas</button>
+      <button class="btn" id="btnWaze" type="button" style="margin-left:1.125rem;display:none;">Waze no painel</button>
+    </div>
+    <div class="hint" id="wazeMsg" style="min-height:1.5rem;"></div>
+    <div id="updBox" style="display:none;margin-top:0.75rem;">
+      <div class="sub" id="updTxt"></div>
+      <button class="btn primary" id="btnUpd" type="button" style="margin-top:0.5rem;">Atualizar agora</button>
+      <div class="hint" id="updMsg" style="min-height:1.5rem;"></div>
+    </div>
+  </div>
+
+  <div class="foot"><span id="version"></span><button class="btn ghost" id="btnCfg2" type="button" style="min-height:3rem;font-size:1.0625rem;">Configurações</button></div>
+</section>
+
+<!-- Pessoas -->
+<section class="view" id="vPeople">
+  <div class="panel">
+    <div class="bar"><button class="btn" data-back type="button">← Voltar</button><h2>Pessoas com acesso</h2></div>
+    <div class="card" id="people"></div>
+    <div class="hint">A assinatura é do carro: todas as pessoas acima usam o mesmo plano.</div>
+    <div class="card" id="addBox" style="display:none;text-align:center;">
+      <div class="sub" style="margin:0 auto 14px;">Peça que a pessoa leia o QR com a câmera do celular e entre na conta dela.</div>
+      <div class="qr" id="qr2" style="margin:0 auto;"></div>
+      <div class="code" id="code2"></div>
+      <div class="hint" id="exp2"></div>
+    </div>
+    <div class="row"><button class="btn primary" id="btnAdd" type="button">Adicionar pessoa</button></div>
+    <div class="err" id="peopleErr"></div>
+  </div>
+</section>
+
+<!-- Configurações -->
+<section class="view" id="vCfg">
+  <div class="panel">
+    <div class="bar"><button class="btn" data-back type="button">← Voltar</button><h2>Configurações</h2></div>
+    <div class="card">
+      <div class="item">
+        <div><div class="t">Permitir controle remoto pelo celular</div><div class="hint">Quem está vinculado pode travar/abrir vidros, ligar o ar-condicionado e mudar ajustes do carro pelo celular.</div></div>
+        <label class="switch"><input type="checkbox" id="egControl"><span></span></label>
+      </div>
+      <div class="err" id="egErr"></div>
+    </div>
+    <div class="card">
+      <div class="item"><div class="t">Verificação da instalação</div><span class="pill" id="checkSum">…</span></div>
+      <div id="checks"></div>
+      <div class="hint">Se algum item ficar pendente, siga a dica abaixo dele. Câmeras e dados dependem do carro ligado.</div>
+    </div>
+    <div class="card">
+      <div class="item"><div><div class="t">Reaplicar acesso em segundo plano</div><div class="hint">Use se o aplicativo não voltar sozinho depois de reiniciar o sistema do carro.</div></div><button class="btn" id="egBgBtn" type="button">Reaplicar</button></div>
+      <div class="item"><div><div class="t">Reiniciar o sistema do carro</div><div class="hint">Só funciona com o carro parado. A central desliga e liga sozinha em alguns segundos.</div></div><button class="btn" id="egRebootBtn" type="button">Reiniciar</button></div>
+      <div class="hint" id="egActMsg" style="min-height:20px;"></div>
+    </div>
+    <div class="hint" id="version2"></div>
+  </div>
+</section>
+
+<script src="../shared/qrcode.js"></script>
+<script>
+(function () {
+  // Everything is sized in rem for a 1700x850 screen; scale the root so the whole page always fits the real screen.
+  function fit() {
+    var k = Math.min(window.innerHeight / 850, window.innerWidth / 1700);
+    document.documentElement.style.fontSize = Math.max(6, Math.min(20, 16 * k)) + 'px';
+  }
+  fit(); window.addEventListener('resize', fit);
+  var $ = function (id) { return document.getElementById(id); };
+  var last = null, currentView = 'vHome', lastLink = {}, autoEnabled = false, controlLoaded = false;
+
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fmtCode(c) { return c && c.length === 8 ? c.slice(0, 4) + '-' + c.slice(4) : (c || '--------'); }
+  function post(url, body) { return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) }); }
+  function show(id) { currentView = id; ['vHome', 'vPeople', 'vCfg'].forEach(function (v) { $(v).classList.toggle('on', v === id); }); if (last) render(last); }
+  function drawQr(el, key, link) {
+    if (lastLink[key] === link) return;
+    lastLink[key] = link; el.innerHTML = '';
+    if (link && window.qrcode) { var q = qrcode(0, 'M'); q.addData(link); q.make(); el.innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); }
+  }
+  function mins(exp) { return exp ? Math.max(0, Math.round((exp - Date.now()) / 60000)) : 0; }
+
+  function renderHome(s) {
+    var m = s.mqtt || {};
+    $('hLoading').style.display = (s.state === 'pending' || s.state === 'claimed') ? 'none' : '';
+    $('hPair').style.display = s.state === 'pending' ? '' : 'none';
+    $('hOk').style.display = s.state === 'claimed' ? '' : 'none';
+    $('version').textContent = s.appVersion ? 'Versão ' + s.appVersion : '';
+    if (s.state === 'pending') {
+      var link = s.serverUrl ? s.serverUrl.replace(/\/+$/, '') + '/pair?code=' + s.code : '';
+      drawQr($('qr'), 'qr', link);
+      $('code').textContent = fmtCode(s.code);
+      $('pairHint').textContent = s.vinKnown ? '' : 'Lendo o chassi do carro… ligue o carro se demorar.';
+    } else if (s.state === 'claimed') {
+      var camsOk = !!s.tunnel, dataOk = !!m.connected && (m.publishes || 0) > 0, all = camsOk && dataOk;
+      $('okTitle').textContent = all ? 'Tudo certo!' : 'Conectando…';
+      $('okRing').className = 'okring' + (all ? '' : ' warn');
+      $('okIcon').setAttribute('stroke', all ? '#00D6A3' : '#FFB020');
+      $('okIcon').innerHTML = all ? '<path d="M5 12.5l4.5 4.5L19 7.5"/>' : '<path d="M12 7v6M12 17h.01"/>';
+      $('okSub').textContent = all ? (s.name || 'Seu carro') + ' está conectado ao seu celular.'
+        : 'Aguarde alguns segundos. Se demorar, confira a internet do carro e se ele está ligado.';
+      $('chCams').className = 'chip' + (camsOk ? '' : ' warn');
+      $('chData').className = 'chip' + (dataOk ? '' : ' warn');
+      $('chCtl').className = 'chip' + (s.allowControl ? '' : ' off');
+      $('chCtl').lastChild.textContent = s.allowControl ? 'Controle remoto ligado' : 'Controle remoto desligado';
+      var n = (s.members || []).length;
+      $('btnPeople').textContent = 'Pessoas' + (n ? ' · ' + n : '');
+    }
+  }
+
+  function renderPeople(s) {
+    var ms = s.members || [];
+    $('people').innerHTML = ms.map(function (m) {
+      return '<div class="person"><div><b>' + esc(m.name || m.email) + '</b><small>' + esc(m.email) + '</small></div>' +
+        '<button class="btn danger" type="button" data-uid="' + esc(m.id) + '" data-nm="' + esc(m.name || m.email) + '">Remover</button></div>';
+    }).join('') || '<div class="hint">Nenhuma pessoa vinculada.</div>';
+    var has = !!s.addCode;
+    $('addBox').style.display = has ? '' : 'none';
+    $('btnAdd').style.display = has ? 'none' : '';
+    if (has) {
+      drawQr($('qr2'), 'qr2', s.serverUrl ? s.serverUrl.replace(/\/+$/, '') + '/pair?code=' + s.addCode : '');
+      $('code2').textContent = fmtCode(s.addCode);
+      var l = mins(s.addExpiresAt); $('exp2').textContent = l > 0 ? 'O código expira em ~' + l + ' min.' : '';
+    } else { lastLink.qr2 = null; }
+  }
+
+  function renderCfg(s) {
+    if (!controlLoaded) { $('egControl').checked = !!s.allowControl; controlLoaded = true; }
+    $('version2').textContent = s.appVersion ? 'Versão do aplicativo: ' + s.appVersion : '';
+    var m = s.mqtt || {};
+    var items = [
+      { ok: !!s.enabled && !!s.serverUrl, label: 'Conexão com o Eletric Guardian ativada', fix: 'Ativando automaticamente…' },
+      { ok: !!s.vinKnown, label: 'Chassi (VIN) lido do carro' + (s.vinKnown ? ' (final ' + s.vinLast4 + ')' : ''), fix: 'Ligue o carro e aguarde; o chassi vem do próprio carro.' },
+      { ok: s.state === 'claimed', label: 'Carro vinculado a uma conta', fix: 'Leia o QR com o celular do cliente e toque em Vincular.' },
+      { ok: !!s.tunnel, label: 'Câmeras conectadas', fix: 'Verifique a internet do carro; a conexão é refeita sozinha.' },
+      { ok: !!m.connected, label: 'Dados do carro conectados', fix: m.lastError ? 'Último erro: ' + m.lastError : 'Aguarde a reconexão automática.' },
+      { ok: (m.publishes || 0) > 0, label: 'Dados chegando ao servidor' + ((m.publishes || 0) > 0 ? ' (' + m.publishes + ' envios)' : ''), fix: 'Ligue o carro; sem envios o painel do cliente fica vazio.' }
+    ];
+    var good = 0;
+    $('checks').innerHTML = items.map(function (it) {
+      if (it.ok) good++;
+      return '<div class="item"><div><div class="t" style="font-weight:500;">' + it.label + '</div>' + (it.ok ? '' : '<div class="hint">' + it.fix + '</div>') +
+        '</div><span class="pill ' + (it.ok ? 'ok' : 'warn') + '">' + (it.ok ? 'OK' : 'Pendente') + '</span></div>';
+    }).join('');
+    $('checkSum').textContent = good + ' de ' + items.length;
+    $('checkSum').className = 'pill ' + (good === items.length ? 'ok' : 'warn');
+  }
+
+  function render(s) {
+    last = s;
+    window.__egReady = true;      // the native shell keeps its own "starting" screen until the page has real content
+    if (!s.enabled && !autoEnabled) { autoEnabled = true; post('/api/cloud/config', { enabled: true }).then(poll); }
+    if (currentView === 'vHome') renderHome(s);
+    else if (currentView === 'vPeople') renderPeople(s);
+    else renderCfg(s);
+  }
+  // While the car services are still starting the status call fails: keep showing logo + spinner and keep trying.
+  function poll() {
+    fetch('/api/cloud/status').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (s) { if (!s || s.error) throw 0; render(s); })
+      .catch(function () {
+        if (!last) { $('hLoading').firstChild.nextSibling.textContent = 'Iniciando os serviços do carro…'; window.__egReady = true; }
+      });
+  }
+
+  // navigation
+  $('btnPeople').addEventListener('click', function () { show('vPeople'); });
+  ['btnCfg2'].forEach(function (id) { $(id).addEventListener('click', function () { controlLoaded = false; show('vCfg'); }); });
+  document.querySelectorAll('[data-back]').forEach(function (b) { b.addEventListener('click', function () { show('vHome'); }); });
+
+  // people
+  $('people').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-uid]'); if (!b) return;
+    if (!confirm('Remover ' + b.dataset.nm + ' deste carro? A pessoa deixa de ver o carro no celular.')) return;
+    post('/api/cloud/remove-member', { userId: b.dataset.uid }).then(poll).catch(function () {});
+  });
+  $('btnAdd').addEventListener('click', function () {
+    $('btnAdd').disabled = true; $('peopleErr').textContent = '';
+    post('/api/cloud/add-code').then(poll).catch(function () { $('peopleErr').textContent = 'Não foi possível gerar o código. Verifique a internet do carro.'; })
+      .then(function () { $('btnAdd').disabled = false; });
+  });
+
+  // settings
+  $('egControl').addEventListener('change', function () {
+    $('egErr').textContent = '';
+    post('/api/cloud/config', { allowControl: $('egControl').checked }).then(function (r) {
+      if (!r.ok) { $('egErr').textContent = 'Não foi possível salvar.'; $('egControl').checked = !$('egControl').checked; }
+    }).catch(function () { $('egErr').textContent = 'Falha de comunicação com o aplicativo.'; });
+  });
+  $('egBgBtn').addEventListener('click', function () {
+    $('egActMsg').textContent = 'Reaplicando…';
+    post('/api/system/background-access').then(function (r) { $('egActMsg').textContent = r.ok ? 'Pronto. Se precisar, reinicie o sistema do carro.' : 'Não foi possível aplicar agora.'; })
+      .catch(function () { $('egActMsg').textContent = 'Falha de comunicação com o aplicativo.'; });
+  });
+  $('egRebootBtn').addEventListener('click', function () {
+    if (!confirm('Reiniciar o sistema do carro agora? Só funciona com o carro parado.')) return;
+    $('egActMsg').textContent = 'Reiniciando…';
+    post('/api/system/ivi-reboot').then(function (r) { if (!r.ok) $('egActMsg').textContent = 'O carro precisa estar parado para reiniciar.'; })
+      .catch(function () { $('egActMsg').textContent = 'Falha de comunicação com o aplicativo.'; });
+  });
+
+
+  // Waze (or any chosen app) on the driver cluster, through the car's own projection service.
+  var wazePkg = '', wazeOn = false, wazeBusy = false;
+  function wazeInfo() {
+    fetch('/api/vehicle/cluster-apps').then(function (r) { return r.json(); }).then(function (j) {
+      (j.apps || []).forEach(function (a) { if (!wazePkg && (a['package'] === 'com.waze' || /waze/i.test(a.label || ''))) wazePkg = a['package']; });
+      $('btnWaze').style.display = wazePkg ? '' : 'none';
+      return fetch('/api/vehicle/cluster-mirror-status');
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      wazeOn = !!j.casting && /waze/i.test(j.castPackage || ''); $('btnWaze').textContent = wazeOn ? 'Tirar Waze do painel' : 'Waze no painel';
+    }).catch(function () {});
+  }
+  $('btnWaze').addEventListener('click', function () {
+    if (wazeBusy) return; wazeBusy = true; $('wazeMsg').textContent = wazeOn ? 'Desligando…' : 'Enviando o Waze para o painel… pode levar alguns segundos.';
+    var call = wazeOn ? post('/api/vehicle/cluster-stop') : post('/api/vehicle/cluster-cast', { 'package': wazePkg });
+    call.then(function (r) { return r.json(); }).then(function (j) {
+      $('wazeMsg').textContent = j.success ? (wazeOn ? 'Painel de volta ao normal.' : 'Waze no painel. Abra o Waze na tela central para escolher o destino.') : 'Não foi possível agora. Abra o Waze uma vez na tela central e tente de novo.';
+    }).catch(function () { $('wazeMsg').textContent = 'Não foi possível agora.'; }).then(function () { wazeBusy = false; wazeInfo(); });
+  });
+  wazeInfo(); setInterval(wazeInfo, 20000);
+  // App update straight from the app (the car downloads the new version and installs it by itself).
+  var updBusy = false;
+  function checkUpdate() {
+    if (updBusy) return;
+    fetch('/api/update/check').then(function (r) { return r.json(); }).then(function (j) {
+      if (updBusy) return;
+      if (j && j.available) { $('updBox').style.display = ''; $('updTxt').textContent = 'Atualização disponível' + (j.remoteVersion ? ': ' + j.remoteVersion : '') + '.'; }
+      else $('updBox').style.display = 'none';
+    }).catch(function () {});
+  }
+  function trackUpdate(n) {
+    fetch('/api/update/progress').then(function (r) { return r.json(); }).then(function (p) {
+      var pct = p.percent >= 0 ? ' ' + p.percent + '%' : '';
+      if (p.phase === 'error' || p.error) { updBusy = false; $('btnUpd').disabled = false; $('updMsg').textContent = 'Não foi possível atualizar agora. Verifique a internet do carro e tente de novo.'; return; }
+      $('updMsg').textContent = (p.message || 'Atualizando…') + pct;
+      setTimeout(function () { trackUpdate(0); }, 1500);
+    }).catch(function () {
+      $('updMsg').textContent = 'Reiniciando o aplicativo… isso leva alguns instantes.';
+      setTimeout(function () { trackUpdate((n || 0) + 1); }, 3000);
+    });
+  }
+  $('btnUpd').addEventListener('click', function () {
+    if (updBusy) return; updBusy = true; $('btnUpd').disabled = true; $('updMsg').textContent = 'Baixando a atualização… não desligue o carro.';
+    post('/api/update/install?confirm=true').then(function (r) { return r.json(); }).then(function () { trackUpdate(0); })
+      .catch(function () { updBusy = false; $('btnUpd').disabled = false; $('updMsg').textContent = 'Não foi possível iniciar a atualização.'; });
+  });
+  setTimeout(checkUpdate, 4000); setInterval(checkUpdate, 30 * 60 * 1000);
+
+  poll(); setInterval(poll, 3000);
+})();
+</script>
+</body>
+</html>

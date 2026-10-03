@@ -1,0 +1,1074 @@
+{
+ "soc": {
+  "name": "State of Charge",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": "battery",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "power": {
+  "name": "Motor Power",
+  "kind": "number",
+  "unit": "kW",
+  "deviceClass": "power",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "target_soc": {
+  "name": "Target SOC",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": "battery",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "charge_power": {
+  "name": "Charge Power",
+  "kind": "number",
+  "unit": "kW",
+  "deviceClass": "power",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "speed": {
+  "name": "Speed",
+  "kind": "number",
+  "unit": "km/h",
+  "deviceClass": "speed",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "lat": {
+  "name": "Latitude",
+  "kind": "number",
+  "unit": "°",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "lon": {
+  "name": "Longitude",
+  "kind": "number",
+  "unit": "°",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "elevation": {
+  "name": "Elevation",
+  "kind": "number",
+  "unit": "m",
+  "deviceClass": "distance",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "heading": {
+  "name": "Heading",
+  "kind": "number",
+  "unit": "°",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "gear": {
+  "name": "Gear",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "odometer": {
+  "name": "Odometer",
+  "kind": "number",
+  "unit": "km",
+  "deviceClass": "distance",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "is_charging": {
+  "name": "Charging",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "battery_charging",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "is_dcfc": {
+  "name": "DC Fast Charging",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": false,
+  "hidden": false
+ },
+ "is_parked": {
+  "name": "Parked",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": false,
+  "hidden": false
+ },
+ "charging_pct": {
+  "name": "Charging Progress",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": "battery",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "charging_eta_hours": {
+  "name": "Charging ETA (h)",
+  "kind": "number",
+  "unit": "h",
+  "deviceClass": "duration",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "charging_eta_minutes": {
+  "name": "Charging ETA (min)",
+  "kind": "number",
+  "unit": "min",
+  "deviceClass": "duration",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "charging_capacity_kwh": {
+  "name": "Charging Capacity",
+  "kind": "number",
+  "unit": "kWh",
+  "deviceClass": "energy",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "charging_capacity_incomplete": {
+  "name": "Charging Energy Incomplete",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "charging_capacity_estimated": {
+  "name": "Charging Energy Estimated",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "charging_capacity_source": {
+  "name": "Charging Energy Source",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "charging_v2l": {
+  "name": "V2L Active",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": false,
+  "hidden": false
+ },
+ "charge_cap_enabled": {
+  "name": "Charge Limit State",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "charge_cap_percent": {
+  "name": "Charge Limit Percent",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "charging_state": {
+  "name": "Charging State",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "charger_state": {
+  "name": "Charger State",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "charging_mode": {
+  "name": "Charging Mode",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "charging_gun": {
+  "name": "Charging Gun",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "charging_type": {
+  "name": "Charging Type",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "wireless_charging_left": {
+  "name": "Wireless Charging Left",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "wireless_charging_right": {
+  "name": "Wireless Charging Right",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "wireless_charging_status": {
+  "name": "Wireless Charging Status",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ev_range_km": {
+  "name": "EV Range",
+  "kind": "number",
+  "unit": "km",
+  "deviceClass": "distance",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "fuel_range_km": {
+  "name": "Fuel Range",
+  "kind": "number",
+  "unit": "km",
+  "deviceClass": "distance",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "bodywork_range_km": {
+  "name": "Bodywork Range",
+  "kind": "number",
+  "unit": "km",
+  "deviceClass": "distance",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ev_mileage_km": {
+  "name": "EV Mileage",
+  "kind": "number",
+  "unit": "km",
+  "deviceClass": "distance",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "fuel_pct": {
+  "name": "Fuel Level",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": null,
+  "diagnostic": false,
+  "hidden": false
+ },
+ "trip_km": {
+  "name": "Trip Distance",
+  "kind": "number",
+  "unit": "km",
+  "deviceClass": "distance",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "trip_hours": {
+  "name": "Trip Time",
+  "kind": "number",
+  "unit": "h",
+  "deviceClass": "duration",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "trip_kwh": {
+  "name": "Trip Energy",
+  "kind": "number",
+  "unit": "kWh",
+  "deviceClass": "energy",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "consumption_50km": {
+  "name": "Consumption (50km)",
+  "kind": "number",
+  "unit": "kWh/100 km",
+  "deviceClass": null,
+  "diagnostic": false,
+  "hidden": false
+ },
+ "driving_time_hours": {
+  "name": "Driving Time",
+  "kind": "number",
+  "unit": "h",
+  "deviceClass": "duration",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "total_elec_con": {
+  "name": "Total Electricity",
+  "kind": "number",
+  "unit": "kWh",
+  "deviceClass": "energy",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "total_fuel_con": {
+  "name": "Total Fuel",
+  "kind": "number",
+  "unit": "L",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "energy_mode": {
+  "name": "Energy Mode",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "op_mode": {
+  "name": "Operation Mode",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ext_temp": {
+  "name": "Outside Temperature",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "batt_temp": {
+  "name": "Battery Temperature",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "cabin_temp": {
+  "name": "Cabin Temperature",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "inside_temp": {
+  "name": "Inside Temperature",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "coolant_temp": {
+  "name": "Coolant Temperature",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "bodywork_batt_temp": {
+  "name": "Bodywork Batt Temp",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "cell_t_max": {
+  "name": "Cell Temp Max",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "cell_t_min": {
+  "name": "Cell Temp Min",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "cell_t_avg": {
+  "name": "Cell Temp Avg",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "cell_t_delta": {
+  "name": "Cell Temp Delta",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "soh": {
+  "name": "Battery Health (est)",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": "battery",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "soh_oem": {
+  "name": "Battery Health (OEM)",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": "battery",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "capacity": {
+  "name": "Usable Capacity",
+  "kind": "number",
+  "unit": "kWh",
+  "deviceClass": "energy_storage",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "capacity_ah": {
+  "name": "Capacity",
+  "kind": "number",
+  "unit": "Ah",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "hv_pack_v": {
+  "name": "HV Pack Voltage",
+  "kind": "number",
+  "unit": "V",
+  "deviceClass": "voltage",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "cell_v_max": {
+  "name": "Cell Voltage Max",
+  "kind": "number",
+  "unit": "V",
+  "deviceClass": "voltage",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "cell_v_min": {
+  "name": "Cell Voltage Min",
+  "kind": "number",
+  "unit": "V",
+  "deviceClass": "voltage",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "cell_v_delta": {
+  "name": "Cell Voltage Delta",
+  "kind": "number",
+  "unit": "V",
+  "deviceClass": "voltage",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "soc_hev": {
+  "name": "HEV State of Charge",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": "battery",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "volt_12v": {
+  "name": "12V Battery",
+  "kind": "number",
+  "unit": "V",
+  "deviceClass": "voltage",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "volt_12v_level": {
+  "name": "12V Level",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "batt_12v_level": {
+  "name": "12V Level (body)",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "motor_front_rpm": {
+  "name": "Front Motor RPM",
+  "kind": "number",
+  "unit": "rpm",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "motor_rear_rpm": {
+  "name": "Rear Motor RPM",
+  "kind": "number",
+  "unit": "rpm",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "motor_front_torque": {
+  "name": "Front Motor Torque",
+  "kind": "number",
+  "unit": "Nm",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "engine_rpm": {
+  "name": "Engine RPM",
+  "kind": "number",
+  "unit": "rpm",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "accel_pct": {
+  "name": "Accelerator",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "brake_pct": {
+  "name": "Brake",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "steering_deg": {
+  "name": "Steering Angle",
+  "kind": "number",
+  "unit": "°",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "slope_deg": {
+  "name": "Road Slope",
+  "kind": "number",
+  "unit": "°",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "tyre_p_fl": {
+  "name": "Tyre Pressure FL",
+  "kind": "number",
+  "unit": "kPa",
+  "deviceClass": "pressure",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "tyre_p_fr": {
+  "name": "Tyre Pressure FR",
+  "kind": "number",
+  "unit": "kPa",
+  "deviceClass": "pressure",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "tyre_p_rl": {
+  "name": "Tyre Pressure RL",
+  "kind": "number",
+  "unit": "kPa",
+  "deviceClass": "pressure",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "tyre_p_rr": {
+  "name": "Tyre Pressure RR",
+  "kind": "number",
+  "unit": "kPa",
+  "deviceClass": "pressure",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "tyre_t_fl": {
+  "name": "Tyre Temp FL",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "tyre_t_fr": {
+  "name": "Tyre Temp FR",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "tyre_t_rl": {
+  "name": "Tyre Temp RL",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "tyre_t_rr": {
+  "name": "Tyre Temp RR",
+  "kind": "number",
+  "unit": "°C",
+  "deviceClass": "temperature",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "tyre_system_state": {
+  "name": "TPMS System State",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "tyre_temp_state": {
+  "name": "TPMS Temp State",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_low_beam": {
+  "name": "Low Beam",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "light",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_high_beam": {
+  "name": "High Beam",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "light",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_rear_fog": {
+  "name": "Rear Fog",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "light",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_front_fog": {
+  "name": "Front Fog",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "light",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_hazard": {
+  "name": "Hazards",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "light",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_drl": {
+  "name": "Daytime Running Lights",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "light",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ambient_colour": {
+  "name": "Ambient Lights Colour",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ambient_enabled": {
+  "name": "Ambient Lights State",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "light",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_left_turn": {
+  "name": "Left Turn Signal",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "light_right_turn": {
+  "name": "Right Turn Signal",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ac_on": {
+  "name": "A/C",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ac_cycle": {
+  "name": "A/C Cycle",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ac_wind": {
+  "name": "A/C Wind Mode",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "ac_fan": {
+  "name": "A/C Fan Level",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "temp_unit": {
+  "name": "Temp Unit",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "steering_wheel_heat": {
+  "name": "Steering Wheel Heating State",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "wiper_state": {
+  "name": "Wipers",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "sunroof_state": {
+  "name": "Sunroof State",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "sunroof_pos": {
+  "name": "Sunroof Position",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "sunshade_pct": {
+  "name": "Sunshade",
+  "kind": "number",
+  "unit": "%",
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "drift_mode": {
+  "name": "Drift Mode",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "engine_coolant_level": {
+  "name": "Engine Coolant Level",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "oil_level": {
+  "name": "Oil Level",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "engine_code": {
+  "name": "Engine Code",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "speed_limit_warning": {
+  "name": "Speed Limit Warning",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": "problem",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "child_presence_detection": {
+  "name": "Child Presence Detection",
+  "kind": "binary",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "emergency_alarm": {
+  "name": "Emergency Alarm",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "power_level": {
+  "name": "Vehicle Power State",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "mcu_status": {
+  "name": "MCU Status",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "pm25_inside": {
+  "name": "PM2.5 Inside",
+  "kind": "number",
+  "unit": "µg/m³",
+  "deviceClass": "pm25",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "pm25_outside": {
+  "name": "PM2.5 Outside",
+  "kind": "number",
+  "unit": "µg/m³",
+  "deviceClass": "pm25",
+  "diagnostic": false,
+  "hidden": false
+ },
+ "key_battery": {
+  "name": "Key Battery",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "key_start_state": {
+  "name": "Key Start State",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "key_missing": {
+  "name": "Key Missing",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "key_bt_low_power": {
+  "name": "Key BT Low Power",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "key_power_low": {
+  "name": "Key Power Low",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "key_detection_reminder": {
+  "name": "Key Detection",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "smart_key_warn": {
+  "name": "Smart Key Warning",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": "enum",
+  "diagnostic": true,
+  "hidden": false
+ },
+ "vin": {
+  "name": "VIN",
+  "kind": "text",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": false
+ },
+ "door_lock": {
+  "name": "Door Lock",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "window_open": {
+  "name": "Window Open",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "seatbelt": {
+  "name": "Seatbelt",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "seat_heat": {
+  "name": "Seat Heat",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "seat_cool": {
+  "name": "Seat Cool",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "passenger_detection": {
+  "name": "Passenger Detection",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "radar_distances": {
+  "name": "Radar Distances",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "utc": {
+  "name": "UTC",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ },
+ "vd_timestamp": {
+  "name": "Snapshot Timestamp",
+  "kind": "number",
+  "unit": null,
+  "deviceClass": null,
+  "diagnostic": true,
+  "hidden": true
+ }
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Electric Guardian">
+  <!-- Shield (guardian) + lightning bolt (electric). Brand: lime #8BDC5C on graphite #0E1013. -->
+  <path d="M50 7 L83 18.5 V47 C83 69 68.5 84.5 50 93 C31.5 84.5 17 69 17 47 V18.5 Z"
+        fill="none" stroke="#8BDC5C" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M55 25 L34 54 H47.5 L43.5 76 L66 44 H52 Z" fill="#8BDC5C" stroke="#8BDC5C" stroke-width="2" stroke-linejoin="round"/>
+</svg>

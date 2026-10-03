@@ -1,0 +1,21 @@
+# Variant for a server where nginx already owns ports 80/443: only the service runs in Docker,
+# bound to 127.0.0.1:8787; nginx (see install-nginx.sh) terminates TLS and proxies both hostnames to it.
+services:
+  eg:
+    build: ../webapp
+    restart: unless-stopped
+    environment:
+      AUTH_MODE: accounts
+      ALLOW_SIGNUP: ${ALLOW_SIGNUP:-0}
+      APP_HOST: ${APP_HOST}
+      VIEW_HOST: ${VIEW_HOST}
+      PUBLIC_SCHEME: https
+      TRUST_PROXY: "1"
+      CONTROL_ENABLED: ${CONTROL_ENABLED:-1}
+      MQTT_PUBLIC_URL: wss://${APP_HOST}/mqtt
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      MAPBOX_TOKEN: ${MAPBOX_TOKEN:-}
+    volumes: [eg-data:/data]
+    ports: ["127.0.0.1:8787:8787"]
+volumes:
+  eg-data:

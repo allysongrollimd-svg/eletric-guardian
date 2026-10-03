@@ -1,0 +1,37 @@
+# Electric Guardian cloud on a single VPS: the service + Caddy (automatic HTTPS).
+#   cp .env.example .env   (edit the two domains + the e-mail)   &&   docker compose up -d --build
+# DNS: point BOTH names (A/AAAA) at this server before starting, e.g. app.example.com and view.example.com.
+services:
+  eg:
+    build: ../webapp
+    restart: unless-stopped
+    environment:
+      AUTH_MODE: accounts
+      ALLOW_SIGNUP: ${ALLOW_SIGNUP:-0}
+      APP_HOST: ${APP_HOST}
+      VIEW_HOST: ${VIEW_HOST}
+      PUBLIC_SCHEME: https
+      TRUST_PROXY: "1"
+      CONTROL_ENABLED: ${CONTROL_ENABLED:-1}
+      MQTT_PUBLIC_URL: wss://${APP_HOST}/mqtt
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      MAPBOX_TOKEN: ${MAPBOX_TOKEN:-}
+    volumes: [eg-data:/data]
+    expose: ["8787"]
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      APP_HOST: ${APP_HOST}
+      VIEW_HOST: ${VIEW_HOST}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on: [eg]
+volumes:
+  eg-data:
+  caddy-data:
+  caddy-config:

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0F17">
+<meta name="robots" content="noindex">
+<title>Administração · Electric Guardian</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/app.css">
+<link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="/logo.svg" alt="" width="28" height="28"><span>Administração</span></div>
+  <div class="top-right"><a class="ghost-link" href="/">Voltar ao app</a></div>
+</header>
+<nav class="atabs" id="atabs" hidden>
+  <button data-t="overview" class="on">Resumo</button><button data-t="users">Clientes</button><button data-t="cars">Carros</button>
+  <button data-t="invoices">Faturas</button><button data-t="plans">Planos</button><button data-t="settings">Config.</button><button data-t="audit">Auditoria</button>
+</nav>
+<main id="amain"><p class="sub" id="gate">Carregando…</p></main>
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="/admin.js" type="module"></script>
+</body>
+</html>

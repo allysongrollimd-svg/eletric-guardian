@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sidebar logo - Electric Guardian shield + bolt -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <path
+        android:strokeColor="#8BDC5C"
+        android:strokeWidth="7"
+        android:strokeLineJoin="round"
+        android:pathData="M50,7 L83,18.5 V47 C83,69 68.5,84.5 50,93 C31.5,84.5 17,69 17,47 V18.5 Z" />
+    <path
+        android:fillColor="#8BDC5C"
+        android:strokeColor="#8BDC5C"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M55,25 L34,54 H47.5 L43.5,76 L66,44 H52 Z" />
+</vector>

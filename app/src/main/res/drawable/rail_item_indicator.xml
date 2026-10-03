@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Navigation-rail row background — the whole row is the button. Selected rows
+  get a colorPrimaryContainer plate, inset from the rail edges by the
+  rail_item_pill_* tokens that MainActivity.applyRailRowLayout pads against.
+  The ripple is masked to the plate so it never paints into the rail gutters.
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+
+    <item>
+        <selector>
+            <item android:state_selected="true">
+                <inset
+                    android:insetBottom="@dimen/rail_item_pill_inset_vertical"
+                    android:insetLeft="@dimen/rail_item_pill_inset_horizontal"
+                    android:insetRight="@dimen/rail_item_pill_inset_horizontal"
+                    android:insetTop="@dimen/rail_item_pill_inset_vertical">
+                    <shape android:shape="rectangle">
+                        <solid android:color="?attr/colorPrimaryContainer" />
+                        <corners android:radius="@dimen/rail_item_pill_radius" />
+                    </shape>
+                </inset>
+            </item>
+            <item android:drawable="@android:color/transparent" />
+        </selector>
+    </item>
+
+    <item android:id="@android:id/mask">
+        <inset
+            android:insetBottom="@dimen/rail_item_pill_inset_vertical"
+            android:insetLeft="@dimen/rail_item_pill_inset_horizontal"
+            android:insetRight="@dimen/rail_item_pill_inset_horizontal"
+            android:insetTop="@dimen/rail_item_pill_inset_vertical">
+            <shape android:shape="rectangle">
+                <solid android:color="@android:color/white" />
+                <corners android:radius="@dimen/rail_item_pill_radius" />
+            </shape>
+        </inset>
+    </item>
+</ripple>

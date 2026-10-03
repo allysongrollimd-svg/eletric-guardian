@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 360 360">
+
+<defs>
+  <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#F5F8FF"/>
+    <stop offset="38%" stop-color="#BFEFFF"/>
+    <stop offset="66%" stop-color="#00C2FF"/>
+    <stop offset="100%" stop-color="#0066FF"/>
+  </linearGradient>
+  <radialGradient id="lensGrad" cx="35%" cy="30%" r="72%">
+    <stop offset="0%" stop-color="#EFFFFF"/>
+    <stop offset="18%" stop-color="#00D9FF"/>
+    <stop offset="55%" stop-color="#0066FF"/>
+    <stop offset="100%" stop-color="#041B4D"/>
+  </radialGradient>
+  <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="8" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+
+<g>
+  <path d="M180 32 L302 91 V176 C302 251 254 300 180 332 C106 300 58 251 58 176 V91 Z"
+        fill="none" stroke="url(#shieldGrad)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="180" cy="172" r="78" fill="none" stroke="url(#shieldGrad)" stroke-width="22"/>
+  <circle cx="180" cy="172" r="46" fill="none" stroke="url(#shieldGrad)" stroke-width="16"/>
+  <circle cx="180" cy="172" r="27" fill="url(#lensGrad)"/>
+  <circle cx="170" cy="162" r="8" fill="#EFFFFF" opacity="0.9"/>
+</g>
+</svg>

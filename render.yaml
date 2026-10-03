@@ -1,0 +1,19 @@
+# Render blueprint for the cloud dashboard (webapp/). Not validated in this repository's CI.
+# Free instances sleep when idle: in Home Assistant mode the broker keeps retained values, so the
+# dashboard rebuilds the vehicle state as soon as it wakes up.
+services:
+  - type: web
+    name: electric-guardian
+    runtime: node
+    rootDir: webapp
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    envVars:
+      - { key: DASHBOARD_TOKEN, sync: false }
+      - { key: MQTT_URL, sync: false }
+      - { key: MQTT_USERNAME, sync: false }
+      - { key: MQTT_PASSWORD, sync: false }
+      - { key: MQTT_TOPIC, value: "electric-guardian/+/telemetry" }
+      - { key: CONTROL_ENABLED, value: "0" }
+      - { key: CONTROL_PIN, sync: false }
