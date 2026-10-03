@@ -317,7 +317,8 @@
       $('wazeMsg').textContent = j.success ? (wazeOn ? 'Painel de volta ao normal.' : 'Waze no painel. Abra o Waze na tela central para escolher o destino.') : 'Não foi possível agora. Abra o Waze uma vez na tela central e tente de novo.';
     }).catch(function () { $('wazeMsg').textContent = 'Não foi possível agora.'; }).then(function () { wazeBusy = false; wazeInfo(); });
   });
-  wazeInfo(); setInterval(wazeInfo, 20000);
+  // Waze no painel: escondido até funcionar em todos os carros (o botão fica oculto, o código permanece).
+  // wazeInfo(); setInterval(wazeInfo, 20000);
   // App update straight from the app (the car downloads the new version and installs it by itself).
   var updBusy = false;
   function checkUpdate() {
