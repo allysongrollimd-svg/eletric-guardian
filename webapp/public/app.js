@@ -41,7 +41,14 @@ function render(dev) {
   const eta = Number(d.charging_eta_minutes) > 0 ? Number(d.charging_eta_minutes) : 0;
   const cKw = Number(d.charge_power);
   $('pwChg').hidden = !charging; $('pwNormal').hidden = charging; $('pwCell').classList.toggle('on', charging);
-  setText('chgKw', Number.isFinite(cKw) && Math.abs(cKw) > 0.05 ? nf(Math.abs(cKw), 1) : '--');
+  // The car sometimes cannot give a measured power (it reports 0): estimate it from what is left to charge and the time it expects.
+  let kwTxt = Number.isFinite(cKw) && Math.abs(cKw) > 0.05 ? nf(Math.abs(cKw), 1) : '--';
+  if (kwTxt === '--' && eta && Number(d.capacity) > 10 && Number(d.soc) >= 0) {
+    const target = Number(d.target_soc) > Number(d.soc) ? Number(d.target_soc) : 100;
+    const est = ((target - Number(d.soc)) / 100) * Number(d.capacity) / (eta / 60);
+    if (est > 0.5 && est < 400) kwTxt = `≈ ${nf(est, 1)}`;
+  }
+  setText('chgKw', kwTxt);
   setText('chgEta', eta ? (eta >= 60 ? `${Math.floor(eta / 60)} h ${eta % 60 ? `${Math.round(eta % 60)} min` : ''}` : `${Math.round(eta)} minutos`) : ' ');
   setText('chgExtra', [on(d.is_dcfc) ? 'carga rápida (CC)' : '', isAdminUser && (d.charging_gun || d.charging_state) ? `cabo ${d.charging_gun ?? '-'} · estado ${d.charging_state ?? '-'}` : ''].filter(Boolean).join(' · '));
 
