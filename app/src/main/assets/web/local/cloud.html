@@ -101,7 +101,9 @@
     </div>
     <div class="row">
       <button class="btn primary" id="btnPeople" type="button">Pessoas</button>
+      <button class="btn" id="btnWaze" type="button" style="margin-left:1.125rem;display:none;">Waze no painel</button>
     </div>
+    <div class="hint" id="wazeMsg" style="min-height:1.5rem;"></div>
   </div>
 
   <div class="foot"><span id="version"></span><button class="btn ghost" id="btnCfg2" type="button" style="min-height:3rem;font-size:1.0625rem;">Configurações</button></div>
@@ -291,6 +293,26 @@
       .catch(function () { $('egActMsg').textContent = 'Falha de comunicação com o aplicativo.'; });
   });
 
+
+  // Waze (or any chosen app) on the driver cluster, through the car's own projection service.
+  var wazePkg = '', wazeOn = false, wazeBusy = false;
+  function wazeInfo() {
+    fetch('/api/vehicle/cluster-apps').then(function (r) { return r.json(); }).then(function (j) {
+      (j.apps || []).forEach(function (a) { if (!wazePkg && (a['package'] === 'com.waze' || /waze/i.test(a.label || ''))) wazePkg = a['package']; });
+      $('btnWaze').style.display = wazePkg ? '' : 'none';
+      return fetch('/api/vehicle/cluster-mirror-status');
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      wazeOn = !!j.casting && /waze/i.test(j.castPackage || ''); $('btnWaze').textContent = wazeOn ? 'Tirar Waze do painel' : 'Waze no painel';
+    }).catch(function () {});
+  }
+  $('btnWaze').addEventListener('click', function () {
+    if (wazeBusy) return; wazeBusy = true; $('wazeMsg').textContent = wazeOn ? 'Desligando…' : 'Enviando o Waze para o painel… pode levar alguns segundos.';
+    var call = wazeOn ? post('/api/vehicle/cluster-stop') : post('/api/vehicle/cluster-cast', { 'package': wazePkg });
+    call.then(function (r) { return r.json(); }).then(function (j) {
+      $('wazeMsg').textContent = j.success ? (wazeOn ? 'Painel de volta ao normal.' : 'Waze no painel. Abra o Waze na tela central para escolher o destino.') : 'Não foi possível agora. Abra o Waze uma vez na tela central e tente de novo.';
+    }).catch(function () { $('wazeMsg').textContent = 'Não foi possível agora.'; }).then(function () { wazeBusy = false; wazeInfo(); });
+  });
+  wazeInfo(); setInterval(wazeInfo, 20000);
   poll(); setInterval(poll, 3000);
 })();
 </script>
