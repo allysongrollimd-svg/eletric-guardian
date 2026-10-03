@@ -48,11 +48,7 @@ function render(dev) {
     ? [d.charge_power != null ? `${nf(d.charge_power, 1)} kW` : null, d.is_dcfc ? 'DC rápido' : null, d.charging_eta_minutes ? `~${nf(d.charging_eta_minutes)} min` : null].filter(Boolean).join(' · ')
     : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : ' '));
 
-  setText('tripKm', d.trip_km != null ? `${nf(d.trip_km, 1)} km` : '--');
-  setText('tripKwh', d.trip_kwh != null ? `${nf(d.trip_kwh, 1)} kWh` : '--');
   setText('tBatt', d.batt_temp != null ? `${nf(d.batt_temp, 1)} °C` : '--');
-  setText('tCabin', d.cabin_temp != null ? `${nf(d.cabin_temp, 1)} °C` : '--');
-  setText('tExt', d.ext_temp != null ? `${nf(d.ext_temp, 1)} °C` : '--');
   setText('odo', nf(d.odometer, 1));
   renderStatus(dev);
   renderMap(d);
@@ -109,7 +105,7 @@ function spark(svgId, key) {
   const path = document.createElementNS(ns, 'path'); path.setAttribute('d', line);
   svg.append(area, path);
 }
-const drawCharts = () => { spark('chSoc', 'soc'); spark('chSpeed', 'speed'); spark('chPower', 'power'); };
+const drawCharts = () => {};   // charts were removed from the home screen
 
 // ---------- tabs / controls ----------
 let isAdminUser = false;
