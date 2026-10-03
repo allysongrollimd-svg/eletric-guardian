@@ -19,12 +19,6 @@ function setText(id, v) { const e = $(id); if (e) e.textContent = v; }
 function render(dev) {
   if (!dev) return;
   const d = dev.data;
-  setText('soc', nf(d.soc, 0));
-  const arc = $('socArc');
-  const pct = Math.max(0, Math.min(100, d.soc ?? 0));
-  arc.style.strokeDashoffset = String(326.7 * (1 - pct / 100));
-  arc.style.stroke = pct <= 15 ? 'var(--bad)' : pct <= 30 ? 'var(--warn)' : 'var(--primary)';
-  setText('range', nf(d.ev_range_km, 0));
   setText('vSoc', nf(d.soc, 0)); setText('vRange', nf(d.ev_range_km, 0)); setText('vName', dev.name || 'Meu carro');
   { const h = d.soh_oem ?? d.soh; setText('vSoh', typeof h === 'number' && h > 0 ? `${nf(h, 0)}%` : '--'); }
   setText('vCons', d.consumption_50km != null ? `${nf(d.consumption_50km, 1)} kWh/100 km` : '--');
@@ -45,13 +39,11 @@ function render(dev) {
   const on = (v) => v === true || v === 1 || v === '1' || /^(true|on)$/i.test(String(v));   // the car sends binary fields as 1/0
   const charging = on(d.is_charging);
   const eta = Number(d.charging_eta_minutes) > 0 ? Number(d.charging_eta_minutes) : 0;
-  const pw = d.charge_power != null && Math.abs(Number(d.charge_power)) > 0.05 ? `${nf(Math.abs(d.charge_power), 0)} kW` : '';
-  setText('chgLabel', charging ? 'Carregando…' : 'Carregamento');
-  setText('chgState', charging ? (pw || 'Carregando') : 'Não está carregando');
-  setText('chgDetail', charging
-    ? [eta ? (eta >= 60 ? `${Math.floor(eta / 60)} h ${eta % 60 ? `${Math.round(eta % 60)} min` : ''}` : `${Math.round(eta)} minutos`) : null, on(d.is_dcfc) ? 'carga rápida (CC)' : null].filter(Boolean).join(' · ') || ' '
-    : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : (on(d.is_parked) ? 'Carro estacionado' : 'Carro em uso')));
-  $('chgCard')?.classList.toggle('on', charging);
+  const cKw = Number(d.charge_power);
+  $('pwChg').hidden = !charging; $('pwNormal').hidden = charging; $('pwCell').classList.toggle('on', charging);
+  setText('chgKw', Number.isFinite(cKw) && Math.abs(cKw) > 0.05 ? nf(Math.abs(cKw), 1) : '--');
+  setText('chgEta', eta ? (eta >= 60 ? `${Math.floor(eta / 60)} h ${eta % 60 ? `${Math.round(eta % 60)} min` : ''}` : `${Math.round(eta)} minutos`) : ' ');
+  setText('chgExtra', [on(d.is_dcfc) ? 'carga rápida (CC)' : '', isAdminUser && (d.charging_gun || d.charging_state) ? `cabo ${d.charging_gun ?? '-'} · estado ${d.charging_state ?? '-'}` : ''].filter(Boolean).join(' · '));
 
   setText('v12', typeof d.volt_12v === 'number' && d.volt_12v > 0 ? `${nf(d.volt_12v, 1)} V` : '--');
   setText('tBatt', d.batt_temp != null ? `${nf(d.batt_temp, 1)} °C` : '--');

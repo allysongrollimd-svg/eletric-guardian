@@ -65,20 +65,9 @@
       <div><span>Bateria</span><b><i id="vSocBar" class="vbat"><u></u></i><span id="vSoc">--</span>%</b><em>Saúde da bateria <strong id="vSoh">--</strong></em><em>Temperatura <strong id="tBatt">--</strong></em><em>Bateria 12 V <strong id="v12">--</strong></em></div>
       <div><span>Autonomia</span><b><span id="vRange">--</span> km</b><em>Consumo <strong id="vCons">--</strong></em></div>
       <div><span>Velocidade</span><b><span id="speed">--</span> <small>km/h</small></b><em>Marcha <strong id="gear">--</strong></em><em>Odômetro <strong id="odo">--</strong> km</em></div>
-      <div><span>Potência</span><b><span id="power">--</span> <small>kW</small></b><div class="bar"><i id="powerBar"></i></div><em><strong id="hp">--</strong> cv · <span id="powerHint">&nbsp;</span></em><em>Torque <strong id="torque">--</strong> Nm</em></div>
+      <div id="pwCell"><div id="pwNormal"><span>Potência</span><b><span id="power">--</span> <small>kW</small></b><div class="bar"><i id="powerBar"></i></div><em><strong id="hp">--</strong> cv · <span id="powerHint">&nbsp;</span></em><em>Torque <strong id="torque">--</strong> Nm</em></div><div id="pwChg" hidden><span>Carregando…</span><b><span id="chgKw">--</span> <small>kW</small></b><em id="chgEta">&nbsp;</em><em id="chgExtra"></em></div></div>
     </div>
     <div class="sub vseen" id="lastSeen">&nbsp;</div>
-  </section>
-  <section class="hero">
-    <div class="card gauge-card" hidden>
-      <svg id="socRing" viewBox="0 0 120 120" aria-label="Bateria">
-        <circle cx="60" cy="60" r="52" class="ring-bg"/>
-        <circle id="socArc" cx="60" cy="60" r="52" class="ring-fg" transform="rotate(-90 60 60)"/>
-      </svg>
-      <div class="gauge-text"><b id="soc">--</b><small>% bateria</small></div>
-      <div class="sub"><span id="range">--</span> km de autonomia</div>
-    </div>
-    <div class="card chgcard" id="chgCard"><div class="label" id="chgLabel">Carregamento</div><div class="big"><b id="chgState">--</b></div><div class="sub" id="chgDetail">&nbsp;</div></div>
   </section>
   <nav class="qgrid" id="qgrid" aria-label="Atalhos" hidden>
     <button type="button" class="q" data-go="tab:cams"><svg viewBox="0 0 24 24"><path d="M3 7h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3zM17 11l4-2.5v7L17 13"/></svg><span>Câmeras<br>ao vivo</span></button>
