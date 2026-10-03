@@ -188,3 +188,4 @@ main#dash>.grid{margin-bottom:12px}
 .vstats>div{min-width:0}.vcard .vstats{gap:10px}
 .map-card{margin-bottom:12px}
 .vseen{margin-top:10px;font-size:12px;color:var(--muted)}
+.hero{grid-template-columns:1fr}.hero .card{grid-column:auto}

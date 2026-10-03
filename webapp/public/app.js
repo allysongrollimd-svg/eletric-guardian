@@ -40,8 +40,6 @@ function render(dev) {
   bar.style.background = p < 0 ? 'var(--ok)' : 'var(--primary)';
   setText('hp', d.power == null ? '--' : nf(Math.abs(d.power) * 1.35962, 0)); // kW -> cv (metric hp)
   setText('torque', nf(d.motor_front_torque, 0));
-  setText('accel', d.accel_pct == null ? '--' : `${nf(d.accel_pct, 0)}%`);
-  setText('rpm', nf(d.motor_rear_rpm ?? d.motor_front_rpm, 0));
   setText('powerHint', p < -0.5 ? 'Regenerando' : p > 0.5 ? 'Consumindo' : ' ');
 
   const charging = d.is_charging === true;
