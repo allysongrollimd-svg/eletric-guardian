@@ -45,13 +45,15 @@ function render(dev) {
   const on = (v) => v === true || v === 1 || v === '1' || /^(true|on)$/i.test(String(v));   // the car sends binary fields as 1/0
   const charging = on(d.is_charging);
   const eta = Number(d.charging_eta_minutes) > 0 ? Number(d.charging_eta_minutes) : 0;
-  const etaTxt = eta ? (eta >= 60 ? `cheio em ${Math.floor(eta / 60)} h ${eta % 60 ? `${eta % 60} min` : ''}` : `cheio em ${Math.round(eta)} min`) : '';
-  setText('chgState', charging ? 'Carregando' : 'Não está carregando');
+  const pw = d.charge_power != null && Math.abs(Number(d.charge_power)) > 0.05 ? `${nf(Math.abs(d.charge_power), 0)} kW` : '';
+  setText('chgLabel', charging ? 'Carregando…' : 'Carregamento');
+  setText('chgState', charging ? (pw || 'Carregando') : 'Não está carregando');
   setText('chgDetail', charging
-    ? [d.charge_power != null ? `${nf(Math.abs(d.charge_power), 1)} kW` : null, on(d.is_dcfc) ? 'carga rápida (CC)' : null, etaTxt].filter(Boolean).join(' · ') || ' '
+    ? [eta ? (eta >= 60 ? `${Math.floor(eta / 60)} h ${eta % 60 ? `${Math.round(eta % 60)} min` : ''}` : `${Math.round(eta)} minutos`) : null, on(d.is_dcfc) ? 'carga rápida (CC)' : null].filter(Boolean).join(' · ') || ' '
     : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : (on(d.is_parked) ? 'Carro estacionado' : 'Carro em uso')));
   $('chgCard')?.classList.toggle('on', charging);
 
+  setText('v12', typeof d.volt_12v === 'number' && d.volt_12v > 0 ? `${nf(d.volt_12v, 1)} V` : '--');
   setText('tBatt', d.batt_temp != null ? `${nf(d.batt_temp, 1)} °C` : '--');
   setText('odo', nf(d.odometer, 1));
   renderStatus(dev);

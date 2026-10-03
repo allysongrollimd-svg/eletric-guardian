@@ -188,5 +188,6 @@ main#dash>.grid{margin-bottom:12px}
 .vstats>div{min-width:0}.vcard .vstats{gap:10px}
 .map-card{margin-bottom:12px}
 .vseen{margin-top:10px;font-size:12px;color:var(--muted)}
-.hero{grid-template-columns:1fr}.hero .card{grid-column:auto}
+.hero{grid-template-columns:1fr;margin-bottom:12px}.hero .card{grid-column:auto}
 .chgcard .big b{font-size:22px;color:var(--muted)}.chgcard.on{border-color:var(--ok)}.chgcard.on .big b{color:var(--ok)}
+.chgcard.on{background:linear-gradient(135deg,#0F7B5F,#0B5F4A);border-color:#00D6A3}.chgcard.on .label{color:#d6fff3}.chgcard.on .big b{color:#fff;font-size:34px}.chgcard.on .sub{color:#d6fff3;font-weight:600}
