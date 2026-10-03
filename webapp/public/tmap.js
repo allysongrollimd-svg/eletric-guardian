@@ -23,7 +23,7 @@ export function createMap(root, template) {
     layer.replaceChildren();
     for (let tx = Math.floor(x0 / TS); tx <= Math.floor((x0 + w) / TS); tx++) for (let ty = Math.floor(y0 / TS); ty <= Math.floor((y0 + h) / TS); ty++) {
       if (ty < 0 || ty >= n) continue;
-      const img = new Image(); img.alt = ''; img.draggable = false; img.decoding = 'async';
+      const img = new Image(); img.alt = ''; img.draggable = false; img.referrerPolicy = 'origin'; img.decoding = 'async';
       img.src = template.replace('{s}', 'abcd'[(tx + ty) & 3]).replace('{z}', z).replace('{x}', ((tx % n) + n) % n).replace('{y}', ty);
       img.onerror = () => img.remove(); img.style.cssText = `left:${Math.round(tx * TS - x0)}px;top:${Math.round(ty * TS - y0)}px`;
       layer.append(img);
