@@ -37,7 +37,7 @@ public class SetupGuideDialog {
     private static final String TAG = "SetupGuideDialog";
     private static final String PREFS_NAME = "overdrive_setup";
     private static final String KEY_LAST_SEEN_INSTALL_TIME = "last_seen_install_time";
-    private static final long AUTOSTART_SERVICE_WAIT_MS = 5000L;
+    private static final long AUTOSTART_SERVICE_WAIT_MS = 15000L;
     private static final long AUTOSTART_SERVICE_POLL_MS = 200L;
 
     /**
@@ -112,6 +112,7 @@ public class SetupGuideDialog {
                 R.id.tvAutoStartTitle, R.id.tvAutoStartBody,
                 R.id.btnOpenAutoStart, R.id.ivAutoStartCheck);
         autoStartStep.button.setOnClickListener(v -> {
+            autoStartStep.a11yRequested = false;
             autoStartStep.button.setEnabled(false);
             autoStartStep.button.setText(context.getString(R.string.setup_autostart_enabling));
             runAutoStartWhenServiceReady(
@@ -217,6 +218,8 @@ public class SetupGuideDialog {
         private final TextView body;
         private final TextView button;
         private final View check;
+        /** The accessibility service was already asked to turn on during this attempt. */
+        boolean a11yRequested;
 
         StepRow(View root, int titleId, int bodyId, int buttonId, int checkId) {
             this.title = root.findViewById(titleId);
@@ -271,7 +274,10 @@ public class SetupGuideDialog {
             return;
         }
         KeepAliveAccessibilityService service = KeepAliveAccessibilityService.getInstance();
-        if (service == null) enableAccessibilityService(context);
+        if (service == null && !step.a11yRequested) {
+            step.a11yRequested = true;
+            enableAccessibilityService(context);
+        }
         service = KeepAliveAccessibilityService.getInstance();
         if (service != null) {
             service.runAutoStartEnabler((success, result) ->
@@ -306,6 +312,15 @@ public class SetupGuideDialog {
             Settings.Secure.putInt(cr, "accessibility_enabled", 1);
         } catch (Throwable t) {
             Log.w(TAG, "could not enable the accessibility service by itself: " + t.getMessage());
+        }
+        // Second route: the app's own ADB link has shell privileges, which always may change secure settings.
+        if (context instanceof com.overdrive.app.ui.MainActivity) {
+            String comp = context.getPackageName() + "/" + KeepAliveAccessibilityService.class.getName();
+            String script = "cur=$(settings get secure enabled_accessibility_services 2>/dev/null); "
+                    + "case \"$cur\" in *" + comp + "*) ;; null|\"\") settings put secure enabled_accessibility_services " + comp + " ;; "
+                    + "*) settings put secure enabled_accessibility_services \"$cur:" + comp + "\" ;; esac; "
+                    + "settings put secure accessibility_enabled 1";
+            ((com.overdrive.app.ui.MainActivity) context).runAdbShell(script, ok -> Log.i(TAG, "a11y enable via adb: " + ok));
         }
     }
 

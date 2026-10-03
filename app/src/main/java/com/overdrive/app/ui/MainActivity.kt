@@ -1655,12 +1655,6 @@ open class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
-        if (com.overdrive.app.BuildConfig.SIMPLE_UI && savedInstanceState == null) {
-            // Customer build: the connect screen is the root of the app (back leaves the app, nothing else to go back to).
-            val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-            graph.setStartDestination(R.id.cloudFragment)
-            navController.setGraph(graph, null)
-        }
 
         // Top-level destinations on the rail — no back arrow on these.
         appBarConfiguration = AppBarConfiguration(
@@ -4879,6 +4873,19 @@ open class MainActivity : AppCompatActivity() {
     fun invokeResetDataDialog() = showResetDataDialog()
     fun invokeBatteryHealthAction() = showBatteryHealthDialog()
     fun invokeReconfigureCameraAction() = onReconfigureCameraClicked()
+    /** Runs one shell command through the app's own ADB link (shell privileges). Callback arrives on the main thread. */
+    fun runAdbShell(command: String, onDone: (Boolean) -> Unit) {
+        try {
+            daemonStartupManager.adbLauncher.executeShellCommand(command, object : com.overdrive.app.launcher.AdbDaemonLauncher.LaunchCallback {
+                override fun onLog(message: String) {}
+                override fun onLaunched() { runOnUiThread { onDone(true) } }
+                override fun onError(error: String) { runOnUiThread { onDone(false) } }
+            })
+        } catch (t: Throwable) {
+            runOnUiThread { onDone(false) }
+        }
+    }
+
     fun invokeTrafficMonitorAction() {
         // Match drawer-open behavior: refresh status before showing dialog.
         try {
