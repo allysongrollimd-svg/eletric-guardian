@@ -963,7 +963,7 @@ class WebViewFragment : Fragment() {
                     super.onPageFinished(view, url)
                     loadInProgress = false
                     if (!pageLoadFailed) {
-                        showContent()
+                        if (com.overdrive.app.BuildConfig.SIMPLE_UI) simpleReadyCheck(0) else showContent()
                         // Theme: tag <html data-theme="…"> BEFORE INJECT_JS so any
                         // CSS that depends on the variable values uses the right
                         // values on first paint.
@@ -1687,6 +1687,26 @@ class WebViewFragment : Fragment() {
         loadingOverlay?.visibility = View.VISIBLE
         errorOverlay?.visibility = View.GONE
         webView?.visibility = View.VISIBLE
+    }
+
+    /**
+     * Customer build: keep the native "starting" screen until the page itself says it has real content
+     * (window.__egReady). A page that finished loading but is still blank (services starting, old WebView) never shows.
+     */
+    private fun simpleReadyCheck(attempt: Int) {
+        val wv = webView ?: return
+        wv.evaluateJavascript("(function(){return window.__egReady===true;})()") { v ->
+            if (!isAdded || view == null) return@evaluateJavascript
+            if (v == "true") {
+                showContent()
+            } else {
+                showLoading()
+                view?.postDelayed({
+                    if (!isAdded || view == null) return@postDelayed
+                    if (attempt >= 3) retryLoad() else simpleReadyCheck(attempt + 1)
+                }, 2500L)
+            }
+        }
     }
 
     private fun hideLoading() {

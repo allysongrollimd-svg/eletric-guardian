@@ -341,8 +341,10 @@ public class SetupGuideDialog {
                 + ") — falling back to manual settings");
         step.markPending(context,
                 R.string.setup_autostart_body, R.string.setup_autostart_button);
+        // Say why, so the installer can tell "service not ready" from "row not found" without a log cable.
+        String why = result == null ? "acessibilidade indisponível" : result.name();
         Toast.makeText(context,
-                context.getString(R.string.setup_autostart_failed),
+                context.getString(R.string.setup_autostart_failed) + " (" + why + ")",
                 Toast.LENGTH_LONG).show();
         openAutoStartSettings(context);
     }

@@ -240,6 +240,7 @@
 
   function render(s) {
     last = s;
+    window.__egReady = true;      // the native shell keeps its own "starting" screen until the page has real content
     if (!s.enabled && !autoEnabled) { autoEnabled = true; post('/api/cloud/config', { enabled: true }).then(poll); }
     if (currentView === 'vHome') renderHome(s);
     else if (currentView === 'vPeople') renderPeople(s);
