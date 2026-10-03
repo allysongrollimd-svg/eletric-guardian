@@ -28,7 +28,7 @@ if (cmd === 'create-user') {
 } else if (cmd === 'set-password') {
   const u = db.prepare('SELECT id FROM users WHERE email = ?').get(String(a[0]).toLowerCase());
   if (!u) console.log('user not found');
-  else { await acc.adminSetPassword(u.id, a[1]); console.log('password changed (all sessions of this user were signed out)'); }
+  else { await acc.adminSetPassword(u.id, a[1]); console.log('password changed'); }
 } else if (cmd === 'make-admin') {
   const r = db.prepare("UPDATE users SET role = 'admin' WHERE email = ?").run(String(a[0]).toLowerCase()); console.log(r.changes ? 'promoted to admin' : 'user not found');
 } else if (cmd === 'disable-user') {
