@@ -37,6 +37,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class MqttConnectionManager {
 
+    private static void putFinite(JSONObject o, String key, double v) {
+        try { if (Double.isFinite(v)) o.put(key, Math.round(v * 1000.0) / 1000.0); } catch (Exception ignored) {}
+    }
+
     private static final String TAG = "MqttConnectionManager";
     private static final DaemonLogger logger = DaemonLogger.getInstance(TAG);
 
@@ -924,6 +928,30 @@ public class MqttConnectionManager {
                     chargeKw = chargingState.chargingPowerKW;
                 }
             }
+            // Raw readings of every charge-power source, for diagnosis (the resolver above refuses a source
+            // it cannot corroborate, and then publishes 0). Shown only in the admin "all data" list.
+            String chgSrc = chargeKw > 0 ? "resolved" : "none";
+            if (vd != null) {
+                putFinite(payload, "dbg_chg_cluster", vd.clusterChargePowerKw);
+                putFinite(payload, "dbg_chg_pack", vd.chargePowerKw);
+                putFinite(payload, "dbg_chg_dev", vd.chargingPowerKw);
+                putFinite(payload, "dbg_chg_ext", vd.externalChargingPowerKw);
+                // The resolver can refuse every source and publish 0 while the car is plainly charging (the
+                // dash shows ~6 kW). Fall back to the first raw reading that is a believable AC rate:
+                // plain kW within 0.5..22, or hectowatts (e.g. 620 = 6.2 kW). Never on DC (gun 3), where
+                // the same raw numbers are ambiguous, and never when the resolver already has a measured value.
+                if (chargeKw <= 0 && isCharging && !v2l && vd.chargingGunState != 3) {
+                    double[] raws = { vd.clusterChargePowerKw, vd.chargePowerKw, vd.chargingPowerKw, vd.externalChargingPowerKw };
+                    String[] names = { "cluster", "pack", "dev", "ext" };
+                    for (int i = 0; i < raws.length && chargeKw <= 0; i++) {
+                        double r = Math.abs(raws[i]);
+                        if (!Double.isFinite(r)) continue;
+                        if (r >= 0.5 && r <= 22.0) { chargeKw = r; chgSrc = names[i] + "_kw"; }
+                        else if (r >= 100.0 && r <= 2200.0) { chargeKw = r / 100.0; chgSrc = names[i] + "_hw"; }
+                    }
+                }
+            }
+            payload.put("dbg_chg_src", chgSrc);
             payload.put("charge_power", chargeKw);
 
             // Per-session energy is database-owned and must not disappear merely because the raw
