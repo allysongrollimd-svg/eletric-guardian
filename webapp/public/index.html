@@ -62,11 +62,12 @@
   <section class="card vcard">
     <div class="vtop"><div><div class="label">Meu veículo</div><b id="vName" class="vname">—</b></div><span id="vOnline" class="vdot off"><i></i><span>Offline</span></span></div>
     <div class="vstats">
-      <div><span>Bateria</span><b><i id="vSocBar" class="vbat"><u></u></i><span id="vSoc">--</span>%</b></div>
+      <div><span>Bateria</span><b><i id="vSocBar" class="vbat"><u></u></i><span id="vSoc">--</span>%</b><em>Saúde da bateria <strong id="vSoh">--</strong></em></div>
       <div><span>Autonomia</span><b><span id="vRange">--</span> km</b></div>
-      <div><span>Velocidade</span><b><span id="speed">--</span> <small>km/h</small></b><em>Marcha <strong id="gear">--</strong></em></div>
+      <div><span>Velocidade</span><b><span id="speed">--</span> <small>km/h</small></b><em>Marcha <strong id="gear">--</strong></em><em>Odômetro <strong id="odo">--</strong> km</em></div>
       <div><span>Potência</span><b><span id="power">--</span> <small>kW</small></b><div class="bar"><i id="powerBar"></i></div><em><strong id="hp">--</strong> cv · <span id="powerHint">&nbsp;</span></em></div>
     </div>
+    <div class="sub vseen" id="lastSeen">&nbsp;</div>
   </section>
   <nav class="qgrid" id="qgrid" aria-label="Atalhos" hidden>
     <button type="button" class="q" data-go="tab:cams"><svg viewBox="0 0 24 24"><path d="M3 7h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3zM17 11l4-2.5v7L17 13"/></svg><span>Câmeras<br>ao vivo</span></button>
@@ -92,7 +93,6 @@
   <section class="grid">
     <div class="card"><div class="label">Viagem</div><div class="kv"><span>Distância</span><b id="tripKm">--</b></div><div class="kv"><span>Energia</span><b id="tripKwh">--</b></div><div class="kv"><span>Consumo (50 km)</span><b id="cons">--</b></div></div>
     <div class="card"><div class="label">Temperaturas</div><div class="kv"><span>Bateria</span><b id="tBatt">--</b></div><div class="kv"><span>Cabine</span><b id="tCabin">--</b></div><div class="kv"><span>Externa</span><b id="tExt">--</b></div></div>
-    <div class="card"><div class="label">Odômetro</div><div class="big"><b id="odo">--</b><small>km</small></div><div class="sub" id="lastSeen">&nbsp;</div></div>
   </section>
 
   <details class="card chartbox"><summary>Gráficos · últimos 30 min</summary><section class="grid charts">
