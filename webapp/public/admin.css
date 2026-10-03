@@ -36,3 +36,7 @@
 }
 .wrap{display:block;max-width:520px;overflow-wrap:anywhere;font:12px ui-monospace,Menlo,monospace;color:var(--muted)}
 .tbl .ok{color:var(--ok)}
+dialog.dlg{max-width:520px;width:calc(100% - 24px);max-height:86vh;overflow:auto;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:16px}
+dialog.dlg::backdrop{background:#000a}
+dialog.dlg h2{margin:0 0 4px}dialog.dlg h3{margin:14px 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+dialog.dlg label.chk{display:flex;align-items:center;gap:8px;padding:6px 0}dialog.dlg .acts{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}

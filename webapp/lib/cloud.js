@@ -42,7 +42,7 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
     /** Store view + account data (name, VIN) + tunnel presence. */
     decorate(v) {
       const d = accounts.getDevice(v.device);
-      return { ...v, name: d?.name || v.device, vin: d?.vin || null, billing: billing.stateForDevice(v.device), tunnel: hub.isConnected(v.device), online: v.online || hub.isConnected(v.device) || (broker?.connected(v.device) ?? false) };
+      return { ...v, name: d?.name || v.device, vin: d?.vin || null, controlsOff: accounts.controlsOff(v.device), billing: billing.stateForDevice(v.device), tunnel: hub.isConnected(v.device), online: v.online || hub.isConnected(v.device) || (broker?.connected(v.device) ?? false) };
     },
     /** Every car the user owns, even those that never sent telemetry. */
     listFor(user) {
@@ -201,6 +201,7 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
         else if ((r = p.match(/^users\/([^/]+)\/password$/)) && m === 'POST') { await admin.setPassword(r[1], b.password, user.id); r = { ok: true }; }
         else if (p === 'cars' && m === 'GET') r = { cars: admin.cars(qs) };
         else if (p === 'cars/release' && m === 'POST') r = { released: admin.releaseCar(b.vin, user.id) };
+        else if (p === 'cars/controls' && m === 'POST') { r = { controlsOff: accounts.setControlsOff(b.id, b.off) }; accounts.log('admin_car_controls', { userId: user.id, detail: { device: b.id, off: r.controlsOff.length } }); }
         else if (p === 'cars/grant' && m === 'POST') { billing.grantDays(b.vin, b.days, { adminId: user.id }); r = { billing: billing.state(String(b.vin).toUpperCase()) }; }
         else if (p === 'invoices' && m === 'GET') r = { invoices: admin.invoices(qs) };
         else if (p === 'invoices/manual' && m === 'POST') r = billing.createManualPaid({ vin: b.vin, planId: b.plan, note: b.note, adminId: user.id });

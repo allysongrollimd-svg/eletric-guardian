@@ -15,7 +15,7 @@ export function createAdmin({ db, accounts, billing, now = () => Date.now(), liv
     setRole: db.prepare('UPDATE users SET role = ? WHERE id = ?'),
     setName: db.prepare('UPDATE users SET name = ? WHERE id = ?'),
     adminCount: db.prepare("SELECT COUNT(*) AS n FROM users WHERE role = 'admin' AND disabled = 0"),
-    cars: db.prepare(`SELECT d.id, d.name, d.vin, d.reported_vin, d.owner_id, d.last_seen, d.app_version, d.claimed_at, u.email AS owner_email
+    cars: db.prepare(`SELECT d.id, d.name, d.vin, d.reported_vin, d.controls_off, d.owner_id, d.last_seen, d.app_version, d.claimed_at, u.email AS owner_email
       FROM devices d LEFT JOIN users u ON u.id = d.owner_id
       WHERE d.owner_id IS NOT NULL AND (d.vin LIKE ?1 ESCAPE '\\' OR d.name LIKE ?1 ESCAPE '\\' OR u.email LIKE ?1 ESCAPE '\\')
       ORDER BY d.claimed_at DESC LIMIT ?2 OFFSET ?3`),
@@ -63,7 +63,7 @@ export function createAdmin({ db, accounts, billing, now = () => Date.now(), liv
     cars({ q: s = '', limit = 50, offset = 0 } = {}) {
       return q.cars.all(like(s), clampInt(limit, 50, 200), clampInt(offset, 0, 1e6)).map((d) => ({
         id: d.id, name: d.name, vin: d.vin, vinVerified: d.reported_vin === d.vin, ownerId: d.owner_id, ownerEmail: d.owner_email,
-        lastSeen: d.last_seen, appVersion: d.app_version, claimedAt: d.claimed_at, billing: billing.state(d.vin), live: live(d.id),
+        lastSeen: d.last_seen, appVersion: d.app_version, claimedAt: d.claimed_at, billing: billing.state(d.vin), live: live(d.id), controlsOff: accounts.controlsOff(d.id),
       }));
     },
     releaseCar(vin, adminId) { const ok = accounts.adminReleaseVin(vin); accounts.log('admin_release_car', { userId: adminId, detail: { vin } }); return ok; },

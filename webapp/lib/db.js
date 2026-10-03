@@ -80,5 +80,7 @@ export function openDb(file) {
     [['mensal', 'Mensal', 1, 2990], ['trimestral', 'Trimestral', 3, 8490], ['semestral', 'Semestral', 6, 15990], ['anual', 'Anual', 12, 29990]]
       .forEach(([id, name, months, price], i) => ins.run(id, name, months, price, i));
   }
+  // Controls this car does NOT have (JSON array of control keys); set by the admin, hidden from the customer.
+  try { db.exec('ALTER TABLE devices ADD COLUMN controls_off TEXT'); } catch { /* already there */ }
   return db;
 }

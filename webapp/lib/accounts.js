@@ -241,6 +241,14 @@ export function createAccounts(db, { secret, now = () => Date.now() } = {}) {
 
     listCars(userId) { return q.carsOf.all(userId).map(publicCar); },
     getDevice(id) { return q.dev.get(String(id)) || null; },
+    /** Control keys this car does not have (admin-managed). */
+    controlsOff(id) { try { const v = JSON.parse(q.dev.get(String(id))?.controls_off || '[]'); return Array.isArray(v) ? v : []; } catch { return []; } },
+    setControlsOff(id, keys) {
+      if (!q.dev.get(String(id))) throw new AccountError('not_found', 'Carro não encontrado.', 404);
+      const clean = [...new Set((Array.isArray(keys) ? keys : []).map((k) => String(k).slice(0, 60)))].slice(0, 200);
+      db.prepare('UPDATE devices SET controls_off = ? WHERE id = ?').run(JSON.stringify(clean), String(id));
+      return clean;
+    },
     ownerOf(id) { return q.dev.get(String(id))?.owner_id ?? null; },
     /** Anyone linked to the car (owner or added later) has the same access. */
     owns(userId, id) { return !!userId && !!q.isMember.get(String(id), userId); },

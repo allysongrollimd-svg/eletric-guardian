@@ -110,7 +110,10 @@ function spark(svgId, key) {
 const drawCharts = () => { spark('chSoc', 'soc'); spark('chSpeed', 'speed'); spark('chPower', 'power'); };
 
 // ---------- tabs / controls ----------
+let isAdminUser = false;
 const ctl = initControls({
+  isAdmin: () => isAdminUser,
+  getOff: () => state.devices.get(state.current)?.controlsOff || [],
   rpc: (op, body) => rpc(op, body),
   getDevice: () => state.current,
   getData: () => state.devices.get(state.current)?.data,
@@ -254,7 +257,7 @@ async function boot() {
     $('login').hidden = true; $('auth').hidden = true; $('logout').hidden = false;
     if (state.mode === 'accounts') {
       $('carsBtn').hidden = false; $('camsTab').hidden = false; $('billBtn').hidden = false; $('sentryLink').hidden = false; $('dashcamLink').hidden = false; $('tripsLink').hidden = false; $('chargeLink').hidden = false;
-      api('/api/me').then((m) => { $('adminLink').hidden = m.user?.role !== 'admin'; }).catch(() => {});
+      api('/api/me').then((m) => { isAdminUser = m.user?.role === 'admin'; $('adminLink').hidden = !isAdminUser; ctlRerender(); }).catch(() => {});
       bill.handleReturn();
     }
     connect();

@@ -15,7 +15,11 @@ const COVER_PT = { OPEN: 'Abrir', CLOSE: 'Fechar', STOP: 'Parar' };
 const optLabel = (o) => OPT_PT[o] || o[0].toUpperCase() + o.slice(1).replace(/_/g, ' ');
 const truthy = (v) => v === true || v === 1 || /^(1|on|true)$/i.test(String(v));
 
-export function initControls({ getDevice, getData, isOnline, rpc }) {
+// Cabin-only things that make no sense from the phone (hidden from customers; the admin still sees them).
+const CABIN_ONLY = new Set(['infotainment_rotation', 'native_camera_view']);
+const SEEN_FIELDS = 30;   // once the car has reported this many fields, a missing state means it does not have that control
+
+export function initControls({ getDevice, getData, isOnline, rpc, isAdmin = () => false, getOff = () => [] }) {
   let catalog = null, status = { enabled: false, unlocked: false, ttlSeconds: 0 };
   let statusAt = 0;
 
@@ -113,23 +117,40 @@ export function initControls({ getDevice, getData, isOnline, rpc }) {
     } else b.append(el('span', null, 'Controles bloqueados.'), btn('Desbloquear', askPin, 'act'));
   }
 
+  /** Why a control is not offered on this car: 'admin' (turned off by the owner of the service), 'auto' (the car does not report it) or ''. */
+  function unavailable(c) {
+    if (getOff().includes(c.key)) return 'admin';
+    const data = getData() || {};
+    if (c.stateKey && Object.keys(data).length >= SEEN_FIELDS && data[c.stateKey] === undefined) return 'auto';
+    if (CABIN_ONLY.has(c.key)) return 'auto';
+    return '';
+  }
+  const openGroups = (() => { try { return new Set(JSON.parse(localStorage.getItem('eg.ctlOpen') || '["clima"]')); } catch { return new Set(['clima']); } })();
+  const saveOpen = () => { try { localStorage.setItem('eg.ctlOpen', JSON.stringify([...openGroups])); } catch { /* ignore */ } };
+
   function render() {
     if (!catalog) return;
     const host = $('ctlGroups'); host.replaceChildren();
-    const usable = status.enabled && isOnline();
+    const usable = status.enabled && isOnline(), admin = isAdmin();
     for (const g of catalog.groups) {
-      const items = catalog.controls.filter((c) => c.group === g && c.platform !== 'text');
+      const items = catalog.controls.filter((c) => c.group === g && c.platform !== 'text' && (admin || !unavailable(c)));
       if (!items.length) continue;
-      const card = el('section', 'card cgroup'); card.append(el('h3', null, GROUP_PT[g] || g));
+      const card = el('details', 'card cgroup'); card.open = openGroups.has(g);
+      const sum = el('summary', null, GROUP_PT[g] || g); sum.append(el('small', null, String(items.length)));
+      card.append(sum);
+      card.addEventListener('toggle', () => { if (card.open) openGroups.add(g); else openGroups.delete(g); saveOpen(); });
       for (const c of items) {
         const row = el('div', 'crow'); const nm = el('div', 'nm', c.label);
         if (c.confirm) nm.append(el('small', null, 'pede confirmação'));
+        const why = admin ? unavailable(c) : '';
+        if (why) { row.classList.add('dim'); nm.append(el('small', null, why === 'admin' ? 'Desligado para este carro (o cliente não vê)' : 'Este carro não informa esse controle (o cliente não vê)')); }
         row.append(nm, widget(c));
         if (!usable) row.querySelectorAll('button,input').forEach((x) => (x.disabled = true));
         card.append(row);
       }
       host.append(card);
     }
+    if (!host.children.length) host.append(el('div', 'card', 'Este carro ainda não informou quais controles tem. Aguarde alguns instantes com o carro ligado.'));
     renderBanner();
   }
 

@@ -209,3 +209,12 @@ test('reinstalar o app mantém todas as pessoas do carro', async () => {
   assert.equal(acc.owns(bia.id, b.deviceId), true);
   assert.equal(acc.owns(ana.id, a.deviceId), false);
 });
+
+test('controles que o carro não tem: o admin desliga e a lista fica salva', () => {
+  const { acc } = make();
+  const d = dev(9); acc.registerDevice(d);
+  assert.deepEqual(acc.controlsOff(d.deviceId), []);
+  assert.deepEqual(acc.setControlsOff(d.deviceId, ['adas_bsd', 'adas_bsd', 'sunroof']), ['adas_bsd', 'sunroof']);
+  assert.deepEqual(acc.controlsOff(d.deviceId), ['adas_bsd', 'sunroof']);
+  assert.throws(() => acc.setControlsOff('nao-existe', ['x']), (e) => e.code === 'not_found');
+});

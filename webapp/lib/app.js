@@ -161,6 +161,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
           const dev = canSee(me, device) ? store.get(device) : null;
           if (!dev) return json(res, 404, { error: 'unknown vehicle' });
           if (cloud && !cloud.billing.allowed(dev.device)) return json(res, 402, { error: 'Assinatura vencida. Renove para usar os controles.' });
+          if (cloud && !cloud.accounts.isAdmin(me.id) && cloud.accounts.controlsOff(dev.device).includes(String(body?.key))) return json(res, 404, { error: 'Este carro não tem esse controle.' });
           const r = await control.execute(ctlToken(req), dev.device, body, clientIp(req), decorate(dev).online, me.id);
           return json(res, r.code, r.error ? { error: r.error, locked: r.locked } : { ok: true });
         }
@@ -241,6 +242,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
           const dev = canSee(me, String(m.device ?? '')) ? store.get(String(m.device)) : null;
           if (!dev) return reply(m.id, 404, { error: 'unknown vehicle' });
           if (cloud && !cloud.billing.allowed(dev.device)) return reply(m.id, 402, { error: 'Assinatura vencida. Renove para usar os controles.' });
+          if (cloud && !cloud.accounts.isAdmin(me.id) && cloud.accounts.controlsOff(dev.device).includes(String(m.key))) return reply(m.id, 404, { error: 'Este carro não tem esse controle.' });
           const r = await control.execute(ws.ctl, dev.device, { key: m.key, sub: m.sub, value: m.value }, ws.ip, decorate(dev).online, me.id);
           return reply(m.id, r.code, r.error ? { error: r.error, locked: r.locked } : { ok: true });
         }
