@@ -104,6 +104,11 @@
       <button class="btn" id="btnWaze" type="button" style="margin-left:1.125rem;display:none;">Waze no painel</button>
     </div>
     <div class="hint" id="wazeMsg" style="min-height:1.5rem;"></div>
+    <div id="updBox" style="display:none;margin-top:0.75rem;">
+      <div class="sub" id="updTxt"></div>
+      <button class="btn primary" id="btnUpd" type="button" style="margin-top:0.5rem;">Atualizar agora</button>
+      <div class="hint" id="updMsg" style="min-height:1.5rem;"></div>
+    </div>
   </div>
 
   <div class="foot"><span id="version"></span><button class="btn ghost" id="btnCfg2" type="button" style="min-height:3rem;font-size:1.0625rem;">Configurações</button></div>
@@ -313,6 +318,34 @@
     }).catch(function () { $('wazeMsg').textContent = 'Não foi possível agora.'; }).then(function () { wazeBusy = false; wazeInfo(); });
   });
   wazeInfo(); setInterval(wazeInfo, 20000);
+  // App update straight from the app (the car downloads the new version and installs it by itself).
+  var updBusy = false;
+  function checkUpdate() {
+    if (updBusy) return;
+    fetch('/api/update/check').then(function (r) { return r.json(); }).then(function (j) {
+      if (updBusy) return;
+      if (j && j.available) { $('updBox').style.display = ''; $('updTxt').textContent = 'Atualização disponível' + (j.remoteVersion ? ': ' + j.remoteVersion : '') + '.'; }
+      else $('updBox').style.display = 'none';
+    }).catch(function () {});
+  }
+  function trackUpdate(n) {
+    fetch('/api/update/progress').then(function (r) { return r.json(); }).then(function (p) {
+      var pct = p.percent >= 0 ? ' ' + p.percent + '%' : '';
+      if (p.phase === 'error' || p.error) { updBusy = false; $('btnUpd').disabled = false; $('updMsg').textContent = 'Não foi possível atualizar agora. Verifique a internet do carro e tente de novo.'; return; }
+      $('updMsg').textContent = (p.message || 'Atualizando…') + pct;
+      setTimeout(function () { trackUpdate(0); }, 1500);
+    }).catch(function () {
+      $('updMsg').textContent = 'Reiniciando o aplicativo… isso leva alguns instantes.';
+      setTimeout(function () { trackUpdate((n || 0) + 1); }, 3000);
+    });
+  }
+  $('btnUpd').addEventListener('click', function () {
+    if (updBusy) return; updBusy = true; $('btnUpd').disabled = true; $('updMsg').textContent = 'Baixando a atualização… não desligue o carro.';
+    post('/api/update/install?confirm=true').then(function (r) { return r.json(); }).then(function () { trackUpdate(0); })
+      .catch(function () { updBusy = false; $('btnUpd').disabled = false; $('updMsg').textContent = 'Não foi possível iniciar a atualização.'; });
+  });
+  setTimeout(checkUpdate, 4000); setInterval(checkUpdate, 30 * 60 * 1000);
+
   poll(); setInterval(poll, 3000);
 })();
 </script>

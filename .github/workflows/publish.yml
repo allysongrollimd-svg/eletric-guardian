@@ -1,0 +1,45 @@
+name: Publicar atualização do app do carro
+# Manual: monta o APK e publica na versão "braveheart" do GitHub. É daqui que o app do carro busca atualizações
+# (Configurações do app -> "Atualizar agora"). Só publique depois de testar o APK no seu carro.
+on:
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: "O que mudou (aparece para o cliente)"
+        required: false
+        default: "Melhorias e correções."
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - name: Install NDK + CMake
+        run: |
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses >/dev/null || true
+          "$SDKM" "ndk;26.1.10909125" "cmake;3.22.1" "platforms;android-36" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build debug APK
+        run: ./gradlew :app:assembleDebug --stacktrace
+      - name: Publish release "braveheart"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTES: ${{ inputs.notes }}
+        run: |
+          set -e
+          APK="$(ls app/build/outputs/apk/debug/*arm64*.apk 2>/dev/null | head -n1)"
+          [ -n "$APK" ] || APK="$(ls app/build/outputs/apk/debug/*.apk | head -n1)"
+          NAME="braveheart-v1.${GITHUB_RUN_NUMBER}.apk"
+          cp "$APK" "$NAME"
+          if gh release view braveheart >/dev/null 2>&1; then
+            for a in $(gh release view braveheart --json assets -q '.assets[].name'); do gh release delete-asset braveheart "$a" -y; done
+            gh release edit braveheart --notes "$NOTES" --target "$GITHUB_SHA"
+          else
+            gh release create braveheart --title "Eletric Guardian (app do carro)" --notes "$NOTES" --target "$GITHUB_SHA"
+          fi
+          gh release upload braveheart "$NAME" --clobber
+          echo "Publicado: $NAME"
