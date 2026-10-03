@@ -320,7 +320,10 @@ public class SetupGuideDialog {
                     + "case \"$cur\" in *" + comp + "*) ;; null|\"\") settings put secure enabled_accessibility_services " + comp + " ;; "
                     + "*) settings put secure enabled_accessibility_services \"$cur:" + comp + "\" ;; esac; "
                     + "settings put secure accessibility_enabled 1";
-            ((com.overdrive.app.ui.MainActivity) context).runAdbShell(script, ok -> Log.i(TAG, "a11y enable via adb: " + ok));
+            ((com.overdrive.app.ui.MainActivity) context).runAdbShell(script, ok -> {
+                Log.i(TAG, "a11y enable via adb: " + ok);
+                return kotlin.Unit.INSTANCE;
+            });
         }
     }
 
