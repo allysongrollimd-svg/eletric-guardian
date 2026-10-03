@@ -561,6 +561,7 @@ class WebViewFragment : Fragment() {
 
                     if (isLocalServer) {
                         interceptI18nCatalog(url)?.let { return it }
+                        if (com.overdrive.app.BuildConfig.SIMPLE_UI) interceptBundledPage(url)?.let { return it }
                     }
                     
                     // Bypass proxy for map tiles and CDN resources (sing-box proxy blocks these)
@@ -1848,6 +1849,31 @@ class WebViewFragment : Fragment() {
      * Serve catalog requests straight from the installed APK in the embedded
      * WebView. External clients still use the daemon HTTP path.
      */
+    /**
+     * Customer build: the connect screen and its images come straight from the APK, so they show at once even while the
+     * car services (which normally serve them) are still starting after an install or a reboot.
+     */
+    private fun interceptBundledPage(url: String): WebResourceResponse? {
+        val path = Uri.parse(url).path ?: return null
+        val asset = when {
+            path == "/cloud" || path == "/cloud.html" -> "web/local/cloud.html"
+            path.startsWith("/shared/") && !path.contains("..") -> "web/" + path.removePrefix("/")
+            else -> return null
+        }
+        val type = when (asset.substringAfterLast('.', "")) {
+            "html" -> "text/html"; "js" -> "text/javascript"; "css" -> "text/css"
+            "svg" -> "image/svg+xml"; "webp" -> "image/webp"; "png" -> "image/png"
+            else -> return null
+        }
+        return try {
+            val bytes = requireContext().assets.open(asset).use { it.readBytes() }
+            WebResourceResponse(type, "utf-8", java.io.ByteArrayInputStream(bytes)).apply {
+                setStatusCodeAndReasonPhrase(200, "OK")
+                responseHeaders = mapOf("Cache-Control" to "no-store", "Content-Length" to bytes.size.toString())
+            }
+        } catch (e: Exception) { null }
+    }
+
     private fun interceptI18nCatalog(url: String): WebResourceResponse? {
         val path = Uri.parse(url).path ?: return null
         if (!path.startsWith("/i18n/") || !path.endsWith(".json")) return null

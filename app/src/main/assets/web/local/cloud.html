@@ -246,7 +246,14 @@
     else if (currentView === 'vPeople') renderPeople(s);
     else renderCfg(s);
   }
-  function poll() { fetch('/api/cloud/status').then(function (r) { return r.json(); }).then(render).catch(function () {}); }
+  // While the car services are still starting the status call fails: keep showing logo + spinner and keep trying.
+  function poll() {
+    fetch('/api/cloud/status').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (s) { if (!s || s.error) throw 0; render(s); })
+      .catch(function () {
+        if (!last) { $('hLoading').firstChild.nextSibling.textContent = 'Iniciando os serviços do carro…'; window.__egReady = true; }
+      });
+  }
 
   // navigation
   $('btnPeople').addEventListener('click', function () { show('vPeople'); });
