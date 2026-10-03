@@ -68,6 +68,16 @@ const local = http.createServer((req, res) => {
   if (p === '/api/recording/mode') { let b = ''; req.on('data', (c) => { b += c; }); return req.on('end', () => { if (req.method === 'POST') globalThis.__mode = JSON.parse(b).mode; sendJson({ status: 'ok', mode: globalThis.__mode || 'CONTINUOUS' }); }); }
   if (p === '/api/settings/unified') { req.resume(); return sendJson({ success: true }); }
   if (p === '/api/oem-dashcam/config') { let b = ''; req.on('data', (c) => { b += c; }); return req.on('end', () => { if (req.method === 'POST') globalThis.__oem = JSON.parse(b).recordingMode; sendJson({ success: true, recordingMode: globalThis.__oem || 'continuous' }); }); }
+  if (p === '/api/trips') {
+    const q = new URL(req.url, 'http://x').searchParams, off = +q.get('offset') || 0, lim = +q.get('limit') || 50;
+    const all = Array.from({ length: 73 }, (_, i) => ({ id: i + 1, startTime: Date.now() - i * 86400000, endTime: Date.now() - i * 86400000 + 1800000, distanceKm: 12.3 + i, durationSeconds: 1800, avgSpeedKmh: 38, maxSpeedKmh: 71, socStart: 80, socEnd: 74, energyUsedKwh: 2.4, energyPerKm: 0.15, tripCost: 1.9, currency: 'R$', startLat: -23.5, startLng: -46.6 }));
+    return sendJson({ success: true, trips: all.slice(off, off + lim) });
+  }
+  if (p === '/api/charging') {
+    const q = new URL(req.url, 'http://x').searchParams, off = +q.get('offset') || 0, lim = +q.get('limit') || 20;
+    const all = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, startTime: Date.now() - i * 172800000, endTime: Date.now() - i * 172800000 + 5400000, startSoc: 22, endSoc: 80, energyAdded: 31.5, peakPower: 7.2, avgPower: 6.9, isDc: i % 4 === 0, cost: 24.5, currency: 'R$', placeLabel: 'Casa', durationMinutes: 90 }));
+    return sendJson({ success: true, sessions: all.slice(off, off + lim) });
+  }
   if (p === '/api/recordings/dates') return sendJson({ success: true, dates: [0, 1].map((d) => ({ date: isoDay(d), count: 7, hasSentry: true })) });
   if (p === '/api/recordings') {
     const q = new URL(req.url, 'http://x').searchParams; const rows = REC.filter((r) => (!q.get('type') || r.type === q.get('type')) && (!q.get('date') || r.date === q.get('date')));

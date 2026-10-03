@@ -196,6 +196,16 @@ function updateLoad() {
   for (const ev of ['playing', 'canplay']) v.addEventListener(ev, () => { if (v.readyState >= 3) showLoad(false); });
   v.addEventListener('error', () => { showLoad(true); $('vloadTxt').textContent = 'Não foi possível carregar o vídeo'; $('vloadSub').textContent = 'Tente de novo em instantes.'; $('vloadBar').parentElement.hidden = true; });
 })();
+// Download the clip: the browser fetches it straight from the car through the tunnel (same origin, cookie included).
+$('pDl').addEventListener('click', () => {
+  if (!curRec) return;
+  const d = new Date(curRec.timestamp || curRec.startTime || Date.now());
+  const p2 = (n) => String(n).padStart(2, '0');
+  const name = `${TYPE === 'sentry' ? 'sentinela' : 'dashcam'}-${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}-${p2(d.getHours())}${p2(d.getMinutes())}${p2(d.getSeconds())}.mp4`;
+  const a = document.createElement('a'); a.href = curRec.videoUrl || `/video/id/${curRec.id}`; a.download = name; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  $('pSub').textContent = 'Baixando… o carro envia o arquivo pela internet dele, pode levar alguns instantes.';
+});
 function closePlayer() { clearInterval(load.timer); const v = $('video'); v.pause(); v.removeAttribute('src'); v.load(); $('player').hidden = true; document.body.style.overflow = ''; }
 
 $('prev').addEventListener('click', () => go(1)); $('next').addEventListener('click', () => go(-1));
