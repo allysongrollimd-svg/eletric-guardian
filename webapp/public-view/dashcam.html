@@ -11,7 +11,7 @@
 </head>
 <body>
 <header class="top">
-  <a class="ibtn" href="{{APP_URL}}/" aria-label="Voltar ao painel"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+  <a class="ibtn" data-app-back href="{{APP_URL}}/" aria-label="Voltar ao painel"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
   <h1>Dashcam</h1>
 </header>
 <div id="recView">
@@ -36,5 +36,6 @@
   <div class="quads" id="quads"><button data-q="all" class="on">Todas</button><button data-q="front">Frente</button><button data-q="right">Direita</button><button data-q="left">Esquerda</button><button data-q="rear">Traseira</button></div>
 </section>
 <script src="/_eg/rec.js" type="module" data-type="normal"></script>
+<script src="/_eg/back.js"></script>
 </body>
 </html>

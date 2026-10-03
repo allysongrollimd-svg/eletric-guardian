@@ -139,3 +139,5 @@ a.drawer-item{display:flex;align-items:center;text-decoration:none;color:var(--t
 #auth .seg button{border:0;background:transparent;color:var(--muted);min-height:40px;border-radius:9px}
 #auth .seg button.on{background:#0066ff;color:#fff}
 #auth.login{align-items:center}
+
+.view-layer{position:fixed;top:0;right:0;bottom:0;left:0;z-index:60;background:var(--bg)}.view-layer[hidden]{display:none}.view-layer iframe{width:100%;height:100%;border:0;background:var(--bg)}

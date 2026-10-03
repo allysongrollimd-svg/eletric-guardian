@@ -263,7 +263,7 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
       if (isPage) buf = Buffer.from(buf.toString('utf8').replaceAll('{{APP_URL}}', cloud.appHost ? `${cfg.publicScheme || 'https'}://${cloud.appHost}` : ''));
       res.writeHead(200, {
         'Content-Type': VIEW_ASSETS[ext], 'Cache-Control': isPage ? 'no-store' : 'no-cache', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer',
-        ...(isPage ? { 'Content-Security-Policy': "default-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" } : {}),
+        ...(isPage ? { 'Content-Security-Policy': `default-src 'self'; img-src 'self' data: blob:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'${cloud.appHost ? ` ${cfg.publicScheme || 'https'}://${cloud.appHost}` : ''}` } : {}),
       });
       res.end(req.method === 'HEAD' ? undefined : buf);
     } catch { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); res.end('Não encontrado.'); }

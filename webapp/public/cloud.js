@@ -117,8 +117,20 @@ export function initCloud({ getCars, getCurrent, onAuthChanged, onCarsChanged })
     const r = await post(`/api/cars/${encodeURIComponent(car.device)}/view`, { page });
     const b = await r.json().catch(() => ({}));
     if (!r.ok) { const t = $('toast'); if (t) { t.textContent = b.error || `Erro ${r.status}`; t.hidden = false; setTimeout(() => { t.hidden = true; }, 3500); } return; }
-    location.href = b.url;
+    openViewLayer(b.url);
   }
+
+  // The car screens live on another host. Navigating there would make iOS leave the installed app (browser bar, "X").
+  // They open in a full-screen layer inside the app instead, and ask it to close through postMessage.
+  let layerOrigin = '';
+  function openViewLayer(url) {
+    const layer = $('viewLayer'), frame = $('viewFrame');
+    if (!layer || !frame) { location.href = url; return; }
+    try { layerOrigin = new URL(url).origin; } catch { layerOrigin = ''; }
+    frame.src = url; layer.hidden = false;
+  }
+  function closeViewLayer() { const l = $('viewLayer'), f = $('viewFrame'); if (!l) return; l.hidden = true; if (f) f.src = 'about:blank'; }
+  window.addEventListener('message', (e) => { if (e.origin === layerOrigin && e.data && e.data.eg === 'back') closeViewLayer(); });
 
   return { showAuth, goPage, maybePair, openCars, renderCams, logout, cfg: () => cfg };
 }
