@@ -25,6 +25,9 @@ function render(dev) {
   arc.style.strokeDashoffset = String(326.7 * (1 - pct / 100));
   arc.style.stroke = pct <= 15 ? 'var(--bad)' : pct <= 30 ? 'var(--warn)' : 'var(--primary)';
   setText('range', nf(d.ev_range_km, 0));
+  setText('vSoc', nf(d.soc, 0)); setText('vRange', nf(d.ev_range_km, 0)); setText('vName', dev.name || 'Meu carro');
+  setText('qTemp', d.cabin_temp != null ? `${nf(d.cabin_temp, 0)} °C` : '--');
+  { const on = !!dev.online, o = $('vOnline'); if (o) { o.className = `vdot ${on ? 'on' : 'off'}`; o.lastChild.textContent = on ? 'Online' : 'Offline'; } const bu = document.querySelector('#vSocBar u'); if (bu) bu.style.height = `${Math.max(0, Math.min(100, Number(d.soc) || 0))}%`; }
   setText('speed', nf(d.speed, 0));
   setText('gear', d.gear ?? '--');
   setText('power', nf(d.power, 1));
@@ -123,7 +126,18 @@ let cloud = null;        // set in accounts mode
 let bill = null;
 let ctlTimer = null;
 const ctlRerender = () => { if (!$('controls').hidden && !document.querySelector('dialog[open]')) ctl.render(); };
+// Shortcuts (home tiles and bottom bar): open a tab, a phone screen, or scroll to a card.
+function go(spec) {
+  const [kind, arg] = spec.split(/:(.*)/s);
+  if (kind === 'tab') { const b = document.querySelector(`.tab[data-tab="${arg}"]`); if (b) b.click(); }
+  else if (kind === 'open') cloud?.goPage(arg);
+  else if (kind === 'scroll') { const b = document.querySelector('.tab[data-tab="dash"]'); if (b && $('dash').hidden) b.click(); setTimeout(() => $(arg)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); }
+}
+document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => go(b.dataset.go)));
+{ const sync = () => { const on = !$('tabs').hidden; $('bbar').hidden = !on; $('qgrid').hidden = !on; document.body.classList.toggle('has-bbar', on); }; new MutationObserver(sync).observe($('tabs'), { attributes: true, attributeFilter: ['hidden'] }); sync(); }
 function showTab(name) {
+  $('brand').classList.toggle('home', name === 'dash');
+  document.querySelectorAll('#bbar [data-go^="tab:"]').forEach((b) => b.classList.toggle('on', b.dataset.go === `tab:${name}`));
   $('dash').hidden = name !== 'dash' || !state.current; $('controls').hidden = name !== 'controls'; $('cams').hidden = name !== 'cams';
   document.querySelectorAll('.tab[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
   if (name === 'controls') { ctl.refreshStatus(); ctl.render(); }

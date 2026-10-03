@@ -149,3 +149,19 @@ details.cgroup>summary::after{content:"";width:8px;height:8px;border-right:2px s
 details.cgroup[open]>summary::after{transform:rotate(-135deg);margin-bottom:-3px}
 details.cgroup[open]>summary{margin-bottom:8px}
 .crow.dim .nm{opacity:.55}
+/* ---- Home no padrão do kit: carro no centro, atalhos, barra inferior ---- */
+.brand #brandFull{display:none;height:34px;width:auto}.brand.home #brandFull{display:block}.brand.home #brandSym,.brand.home #sectionTitle{display:none}
+.vcard{padding:14px 16px 12px;margin-bottom:12px}
+.vtop{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.vname{font-size:20px;display:block;margin-top:2px}
+.vdot{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}.vdot i{width:8px;height:8px;border-radius:50%;background:var(--muted)}.vdot.on{color:var(--ok)}.vdot.on i{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.vcar{display:block;width:100%;max-width:340px;height:auto;margin:4px auto 8px}
+.vstats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vstats>div{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.vstats span{font-size:12px;color:var(--muted)}.vstats b{display:flex;align-items:center;gap:8px;font-size:22px;margin-top:2px}.vstats b span{font-size:22px;color:var(--text)}
+.vbat{display:inline-block;width:14px;height:24px;border:2px solid var(--ok);border-radius:4px;position:relative;overflow:hidden}.vbat u{position:absolute;left:0;right:0;bottom:0;background:var(--ok);height:0;transition:height .4s}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.qgrid[hidden]{display:none}
+.q{display:flex;align-items:center;gap:12px;text-align:left;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:13px;font-weight:600;line-height:1.25;min-height:60px}
+.q svg,.bbar svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.q svg.red{stroke:var(--bad)}.q svg.ok{stroke:var(--ok)}.q b{color:var(--muted);font-weight:600}
+.bbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-around;background:#0A0F17ee;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.bbar[hidden]{display:none}
+.bbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;color:var(--muted);padding:6px 2px;font-size:11px;font-weight:600;border-radius:10px}.bbar svg{width:22px;height:22px;stroke:currentColor}.bbar button.on{color:var(--accent)}
+body.has-bbar{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+@media (min-width:900px){.bbar{max-width:520px;margin:0 auto;left:0;right:0;border-radius:16px 16px 0 0;border:1px solid var(--line)}}
