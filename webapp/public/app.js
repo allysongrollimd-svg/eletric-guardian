@@ -42,13 +42,14 @@ function render(dev) {
   setText('torque', nf(d.motor_front_torque, 0));
   setText('powerHint', p < -0.5 ? 'Regenerando' : p > 0.5 ? 'Consumindo' : ' ');
 
-  const charging = d.is_charging === true;
+  const on = (v) => v === true || v === 1 || v === '1' || /^(true|on)$/i.test(String(v));   // the car sends binary fields as 1/0
+  const charging = on(d.is_charging);
   const eta = Number(d.charging_eta_minutes) > 0 ? Number(d.charging_eta_minutes) : 0;
   const etaTxt = eta ? (eta >= 60 ? `cheio em ${Math.floor(eta / 60)} h ${eta % 60 ? `${eta % 60} min` : ''}` : `cheio em ${Math.round(eta)} min`) : '';
   setText('chgState', charging ? 'Carregando' : 'Não está carregando');
   setText('chgDetail', charging
-    ? [d.charge_power != null ? `${nf(Math.abs(d.charge_power), 1)} kW` : null, d.is_dcfc ? 'carga rápida (CC)' : null, etaTxt].filter(Boolean).join(' · ') || ' '
-    : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : (d.is_parked ? 'Carro estacionado' : 'Carro em uso')));
+    ? [d.charge_power != null ? `${nf(Math.abs(d.charge_power), 1)} kW` : null, on(d.is_dcfc) ? 'carga rápida (CC)' : null, etaTxt].filter(Boolean).join(' · ') || ' '
+    : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : (on(d.is_parked) ? 'Carro estacionado' : 'Carro em uso')));
   $('chgCard')?.classList.toggle('on', charging);
 
   setText('tBatt', d.batt_temp != null ? `${nf(d.batt_temp, 1)} °C` : '--');
