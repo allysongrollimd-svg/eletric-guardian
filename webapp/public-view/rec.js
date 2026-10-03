@@ -219,4 +219,5 @@ document.querySelectorAll('#bottomNav button').forEach((b) => b.addEventListener
 (async () => {
   try { await loadDates(); renderDay(); await loadPage(true); }
   catch (e) { setState(e.auth ? 'Sessão expirada' : 'Não foi possível carregar', e.message, e.auth ? null : () => location.reload()); }
+  document.dispatchEvent(new Event('eg-ready'));   // first list drawn: the app can lift its cover
 })();

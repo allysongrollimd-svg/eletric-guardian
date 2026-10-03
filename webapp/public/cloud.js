@@ -122,15 +122,18 @@ export function initCloud({ getCars, getCurrent, onAuthChanged, onCarsChanged })
 
   // The car screens live on another host. Navigating there would make iOS leave the installed app (browser bar, "X").
   // They open in a full-screen layer inside the app instead, and ask it to close through postMessage.
-  let layerOrigin = '';
+  let layerOrigin = '', coverTimer = 0;
+  function liftCover() { clearTimeout(coverTimer); const cv = $('viewCover'); if (cv) cv.classList.add('off'); }
   function openViewLayer(url) {
     const layer = $('viewLayer'), frame = $('viewFrame');
     if (!layer || !frame) { location.href = url; return; }
     try { layerOrigin = new URL(url).origin; } catch { layerOrigin = ''; }
+    const cv = $('viewCover'); if (cv) cv.classList.remove('off');
     frame.src = url; layer.hidden = false;
+    clearTimeout(coverTimer); coverTimer = setTimeout(liftCover, 9000);
   }
   function closeViewLayer() { const l = $('viewLayer'), f = $('viewFrame'); if (!l) return; l.hidden = true; if (f) f.src = 'about:blank'; }
-  window.addEventListener('message', (e) => { if (e.origin === layerOrigin && e.data && e.data.eg === 'back') closeViewLayer(); });
+  window.addEventListener('message', (e) => { if (e.origin !== layerOrigin || !e.data) return; if (e.data.eg === 'back') closeViewLayer(); else if (e.data.eg === 'ready') liftCover(); });
 
   return { showAuth, goPage, maybePair, openCars, renderCams, logout, cfg: () => cfg };
 }
