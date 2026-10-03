@@ -11,7 +11,7 @@ export function createMap(root, template) {
   const pin = document.createElement('div'); pin.className = 'tm-pin'; pin.innerHTML = '<i></i><b></b>';
   const ctl = document.createElement('div'); ctl.className = 'tm-ctl';
   const mk = (t, label, fn) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; b.setAttribute('aria-label', label); b.addEventListener('click', fn); ctl.append(b); return b; };
-  const att = document.createElement('div'); att.className = 'tm-att'; att.textContent = '© OpenStreetMap · © CARTO';
+  const att = document.createElement('div'); att.className = 'tm-att'; att.textContent = /mapbox\.com/.test(template) ? '© Mapbox · © OpenStreetMap' : '© OpenStreetMap · © CARTO';
   root.append(layer, pin, ctl, att);
 
   let z = 16, car = null, center = null, drag = null;

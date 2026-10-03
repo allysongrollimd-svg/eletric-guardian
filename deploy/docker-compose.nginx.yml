@@ -14,6 +14,7 @@ services:
       CONTROL_ENABLED: ${CONTROL_ENABLED:-1}
       MQTT_PUBLIC_URL: wss://${APP_HOST}/mqtt
       SESSION_SECRET: ${SESSION_SECRET:-}
+      MAPBOX_TOKEN: ${MAPBOX_TOKEN:-}
     volumes: [eg-data:/data]
     ports: ["127.0.0.1:8787:8787"]
 volumes:
