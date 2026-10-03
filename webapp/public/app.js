@@ -27,6 +27,7 @@ function render(dev) {
   setText('range', nf(d.ev_range_km, 0));
   setText('vSoc', nf(d.soc, 0)); setText('vRange', nf(d.ev_range_km, 0)); setText('vName', dev.name || 'Meu carro');
   { const h = d.soh_oem ?? d.soh; setText('vSoh', typeof h === 'number' && h > 0 ? `${nf(h, 0)}%` : '--'); }
+  setText('vCons', d.consumption_50km != null ? `${nf(d.consumption_50km, 1)} kWh/100 km` : '--');
   setText('qTemp', d.cabin_temp != null ? `${nf(d.cabin_temp, 0)} °C` : '--');
   { const on = !!dev.online, o = $('vOnline'); if (o) { o.className = `vdot ${on ? 'on' : 'off'}`; o.lastChild.textContent = on ? 'Online' : 'Offline'; } const bu = document.querySelector('#vSocBar u'); if (bu) bu.style.height = `${Math.max(0, Math.min(100, Number(d.soc) || 0))}%`; }
   setText('speed', nf(d.speed, 0));
@@ -51,7 +52,6 @@ function render(dev) {
 
   setText('tripKm', d.trip_km != null ? `${nf(d.trip_km, 1)} km` : '--');
   setText('tripKwh', d.trip_kwh != null ? `${nf(d.trip_kwh, 1)} kWh` : '--');
-  setText('cons', d.consumption_50km != null ? `${nf(d.consumption_50km, 1)} kWh/100 km` : '--');
   setText('tBatt', d.batt_temp != null ? `${nf(d.batt_temp, 1)} °C` : '--');
   setText('tCabin', d.cabin_temp != null ? `${nf(d.cabin_temp, 1)} °C` : '--');
   setText('tExt', d.ext_temp != null ? `${nf(d.ext_temp, 1)} °C` : '--');
