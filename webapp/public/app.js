@@ -43,10 +43,13 @@ function render(dev) {
   setText('powerHint', p < -0.5 ? 'Regenerando' : p > 0.5 ? 'Consumindo' : ' ');
 
   const charging = d.is_charging === true;
-  setText('chgState', charging ? 'Carregando' : d.is_parked ? 'Estacionado' : 'Em uso');
+  const eta = Number(d.charging_eta_minutes) > 0 ? Number(d.charging_eta_minutes) : 0;
+  const etaTxt = eta ? (eta >= 60 ? `cheio em ${Math.floor(eta / 60)} h ${eta % 60 ? `${eta % 60} min` : ''}` : `cheio em ${Math.round(eta)} min`) : '';
+  setText('chgState', charging ? 'Carregando' : 'Não está carregando');
   setText('chgDetail', charging
-    ? [d.charge_power != null ? `${nf(d.charge_power, 1)} kW` : null, d.is_dcfc ? 'DC rápido' : null, d.charging_eta_minutes ? `~${nf(d.charging_eta_minutes)} min` : null].filter(Boolean).join(' · ')
-    : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : ' '));
+    ? [d.charge_power != null ? `${nf(Math.abs(d.charge_power), 1)} kW` : null, d.is_dcfc ? 'carga rápida (CC)' : null, etaTxt].filter(Boolean).join(' · ') || ' '
+    : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : (d.is_parked ? 'Carro estacionado' : 'Carro em uso')));
+  $('chgCard')?.classList.toggle('on', charging);
 
   setText('tBatt', d.batt_temp != null ? `${nf(d.batt_temp, 1)} °C` : '--');
   setText('odo', nf(d.odometer, 1));
