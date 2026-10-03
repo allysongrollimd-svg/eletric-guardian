@@ -8,7 +8,7 @@ const toLL = (x, y, z) => { const s = TS * 2 ** z, n = Math.PI - (2 * Math.PI * 
 export function createMap(root, template) {
   root.classList.add('tmap');
   const layer = document.createElement('div'); layer.className = 'tm-tiles';
-  const pin = document.createElement('div'); pin.className = 'tm-pin'; pin.innerHTML = '<i></i><b></b>';
+  const pin = document.createElement('div'); pin.className = 'tm-pin'; pin.innerHTML = '<i></i><svg class="tm-car" viewBox="0 0 40 72" width="30" height="54" aria-hidden="true"><defs><linearGradient id="tmb" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0066FF"/><stop offset="1" stop-color="#00C2FF"/></linearGradient></defs><rect x="4" y="2" width="32" height="68" rx="13" fill="url(#tmb)" stroke="#fff" stroke-width="2"/><path d="M10 22c0-4 3-7 10-7s10 3 10 7l-2 9H12z" fill="#0A0F17" opacity=".85"/><path d="M12 47h16l2 11c0 3-3 5-10 5s-10-2-10-5z" fill="#0A0F17" opacity=".85"/><rect x="1" y="26" width="4" height="7" rx="2" fill="#fff"/><rect x="35" y="26" width="4" height="7" rx="2" fill="#fff"/></svg>';
   const ctl = document.createElement('div'); ctl.className = 'tm-ctl';
   const mk = (t, label, fn) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t; b.setAttribute('aria-label', label); b.addEventListener('click', fn); ctl.append(b); return b; };
   const att = document.createElement('div'); att.className = 'tm-att'; att.textContent = /mapbox\.com/.test(template) ? '© Mapbox · © OpenStreetMap' : '© OpenStreetMap · © CARTO';
@@ -41,8 +41,9 @@ export function createMap(root, template) {
 
   return {
     /** Car moved: keep the pin on it; follow it unless the user is looking elsewhere. */
-    set(lat, lon) {
+    set(lat, lon, heading) {
       const first = !car, prev = car; car = [lat, lon]; if (first || !center) center = car.slice();
+      if (typeof heading === 'number' && isFinite(heading)) { const c = pin.querySelector('.tm-car'); c.style.transform = `rotate(${Math.round(heading)}deg)`; }
       if (!first) { const a = toPx(prev[0], prev[1], z), b = toPx(lat, lon, z); if (Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) < 2) return; }   // parked: nothing to redraw
       draw();
     },

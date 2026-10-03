@@ -75,7 +75,7 @@ function renderMap(d) {
   if (typeof d.lat !== 'number' || typeof d.lon !== 'number' || (d.lat === 0 && d.lon === 0)) return;
   setText('coords', `${d.lat.toFixed(5)}, ${d.lon.toFixed(5)}`);
   if (!tmap) tmap = createMap($('map'), state.cfg?.mapTiles || cloud?.cfg()?.mapTiles || TILES);
-  tmap.set(d.lat, d.lon);
+  tmap.set(d.lat, d.lon, d.heading);
   const a = $('mapLink'); a.href = `https://www.google.com/maps/search/?api=1&query=${d.lat},${d.lon}`; a.hidden = false;
 }
 
