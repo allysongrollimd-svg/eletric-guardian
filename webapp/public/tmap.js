@@ -14,7 +14,7 @@ export function createMap(root, template) {
   const att = document.createElement('div'); att.className = 'tm-att'; att.textContent = /mapbox\.com/.test(template) ? '© Mapbox · © OpenStreetMap' : '© OpenStreetMap · © CARTO';
   root.append(layer, pin, ctl, att);
 
-  let z = 16, car = null, center = null, drag = null;
+  let z = 16, car = null, center = null, drag = null, following = true;
   const size = () => ({ w: root.clientWidth || 300, h: root.clientHeight || 240 });
   function draw() {
     if (!center) return;
@@ -32,9 +32,9 @@ export function createMap(root, template) {
   }
   const zoom = (d) => { z = clamp(z + d, 3, 19); draw(); };
   mk('+', 'Aproximar', () => zoom(1)); mk('−', 'Afastar', () => zoom(-1));
-  mk('◎', 'Centralizar no carro', () => { if (car) { center = car.slice(); draw(); } });
-  root.addEventListener('pointerdown', (e) => { if (e.target.closest('.tm-ctl')) return; drag = { x: e.clientX, y: e.clientY, c: toPx(center[0], center[1], z) }; root.setPointerCapture(e.pointerId); });
-  root.addEventListener('pointermove', (e) => { if (!drag) return; center = toLL(drag.c[0] - (e.clientX - drag.x), drag.c[1] - (e.clientY - drag.y), z); draw(); });
+  mk('◎', 'Centralizar no carro', () => { if (!car) return; following = true; z = 16; center = car.slice(); draw(); });
+  root.addEventListener('pointerdown', (e) => { if (e.target.closest('.tm-ctl')) return; if (!center) return; drag = { x: e.clientX, y: e.clientY, c: toPx(center[0], center[1], z) }; root.setPointerCapture(e.pointerId); });
+  root.addEventListener('pointermove', (e) => { if (!drag) return; following = false; center = toLL(drag.c[0] - (e.clientX - drag.x), drag.c[1] - (e.clientY - drag.y), z); draw(); });
   const end = () => { drag = null; };
   root.addEventListener('pointerup', end); root.addEventListener('pointercancel', end);
   if ('ResizeObserver' in window) new ResizeObserver(draw).observe(root);
@@ -42,12 +42,12 @@ export function createMap(root, template) {
   return {
     /** Car moved: keep the pin on it; follow it unless the user is looking elsewhere. */
     set(lat, lon, heading) {
-      const first = !car, prev = car; car = [lat, lon]; if (first || !center) center = car.slice();
+      const first = !car, prev = car; car = [lat, lon]; if (first || !center || following) center = car.slice();
       if (typeof heading === 'number' && isFinite(heading)) { const c = pin.querySelector('.tm-car'); c.style.transform = `rotate(${Math.round(heading)}deg)`; }
       if (!first) { const a = toPx(prev[0], prev[1], z), b = toPx(lat, lon, z); if (Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) < 2) return; }   // parked: nothing to redraw
       draw();
     },
-    reset() { car = null; center = null; layer.replaceChildren(); },
+    reset() { car = null; center = null; following = true; layer.replaceChildren(); },
     redraw: draw,
   };
 }
