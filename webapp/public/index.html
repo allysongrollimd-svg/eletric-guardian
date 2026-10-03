@@ -26,7 +26,6 @@
   <select id="device" aria-label="Veículo" hidden></select>
   <nav class="tabs" id="tabs" hidden>
     <button class="tab on" data-tab="dash">Painel</button>
-    <button class="tab" data-tab="controls">Controles</button>
     <button class="tab" data-tab="cams" id="camsTab" hidden>Ao vivo</button>
     <button class="tab" id="sentryLink" data-open="/_eg/sentinela.html" hidden>Sentinela</button>
     <button class="tab" id="dashcamLink" data-open="/_eg/dashcam.html" hidden>Dashcam</button>
@@ -52,20 +51,14 @@
   <button type="button" data-go="tab:dash" class="on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg><span>Início</span></button>
   <button type="button" data-go="tab:cams"><svg viewBox="0 0 24 24"><path d="M3 7h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3zM17 11l4-2.5v7L17 13"/></svg><span>Câmeras</span></button>
   <button type="button" data-go="scroll:mapCard"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Mapa</span></button>
-  <button type="button" data-go="tab:controls"><svg viewBox="0 0 24 24"><path d="M5 6h14M5 12h14M5 18h14"/><circle cx="9" cy="6" r="2" fill="currentColor"/><circle cx="15" cy="12" r="2" fill="currentColor"/><circle cx="8" cy="18" r="2" fill="currentColor"/></svg><span>Controles</span></button>
   <button type="button" data-go="open:/_eg/viagens.html"><svg viewBox="0 0 24 24"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="8"/></svg><span>Histórico</span></button>
 </nav>
 <div id="viewLayer" class="view-layer" hidden><iframe id="viewFrame" title="Tela do carro" allow="fullscreen; autoplay; microphone"></iframe><div id="viewCover" class="view-cover"><i></i></div></div>
 
-<main id="controls" hidden>
-  <div id="ctlBanner" class="card banner"></div>
-  <div id="ctlGroups"></div>
-</main>
 
 <main id="dash" hidden>
   <section class="card vcard">
     <div class="vtop"><div><div class="label">Meu veículo</div><b id="vName" class="vname">—</b></div><span id="vOnline" class="vdot off"><i></i><span>Offline</span></span></div>
-    <img class="vcar" src="/car.svg" alt="" width="320" height="120">
     <div class="vstats">
       <div><span>Bateria</span><b><i id="vSocBar" class="vbat"><u></u></i><span id="vSoc">--</span>%</b></div>
       <div><span>Autonomia</span><b><span id="vRange">--</span> km</b></div>
@@ -78,8 +71,6 @@
     <button type="button" class="q" data-go="scroll:mapCard"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Localização<br>ao vivo</span></button>
     <button type="button" class="q" data-go="open:/_eg/recargas.html"><svg viewBox="0 0 24 24" class="ok"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg><span>Recarga<br>e energia</span></button>
     <button type="button" class="q" data-go="open:/_eg/viagens.html"><svg viewBox="0 0 24 24"><path d="M5 19c0-6 3-4 5-8s2-6 5-6M5 19h.01M15 5h.01M19 15l-3 4M16 15h3v3"/></svg><span>Deslocamentos</span></button>
-    <button type="button" class="q" data-go="tab:controls"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/><circle cx="12" cy="12" r="3"/></svg><span>Climatização<br><b id="qTemp">--</b></span></button>
-    <button type="button" class="q" data-go="tab:controls"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5M9 9.5l3 2.5 3-2.5"/></svg><span>Funções<br>do veículo</span></button>
   </nav>
   <section class="hero">
     <div class="card gauge-card" hidden>
@@ -96,7 +87,7 @@
     <div class="card"><div class="label">Carregamento</div><div class="big"><b id="chgState">--</b></div><div class="sub" id="chgDetail">&nbsp;</div></div>
   </section>
 
-  <section class="card map-card" id="mapCard"><div class="maphead"><div class="label">Localização ao vivo</div><small id="coords"></small></div><iframe id="map" title="Mapa" loading="lazy" referrerpolicy="no-referrer"></iframe></section>
+  <section class="card map-card" id="mapCard"><div class="maphead"><div class="label">Localização ao vivo</div><small id="coords"></small></div><div id="map"></div><a id="mapLink" class="maplink" href="#" target="_blank" rel="noopener" hidden>Abrir no app de mapas</a></section>
 
   <section class="grid">
     <div class="card"><div class="label">Viagem</div><div class="kv"><span>Distância</span><b id="tripKm">--</b></div><div class="kv"><span>Energia</span><b id="tripKwh">--</b></div><div class="kv"><span>Consumo (50 km)</span><b id="cons">--</b></div></div>
@@ -131,8 +122,6 @@
   <p class="sub" id="retText">Aguarde alguns segundos.</p>
   <div class="dlg-actions"><button type="button" id="retClose" hidden>Continuar</button></div>
 </dialog>
-<dialog id="confirmDlg" class="dlg"><form method="dialog"><h2 id="confirmTitle">Confirmar</h2><p id="confirmText"></p><div class="dlg-actions"><button value="cancel" class="ghost">Cancelar</button><button value="ok" id="confirmOk">Confirmar</button></div></form></dialog>
-<dialog id="pinDlg" class="dlg"><form id="pinForm" method="dialog"><h2>Desbloquear controles</h2><p id="pinHint">Digite o PIN de controle (diferente do token do painel).</p><input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" required><p id="pinErr" class="err" role="alert"></p><div class="dlg-actions"><button value="cancel" class="ghost" formnovalidate>Cancelar</button><button value="ok" id="pinOk">Desbloquear</button></div></form></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
 
 <div id="auth" class="login" hidden>

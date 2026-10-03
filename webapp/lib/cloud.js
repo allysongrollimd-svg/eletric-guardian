@@ -63,7 +63,7 @@ export function createCloud({ cfg, accounts, store, hub, broker, secret, provide
     const ip = clientIp(req);
 
     try {
-      if (path === '/api/config' && req.method === 'GET') return send(200, { mode: 'accounts', signup: !!cfg.allowSignup, brand: 'Electric Guardian' }), true;
+      if (path === '/api/config' && req.method === 'GET') return send(200, { mode: 'accounts', signup: !!cfg.allowSignup, brand: 'Electric Guardian', mapTiles: cfg.mapTiles }), true;
 
       // ---- car-facing (bearer = deviceId.deviceKey) ----
       if (path === '/api/device/register' && req.method === 'POST') {

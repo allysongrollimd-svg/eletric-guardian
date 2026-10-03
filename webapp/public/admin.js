@@ -26,23 +26,6 @@ function table(cols, rows) {
   const w = el('div', 'scroll'); w.append(t); return w;
 }
 const btn = (label, fn, cls = 'ghost mini') => { const b = el('button', cls, label); b.type = 'button'; b.addEventListener('click', fn); return b; };
-// Which remote controls this car has: unchecked ones are hidden from the customer (and refused by the server).
-async function editControls(c, done) {
-  const cat = await (await fetch('/controls.json')).json();
-  const off = new Set(c.controlsOff || []);
-  const d = el('dialog', 'dlg'); const box = el('div'); d.append(box);
-  box.append(el('h2', null, `Controles de ${c.name || c.vin}`), el('p', 'sub', 'Desmarque o que este carro não tem. O cliente deixa de ver e de usar; você continua vendo tudo.'));
-  const checks = [];
-  for (const g of cat.groups) {
-    const items = cat.controls.filter((x) => x.group === g && x.platform !== 'text'); if (!items.length) continue;
-    const h = el('h3', null, g); box.append(h);
-    for (const x of items) { const l = el('label', 'chk'); const i = input({ type: 'checkbox', checked: !off.has(x.key) }); i.dataset.key = x.key; checks.push(i); l.append(i, el('span', null, ` ${x.label}`)); box.append(l); }
-  }
-  const act = el('div', 'acts');
-  act.append(btn('Marcar tudo', () => checks.forEach((i) => { i.checked = true; })), btn('Cancelar', () => d.close(), 'ghost'),
-    btn('Salvar', async () => { const r = await run(() => api('cars/controls', 'POST', { id: c.id, off: checks.filter((i) => !i.checked).map((i) => i.dataset.key) }), 'Controles salvos'); if (r) { d.close(); done(); } }, 'mini'));
-  box.append(act); document.body.append(d); d.addEventListener('close', () => d.remove()); d.showModal();
-}
 const field = (label, input) => { const l = el('label'); l.append(el('span', null, label), input); return l; };
 const input = (attrs = {}) => { const i = el('input'); Object.assign(i, attrs); return i; };
 function searchBar(value, onChange, extra) {
@@ -108,7 +91,6 @@ const views = {
       { h: '', f: (c) => { const a = el('div', 'acts');
         a.append(btn('+ dias', async () => { const d = parseInt(prompt('Quantos dias conceder? (negativo remove)', '30'), 10); if (d) { if (await run(() => api('cars/grant', 'POST', { vin: c.vin, days: d }), 'Dias ajustados')) views.cars(main, st); } }));
         a.append(btn('Venda manual', async () => { const plan = prompt('Plano (mensal, trimestral, semestral, anual):', 'mensal'); if (plan) { const note = prompt('Observação (ex.: PIX direto):', ''); if (await run(() => api('invoices/manual', 'POST', { vin: c.vin, plan, note }), 'Baixa registrada')) views.cars(main, st); } }));
-        a.append(btn('Controles', () => editControls(c, () => views.cars(main, st))));
         a.append(btn('Liberar chassi', async () => { if (confirm(`Desvincular ${c.vin} da conta ${c.ownerEmail}? O chassi fica livre para outra conta.`)) { if (await run(() => api('cars/release', 'POST', { vin: c.vin }), 'Chassi liberado')) views.cars(main, st); } }, 'ghost mini danger'));
         return a; } },
     ], cars));

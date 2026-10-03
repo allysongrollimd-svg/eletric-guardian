@@ -15,11 +15,12 @@ const TYPES = {
   '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png',
   '.webmanifest': 'application/manifest+json',
 };
-const securityHeaders = (frameSrc = '') => ({
+const tileOrigin = (tpl) => { try { const u = new URL(String(tpl).replace('{s}', 'a').replace(/\{[a-z]\}/g, '0')); return String(tpl).includes('{s}') ? `https://*.${u.host.split('.').slice(1).join('.')}` : u.origin; } catch { return ''; } };
+const securityHeaders = (frameSrc = '', tiles = '') => ({
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
   'X-Frame-Options': 'DENY',
-  'Content-Security-Policy': `default-src 'self'; img-src 'self' data:; frame-src https://www.openstreetmap.org ${frameSrc}; ` +
+  'Content-Security-Policy': `default-src 'self'; img-src 'self' data: ${tiles}; frame-src https://www.openstreetmap.org ${frameSrc}; ` +
     "style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'",
 });
 let SECURITY_HEADERS = securityHeaders();
@@ -42,7 +43,7 @@ export function createApp(cfg, store, bridge = null, cloud = null) {
   const loginLimit = createLimiter(10, 60_000);
   const control = createControl(cfg, bridge, { verifySecret: cloud ? (userId, pw) => cloud.accounts.verifyPassword(userId, pw) : null });
   const viewUrl = cloud?.viewHost ? `${cfg.publicScheme || 'https'}://${cloud.viewHost}` : '';
-  SECURITY_HEADERS = securityHeaders(viewUrl);
+  SECURITY_HEADERS = securityHeaders(viewUrl, tileOrigin(cfg.mapTiles));
 
   /** Who is calling, and which cars may they see? Token mode: the single owner sees everything. */
   const principal = (req) => {

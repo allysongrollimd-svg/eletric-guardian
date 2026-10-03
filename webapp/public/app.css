@@ -172,3 +172,14 @@ body.has-bbar{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
 details.chartbox>summary,details.all>summary{cursor:pointer;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.6px}
 details.chartbox[open]>summary{margin-bottom:10px}
 main#dash>.grid{margin-bottom:12px}
+.tmap{position:relative;height:260px;border-radius:12px;overflow:hidden;background:#0d1520;touch-action:none;cursor:grab}
+.tm-tiles{position:absolute;left:0;top:0;right:0;bottom:0}.tm-tiles img{position:absolute;width:256px;height:256px;max-width:none;user-select:none;-webkit-user-drag:none}
+.tm-pin{position:absolute;width:0;height:0;pointer-events:none}.tm-pin[hidden]{display:none}
+.tm-pin i{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;background:#0066FF44;animation:tmp 2.2s ease-out infinite}
+.tm-pin b{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:#0066FF;border:3px solid #fff;box-shadow:0 0 12px #00C2FF}
+@keyframes tmp{from{transform:scale(.4);opacity:1}to{transform:scale(1.5);opacity:0}}
+.tm-ctl{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px}
+.tm-ctl button{width:38px;height:38px;padding:0;border-radius:10px;background:#0A0F17dd;border:1px solid var(--line);color:var(--text);font-size:20px;line-height:1}
+.tm-att{position:absolute;left:6px;bottom:4px;font-size:10px;color:#9aa6b8;background:#0A0F17aa;padding:1px 6px;border-radius:6px;pointer-events:none}
+.maplink{display:inline-block;margin-top:10px;color:var(--accent);font-size:14px;font-weight:600;text-decoration:none}
+.vcard .vstats{margin-top:14px}

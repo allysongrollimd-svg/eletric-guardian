@@ -1,5 +1,5 @@
 // Electric Guardian live dashboard. All values are written with textContent (never innerHTML).
-import { initControls } from '/controls.js';
+import { createMap } from '/tmap.js';
 import { loadConfig, initCloud } from '/cloud.js';
 import { initBilling } from '/billing.js';
 const $ = (id) => document.getElementById(id);
@@ -46,7 +46,7 @@ function render(dev) {
   setText('chgState', charging ? 'Carregando' : d.is_parked ? 'Estacionado' : 'Em uso');
   setText('chgDetail', charging
     ? [d.charge_power != null ? `${nf(d.charge_power, 1)} kW` : null, d.is_dcfc ? 'DC rápido' : null, d.charging_eta_minutes ? `~${nf(d.charging_eta_minutes)} min` : null].filter(Boolean).join(' · ')
-    : ' ');
+    : (isAdminUser && (d.charging_gun || d.charging_state) ? `cabo: ${d.charging_gun ?? '-'} · estado: ${d.charging_state ?? '-'}` : ' '));
 
   setText('tripKm', d.trip_km != null ? `${nf(d.trip_km, 1)} km` : '--');
   setText('tripKwh', d.trip_kwh != null ? `${nf(d.trip_kwh, 1)} kWh` : '--');
@@ -69,14 +69,14 @@ function renderStatus(dev) {
   setText('lastSeen', age == null ? 'Sem dados ainda' : `Atualizado há ${age < 60 ? age + ' s' : Math.round(age / 60) + ' min'}`);
 }
 
+let tmap = null;
+const TILES = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png';
 function renderMap(d) {
   if (typeof d.lat !== 'number' || typeof d.lon !== 'number' || (d.lat === 0 && d.lon === 0)) return;
   setText('coords', `${d.lat.toFixed(5)}, ${d.lon.toFixed(5)}`);
-  const key = `${d.lat.toFixed(3)},${d.lon.toFixed(3)}`; // refresh iframe only after ~100 m of movement
-  if (key === state.lastMapKey) return;
-  state.lastMapKey = key;
-  const dl = 0.004;
-  $('map').src = `https://www.openstreetmap.org/export/embed.html?bbox=${d.lon - dl},${d.lat - dl},${d.lon + dl},${d.lat + dl}&layer=mapnik&marker=${d.lat},${d.lon}`;
+  if (!tmap) tmap = createMap($('map'), cloud?.cfg()?.mapTiles || TILES);
+  tmap.set(d.lat, d.lon);
+  const a = $('mapLink'); a.href = `https://www.google.com/maps/search/?api=1&query=${d.lat},${d.lon}`; a.hidden = false;
 }
 
 function renderTable(d) {
@@ -114,18 +114,8 @@ const drawCharts = () => { spark('chSoc', 'soc'); spark('chSpeed', 'speed'); spa
 
 // ---------- tabs / controls ----------
 let isAdminUser = false;
-const ctl = initControls({
-  isAdmin: () => isAdminUser,
-  getOff: () => state.devices.get(state.current)?.controlsOff || [],
-  rpc: (op, body) => rpc(op, body),
-  getDevice: () => state.current,
-  getData: () => state.devices.get(state.current)?.data,
-  isOnline: () => !!state.devices.get(state.current)?.online,
-});
 let cloud = null;        // set in accounts mode
 let bill = null;
-let ctlTimer = null;
-const ctlRerender = () => { if (!$('controls').hidden && !document.querySelector('dialog[open]')) ctl.render(); };
 // Shortcuts (home tiles and bottom bar): open a tab, a phone screen, or scroll to a card.
 function go(spec) {
   const [kind, arg] = spec.split(/:(.*)/s);
@@ -138,21 +128,18 @@ document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click'
 function showTab(name) {
   $('brand').classList.toggle('home', name === 'dash');
   document.querySelectorAll('#bbar [data-go^="tab:"]').forEach((b) => b.classList.toggle('on', b.dataset.go === `tab:${name}`));
-  $('dash').hidden = name !== 'dash' || !state.current; $('controls').hidden = name !== 'controls'; $('cams').hidden = name !== 'cams';
+  $('dash').hidden = name !== 'dash' || !state.current; $('cams').hidden = name !== 'cams';
   document.querySelectorAll('.tab[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
-  if (name === 'controls') { ctl.refreshStatus(); ctl.render(); }
   if (name === 'cams') cloud?.renderCams();
 }
 document.querySelectorAll('.tab[data-open]').forEach((b) => b.addEventListener('click', () => { setDrawer(false); cloud?.goPage(b.dataset.open); }));
-const TITLES = { dash: 'Painel', controls: 'Controles', cams: 'Ao vivo' };
+const TITLES = { dash: 'Painel', cams: 'Ao vivo' };
 function setDrawer(open) { $('drawer').classList.toggle('open', open); $('drawer').setAttribute('aria-hidden', String(!open)); $('scrim').hidden = !open; $('menuBtn').setAttribute('aria-expanded', String(open)); }
 $('menuBtn').addEventListener('click', () => setDrawer(!$('drawer').classList.contains('open')));
 $('scrim').addEventListener('click', () => setDrawer(false));
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setDrawer(false); });
 ['carsBtn', 'logout', 'device'].forEach((id) => $(id).addEventListener(id === 'device' ? 'change' : 'click', () => setDrawer(false)));
 document.querySelectorAll('.tab[data-tab]').forEach((b) => b.addEventListener('click', () => { showTab(b.dataset.tab); $('sectionTitle').textContent = TITLES[b.dataset.tab] || 'Painel'; setDrawer(false); }));
-// Re-render at most every 2 s while the controls tab is open so states (on/off, selected option) follow telemetry.
-setInterval(ctlRerender, 2000);
 
 // ---------- data flow ----------
 function pushHistory(d) {
@@ -177,8 +164,8 @@ function upsertDevice(dev) {
 }
 
 async function selectDevice(id) {
-  state.current = id; state.lastMapKey = ''; $('device').value = id;
-  $('empty').hidden = true; $('tabs').hidden = false; if (!document.querySelector('.tab.on[data-tab=controls]')) $('dash').hidden = false;
+  state.current = id; state.lastMapKey = ''; tmap?.reset(); $('device').value = id;
+  $('empty').hidden = true; $('tabs').hidden = false; if (!document.querySelector('.tab.on[data-tab=cams]')) $('dash').hidden = false;
   try { state.history = await api(`/api/devices/${encodeURIComponent(id)}/history?minutes=30`); } catch { state.history = []; }
   render(state.devices.get(id)); drawCharts();
 }
@@ -263,15 +250,13 @@ async function boot() {
         });
         bill = initBilling({ getCurrent: () => state.devices.get(state.current) });
         state.cfg = cfg;
-        $('pinHint').textContent = 'Digite a senha da sua conta para desbloquear os controles por alguns minutos.';
-        $('pin').placeholder = 'Senha da conta'; $('pin').inputMode = 'text'; $('pin').autocomplete = 'current-password';
       }
     }
     await api('/api/devices'); // auth probe
     $('login').hidden = true; $('auth').hidden = true; $('logout').hidden = false;
     if (state.mode === 'accounts') {
       $('carsBtn').hidden = false; $('camsTab').hidden = false; $('billBtn').hidden = false; $('sentryLink').hidden = false; $('dashcamLink').hidden = false; $('tripsLink').hidden = false; $('chargeLink').hidden = false;
-      api('/api/me').then((m) => { isAdminUser = m.user?.role === 'admin'; $('adminLink').hidden = !isAdminUser; if ($('allDetails')) $('allDetails').hidden = !isAdminUser; ctlRerender(); }).catch(() => {});
+      api('/api/me').then((m) => { isAdminUser = m.user?.role === 'admin'; $('adminLink').hidden = !isAdminUser; if ($('allDetails')) $('allDetails').hidden = !isAdminUser; }).catch(() => {});
       bill.handleReturn();
     }
     connect();
@@ -290,7 +275,7 @@ $('loginForm').addEventListener('submit', async (ev) => {
   catch { setText('loginErr', 'Token inválido.'); }
 });
 $('logout').addEventListener('click', async () => {
-  if (state.mode === 'accounts') { await rpc('lock').catch(() => {}); return cloud.logout(); } await rpc('lock'); await fetch('/api/logout', { method: 'POST' }); $('tabs').hidden = true; $('controls').hidden = true; transport.ws?.close(); transport.es?.close(); state.devices.clear(); state.current = null; boot(); });
+  if (state.mode === 'accounts') { return cloud.logout(); } await fetch('/api/logout', { method: 'POST' }); $('tabs').hidden = true; transport.ws?.close(); transport.es?.close(); state.devices.clear(); state.current = null; boot(); });
 $('device').addEventListener('change', (e) => selectDevice(e.target.value));
 $('filter').addEventListener('input', () => { const d = state.devices.get(state.current); if (d) renderTable(d.data); });
 setInterval(() => { const d = state.devices.get(state.current); if (d) renderStatus(d); }, 1000);

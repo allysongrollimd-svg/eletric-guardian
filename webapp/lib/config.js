@@ -28,6 +28,7 @@ export function loadConfig(env = process.env) {
     publicScheme: env.PUBLIC_SCHEME || (env.NODE_ENV === 'production' ? 'https' : 'http'),
     trustProxy: env.TRUST_PROXY === '1',
     // Strict is right when VIEW_HOST is a subdomain of APP_HOST's domain (same site). 'None' (+Secure) only for demos on unrelated hosts.
+    mapTiles: /^https:\/\/[^\s]*\{z\}[^\s]*\{x\}[^\s]*\{y\}/.test(env.MAP_TILES || '') ? env.MAP_TILES : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
     viewCookieSameSite: ['Strict', 'Lax', 'None'].includes(env.VIEW_COOKIE_SAMESITE) ? env.VIEW_COOKIE_SAMESITE : 'Strict',
     brokerPort: int(env.BROKER_PORT, 0),                  // plain MQTT (dev / private network); 0 = off
     brokerTlsPort: int(env.BROKER_TLS_PORT, 0),           // MQTT over TLS (needs TLS_CERT + TLS_KEY); 0 = off
